@@ -1,0 +1,6 @@
+###
+# 测试 string 类型的返回
+POST http://localhost:8080/api/demo/string
+Content-Type: application/json
+
+###
