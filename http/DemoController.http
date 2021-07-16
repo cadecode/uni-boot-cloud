@@ -4,3 +4,8 @@ POST http://localhost:8080/api/demo/string
 Content-Type: application/json
 
 ###
+# 测试 map 类型的返回
+POST http://localhost:8080/api/demo/m
+Content-Type: application/json
+
+###
