@@ -1,6 +1,7 @@
 package info.cadecode.simple.common.response;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -22,6 +23,10 @@ public class SimpleResAdvice implements ResponseBodyAdvice {
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
                                   Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+
+        // 设置统一的 Content-Type
+        HttpHeaders headers = response.getHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
         if (body instanceof SimpleRes.ResBuilder) {
             return body;
