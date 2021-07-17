@@ -1,7 +1,7 @@
 package info.cadecode.simple.common.response;
 
 import info.cadecode.simple.SimpleSpringBootApplicationTests;
-import info.cadecode.simple.constant.Reason;
+import info.cadecode.simple.constant.ReasonEnum;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -27,7 +27,7 @@ public class SimpleResTest extends SimpleSpringBootApplicationTests {
 
     @Test
     public void reason() {
-        String reasonJson = SimpleRes.reason(Reason.BAD_REQ)
+        String reasonJson = SimpleRes.reason(ReasonEnum.BAD_REQ)
                 .json();
         log.info("reasonJson: {}", reasonJson);
     } 

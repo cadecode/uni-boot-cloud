@@ -1,6 +1,6 @@
 package info.cadecode.simple.common.response;
 
-import info.cadecode.simple.constant.Reason;
+import info.cadecode.simple.constant.ReasonEnum;
 import info.cadecode.simple.util.JsonUtil;
 
 /**
@@ -21,7 +21,7 @@ public class SimpleRes {
      * @return ResBuilder
      */
     public static SimpleRes ok(Object data) {
-        return new SimpleRes(Reason.OK, data);
+        return new SimpleRes(ReasonEnum.OK, data);
     }
 
     /**
@@ -31,27 +31,27 @@ public class SimpleRes {
      * @return ResBuilder
      */
     public static SimpleRes error(Object data) {
-        return new SimpleRes(Reason.ERROR, data);
+        return new SimpleRes(ReasonEnum.ERROR, data);
     }
 
     /**
      * 根据 Reason 绑定 code、msg
      *
-     * @param reason Reason
+     * @param reasonEnum Reason
      * @return ResBuilder
      */
-    public static SimpleRes reason(Reason reason) {
-        return new SimpleRes(reason);
+    public static SimpleRes reason(ReasonEnum reasonEnum) {
+        return new SimpleRes(reasonEnum);
     }
 
-    private SimpleRes(Reason reason) {
-        this.code = reason.getCode();
-        this.msg = reason.getMsg();
+    private SimpleRes(ReasonEnum reasonEnum) {
+        this.code = reasonEnum.getCode();
+        this.msg = reasonEnum.getMsg();
     }
 
-    private SimpleRes(Reason reason, Object data) {
-        this.code = reason.getCode();
-        this.msg = reason.getMsg();
+    private SimpleRes(ReasonEnum reasonEnum, Object data) {
+        this.code = reasonEnum.getCode();
+        this.msg = reasonEnum.getMsg();
         this.data = data;
     }
 
