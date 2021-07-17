@@ -5,7 +5,7 @@ package info.cadecode.simple.constant;
  * @date 2021/7/16
  * @description: 自定义响应状态码
  */
-public enum Reason {
+public enum ReasonEnum {
 
     OK(200, "OK"),
     BAD_REQ(400, "错误的请求"),
@@ -17,7 +17,7 @@ public enum Reason {
     Integer code;
     String msg;
 
-    Reason(Integer code, String msg) {
+    ReasonEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
