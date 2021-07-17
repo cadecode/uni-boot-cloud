@@ -28,7 +28,7 @@ public class SimpleResAdvice implements ResponseBodyAdvice {
         HttpHeaders headers = response.getHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        if (body instanceof SimpleRes.ResBuilder) {
+        if (body instanceof SimpleRes) {
             return body;
         }
         if (body instanceof String) {

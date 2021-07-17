@@ -10,14 +10,18 @@ import info.cadecode.simple.util.JsonUtil;
  */
 public class SimpleRes {
 
+    private Integer code;
+    private String msg;
+    private Object data;
+
     /**
      * 返回执行成功的响应
      *
      * @param data 返回的数据
      * @return ResBuilder
      */
-    public static ResBuilder ok(Object data) {
-        return new ResBuilder(Reason.OK, data);
+    public static SimpleRes ok(Object data) {
+        return new SimpleRes(Reason.OK, data);
     }
 
     /**
@@ -26,8 +30,8 @@ public class SimpleRes {
      * @param data 返回的数据
      * @return ResBuilder
      */
-    public static ResBuilder error(Object data) {
-        return new ResBuilder(Reason.ERROR, data);
+    public static SimpleRes error(Object data) {
+        return new SimpleRes(Reason.ERROR, data);
     }
 
     /**
@@ -36,58 +40,49 @@ public class SimpleRes {
      * @param reason Reason
      * @return ResBuilder
      */
-    public static ResBuilder reason(Reason reason) {
-        return new ResBuilder(reason);
+    public static SimpleRes reason(Reason reason) {
+        return new SimpleRes(reason);
     }
 
-    /**
-     * 表示响应格式的内部类
-     */
-    public static class ResBuilder {
-        private Integer code;
-        private String msg;
-        private Object data;
+    private SimpleRes(Reason reason) {
+        this.code = reason.getCode();
+        this.msg = reason.getMsg();
+    }
 
-        private ResBuilder(Reason reason) {
-            this.code = reason.getCode();
-            this.msg = reason.getMsg();
-        }
+    private SimpleRes(Reason reason, Object data) {
+        this.code = reason.getCode();
+        this.msg = reason.getMsg();
+        this.data = data;
+    }
 
-        private ResBuilder(Reason reason, Object data) {
-            this.code = reason.getCode();
-            this.msg = reason.getMsg();
-            this.data = data;
-        }
+    public Integer getCode() {
+        return code;
+    }
 
-        public Integer getCode() {
-            return code;
-        }
+    public String getMsg() {
+        return msg;
+    }
 
-        public String getMsg() {
-            return msg;
-        }
+    public Object getData() {
+        return data;
+    }
 
-        public Object getData() {
-            return data;
-        }
+    public SimpleRes code(Integer code) {
+        this.code = code;
+        return this;
+    }
 
-        public ResBuilder code(Integer code) {
-            this.code = code;
-            return this;
-        }
+    public SimpleRes msg(String msg) {
+        this.msg = msg;
+        return this;
+    }
 
-        public ResBuilder msg(String msg) {
-            this.msg = msg;
-            return this;
-        }
+    public SimpleRes data(Object data) {
+        this.data = data;
+        return this;
+    }
 
-        public ResBuilder data(Object data) {
-            this.data = data;
-            return this;
-        }
-
-        public String json() {
-            return JsonUtil.objToStr(this);
-        }
+    public String json() {
+        return JsonUtil.objToStr(this);
     }
 }
