@@ -1,5 +1,6 @@
 package info.cadecode.simple.common.response;
 
+import info.cadecode.simple.common.exception.SimpleException;
 import info.cadecode.simple.constant.ReasonEnum;
 import info.cadecode.simple.util.JsonUtil;
 
@@ -14,24 +15,15 @@ public class SimpleRes {
     private String msg;
     private Object data;
 
-    /**
-     * 返回执行成功的响应
-     *
-     * @param data 返回的数据
-     * @return ResBuilder
-     */
-    public static SimpleRes ok(Object data) {
-        return new SimpleRes(ReasonEnum.OK, data);
+    private SimpleRes(ReasonEnum reasonEnum) {
+        this.code = reasonEnum.getCode();
+        this.msg = reasonEnum.getMsg();
     }
 
-    /**
-     * 返回执行失败的响应
-     *
-     * @param data 返回的数据
-     * @return ResBuilder
-     */
-    public static SimpleRes error(Object data) {
-        return new SimpleRes(ReasonEnum.ERROR, data);
+
+    private SimpleRes(SimpleException exception) {
+        this.code = exception.getCode();
+        this.msg = exception.getMsg();
     }
 
     /**
@@ -44,27 +36,35 @@ public class SimpleRes {
         return new SimpleRes(reasonEnum);
     }
 
-    private SimpleRes(ReasonEnum reasonEnum) {
-        this.code = reasonEnum.getCode();
-        this.msg = reasonEnum.getMsg();
+
+    /**
+     * 根据 SimpleException 绑定 code、msg
+     *
+     * @param exception Reason
+     * @return ResBuilder
+     */
+    public static SimpleRes exception(SimpleException exception) {
+        return new SimpleRes(exception);
     }
 
-    private SimpleRes(ReasonEnum reasonEnum, Object data) {
-        this.code = reasonEnum.getCode();
-        this.msg = reasonEnum.getMsg();
-        this.data = data;
+    /**
+     * 返回执行成功的响应 200
+     *
+     * @param data 返回的数据
+     * @return ResBuilder
+     */
+    public static SimpleRes ok(Object data) {
+        return reason(ReasonEnum.OK).data(data);
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public Object getData() {
-        return data;
+    /**
+     * 返回执行失败的响应 500
+     *
+     * @param data 返回的数据
+     * @return ResBuilder
+     */
+    public static SimpleRes error(Object data) {
+        return reason(ReasonEnum.ERROR).data(data);
     }
 
     public SimpleRes code(Integer code) {
@@ -84,5 +84,17 @@ public class SimpleRes {
 
     public String json() {
         return JsonUtil.objToStr(this);
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public Object getData() {
+        return data;
     }
 }
