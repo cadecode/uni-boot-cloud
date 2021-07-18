@@ -81,6 +81,7 @@ public class JsonUtil {
      * @param clazz 自定义对象的 class 对象
      * @return 自定义对象
      */
+    @SuppressWarnings("unchecked")
     public static <T> T str2Obj(String str, Class<T> clazz) {
         if (StringUtil.isEmpty(str) || clazz == null) {
             return null;
@@ -103,6 +104,7 @@ public class JsonUtil {
      * @param typeReference 自定义对象的 TypeReference 对象
      * @return 自定义对象
      */
+    @SuppressWarnings("unchecked")
     public static <T> T str2Obj(String str, TypeReference<T> typeReference) {
         if (StringUtil.isEmpty(str) || typeReference == null) {
             return null;
