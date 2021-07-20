@@ -19,10 +19,10 @@ public class SimpleResTest extends SimpleSpringBootApplicationTests {
     }
 
     @Test
-    public void error() {
-        String errorJson = SimpleRes.error("hello world!")
+    public void fail() {
+        String failJson = SimpleRes.fail("hello world!")
                 .json();
-        log.info("errorJson: {}", errorJson);
+        log.info("failJson: {}", failJson);
     }
 
     @Test
