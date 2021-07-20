@@ -22,7 +22,7 @@ public enum ReasonEnum {
     TOO_MUCH(429, "过于频繁的请求"),
 
     // 500 服务端错误
-    ERROR(500, "内部服务错误"),
+    FAIL(500, "内部服务错误"),
     INVALID_PROXY(502, "无效代理"),
     TEMP_INVALID(503, "服务暂时失效"),
     PROXY_TIME_OUT(504, "代理超时"),
