@@ -18,7 +18,7 @@ public enum ReasonEnum {
     NO_AUTH(401, "未经验证的请求"),
     FORBIDDEN(403, "被拒绝的请求"),
     NOT_EXIT(404, "不存在的资源"),
-    NOT_FIT(405, "不支持的请求方法式"),
+    NOT_FIT(405, "不支持的请求方式"),
     TOO_MUCH(429, "过于频繁的请求"),
 
     // 500 服务端错误
