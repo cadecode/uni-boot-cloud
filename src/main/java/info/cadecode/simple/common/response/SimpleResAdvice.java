@@ -8,6 +8,8 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.net.URI;
+
 /**
  * @author Cade Li
  * @date 2021/7/16
@@ -27,13 +29,18 @@ public class SimpleResAdvice implements ResponseBodyAdvice {
         // 设置统一的 Content-Type
         HttpHeaders headers = response.getHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
+        // 获取请求路径
+        String path = request.getURI().getPath();
+        // 判断 body 类型分别处理
         if (body instanceof SimpleRes) {
-            return body;
+            return ((SimpleRes) body).path(path);
         }
+        // String 类型的 Body 需要返回 String 类型，否则报转换错误
         if (body instanceof String) {
-            return SimpleRes.ok(body).json();
+            return SimpleRes.ok(body)
+                    .path(path)
+                    .json();
         }
-        return SimpleRes.ok(body);
+        return SimpleRes.ok(body).path(path);
     }
 }
