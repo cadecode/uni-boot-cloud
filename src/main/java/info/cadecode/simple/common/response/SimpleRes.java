@@ -1,8 +1,12 @@
 package info.cadecode.simple.common.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import info.cadecode.simple.common.exception.SimpleException;
 import info.cadecode.simple.constant.ReasonEnum;
 import info.cadecode.simple.util.JsonUtil;
+import info.cadecode.simple.util.MapUtil;
+
+import java.util.Map;
 
 /**
  * @author Cade Li
@@ -13,7 +17,11 @@ public class SimpleRes {
 
     private Integer code;
     private String msg;
+    private String path;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object data;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String error;
 
     private SimpleRes(ReasonEnum reasonEnum) {
         this.code = reasonEnum.getCode();
@@ -63,8 +71,8 @@ public class SimpleRes {
      * @param data 返回的数据
      * @return ResBuilder
      */
-    public static SimpleRes error(Object data) {
-        return reason(ReasonEnum.ERROR).data(data);
+    public static SimpleRes fail(Object data) {
+        return reason(ReasonEnum.FAIL).data(data);
     }
 
     public SimpleRes code(Integer code) {
@@ -77,13 +85,39 @@ public class SimpleRes {
         return this;
     }
 
+    public SimpleRes path(String path) {
+        this.path = path;
+        return this;
+    }
+
     public SimpleRes data(Object data) {
         this.data = data;
         return this;
     }
 
+    public SimpleRes error(String error) {
+        this.error = error;
+        return this;
+    }
+
     public String json() {
         return JsonUtil.objToStr(this);
+    }
+
+    public Map<String, Object> map() {
+        Map<String, Object> map = MapUtil.create()
+                .add("code", code)
+                .add("msg", msg)
+                .add("path", path)
+                .asMap();
+        if (data != null) {
+            map.put("data", data);
+        }
+        if (error != null) {
+            map.put("error", error);
+        }
+
+        return map;
     }
 
     public Integer getCode() {
@@ -94,7 +128,15 @@ public class SimpleRes {
         return msg;
     }
 
+    public String getPath() {
+        return path;
+    }
+
     public Object getData() {
         return data;
+    }
+
+    public String getError() {
+        return error;
     }
 }
