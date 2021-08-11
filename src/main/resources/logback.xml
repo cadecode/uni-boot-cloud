@@ -7,7 +7,7 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
     <!--配置参数常量-->
-    <!--级别：trace<debug<info<warn<error 增加，通常仅需要 debug/info/error-->
+    <!--级别：trace<debug<top<warn<error 增加，通常仅需要 debug/top/error-->
     <property name="level" value="debug" />
     <!--文件保留时间-->
     <property name="history" value="30" />
@@ -54,11 +54,11 @@
         </filter>
     </appender>
 
-    <!--info 文件日志-->
+    <!--top 文件日志-->
     <appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${filePath}/info.now.log</file>
+        <file>${filePath}/top.now.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${filePath}/info/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${filePath}/top/top.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>${history}</maxHistory>
             <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
@@ -97,7 +97,7 @@
         level 指定等级
         additivity 指定是否将 root 的 appender 加入到 logger 中
     -->
-    <logger name="info.cadecode.simple" level="${level}" additivity="true">
+    <logger name="top.cadecode.simple" level="${level}" additivity="true">
         <appender-ref ref="errorAppender" />
         <appender-ref ref="debugAppender" />
         <appender-ref ref="infoAppender" />
