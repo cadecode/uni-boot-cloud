@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @date 2021/7/16
  * @description: 统一接口返回格式
  */
-@ControllerAdvice(basePackages = {"info.cadecode.simple.controller"})
+@ControllerAdvice(basePackages = {"top.cadecode.simple.controller"})
 public class SimpleResAdvice implements ResponseBodyAdvice {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
