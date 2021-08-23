@@ -22,7 +22,7 @@ import java.util.Map;
  * @date 2021/7/16
  * @description: 统一异常处理类
  */
-@ControllerAdvice(basePackages = {"info.cadecode.simple.controller"})
+@ControllerAdvice(basePackages = {"top.cadecode.simple.controller"})
 public class SimpleExceptionHandler extends DefaultErrorAttributes {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
