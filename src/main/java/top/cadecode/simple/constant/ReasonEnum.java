@@ -1,10 +1,13 @@
 package top.cadecode.simple.constant;
 
+import lombok.Getter;
+
 /**
  * @author Cade Li
  * @date 2021/7/16
  * @description: 自定义响应状态码
  */
+@Getter
 public enum ReasonEnum {
 
     // 200 成功
@@ -37,13 +40,5 @@ public enum ReasonEnum {
     ReasonEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getMsg() {
-        return msg;
     }
 }
