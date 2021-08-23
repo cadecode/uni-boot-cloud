@@ -1,6 +1,7 @@
 package top.cadecode.simple.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
 import top.cadecode.simple.common.exception.SimpleException;
 import top.cadecode.simple.constant.ReasonEnum;
 import top.cadecode.simple.util.JsonUtil;
@@ -13,6 +14,7 @@ import java.util.Map;
  * @date 2021/7/16
  * @description: 封装返回响应格式的工具类
  */
+@Getter
 public class SimpleRes {
 
     private Integer code;
@@ -28,7 +30,6 @@ public class SimpleRes {
         this.msg = reasonEnum.getMsg();
     }
 
-
     private SimpleRes(SimpleException exception) {
         this.code = exception.getCode();
         this.msg = exception.getMsg();
@@ -43,7 +44,6 @@ public class SimpleRes {
     public static SimpleRes reason(ReasonEnum reasonEnum) {
         return new SimpleRes(reasonEnum);
     }
-
 
     /**
      * 根据 SimpleException 绑定 code、msg
@@ -116,27 +116,6 @@ public class SimpleRes {
         if (error != null) {
             map.put("error", error);
         }
-
         return map;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public String getError() {
-        return error;
     }
 }

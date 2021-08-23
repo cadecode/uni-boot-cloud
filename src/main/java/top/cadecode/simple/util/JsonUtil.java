@@ -6,8 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -17,9 +16,8 @@ import java.text.SimpleDateFormat;
  * @date 2021/7/15
  * @description: 基于 Jackson 的 json 工具类
  */
+@Slf4j
 public class JsonUtil {
-
-    private static final Logger log = LoggerFactory.getLogger(JsonUtil.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     // 定义日期格式
