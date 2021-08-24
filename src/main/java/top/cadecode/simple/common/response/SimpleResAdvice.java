@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * @description: 统一接口返回格式
  */
 @ControllerAdvice(basePackages = {"top.cadecode.simple.controller"})
-public class SimpleResAdvice implements ResponseBodyAdvice {
+public class SimpleResAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
         return true;
@@ -25,8 +25,7 @@ public class SimpleResAdvice implements ResponseBodyAdvice {
                                   Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
 
         // 设置统一的 Content-Type
-        HttpHeaders headers = response.getHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
         // 获取请求路径
         String path = request.getURI().getPath();
         // 判断 body 类型分别处理
