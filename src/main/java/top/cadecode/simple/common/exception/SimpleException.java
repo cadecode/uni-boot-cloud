@@ -15,6 +15,11 @@ public class SimpleException extends RuntimeException {
 
     private final ErrorEnum errorEnum;
 
+    public SimpleException(ErrorEnum errorEnum) {
+        super(errorEnum.getReason());
+        this.errorEnum = errorEnum;
+    }
+
     public SimpleException(ErrorEnum errorEnum, String message) {
         super(message);
         this.errorEnum = errorEnum;
