@@ -1,6 +1,8 @@
 package top.cadecode.simple.common.exception;
 
+import lombok.Data;
 import lombok.Getter;
+import top.cadecode.simple.constant.ErrorEnum;
 import top.cadecode.simple.constant.ReasonEnum;
 
 /**
@@ -11,16 +13,10 @@ import top.cadecode.simple.constant.ReasonEnum;
 @Getter
 public class SimpleException extends RuntimeException {
 
-    private final Integer code;
-    private final String msg;
+    private final ErrorEnum errorEnum;
 
-    public SimpleException(Integer code, String msg) {
-        this.code = code;
-        this.msg = msg;
-    }
-
-    public SimpleException(ReasonEnum reasonEnum) {
-        this.code = reasonEnum.getCode();
-        this.msg = reasonEnum.getMsg();
+    public SimpleException(ErrorEnum errorEnum, String message) {
+        super(message);
+        this.errorEnum = errorEnum;
     }
 }
