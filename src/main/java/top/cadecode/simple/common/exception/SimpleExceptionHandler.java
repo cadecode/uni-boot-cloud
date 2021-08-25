@@ -3,11 +3,14 @@ package top.cadecode.simple.common.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import top.cadecode.simple.common.response.SimpleRes;
+import top.cadecode.simple.common.response.SimpleRes.ResError;
 import top.cadecode.simple.constant.ErrorEnum;
 import top.cadecode.simple.constant.StatusEnum;
 import top.cadecode.simple.util.MapUtil;
@@ -46,13 +49,24 @@ public class SimpleExceptionHandler extends DefaultErrorAttributes {
     public SimpleRes handleOtherException(Exception e, HttpServletRequest request,
                                           HttpServletResponse response) {
         log.error("Exception Handler =>", e);
+        // 处理 SpringMVC 异常
+        if (e instanceof MissingServletRequestParameterException) {
+            return SimpleRes.fail(ErrorEnum.REQ_PARAM_INVALID)
+                    .path(request)
+                    .status(response);
+        }
+        if (e instanceof HttpMessageNotReadableException) {
+            return SimpleRes.fail(ErrorEnum.REQ_BODY_INVALID)
+                    .path(request)
+                    .status(response);
+        }
         return SimpleRes.fail(ErrorEnum.UNKNOWN)
                 .path(request)
                 .status(response);
     }
 
     /**
-     * 自定义 SpringMVC 404 返回内容
+     * 自定义 SpringMVC 404、405 返回内容
      */
     private static final String STATUS_KEY = "status";
     private static final String MESSAGE_KEY = "message";
@@ -66,13 +80,22 @@ public class SimpleExceptionHandler extends DefaultErrorAttributes {
         // 获取状态码与路径
         int status = (int) errorAttributes.get(STATUS_KEY);
         String path = (String) errorAttributes.get(PATH_KEY);
-        String error = (String) errorAttributes.get(ERROR_KEY);
-        // 处理 404 异常
+        // 处理 404
         if (status == StatusEnum.NOT_EXIT.getStatus()) {
             return MapUtil.create()
                     .add(STATUS_KEY, StatusEnum.NOT_EXIT.getStatus())
                     .add(MESSAGE_KEY, StatusEnum.NOT_EXIT.getMessage())
                     .add(PATH_KEY, path)
+                    .add(ERROR_KEY, new ResError(ErrorEnum.API_NOT_EXIST))
+                    .asMap();
+        }
+        // 处理 405
+        if (status == StatusEnum.NOT_FIT.getStatus()) {
+            return MapUtil.create()
+                    .add(STATUS_KEY, StatusEnum.NOT_FIT.getStatus())
+                    .add(MESSAGE_KEY, StatusEnum.NOT_FIT.getMessage())
+                    .add(PATH_KEY, path)
+                    .add(ERROR_KEY, new ResError(ErrorEnum.REQ_METHOD_INVALID))
                     .asMap();
         }
         return errorAttributes;
