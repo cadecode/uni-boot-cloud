@@ -3,14 +3,14 @@ package top.cadecode.simple.common.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import top.cadecode.simple.common.response.SimpleRes;
-import top.cadecode.simple.constant.ReasonEnum;
+import top.cadecode.simple.constant.ErrorEnum;
+import top.cadecode.simple.constant.StatusEnum;
+import top.cadecode.simple.util.MapUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,44 +28,34 @@ public class SimpleExceptionHandler extends DefaultErrorAttributes {
     /**
      * 处理 SimpleException
      */
-    @ExceptionHandler(value = SimpleException.class)
+    @ExceptionHandler(SimpleException.class)
     @ResponseBody
     public SimpleRes handleSimpleException(SimpleException e, HttpServletRequest request,
                                            HttpServletResponse response) {
         log.error("SimpleException Handler =>", e);
-        response.setStatus(e.getCode());
-        return SimpleRes.exception(e)
-                .path(getPath(request))
-                .error(getErrorMsg(e));
+        return SimpleRes.fail(e.getErrorEnum())
+                .path(request)
+                .status(response);
     }
 
     /**
      * 处理一般异常
      */
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(Exception.class)
     @ResponseBody
     public SimpleRes handleOtherException(Exception e, HttpServletRequest request,
                                           HttpServletResponse response) {
         log.error("Exception Handler =>", e);
-        // 判断是否为 SpringMVC 原生异常
-        if (e instanceof HttpMessageNotReadableException
-                || e instanceof MissingServletRequestParameterException) {
-            response.setStatus(ReasonEnum.NOT_FIT.getCode());
-            return SimpleRes.reason(ReasonEnum.NOT_FIT)
-                    .path(getPath(request))
-                    .error(getErrorMsg(e));
-        }
-        response.setStatus(ReasonEnum.FAIL.getCode());
-        return SimpleRes.reason(ReasonEnum.FAIL)
-                .path(getPath(request))
-                .error(getErrorMsg(e));
+        return SimpleRes.fail(ErrorEnum.UNKNOWN)
+                .path(request)
+                .status(response);
     }
 
     /**
-     * 定制 404、405 等原生异常的返回内容
+     * 自定义 SpringMVC 404 返回内容
      */
-
     private static final String STATUS_KEY = "status";
+    private static final String MESSAGE_KEY = "message";
     private static final String PATH_KEY = "path";
     private static final String ERROR_KEY = "error";
 
@@ -78,35 +68,13 @@ public class SimpleExceptionHandler extends DefaultErrorAttributes {
         String path = (String) errorAttributes.get(PATH_KEY);
         String error = (String) errorAttributes.get(ERROR_KEY);
         // 处理 404 异常
-        if (status == ReasonEnum.NOT_EXIT.getCode()) {
-            return SimpleRes.reason(ReasonEnum.NOT_EXIT)
-                    .path(path)
-                    .error(error)
-                    .map();
+        if (status == StatusEnum.NOT_EXIT.getStatus()) {
+            return MapUtil.create()
+                    .add(STATUS_KEY, StatusEnum.NOT_EXIT.getStatus())
+                    .add(MESSAGE_KEY, StatusEnum.NOT_EXIT.getMessage())
+                    .add(PATH_KEY, path)
+                    .asMap();
         }
-        // 处理 405 异常
-        if (status == ReasonEnum.NOT_FIT.getCode()) {
-            return SimpleRes.reason(ReasonEnum.NOT_FIT)
-                    .path(path)
-                    .error(error)
-                    .map();
-        }
-        return SimpleRes.reason(ReasonEnum.FAIL)
-                .path(path)
-                .map();
-    }
-
-    /**
-     * 获取请求路径
-     */
-    private String getPath(HttpServletRequest request) {
-        return request.getRequestURI();
-    }
-
-    /**
-     * 获取异常信息
-     */
-    private String getErrorMsg(Exception e) {
-        return "[" + e.getClass().getName() + "]" + e.getMessage();
+        return errorAttributes;
     }
 }
