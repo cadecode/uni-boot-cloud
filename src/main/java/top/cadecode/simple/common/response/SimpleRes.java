@@ -34,9 +34,15 @@ public class SimpleRes {
      */
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class ResError {
         private Integer code;
         private String reason;
+
+        public ResError(ErrorEnum errorEnum){
+            this.code = errorEnum.getCode();
+            this.reason = errorEnum.getReason();
+        }
     }
 
     /**
@@ -63,7 +69,7 @@ public class SimpleRes {
         SimpleRes res = new SimpleRes();
         res.setStatus(errorEnum.getStatusEnum().getStatus());
         res.setMessage(errorEnum.getStatusEnum().getMessage());
-        res.setError(new ResError(errorEnum.getCode(), errorEnum.getReason()));
+        res.setError(new ResError(errorEnum));
         return res;
     }
 
