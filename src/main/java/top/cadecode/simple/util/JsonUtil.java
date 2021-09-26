@@ -1,6 +1,7 @@
 package top.cadecode.simple.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -33,8 +34,10 @@ public class JsonUtil {
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         // 统一所有的日期格式为以下的样式，即 yyyy-MM-dd HH:mm:ss
         objectMapper.setDateFormat(new SimpleDateFormat(STANDARD_FORMAT));
-        // 忽略在 json 字符串中存在，但是在 java 对象中不存在对应属性的情况。防止错误
+        // 忽略在 json 字符串中存在，但是在 java 对象中不存在对应属性的情况
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // 开启 json 字符串单引号解析
+        objectMapper.configure(Feature.ALLOW_SINGLE_QUOTES, true);
     }
 
     /**
