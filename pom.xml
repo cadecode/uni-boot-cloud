@@ -8,17 +8,21 @@
         <version>2.5.2</version>
         <relativePath />
     </parent>
+
     <groupId>top.cadecode</groupId>
     <artifactId>simple-spring-boot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+
+    <packaging>pom</packaging>
     <name>simple-spring-boot</name>
     <description>Demo project for Spring Boot</description>
-    <properties>
-        <java.version>1.8</java.version>
-        <knife4j.version>2.0.5</knife4j.version>
-    </properties>
-
+    <!--引入子项目模块-->
+    <modules>
+        <module>simple-common</module>
+        <module>simple-model</module>
+        <module>simple-web</module>
+    </modules>
+    <!--配置阿里云镜像-->
     <repositories>
         <repository>
             <id>aliyun</id>
@@ -33,73 +37,43 @@
         </repository>
     </repositories>
 
+    <!--统一管理依赖版本-->
+    <properties>
+        <java.version>1.8</java.version>
+        <simple-common.version>0.0.1-SNAPSHOT</simple-common.version>
+        <simple-model.version>0.0.1-SNAPSHOT</simple-model.version>
+        <knife4j.version>2.0.5</knife4j.version>
+    </properties>
+
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <!--mybatis-->
-        <!--<dependency>-->
-        <!--    <groupId>org.mybatis.spring.boot</groupId>-->
-        <!--    <artifactId>mybatis-spring-boot-starter</artifactId>-->
-        <!--    <version>2.2.0</version>-->
-        <!--</dependency>-->
-        <!--mysql 驱动-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <!--lombok-->
+        <!--引入 lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-        <!--swagger-->
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>${knife4j.version}</version>
-        </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <dependencyManagement>
+        <dependencies>
+            <!--配置子项目版本-->
+            <dependency>
+                <groupId>top.cadecode</groupId>
+                <artifactId>simple-common</artifactId>
+                <version>${simple-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.cadecode</groupId>
+                <artifactId>simple-model</artifactId>
+                <version>${simple-model.version}</version>
+            </dependency>
+            <!--配置 swagger 版本-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>
