@@ -15,7 +15,7 @@ import top.cadecode.common.util.JsonUtil;
  * @date 2021/7/16
  * @description 统一接口返回格式
  */
-@ControllerAdvice(basePackages = {"top.cadecode.top.cadecode.top.cadecode.simple.controller"})
+@ControllerAdvice(basePackages = {"top.cadecode.web"})
 public class SimpleResAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {

@@ -14,7 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * @author Li Jun
+ * @author Cade Li
  * @date 2021/8/23
  * @description Swagger2 配置类
  */
@@ -31,7 +31,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .apiInfo(apiInfo())
                 .select()
                 // 设置监听包
-                .apis(RequestHandlerSelectors.basePackage("top.cadecode.top.cadecode.top.cadecode.simple.controller"))
+                .apis(RequestHandlerSelectors.basePackage("top.cadecode.web"))
                 .build()
                 // 设置分组名称
                 .groupName("默认分组");
@@ -43,7 +43,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 // 设置标题
                 .title("API Online Document")
                 // 设置描述
-                .description("top.cadecode.top.cadecode.simple-spring-boot 在线文档")
+                .description("simple-spring-boot 在线文档")
                 // 设置联系方法
                 .contact(new Contact("Cade Li",
                         "https://github.com/cadecode/simple-spring-boot",

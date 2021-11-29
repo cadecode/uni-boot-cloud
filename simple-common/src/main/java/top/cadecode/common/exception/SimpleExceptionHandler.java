@@ -25,7 +25,7 @@ import java.util.Map;
  * @description 统一异常处理类
  */
 @Slf4j
-@ControllerAdvice(basePackages = {"top.cadecode.top.cadecode.top.cadecode.simple.controller"})
+@ControllerAdvice(basePackages = {"top.cadecode.web"})
 public class SimpleExceptionHandler extends DefaultErrorAttributes {
 
     /**
