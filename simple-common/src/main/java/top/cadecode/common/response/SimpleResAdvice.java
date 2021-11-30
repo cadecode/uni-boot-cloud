@@ -5,14 +5,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import top.cadecode.common.constant.ResCode;
 import top.cadecode.common.exception.SimpleException;
 import top.cadecode.common.util.JsonUtil;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 
 /**
  * @author Cade Li
@@ -45,6 +41,11 @@ public class SimpleResAdvice implements ResponseBodyAdvice<Object> {
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             // String 类型的 Body 需要返回 String 类型，否则报转换错误
             return JsonUtil.objToStr(SimpleRes.ok(body).path(path));
+        }
+        // 判断是否有忽略格式化注解，有则直接返回
+        SimpleResIgnore resIgnore = returnType.getMethodAnnotation(SimpleResIgnore.class);
+        if (resIgnore != null && resIgnore.value()) {
+            return body;
         }
 
         return SimpleRes.ok(body).path(path);
