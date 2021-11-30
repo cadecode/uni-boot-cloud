@@ -3,9 +3,9 @@ package top.cadecode.web.controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.cadecode.common.response.SimpleRes;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Cade Li
@@ -27,6 +27,11 @@ public class DemoController {
         map.put("name", "map");
         map.put("msg", "hello world");
         return map;
+    }
+
+    @PostMapping("res")
+    public SimpleRes<List<String>> res() {
+        return SimpleRes.ok(Arrays.asList("a", "b"));
     }
 
 }

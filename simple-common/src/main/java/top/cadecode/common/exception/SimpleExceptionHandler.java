@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
+import top.cadecode.common.constant.ResCode;
 import top.cadecode.common.response.SimpleRes;
-import top.cadecode.common.constant.ErrorEnum;
-import top.cadecode.common.constant.StatusEnum;
 import top.cadecode.common.util.MapUtil;
-import top.cadecode.common.response.SimpleRes.ResError;
+import top.cadecode.common.util.MapUtil.MapBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -33,12 +31,11 @@ public class SimpleExceptionHandler extends DefaultErrorAttributes {
      */
     @ExceptionHandler(SimpleException.class)
     @ResponseBody
-    public SimpleRes handleSimpleException(SimpleException e, HttpServletRequest request,
-                                           HttpServletResponse response) {
+    public SimpleRes<?> handleSimpleException(SimpleException e, HttpServletRequest request) {
         log.error("SimpleException Handler =>", e);
-        return SimpleRes.fail(e.getErrorEnum())
-                .path(request)
-                .status(response);
+        return SimpleRes.of(e.getResCode())
+                .errorMsg(e.getMessage())
+                .path(request.getRequestURI());
     }
 
     /**
@@ -46,56 +43,46 @@ public class SimpleExceptionHandler extends DefaultErrorAttributes {
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public SimpleRes handleOtherException(Exception e, HttpServletRequest request,
-                                          HttpServletResponse response) {
+    public SimpleRes<?> handleOtherException(Exception e, HttpServletRequest request) {
+        // 获取请求路径
+        String requestURI = request.getRequestURI();
         log.error("Exception Handler =>", e);
         // 处理 SpringMVC 异常
         if (e instanceof MissingServletRequestParameterException) {
-            return SimpleRes.fail(ErrorEnum.REQ_PARAM_INVALID)
-                    .path(request)
-                    .status(response);
+            return SimpleRes.of(ResCode.REQ_PARAM_INVALID)
+                    .path(requestURI);
         }
         if (e instanceof HttpMessageNotReadableException) {
-            return SimpleRes.fail(ErrorEnum.REQ_BODY_INVALID)
-                    .path(request)
-                    .status(response);
+            return SimpleRes.of(ResCode.REQ_BODY_INVALID)
+                    .path(requestURI);
         }
-        return SimpleRes.fail(ErrorEnum.UNKNOWN)
-                .path(request)
-                .status(response);
+        return SimpleRes.of(ResCode.UNKNOWN)
+                .path(requestURI);
     }
 
     /**
      * 自定义 SpringMVC 404、405 返回内容
      */
-    private static final String STATUS_KEY = "status";
-    private static final String MESSAGE_KEY = "message";
-    private static final String PATH_KEY = "path";
-    private static final String ERROR_KEY = "error";
-
     @Override
     public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
         // 获取填充好的 errorAttributes
         Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, options);
-        // 获取状态码与路径
-        int status = (int) errorAttributes.get(STATUS_KEY);
-        String path = (String) errorAttributes.get(PATH_KEY);
+        // 获取请求路径
+        int status = (int) errorAttributes.get("status");
+        String path = (String) errorAttributes.get("path");
+        MapBuilder<String, Object> resMapBuilder = MapUtil.create().add("path", path);
         // 处理 404
-        if (status == StatusEnum.NOT_EXIT.getStatus()) {
-            return MapUtil.create()
-                    .add(STATUS_KEY, StatusEnum.NOT_EXIT.getStatus())
-                    .add(MESSAGE_KEY, StatusEnum.NOT_EXIT.getMessage())
-                    .add(PATH_KEY, path)
-                    .add(ERROR_KEY, new ResError(ErrorEnum.API_NOT_EXIST))
+        if (status == 404) {
+            return resMapBuilder
+                    .add("code", ResCode.REQ_PATH_NOT_EXIST.getCode())
+                    .add("reason", ResCode.REQ_PATH_NOT_EXIST.getReason())
                     .asMap();
         }
         // 处理 405
-        if (status == StatusEnum.NOT_FIT.getStatus()) {
-            return MapUtil.create()
-                    .add(STATUS_KEY, StatusEnum.NOT_FIT.getStatus())
-                    .add(MESSAGE_KEY, StatusEnum.NOT_FIT.getMessage())
-                    .add(PATH_KEY, path)
-                    .add(ERROR_KEY, new ResError(ErrorEnum.REQ_METHOD_INVALID))
+        if (status == 405) {
+            return resMapBuilder
+                    .add("code", ResCode.REQ_METHOD_INVALID.getCode())
+                    .add("reason", ResCode.REQ_METHOD_INVALID.getReason())
                     .asMap();
         }
         return errorAttributes;

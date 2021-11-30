@@ -2,7 +2,7 @@ package top.cadecode.common.response;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import top.cadecode.common.constant.ErrorEnum;
+import top.cadecode.common.constant.ResCode;
 import top.cadecode.common.util.JsonUtil;
 
 /**
@@ -22,7 +22,7 @@ public class SimpleResTest {
 
     @Test
     public void fail() {
-        String failJson = JsonUtil.objToStr(SimpleRes.fail(ErrorEnum.UNKNOWN),
+        String failJson = JsonUtil.objToStr(SimpleRes.of(ResCode.UNKNOWN),
                 true);
         log.info("failJson: {}", failJson);
     }
