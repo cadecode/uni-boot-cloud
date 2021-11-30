@@ -7,7 +7,7 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
     <!--配置参数常量-->
-    <!--级别：trace<debug<top<warn<error 增加，通常仅需要 debug/top/error-->
+    <!--级别：trace<debug<info<warn<error 增加，通常仅需要 debug/info/error-->
     <property name="level" value="debug" />
     <!--文件保留时间-->
     <property name="history" value="30" />
@@ -54,11 +54,11 @@
         </filter>
     </appender>
 
-    <!--top 文件日志-->
+    <!--info 文件日志-->
     <appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${filePath}/top.now.log</file>
+        <file>${filePath}/info.now.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${filePath}/top/top.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${filePath}/info/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>${history}</maxHistory>
             <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
