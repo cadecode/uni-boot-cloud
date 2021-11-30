@@ -70,19 +70,20 @@ public class SimpleExceptionHandler extends DefaultErrorAttributes {
         // 获取请求路径
         int status = (int) errorAttributes.get("status");
         String path = (String) errorAttributes.get("path");
-        MapBuilder<String, Object> resMapBuilder = MapUtil.create().add("path", path);
         // 处理 404
         if (status == 404) {
-            return resMapBuilder
+            return MapUtil.create()
                     .add("code", ResCode.REQ_PATH_NOT_EXIST.getCode())
                     .add("reason", ResCode.REQ_PATH_NOT_EXIST.getReason())
+                    .add("path", path)
                     .asMap();
         }
         // 处理 405
         if (status == 405) {
-            return resMapBuilder
+            return MapUtil.create()
                     .add("code", ResCode.REQ_METHOD_INVALID.getCode())
                     .add("reason", ResCode.REQ_METHOD_INVALID.getReason())
+                    .add("path", path)
                     .asMap();
         }
         return errorAttributes;

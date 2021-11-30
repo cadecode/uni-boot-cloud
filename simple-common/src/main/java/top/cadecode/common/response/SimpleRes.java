@@ -36,6 +36,7 @@ public class SimpleRes<T> {
         ResCode success = ResCode.SUCCESS;
         res.setCode(success.getCode());
         res.setReason(success.getReason());
+        res.setData(data);
         return res;
 
     }
