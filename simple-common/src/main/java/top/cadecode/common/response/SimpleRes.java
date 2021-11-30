@@ -5,11 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import top.cadecode.common.constant.ErrorEnum;
-import top.cadecode.common.constant.StatusEnum;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import top.cadecode.common.constant.ResCode;
 
 /**
  * @author Cade Li
@@ -19,69 +15,42 @@ import javax.servlet.http.HttpServletResponse;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SimpleRes {
+public class SimpleRes<T> {
 
-    private Integer status;
-    private String message;
+    private Integer code;
+    private String reason;
     private String path;
     @JsonInclude(Include.NON_NULL)
-    private Object data;
+    private T data;
     @JsonInclude(Include.NON_NULL)
-    private ResError error;
+    private String errorMsg;
 
     /**
-     * 异常信息内部类
-     */
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ResError {
-        private Integer code;
-        private String reason;
-
-        public ResError(ErrorEnum errorEnum){
-            this.code = errorEnum.getCode();
-            this.reason = errorEnum.getReason();
-        }
-    }
-
-    /**
-     * 返回执行成功的响应
+     * 返回成功的响应
      *
      * @param data
      * @return SimpleRes
      */
-    public static SimpleRes ok(Object data) {
-        SimpleRes res = new SimpleRes();
-        res.setStatus(StatusEnum.OK.getStatus());
-        res.setMessage(StatusEnum.OK.getMessage());
-        res.setData(data);
+    public static <T> SimpleRes<T> ok(T data) {
+        SimpleRes<T> res = new SimpleRes<>();
+        ResCode success = ResCode.SUCCESS;
+        res.setCode(success.getCode());
+        res.setReason(success.getReason());
         return res;
+
     }
 
     /**
-     * 根据 ErrorEnum 返回执行失败响应
+     * 根据 ResCode 返回响应
      *
-     * @param data
+     * @param resCode
      * @return SimpleRes
      */
-    public static SimpleRes fail(ErrorEnum errorEnum) {
-        SimpleRes res = new SimpleRes();
-        res.setStatus(errorEnum.getStatusEnum().getStatus());
-        res.setMessage(errorEnum.getStatusEnum().getMessage());
-        res.setError(new ResError(errorEnum));
+    public static SimpleRes<?> of(ResCode resCode) {
+        SimpleRes<?> res = new SimpleRes<>();
+        res.setCode(resCode.getCode());
+        res.setReason(resCode.getReason());
         return res;
-    }
-
-    /**
-     * 设置 response 的 http 状态码
-     *
-     * @param data
-     * @return SimpleRes
-     */
-    public SimpleRes status(HttpServletResponse response) {
-        response.setStatus(this.getStatus());
-        return this;
     }
 
     /**
@@ -90,19 +59,8 @@ public class SimpleRes {
      * @param path
      * @return SimpleRes
      */
-    public SimpleRes path(String path) {
+    public SimpleRes<T> path(String path) {
         this.setPath(path);
-        return this;
-    }
-
-    /**
-     * 根据 request 设置 path
-     *
-     * @param path
-     * @return SimpleRes
-     */
-    public SimpleRes path(HttpServletRequest request) {
-        this.setPath(request.getRequestURI());
         return this;
     }
 
@@ -112,8 +70,19 @@ public class SimpleRes {
      * @param data
      * @return SimpleRes
      */
-    public SimpleRes data(Object data) {
+    public SimpleRes<T> data(T data) {
         this.setData(data);
+        return this;
+    }
+
+    /**
+     * 设置 data
+     *
+     * @param errorMsg
+     * @return SimpleRes
+     */
+    public SimpleRes<T> errorMsg(String errorMsg) {
+        this.setErrorMsg(errorMsg);
         return this;
     }
 }
