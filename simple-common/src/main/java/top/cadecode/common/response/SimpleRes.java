@@ -20,25 +20,21 @@ public class SimpleRes<T> {
     private Integer code;
     private String reason;
     private String path;
+
+    // 设置为 null 时不序列化
     @JsonInclude(Include.NON_NULL)
     private T data;
     @JsonInclude(Include.NON_NULL)
     private String errorMsg;
 
     /**
-     * 返回成功的响应
+     * 根据 data 返回成功的响应
      *
      * @param data
      * @return SimpleRes
      */
     public static <T> SimpleRes<T> ok(T data) {
-        SimpleRes<T> res = new SimpleRes<>();
-        ResCode success = ResCode.SUCCESS;
-        res.setCode(success.getCode());
-        res.setReason(success.getReason());
-        res.setData(data);
-        return res;
-
+        return SimpleRes.of(ResCode.SUCCESS, data);
     }
 
     /**
@@ -47,10 +43,25 @@ public class SimpleRes<T> {
      * @param resCode
      * @return SimpleRes
      */
-    public static SimpleRes<?> of(ResCode resCode) {
-        SimpleRes<?> res = new SimpleRes<>();
+    public static SimpleRes<Object> of(ResCode resCode) {
+        SimpleRes<Object> res = new SimpleRes<>();
         res.setCode(resCode.getCode());
         res.setReason(resCode.getReason());
+        return res;
+    }
+
+    /**
+     * 根据 ResCode 和 data 返回响应
+     *
+     * @param resCode
+     * @param data
+     * @return SimpleRes
+     */
+    public static <T> SimpleRes<T> of(ResCode resCode, T data) {
+        SimpleRes<T> res = new SimpleRes<>();
+        res.setCode(resCode.getCode());
+        res.setReason(resCode.getReason());
+        res.setData(data);
         return res;
     }
 
@@ -65,16 +76,6 @@ public class SimpleRes<T> {
         return this;
     }
 
-    /**
-     * 设置 data
-     *
-     * @param data
-     * @return SimpleRes
-     */
-    public SimpleRes<T> data(T data) {
-        this.setData(data);
-        return this;
-    }
 
     /**
      * 设置 data

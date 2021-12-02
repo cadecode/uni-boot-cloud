@@ -31,7 +31,7 @@ public class SimpleExceptionHandler extends DefaultErrorAttributes {
      */
     @ExceptionHandler(SimpleException.class)
     @ResponseBody
-    public SimpleRes<?> handleSimpleException(SimpleException e, HttpServletRequest request) {
+    public SimpleRes<Object> handleSimpleException(SimpleException e, HttpServletRequest request) {
         log.error("SimpleException Handler =>", e);
         return SimpleRes.of(e.getResCode())
                 .errorMsg(e.getMessage())
@@ -43,7 +43,7 @@ public class SimpleExceptionHandler extends DefaultErrorAttributes {
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public SimpleRes<?> handleOtherException(Exception e, HttpServletRequest request) {
+    public SimpleRes<Object> handleOtherException(Exception e, HttpServletRequest request) {
         // 获取请求路径
         String requestURI = request.getRequestURI();
         log.error("Exception Handler =>", e);

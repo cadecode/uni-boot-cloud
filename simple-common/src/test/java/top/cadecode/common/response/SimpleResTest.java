@@ -21,7 +21,7 @@ public class SimpleResTest {
     }
 
     @Test
-    public void fail() {
+    public void of() {
         String failJson = JsonUtil.objToStr(SimpleRes.of(ResCode.UNKNOWN),
                 true);
         log.info("failJson: {}", failJson);
