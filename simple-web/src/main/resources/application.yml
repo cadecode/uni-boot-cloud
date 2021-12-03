@@ -1,1 +1,6 @@
-
+# 配置 mybatis
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
+  type-aliases-package: top.cadecode.model
+  configuration:
+    map-underscore-to-camel-case: true
