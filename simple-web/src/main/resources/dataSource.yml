@@ -1,0 +1,20 @@
+# 配置数据源
+dataSource:
+  db1:
+    # 指定 dataSource 种类
+    type: com.zaxxer.hikari.HikariDataSource
+    # 指定连接配置
+    config:
+      jdbc-url: jdbc:mysql://localhost:3306/demo?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: xxxx
+  db2:
+    type: com.zaxxer.hikari.HikariDataSource
+    config:
+      jdbc-url: jdbc:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: xxxx
+# 默认数据源
+default: db2
