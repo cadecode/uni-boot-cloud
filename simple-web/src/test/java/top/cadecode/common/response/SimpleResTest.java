@@ -1,7 +1,8 @@
 package top.cadecode.common.response;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import top.cadecode.common.constant.ResCode;
 import top.cadecode.common.util.JsonUtil;
 
