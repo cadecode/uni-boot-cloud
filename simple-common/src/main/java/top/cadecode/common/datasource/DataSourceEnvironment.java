@@ -8,7 +8,7 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Li Jun
@@ -32,8 +32,12 @@ public class DataSourceEnvironment implements EnvironmentPostProcessor {
             throw new IllegalArgumentException("数据源配置文件 " + path + " 不存在");
         }
         try {
-            return this.loader.load("dataSource.yml", path).get(0);
-        } catch (IOException ex) {
+            List<PropertySource<?>> load = this.loader.load("dataSource", path);
+            if (load.size() == 0) {
+                throw new IllegalArgumentException("在数据源配置文件 dataSource.yml 中没有找到任何配置");
+            }
+            return load.get(0);
+        } catch (Exception ex) {
             throw new IllegalStateException("加载 dataSource.yml 时出错，路径是 " + path, ex);
         }
     }
