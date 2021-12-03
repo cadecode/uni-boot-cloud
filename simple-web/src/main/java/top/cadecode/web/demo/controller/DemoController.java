@@ -1,4 +1,4 @@
-package top.cadecode.web.controller;
+package top.cadecode.web.demo.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
