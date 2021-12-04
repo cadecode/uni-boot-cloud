@@ -4,3 +4,27 @@ mybatis:
   type-aliases-package: top.cadecode.model
   configuration:
     map-underscore-to-camel-case: true
+
+# 自定义配置
+simple:
+  datasource:
+    # 数据源列表
+    dbs:
+      - name: db1
+        # 数据源类型
+        type: com.zaxxer.hikari.HikariDataSource
+        # 是否设置为默认数据源
+        defaultFlag: true
+        # 数据源配置，根据 type 而定
+        config:
+          jdbc-url: jdbc:mysql://localhost:3306/demo?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          username: root
+          password: xxxx
+      - name: db2
+        type: com.zaxxer.hikari.HikariDataSource
+        config:
+          jdbcUrl: jdbc:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          driverClassName: com.mysql.cj.jdbc.Driver
+          username: root
+          password: xxxx
