@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import top.cadecode.common.constant.ResCode;
+import top.cadecode.common.constant.CodeEnum;
 
 /**
  * @author Cade Li
@@ -15,7 +15,7 @@ import top.cadecode.common.constant.ResCode;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SimpleRes<T> {
+public class CommonResponse<T> {
 
     private Integer code;
     private String reason;
@@ -33,34 +33,34 @@ public class SimpleRes<T> {
      * @param data
      * @return SimpleRes
      */
-    public static <T> SimpleRes<T> ok(T data) {
-        return SimpleRes.of(ResCode.SUCCESS, data);
+    public static <T> CommonResponse<T> ok(T data) {
+        return CommonResponse.of(CodeEnum.SUCCESS, data);
     }
 
     /**
      * 根据 ResCode 返回响应
      *
-     * @param resCode
+     * @param codeEnum
      * @return SimpleRes
      */
-    public static SimpleRes<Object> of(ResCode resCode) {
-        SimpleRes<Object> res = new SimpleRes<>();
-        res.setCode(resCode.getCode());
-        res.setReason(resCode.getReason());
+    public static CommonResponse<Object> of(CodeEnum codeEnum) {
+        CommonResponse<Object> res = new CommonResponse<>();
+        res.setCode(codeEnum.getCode());
+        res.setReason(codeEnum.getReason());
         return res;
     }
 
     /**
      * 根据 ResCode 和 data 返回响应
      *
-     * @param resCode
+     * @param codeEnum
      * @param data
      * @return SimpleRes
      */
-    public static <T> SimpleRes<T> of(ResCode resCode, T data) {
-        SimpleRes<T> res = new SimpleRes<>();
-        res.setCode(resCode.getCode());
-        res.setReason(resCode.getReason());
+    public static <T> CommonResponse<T> of(CodeEnum codeEnum, T data) {
+        CommonResponse<T> res = new CommonResponse<>();
+        res.setCode(codeEnum.getCode());
+        res.setReason(codeEnum.getReason());
         res.setData(data);
         return res;
     }
@@ -71,7 +71,7 @@ public class SimpleRes<T> {
      * @param path
      * @return SimpleRes
      */
-    public SimpleRes<T> path(String path) {
+    public CommonResponse<T> path(String path) {
         this.setPath(path);
         return this;
     }
@@ -83,7 +83,7 @@ public class SimpleRes<T> {
      * @param errorMsg
      * @return SimpleRes
      */
-    public SimpleRes<T> errorMsg(String errorMsg) {
+    public CommonResponse<T> errorMsg(String errorMsg) {
         this.setErrorMsg(errorMsg);
         return this;
     }

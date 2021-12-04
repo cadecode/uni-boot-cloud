@@ -1,9 +1,7 @@
 package top.cadecode.web.demo;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import top.cadecode.common.response.SimpleRes;
+import org.springframework.web.bind.annotation.*;
+import top.cadecode.common.response.CommonResponse;
 
 import java.util.*;
 
@@ -30,8 +28,7 @@ public class DemoController {
     }
 
     @PostMapping("res")
-    public SimpleRes<List<String>> res() {
-        return SimpleRes.ok(Arrays.asList("a", "b"));
+    public CommonResponse<List<String>> res() {
+        return CommonResponse.ok(Arrays.asList("a", "b"));
     }
-
 }

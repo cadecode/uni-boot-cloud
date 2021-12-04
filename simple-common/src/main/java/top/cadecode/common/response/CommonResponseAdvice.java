@@ -6,8 +6,8 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import top.cadecode.common.constant.ResCode;
-import top.cadecode.common.exception.SimpleException;
+import top.cadecode.common.constant.CodeEnum;
+import top.cadecode.common.exception.CommonException;
 import top.cadecode.common.util.JsonUtil;
 
 /**
@@ -16,7 +16,7 @@ import top.cadecode.common.util.JsonUtil;
  * @description 统一接口返回格式
  */
 @ControllerAdvice(basePackages = {"top.cadecode.web"})
-public class SimpleResAdvice implements ResponseBodyAdvice<Object> {
+public class CommonResponseAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
         return true;
@@ -29,25 +29,25 @@ public class SimpleResAdvice implements ResponseBodyAdvice<Object> {
         String path = request.getURI().getPath();
         // 判断 body 是否是 null
         if (body == null) {
-            throw new SimpleException(ResCode.RES_BODY_INVALID, "接口返回结果为空，path 为 " + path);
+            throw new CommonException(CodeEnum.RES_BODY_INVALID, "接口返回结果为空，path 为 " + path);
         }
         // 判断 body 是否是包装好的 SimpleRes
-        if (body instanceof SimpleRes) {
-            return ((SimpleRes<?>) body).path(path);
+        if (body instanceof CommonResponse) {
+            return ((CommonResponse<?>) body).path(path);
         }
         // 判断 body 是否是包装好的字符串
         if (body instanceof String) {
             // 设置统一的 Content-Type
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             // String 类型的 Body 需要返回 String 类型，否则报转换错误
-            return JsonUtil.objToStr(SimpleRes.ok(body).path(path));
+            return JsonUtil.objToStr(CommonResponse.ok(body).path(path));
         }
         // 判断是否有忽略格式化注解，有则直接返回
-        SimpleResIgnore resIgnore = returnType.getMethodAnnotation(SimpleResIgnore.class);
+        CommonResponseIgnore resIgnore = returnType.getMethodAnnotation(CommonResponseIgnore.class);
         if (resIgnore != null && resIgnore.value()) {
             return body;
         }
 
-        return SimpleRes.ok(body).path(path);
+        return CommonResponse.ok(body).path(path);
     }
 }

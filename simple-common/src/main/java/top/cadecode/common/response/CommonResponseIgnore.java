@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-public @interface SimpleResIgnore {
+public @interface CommonResponseIgnore {
     boolean value() default true;
 }

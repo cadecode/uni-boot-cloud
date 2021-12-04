@@ -3,7 +3,7 @@ package top.cadecode.common.response;
 import lombok.extern.slf4j.Slf4j;
 
 import org.junit.jupiter.api.Test;
-import top.cadecode.common.constant.ResCode;
+import top.cadecode.common.constant.CodeEnum;
 import top.cadecode.common.util.JsonUtil;
 
 /**
@@ -12,18 +12,18 @@ import top.cadecode.common.util.JsonUtil;
  * @description
  */
 @Slf4j
-public class SimpleResTest {
+public class CommonResponseTest {
 
     @Test
     public void ok() {
-        String okJson = JsonUtil.objToStr(SimpleRes.ok("hello world!"),
+        String okJson = JsonUtil.objToStr(CommonResponse.ok("hello world!"),
                 true);
         log.info("okJson: {}", okJson);
     }
 
     @Test
     public void of() {
-        String failJson = JsonUtil.objToStr(SimpleRes.of(ResCode.UNKNOWN),
+        String failJson = JsonUtil.objToStr(CommonResponse.of(CodeEnum.UNKNOWN),
                 true);
         log.info("failJson: {}", failJson);
     }
