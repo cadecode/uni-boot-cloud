@@ -97,7 +97,7 @@
         level 指定等级
         additivity 指定是否将 root 的 appender 加入到 logger 中
     -->
-    <logger name="top.cadecode.web" level="${level}" additivity="true">
+    <logger name="top.cadecode" level="${level}" additivity="true">
         <appender-ref ref="errorAppender" />
         <appender-ref ref="debugAppender" />
         <appender-ref ref="infoAppender" />
