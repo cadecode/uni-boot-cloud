@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
-import top.cadecode.common.constant.ResCode;
-import top.cadecode.common.response.SimpleRes;
+import top.cadecode.common.constant.CodeEnum;
+import top.cadecode.common.response.CommonResponse;
 import top.cadecode.common.util.MapUtil;
-import top.cadecode.common.util.MapUtil.MapBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -24,16 +23,16 @@ import java.util.Map;
  */
 @Slf4j
 @ControllerAdvice(basePackages = {"top.cadecode.web"})
-public class SimpleExceptionHandler extends DefaultErrorAttributes {
+public class CommonExceptionHandler extends DefaultErrorAttributes {
 
     /**
      * 处理 SimpleException
      */
-    @ExceptionHandler(SimpleException.class)
+    @ExceptionHandler(CommonException.class)
     @ResponseBody
-    public SimpleRes<Object> handleSimpleException(SimpleException e, HttpServletRequest request) {
+    public CommonResponse<Object> handleSimpleException(CommonException e, HttpServletRequest request) {
         log.error("SimpleException Handler =>", e);
-        return SimpleRes.of(e.getResCode())
+        return CommonResponse.of(e.getCodeEnum())
                 .errorMsg(e.getMessage())
                 .path(request.getRequestURI());
     }
@@ -43,20 +42,20 @@ public class SimpleExceptionHandler extends DefaultErrorAttributes {
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public SimpleRes<Object> handleOtherException(Exception e, HttpServletRequest request) {
+    public CommonResponse<Object> handleOtherException(Exception e, HttpServletRequest request) {
         // 获取请求路径
         String requestURI = request.getRequestURI();
         log.error("Exception Handler =>", e);
         // 处理 SpringMVC 异常
         if (e instanceof MissingServletRequestParameterException) {
-            return SimpleRes.of(ResCode.REQ_PARAM_INVALID)
+            return CommonResponse.of(CodeEnum.REQ_PARAM_INVALID)
                     .path(requestURI);
         }
         if (e instanceof HttpMessageNotReadableException) {
-            return SimpleRes.of(ResCode.REQ_BODY_INVALID)
+            return CommonResponse.of(CodeEnum.REQ_BODY_INVALID)
                     .path(requestURI);
         }
-        return SimpleRes.of(ResCode.UNKNOWN)
+        return CommonResponse.of(CodeEnum.UNKNOWN)
                 .path(requestURI);
     }
 
@@ -73,16 +72,16 @@ public class SimpleExceptionHandler extends DefaultErrorAttributes {
         // 处理 404
         if (status == 404) {
             return MapUtil.create()
-                    .add("code", ResCode.REQ_PATH_NOT_EXIST.getCode())
-                    .add("reason", ResCode.REQ_PATH_NOT_EXIST.getReason())
+                    .add("code", CodeEnum.REQ_PATH_NOT_EXIST.getCode())
+                    .add("reason", CodeEnum.REQ_PATH_NOT_EXIST.getReason())
                     .add("path", path)
                     .asMap();
         }
         // 处理 405
         if (status == 405) {
             return MapUtil.create()
-                    .add("code", ResCode.REQ_METHOD_INVALID.getCode())
-                    .add("reason", ResCode.REQ_METHOD_INVALID.getReason())
+                    .add("code", CodeEnum.REQ_METHOD_INVALID.getCode())
+                    .add("reason", CodeEnum.REQ_METHOD_INVALID.getReason())
                     .add("path", path)
                     .asMap();
         }

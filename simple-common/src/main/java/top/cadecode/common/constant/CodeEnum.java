@@ -8,7 +8,7 @@ import lombok.Getter;
  * @description 错误码枚举类
  */
 @Getter
-public enum ResCode {
+public enum CodeEnum {
 
     // 未知错误通用码
     UNKNOWN(0, "未知错误"),
@@ -31,7 +31,7 @@ public enum ResCode {
     private final Integer code;
     private final String reason;
 
-    ResCode(Integer code, String reason) {
+    CodeEnum(Integer code, String reason) {
         this.code = code;
         this.reason = reason;
     }
