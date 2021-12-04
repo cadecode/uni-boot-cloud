@@ -43,6 +43,8 @@
         <simple-common.version>0.0.1-SNAPSHOT</simple-common.version>
         <simple-model.version>0.0.1-SNAPSHOT</simple-model.version>
         <knife4j.version>2.0.5</knife4j.version>
+        <mybatis.version>2.2.0</mybatis.version>
+        <user-agent.version>1.21</user-agent.version>
     </properties>
 
     <dependencies>
@@ -72,6 +74,17 @@
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <!--配置 UserAgent 分析工具-->
+            <dependency>
+                <groupId>eu.bitwalker</groupId>
+                <artifactId>UserAgentUtils</artifactId>
+                <version>${user-agent.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
