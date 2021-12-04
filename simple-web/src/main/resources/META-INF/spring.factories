@@ -1,2 +1,0 @@
-# 将数据源配置文件加入 Environment
-org.springframework.boot.env.EnvironmentPostProcessor=top.cadecode.common.datasource.DataSourceEnvironment
