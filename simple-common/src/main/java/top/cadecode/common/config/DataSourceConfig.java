@@ -1,21 +1,27 @@
 package top.cadecode.common.config;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.config.YamlMapFactoryBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+import top.cadecode.common.config.co.DbsConfigObject;
 import top.cadecode.common.datasource.DynamicDataSource;
 import top.cadecode.common.datasource.DynamicDataSource.DynamicDataSourceHolder;
 
 import javax.sql.DataSource;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * @author Li Jun
@@ -24,46 +30,51 @@ import java.util.*;
  */
 @Slf4j
 @Configuration
+@ConfigurationProperties("simple.datasource")
 @MapperScan({"top.cadecode.model"})
+@Data
 @RequiredArgsConstructor
 public class DataSourceConfig {
 
+    private static final String DBS_PREFIX = "simple.datasource.dbs[";
+    private static final String DBS_SUFFIX = "].config";
+
     private final Environment environment;
+
+    // 注入数据库配置
+    private List<DbsConfigObject> dbs;
 
     @Bean
     public DynamicDataSource dynamicDataSource() {
         log.info("配置动态数据源");
-        DynamicDataSource dynamicDataSource = new DynamicDataSource();
-        // 读取 dataSource.yml
-        YamlMapFactoryBean dateSourceMapFactory = new YamlMapFactoryBean();
-        dateSourceMapFactory.setResources(new ClassPathResource("dataSource.yml"));
-        Map<String, Object> dataSourceMap = dateSourceMapFactory.getObject();
-        // 获取所有数据源 key
-        Set<String> keys = dataSourceMap.keySet();
-        // 存储 keys 到 DynamicDataSourceHolder
+        DynamicDataSource dynamicDS = new DynamicDataSource();
+        // 获取数据库 key 集合
+        Set<String> keys = this.dbs.stream()
+                .map(DbsConfigObject::getName)
+                .collect(Collectors.toSet());
+        // 存储 keys
         DynamicDataSourceHolder.addDataSourceKeys(keys);
-        // 定义数据源容器，用于设置到 dynamicDataSource
-        Map<Object, Object> targetDataSourceMap = new HashMap<>();
-        // 遍历 keys
-        keys.forEach(key -> {
-            log.info("解析数据源配置 " + key);
-            Map<String, Object> configMap = this.checkDataSourceMap(dataSourceMap, key);
-            // 取出数据源类型和 isDefault
-            String type = (String) configMap.get("type");
-            // 配置数据源
-            DataSource dataSource = this.setTargetDataSourceMap(key, type);
-            targetDataSourceMap.put(key, dataSource);
-            // 判断是否是默认数据源
-            Boolean isDefault = (Boolean) configMap.get("isDefault");
-            this.setDefaultDataSource(dynamicDataSource, isDefault, dataSource, key);
+        // 定义数据源容器
+        Map<Object, Object> dataSourceMap = new HashMap<>();
+        // 遍历 dbs
+        AtomicInteger index = new AtomicInteger();
+        this.dbs.forEach(db -> {
+            log.info("解析数据源配置 " + db.getName());
+            DataSource dataSource = this.getDataSource(db.getType(), db.getName(), index.getAndIncrement());
+            dataSourceMap.put(db.getName(), dataSource);
+            // 设置默认数据源
+            if (!dynamicDS.hasDefaultDataSource() && db.isDefaultFlag()) {
+                dynamicDS.setDefaultTargetDataSource(dataSource);
+                log.info("设置默认数据源为 " + db.getName());
+            }
         });
         // 判断是否设置默认数据源
-        if (!dynamicDataSource.hasDefaultDataSource()) {
-            throw new IllegalArgumentException("未指定默认数据源，使用 isDefault: true 指定");
+        if (!dynamicDS.hasDefaultDataSource()) {
+            throw new IllegalArgumentException("未指定默认数据源");
         }
         // 设置数据源到 dynamicDataSource
-        dynamicDataSource.setTargetDataSources(targetDataSourceMap);
-        return dynamicDataSource;
+        dynamicDS.setTargetDataSources(dataSourceMap);
+        return dynamicDS;
     }
 
     @Bean
@@ -71,50 +82,24 @@ public class DataSourceConfig {
         return new DataSourceTransactionManager(dynamicDataSource());
     }
 
-
     /**
-     * 校验 dataSourceMap
+     * 获取数据源实例工具方法
      */
-    private Map<String, Object> checkDataSourceMap(Map<String, Object> dataSourceMap, String key) {
-        if (dataSourceMap.get(key) == null || !(dataSourceMap.get(key) instanceof Map)) {
-            throw new IllegalArgumentException("数据源 " + key + " 配置有误，无法解析");
-        }
-        return (Map<String, Object>) dataSourceMap.get(key);
-    }
-
-    /**
-     * 设置数据源
-     */
-    private DataSource setTargetDataSourceMap(String key, String type) {
+    private DataSource getDataSource(String type, String name, int index) {
         Class<DataSource> dataSourceClass;
         try {
             dataSourceClass = (Class<DataSource>) Class.forName(type);
             // 判断是否是 DataSource 类型
             if (!DataSource.class.isAssignableFrom(dataSourceClass)) {
-                throw new IllegalArgumentException("数据源 " + key + " 的类型 " + type + " 不合适");
+                throw new IllegalArgumentException("数据源 " + name + " 的类型 " + type + " 不合适");
             }
             // 生成数据源实例
-            DataSource dataSource = (DataSource) Binder.get(environment)
-                    .bind(key + ".config", dataSourceClass).get();
-            return dataSource;
+            return Binder.get(environment)
+                    .bind(DBS_PREFIX + index + DBS_SUFFIX, dataSourceClass).get();
         } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("数据源 " + key + " 的类型 " + type + " 不存在");
+            throw new IllegalArgumentException("数据源 " + name + " 的类型 " + type + " 不存在");
         } catch (Exception e) {
-            throw new IllegalArgumentException("创建数据源 " + key + " 时出现绑定错误");
-        }
-    }
-
-    /**
-     * 配置默认数据源
-     */
-    private void setDefaultDataSource(DynamicDataSource dynamicDataSource, Boolean isDefault,
-                                      DataSource dataSource, String key) {
-        if (dynamicDataSource.hasDefaultDataSource()) {
-            return;
-        }
-        if (isDefault != null && isDefault.equals(true)) {
-            dynamicDataSource.setDefaultTargetDataSource(dataSource);
-            log.info("设置默认数据源为 " + key);
+            throw new IllegalArgumentException("创建数据源 " + name + " 时出现绑定错误");
         }
     }
 }
