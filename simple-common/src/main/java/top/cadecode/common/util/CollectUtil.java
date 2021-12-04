@@ -12,26 +12,25 @@ public class CollectUtil {
     /**
      * 判断数组是否为空
      *
-     * @param objects 数组
+     * @param array 数组
      * @return boolean
      */
-    public static boolean isEmpty(Object[] objects) {
-        return objects == null || objects.length == 0;
+    public static <T> boolean isEmpty(T[] array) {
+        return array == null || array.length == 0;
     }
 
     /**
      * 判断数组是否包含指定元素
      *
-     * @param objects 数组
-     * @param o       元素
+     * @param array 数组
+     * @param el    元素
      * @return boolean
      */
-    public static boolean contains(Object[] objects, Object o) {
-        if (objects == null || objects.length == 0) {
+    public static <T> boolean contains(T[] array, T el) {
+        if (isEmpty(array)) {
             return false;
         }
-        return Arrays.asList(objects).contains(o);
+        return Arrays.asList(array).contains(el);
     }
-
 
 }
