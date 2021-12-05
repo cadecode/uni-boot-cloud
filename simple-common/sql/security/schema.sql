@@ -25,6 +25,7 @@ create table security_role
     id          bigint unsigned auto_increment,
     code        varchar(50) not null comment '角色代码',
     name        varchar(50) not null comment '角色名称',
+    description varchar(100) comment '角色描述',
     create_time datetime default current_timestamp,
     update_time datetime default null on update current_timestamp,
     primary key (id),
@@ -38,8 +39,8 @@ create table security_role
 create table security_api
 (
     id          bigint unsigned auto_increment,
-    url         varchar(50)  not null comment '接口路径',
-    description varchar(100) not null comment '接口描述',
+    url         varchar(50) not null comment '接口路径',
+    description varchar(100) comment '接口描述',
     create_time datetime default current_timestamp,
     update_time datetime default null on update current_timestamp,
     primary key (id),
