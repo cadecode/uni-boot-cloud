@@ -69,12 +69,14 @@ public class CommonExceptionHandler extends DefaultErrorAttributes {
         // 获取请求路径
         int status = (int) errorAttributes.get("status");
         String path = (String) errorAttributes.get("path");
+        String message = (String) errorAttributes.get("message");
         // 处理 404
         if (status == 404) {
             return MapUtil.create()
                     .add("code", CodeEnum.REQ_PATH_NOT_EXIST.getCode())
                     .add("reason", CodeEnum.REQ_PATH_NOT_EXIST.getReason())
                     .add("path", path)
+                    .add("errorMsg", message)
                     .asMap();
         }
         // 处理 405
@@ -83,6 +85,16 @@ public class CommonExceptionHandler extends DefaultErrorAttributes {
                     .add("code", CodeEnum.REQ_METHOD_INVALID.getCode())
                     .add("reason", CodeEnum.REQ_METHOD_INVALID.getReason())
                     .add("path", path)
+                    .add("errorMsg", message)
+                    .asMap();
+        }
+        // 处理 500
+        if (status == 500) {
+            return MapUtil.create()
+                    .add("code", CodeEnum.UNKNOWN.getCode())
+                    .add("reason", CodeEnum.UNKNOWN.getReason())
+                    .add("path", path)
+                    .add("errorMsg", message)
                     .asMap();
         }
         return errorAttributes;
