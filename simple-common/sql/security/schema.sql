@@ -1,70 +1,70 @@
 -- ----------------------------
 -- 系统用户表
 -- ----------------------------
-create table security_user
+CREATE TABLE IF NOT EXISTS security_user
 (
-    id          bigint unsigned auto_increment,
-    username    varchar(50)      not null comment '用户名',
-    password    varchar(100)     not null comment '密码',
-    nick_name   varchar(50)      not null comment '昵称',
-    enable_flag tinyint unsigned not null comment '是否启用',
-    token       char(36) comment 'token',
-    token_time  datetime comment 'token 时间',
-    create_time datetime default current_timestamp,
-    update_time datetime default null on update current_timestamp,
-    primary key (id),
-    constraint uk_username unique (username)
-) engine = InnoDB
-  default charset = utf8
-    comment '系统用户表';
+    id          BIGINT UNSIGNED AUTO_INCREMENT,
+    username    VARCHAR(50)      NOT NULL COMMENT '用户名',
+    password    VARCHAR(100)     NOT NULL COMMENT '密码',
+    nick_name   VARCHAR(50)      NOT NULL COMMENT '昵称',
+    enable_flag TINYINT UNSIGNED NOT NULL COMMENT '是否启用',
+    token       CHAR(36) COMMENT 'token',
+    token_time  DATETIME COMMENT 'token 时间',
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    CONSTRAINT uk_username UNIQUE (username)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+    COMMENT '系统用户表';
 -- ----------------------------
 -- 系统角色表
 -- ----------------------------
-create table security_role
+CREATE TABLE IF NOT EXISTS security_role
 (
-    id          bigint unsigned auto_increment,
-    code        varchar(50) not null comment '角色代码',
-    name        varchar(50) not null comment '角色名称',
-    description varchar(100) comment '角色描述',
-    create_time datetime default current_timestamp,
-    update_time datetime default null on update current_timestamp,
-    primary key (id),
-    constraint uk_code unique (code)
-) engine = InnoDB
-  default charset = utf8
-    comment '系统角色表';
+    id          BIGINT UNSIGNED AUTO_INCREMENT,
+    code        VARCHAR(50) NOT NULL COMMENT '角色代码',
+    name        VARCHAR(50) NOT NULL COMMENT '角色名称',
+    description VARCHAR(100) COMMENT '角色描述',
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    CONSTRAINT uk_code UNIQUE (code)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+    COMMENT '系统角色表';
 -- ----------------------------
 -- 系统权限表
 -- ----------------------------
-create table security_api
+CREATE TABLE IF NOT EXISTS security_api
 (
-    id          bigint unsigned auto_increment,
-    url         varchar(50) not null comment '接口路径',
-    description varchar(100) comment '接口描述',
-    create_time datetime default current_timestamp,
-    update_time datetime default null on update current_timestamp,
-    primary key (id),
-    constraint uk_url unique (url)
-) engine = InnoDB
-  default charset = utf8
-    comment '系统权限表';
+    id          BIGINT UNSIGNED AUTO_INCREMENT,
+    url         VARCHAR(50) NOT NULL COMMENT '接口路径',
+    description VARCHAR(100) COMMENT '接口描述',
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    CONSTRAINT uk_url UNIQUE (url)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+    COMMENT '系统权限表';
 -- ----------------------------
 -- 角色用户关系表
 -- ----------------------------
-create table security_role_user
+CREATE TABLE IF NOT EXISTS security_role_user
 (
-    role_id bigint unsigned not null,
-    user_id bigint unsigned not null
-) engine = InnoDB
-  default charset = utf8
-    comment '角色用户关系表';
+    role_id BIGINT UNSIGNED NOT NULL,
+    user_id BIGINT UNSIGNED NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+    COMMENT '角色用户关系表';
 -- ----------------------------
 -- 角色权限关系表
 -- ----------------------------
-create table security_role_api
+CREATE TABLE IF NOT EXISTS security_role_api
 (
-    role_id bigint unsigned not null,
-    api_id  bigint unsigned not null
-) engine = InnoDB
-  default charset = utf8
-    comment '角色权限关系表';
+    role_id BIGINT UNSIGNED NOT NULL,
+    api_id  BIGINT UNSIGNED NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+    COMMENT '角色权限关系表';
