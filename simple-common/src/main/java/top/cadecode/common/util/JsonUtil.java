@@ -7,7 +7,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import lombok.extern.slf4j.Slf4j;
+import top.cadecode.common.core.exception.CommonException;
+import top.cadecode.common.enums.FrameErrorEnum;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -17,7 +18,6 @@ import java.text.SimpleDateFormat;
  * @date 2021/7/15
  * @description 基于 Jackson 的 json 工具类
  */
-@Slf4j
 public class JsonUtil {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -70,8 +70,7 @@ public class JsonUtil {
             }
             return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            log.error("转化对象到 json 字符串象时出错", e);
-            return null;
+            throw CommonException.of(FrameErrorEnum.JSON_TO_STR_ERROR).suppressed(e);
         }
     }
 
@@ -93,8 +92,7 @@ public class JsonUtil {
         try {
             return objectMapper.readValue(str, clazz);
         } catch (Exception e) {
-            log.error("转化 json 字符串到对象时出错", e);
-            return null;
+            throw CommonException.of(FrameErrorEnum.JSON_TO_OBJ_ERROR).suppressed(e);
         }
     }
 
@@ -116,8 +114,7 @@ public class JsonUtil {
         try {
             return objectMapper.readValue(str, typeReference);
         } catch (IOException e) {
-            log.error("转化 json 字符串到对象时出错", e);
-            return null;
+            throw CommonException.of(FrameErrorEnum.JSON_TO_OBJ_ERROR).suppressed(e);
         }
     }
 }
