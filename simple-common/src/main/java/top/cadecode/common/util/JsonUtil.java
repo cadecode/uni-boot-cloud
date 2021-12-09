@@ -70,7 +70,7 @@ public class JsonUtil {
             }
             return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            log.error("Parse String to Object error", e);
+            log.error("转化对象到 json 字符串象时出错", e);
             return null;
         }
     }
@@ -93,7 +93,7 @@ public class JsonUtil {
         try {
             return objectMapper.readValue(str, clazz);
         } catch (Exception e) {
-            log.error("Parse String to Object error", e);
+            log.error("转化 json 字符串到对象时出错", e);
             return null;
         }
     }
@@ -116,7 +116,7 @@ public class JsonUtil {
         try {
             return objectMapper.readValue(str, typeReference);
         } catch (IOException e) {
-            log.error("Parse String to Object error", e);
+            log.error("转化 json 字符串到对象时出错", e);
             return null;
         }
     }

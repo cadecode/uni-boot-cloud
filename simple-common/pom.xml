@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <!--配置父项目-->
     <parent>
-        <artifactId>simple-spring-boot</artifactId>
+        <artifactId>simple-admin</artifactId>
         <groupId>top.cadecode</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -17,12 +17,6 @@
     </properties>
 
     <dependencies>
-        <!--引入 junit-->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
         <!--引入 SpringBoot Web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -38,7 +32,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!--引入 @ConfigurationProperties 批注处理器-->
+        <!--引入 SpringBoot 配置批注生成器-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
