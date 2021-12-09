@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import top.cadecode.common.enums.ErrorCode;
 
 /**
  * @author Cade Li
@@ -17,7 +16,7 @@ import top.cadecode.common.enums.ErrorCode;
 @NoArgsConstructor
 public class CommonResponse<T> {
 
-    private Integer code;
+    private String code;
     private String reason;
     private String path;
 
@@ -34,33 +33,33 @@ public class CommonResponse<T> {
      * @return SimpleRes
      */
     public static <T> CommonResponse<T> ok(T data) {
-        return CommonResponse.of(ErrorCode.SUCCESS, data);
+        return CommonResponse.of(ResponseCode.SUCCESS, data);
     }
 
     /**
      * 根据 ResCode 返回响应
      *
-     * @param errorCode 错误码
+     * @param responseCode 响应码
      * @return SimpleRes
      */
-    public static CommonResponse<Object> of(ErrorCode errorCode) {
+    public static CommonResponse<Object> of(ResponseCode responseCode) {
         CommonResponse<Object> res = new CommonResponse<>();
-        res.setCode(errorCode.getCode());
-        res.setReason(errorCode.getReason());
+        res.setCode(responseCode.getCode());
+        res.setReason(responseCode.getReason());
         return res;
     }
 
     /**
      * 根据 ResCode 和 data 返回响应
      *
-     * @param errorCode 错误码
-     * @param data 数据
+     * @param responseCode 错误码
+     * @param data      数据
      * @return SimpleRes
      */
-    public static <T> CommonResponse<T> of(ErrorCode errorCode, T data) {
+    public static <T> CommonResponse<T> of(ResponseCode responseCode, T data) {
         CommonResponse<T> res = new CommonResponse<>();
-        res.setCode(errorCode.getCode());
-        res.setReason(errorCode.getReason());
+        res.setCode(responseCode.getCode());
+        res.setReason(responseCode.getReason());
         res.setData(data);
         return res;
     }

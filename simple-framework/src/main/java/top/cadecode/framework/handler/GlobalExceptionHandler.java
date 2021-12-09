@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import top.cadecode.common.core.exception.CommonException;
 import top.cadecode.common.core.response.CommonResponse;
-import top.cadecode.common.enums.ErrorCode;
+import top.cadecode.common.core.response.ResponseCode;
+import top.cadecode.common.enums.ClientErrorEnum;
 import top.cadecode.common.util.MapUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,8 +34,8 @@ public class GlobalExceptionHandler extends DefaultErrorAttributes {
     @ResponseBody
     public CommonResponse<Object> handleSimpleException(CommonException e, HttpServletRequest request) {
         log.error("CommonException Handler =>", e);
-        return CommonResponse.of(e.getErrorCode())
-                .errorMsg(e.getMessage())
+        return CommonResponse.of(e.getResponseCode())
+                .errorMsg(e.getErrorMsg())
                 .path(request.getRequestURI());
     }
 
@@ -44,22 +45,32 @@ public class GlobalExceptionHandler extends DefaultErrorAttributes {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public CommonResponse<Object> handleOtherException(Exception e, HttpServletRequest request) {
-        // 获取请求路径
-        String requestURI = request.getRequestURI();
         log.error("Exception Handler =>", e);
-        // 处理 SpringMVC 异常
+        return CommonResponse.of(ResponseCode.UNKNOWN)
+                .errorMsg(e.getMessage())
+                .path(request.getRequestURI());
+    }
+
+    /**
+     * 处理 Spring MVC 异常
+     */
+    @ExceptionHandler({MissingServletRequestParameterException.class, HttpMessageNotReadableException.class})
+    @ResponseBody
+    public CommonResponse<Object> handleMvcException(Exception e, HttpServletRequest request) {
+        log.error("Spring MVC Exception Handler =>", e);
+        String requestURI = request.getRequestURI();
         if (e instanceof MissingServletRequestParameterException) {
-            return CommonResponse.of(ErrorCode.REQ_PARAM_INVALID)
+            return CommonResponse.of(ClientErrorEnum.REQ_PARAM_INVALID)
+                    .errorMsg(e.getMessage())
                     .path(requestURI);
         }
         if (e instanceof HttpMessageNotReadableException) {
-            return CommonResponse.of(ErrorCode.REQ_BODY_INVALID)
+            return CommonResponse.of(ClientErrorEnum.REQ_BODY_INVALID)
+                    .errorMsg(e.getMessage())
                     .path(requestURI);
         }
-        return CommonResponse.of(ErrorCode.UNKNOWN)
-                .path(requestURI);
+        return null;
     }
-
 
     /**
      * 自定义 SpringMVC 404、405 返回内容
@@ -74,15 +85,15 @@ public class GlobalExceptionHandler extends DefaultErrorAttributes {
         String message = (String) errorAttributes.get("message");
         // 处理 404
         if (status == 404) {
-            return generateErrorAttributes(ErrorCode.REQ_PATH_NOT_EXIST, path, message);
+            return generateErrorAttributes(ClientErrorEnum.REQ_PATH_NOT_EXIST, path, message);
         }
         // 处理 405
         if (status == 405) {
-            return generateErrorAttributes(ErrorCode.REQ_METHOD_INVALID, path, message);
+            return generateErrorAttributes(ClientErrorEnum.REQ_METHOD_INVALID, path, message);
         }
         // 处理 500
         if (status == 500) {
-            return generateErrorAttributes(ErrorCode.UNKNOWN, path, message);
+            return generateErrorAttributes(ResponseCode.UNKNOWN, path, message);
         }
         return errorAttributes;
     }
@@ -90,10 +101,10 @@ public class GlobalExceptionHandler extends DefaultErrorAttributes {
     /**
      * 生成返回内容的 Map
      */
-    private Map<String, Object> generateErrorAttributes(ErrorCode errorCode, String path, String message) {
+    private Map<String, Object> generateErrorAttributes(ResponseCode responseCode, String path, String message) {
         return MapUtil.create()
-                .add("code", errorCode.getCode())
-                .add("reason", errorCode.getReason())
+                .add("code", responseCode.getCode())
+                .add("reason", responseCode.getReason())
                 .add("path", path)
                 .add("errorMsg", message)
                 .asMap();

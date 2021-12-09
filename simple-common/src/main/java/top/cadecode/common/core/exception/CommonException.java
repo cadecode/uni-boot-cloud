@@ -1,7 +1,7 @@
 package top.cadecode.common.core.exception;
 
 import lombok.Getter;
-import top.cadecode.common.enums.ErrorCode;
+import top.cadecode.common.core.response.ResponseCode;
 
 /**
  * @author Cade Li
@@ -11,14 +11,56 @@ import top.cadecode.common.enums.ErrorCode;
 @Getter
 public class CommonException extends RuntimeException {
 
-    private final ErrorCode errorCode;
+    private final ResponseCode responseCode;
+    public String errorMsg;
 
-    public CommonException(ErrorCode errorCode) {
-        this.errorCode = errorCode;
+    public CommonException(ResponseCode responseCode) {
+        super(responseCode.getReason());
+        this.responseCode = responseCode;
     }
 
-    public CommonException(ErrorCode errorCode, String errorMsg) {
-        super(errorMsg);
-        this.errorCode = errorCode;
+    public CommonException(ResponseCode responseCode, String errorMsg) {
+        this(responseCode);
+        this.errorMsg = errorMsg;
+    }
+
+    /**
+     * 通过响应码构造通用异常对象
+     *
+     * @param responseCode 响应码
+     * @return CommonException
+     */
+    public static CommonException of(ResponseCode responseCode) {
+        return new CommonException(responseCode);
+    }
+
+    /**
+     * 设置错误信息
+     *
+     * @param errorMsg 错误信息
+     * @return CommonException
+     */
+    public CommonException errorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+        return this;
+    }
+
+    /**
+     * 添加原始异常
+     *
+     * @param throwable 原始异常
+     * @return CommonException
+     */
+    public CommonException suppressed(Throwable throwable) {
+        addSuppressed(throwable);
+        return this;
+    }
+
+    @Override
+    public String getMessage() {
+        if (this.errorMsg == null) {
+            return this.getResponseCode().getReason();
+        }
+        return "[" + this.getResponseCode().getReason() + "] " + this.errorMsg;
     }
 }

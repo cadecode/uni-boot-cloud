@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import top.cadecode.common.annotation.ResponseIgnore;
 import top.cadecode.common.core.exception.CommonException;
 import top.cadecode.common.core.response.CommonResponse;
-import top.cadecode.common.enums.ErrorCode;
+import top.cadecode.common.enums.ServiceErrorEnum;
 import top.cadecode.common.util.JsonUtil;
 
 /**
@@ -31,7 +31,8 @@ public class CommonResponseHandler implements ResponseBodyAdvice<Object> {
         String path = request.getURI().getPath();
         // 判断 body 是否是 null
         if (body == null) {
-            throw new CommonException(ErrorCode.RES_BODY_INVALID, "接口返回结果为空，path 为 " + path);
+            throw CommonException.of(ServiceErrorEnum.RES_BODY_INVALID)
+                    .errorMsg("接口返回结果为空，path 为 " + path);
         }
         // 判断 body 是否是包装好的 SimpleRes
         if (body instanceof CommonResponse) {
