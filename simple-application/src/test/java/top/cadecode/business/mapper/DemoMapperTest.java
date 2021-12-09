@@ -1,11 +1,10 @@
-package top.cadecode.business;
+package top.cadecode.business.mapper;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import top.cadecode.application.WebApplication;
-import top.cadecode.business.mapper.DemoMapper;
 
 /**
  * @author Cade Li

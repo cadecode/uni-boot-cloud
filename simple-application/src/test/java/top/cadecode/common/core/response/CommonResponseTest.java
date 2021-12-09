@@ -2,7 +2,6 @@ package top.cadecode.common.core.response;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import top.cadecode.common.enums.ErrorCode;
 import top.cadecode.common.util.JsonUtil;
 
 /**
@@ -22,7 +21,7 @@ public class CommonResponseTest {
 
     @Test
     public void of() {
-        String failJson = JsonUtil.objToStr(CommonResponse.of(ErrorCode.UNKNOWN),
+        String failJson = JsonUtil.objToStr(CommonResponse.of(ResponseCode.UNKNOWN),
                 true);
         log.info("failJson: {}", failJson);
     }
