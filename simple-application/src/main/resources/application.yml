@@ -22,7 +22,7 @@ simple:
         # 数据源类型
         type: com.zaxxer.hikari.HikariDataSource
         # 是否设置为默认数据源
-        defaultFlag: true
+        default-flag: true
         # 数据源配置，根据 type 而定
         config:
           jdbc-url: jdbc:mysql://localhost:3306/demo?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
@@ -32,7 +32,18 @@ simple:
       - name: db2
         type: com.zaxxer.hikari.HikariDataSource
         config:
-          jdbcUrl: jdbc:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-          driverClassName: com.mysql.cj.jdbc.Driver
+          jdbc-url: jdbc:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          driver-class-name: com.mysql.cj.jdbc.Driver
           username: root
           password: xxxx
+  jwt:
+    # token 请求头
+    header: token
+    # refresh token 请求头
+    refresh-header: refresh-token
+    # token 过期时间
+    expiration: 86400
+    # refresh token 过期时间
+    refresh-expiration: 86400
+    # 密钥
+    secret: 12345678123456781234567812345678
