@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import top.cadecode.application.WebApplication;
+import top.cadecode.application.Application;
 
 /**
  * @author Cade Li
@@ -12,7 +12,7 @@ import top.cadecode.application.WebApplication;
  * @description DemoMapper 测试类
  */
 @Slf4j
-@SpringBootTest(classes = WebApplication.class)
+@SpringBootTest(classes = Application.class)
 public class DemoMapperTest {
 
     @Autowired
