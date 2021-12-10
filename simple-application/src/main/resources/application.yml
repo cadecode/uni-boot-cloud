@@ -8,7 +8,7 @@ server:
 
 # 配置 mybatis
 mybatis:
-  mapper-locations: classpath:mapper/**/*.xml
+  mapper-locations: classpath*:mapper/**/*.xml
   type-aliases-package: top.cadecode
   configuration:
     map-underscore-to-camel-case: true
