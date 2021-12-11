@@ -3,15 +3,15 @@
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS security_user
 (
-    id          BIGINT UNSIGNED AUTO_INCREMENT,
-    username    VARCHAR(50)      NOT NULL COMMENT '用户名',
-    password    VARCHAR(100)     NOT NULL COMMENT '密码',
-    nick_name   VARCHAR(50)      NOT NULL COMMENT '昵称',
-    enable_flag TINYINT UNSIGNED NOT NULL COMMENT '是否启用',
-    token       CHAR(36) COMMENT 'token',
-    token_time  DATETIME COMMENT 'token 时间',
-    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-    update_time DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    id            BIGINT UNSIGNED AUTO_INCREMENT,
+    username      VARCHAR(50)      NOT NULL COMMENT '用户名',
+    password      VARCHAR(100)     NOT NULL COMMENT '密码',
+    nick_name     VARCHAR(50)      NOT NULL COMMENT '昵称',
+    enable_flag   TINYINT UNSIGNED NOT NULL COMMENT '是否启用',
+    refresh_token CHAR(36) COMMENT 'token',
+    token_time    DATETIME COMMENT 'token 时间',
+    create_time   DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time   DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     CONSTRAINT uk_username UNIQUE (username)
 ) ENGINE = InnoDB
