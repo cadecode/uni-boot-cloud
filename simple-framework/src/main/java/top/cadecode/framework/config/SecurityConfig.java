@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
                 .loginProcessingUrl(LOGIN_URL)
@@ -64,7 +64,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().permitAll()
                 .logoutUrl(LOGOUT_URL)
-                .logoutSuccessHandler(signOutSuccessHandler);
+                .logoutSuccessHandler(signOutSuccessHandler)
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(noAuthenticationHandler)
+                .accessDeniedHandler(noAuthorityHandler);
     }
 
     @Override
