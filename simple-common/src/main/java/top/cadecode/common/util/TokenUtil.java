@@ -6,7 +6,6 @@ import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.Data;
-import lombok.SneakyThrows;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import top.cadecode.common.core.exception.CommonException;
@@ -35,15 +34,15 @@ public class TokenUtil {
     /**
      * 生成 token
      *
-     * @param name  用户名
+     * @param id  用户 ID
      * @param roles 角色
      * @return token 字符串
      */
-    public String generateToken(String name, List<String> roles) {
+    public String generateToken(long id, List<String> roles) {
         long expiredTime = new Date().getTime() + expiration * 1000;
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .claim("name", name).
+                .claim("id", id).
                 claim("roles", roles)
                 .expirationTime(new Date(expiredTime)).build();
         SignedJWT signedJWT = new SignedJWT(jwsHeader, jwtClaimsSet);
