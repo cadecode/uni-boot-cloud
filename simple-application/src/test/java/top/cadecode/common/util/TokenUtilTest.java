@@ -23,7 +23,7 @@ public class TokenUtilTest {
 
     @Test
     public void generateToken() {
-        String token = tokenUtil.generateToken("user", Collections.singletonList("user"));
+        String token = tokenUtil.generateToken(1, Collections.singletonList("user"));
         log.info("token: {}", token);
         Map<String, Object> map = tokenUtil.verifyToken(token);
         log.info("map: {}", map);
