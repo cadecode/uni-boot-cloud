@@ -2,9 +2,11 @@ package top.cadecode.framework.model.entity;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Cade Li
@@ -22,15 +24,17 @@ public class SecurityUser implements UserDetails {
     // 昵称
     private String nickName;
     // 是否启用
-    private String enableFlag;
+    private boolean enableFlag;
     // token
-    private String token;
+    private String refreshToken;
     // token 时间
     private String tokenTime;
+    // 角色
+    List<SimpleGrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
