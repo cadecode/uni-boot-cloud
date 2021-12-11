@@ -1,10 +1,11 @@
 package top.cadecode.framework.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,12 +55,17 @@ public class GlobalExceptionHandler extends DefaultErrorAttributes {
     /**
      * 处理 Spring MVC 异常
      */
-    @ExceptionHandler({MissingServletRequestParameterException.class, HttpMessageNotReadableException.class})
+    @ExceptionHandler({
+            ServletRequestBindingException.class,
+            HttpMessageNotReadableException.class,
+            TypeMismatchException.class
+    })
     @ResponseBody
     public CommonResponse<Object> handleMvcException(Exception e, HttpServletRequest request) {
         log.error("Spring MVC Exception Handler =>", e);
         String requestURI = request.getRequestURI();
-        if (e instanceof MissingServletRequestParameterException) {
+        if (e instanceof ServletRequestBindingException
+                || e instanceof TypeMismatchException) {
             return CommonResponse.of(ClientErrorEnum.REQ_PARAM_INVALID)
                     .errorMsg(e.getMessage())
                     .path(requestURI);
