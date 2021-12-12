@@ -1,5 +1,6 @@
 package top.cadecode.common.util;
 
+import com.nimbusds.jwt.JWTClaimsSet;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import top.cadecode.application.Application;
 
 import java.util.Collections;
-import java.util.Map;
+import java.util.Date;
 
 /**
  * @author Cade Li
@@ -25,7 +26,9 @@ public class TokenUtilTest {
     public void generateToken() {
         String token = tokenUtil.generateToken(1, Collections.singletonList("user"));
         log.info("token: {}", token);
-        Map<String, Object> map = tokenUtil.verifyToken(token);
-        log.info("map: {}", map);
+        JWTClaimsSet set = tokenUtil.verifyToken(token);
+        log.info("set: {}", set);
+        Date expirationTime = set.getExpirationTime();
+        log.info("expirationTime: {}", expirationTime);
     }
 }
