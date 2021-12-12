@@ -19,9 +19,8 @@ mybatis:
 # 自定义配置
 simple:
   datasource:
-    # 数据源列表
     dbs:
-      - name: db1
+      db1:
         # 数据源类型
         type: com.zaxxer.hikari.HikariDataSource
         # 是否设置为默认数据源
@@ -32,7 +31,7 @@ simple:
           driver-class-name: com.mysql.cj.jdbc.Driver
           username: root
           password: xxxx
-      - name: db2
+      db2:
         type: com.zaxxer.hikari.HikariDataSource
         config:
           jdbc-url: jdbc:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
