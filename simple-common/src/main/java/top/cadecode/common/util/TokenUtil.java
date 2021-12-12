@@ -1,6 +1,9 @@
 package top.cadecode.common.util;
 
-import com.nimbusds.jose.*;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -13,7 +16,6 @@ import top.cadecode.common.enums.FrameErrorEnum;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Cade Li
@@ -60,15 +62,17 @@ public class TokenUtil {
      * @param token token 字符串
      * @return 是否通过校验
      */
-    public Map<String, Object> verifyToken(String token) {
+    public JWTClaimsSet verifyToken(String token) {
         try {
-            JWSObject jwsObject = JWSObject.parse(token);
+            SignedJWT signedJWT = SignedJWT.parse(token);
             JWSVerifier verifier = new MACVerifier(secret);
-            boolean verify = jwsObject.verify(verifier);
+            boolean verify = signedJWT.verify(verifier);
             if (verify) {
-                return jwsObject.getPayload().toJSONObject();
+                return signedJWT.getJWTClaimsSet();
             }
             return null;
+        } catch (CommonException e) {
+            throw e;
         } catch (Exception e) {
             throw CommonException.of(FrameErrorEnum.JWT_VERIFY_ERROR).suppressed(e);
         }
