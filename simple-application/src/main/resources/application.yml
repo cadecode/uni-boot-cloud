@@ -1,6 +1,9 @@
 spring:
   application:
     name: simple-admin
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
 # 端口
 server:
