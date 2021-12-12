@@ -14,7 +14,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.cadecode.framework.security.*;
+import top.cadecode.framework.security.filter.JwtTokenAuthenticationFilter;
 
 /**
  * @author Cade Li
@@ -35,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final SignOutSuccessHandler signOutSuccessHandler;
     private final NoAuthenticationHandler noAuthenticationHandler;
     private final NoAuthorityHandler noAuthorityHandler;
+    private final JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -69,6 +72,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint(noAuthenticationHandler)
                 .accessDeniedHandler(noAuthorityHandler);
+        // 注册 JWT 校验过滤器
+        http.addFilterBefore(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
