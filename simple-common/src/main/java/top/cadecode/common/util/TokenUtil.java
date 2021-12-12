@@ -34,12 +34,12 @@ public class TokenUtil {
     /**
      * 生成 token
      *
-     * @param id  用户 ID
+     * @param id    用户 ID
      * @param roles 角色
      * @return token 字符串
      */
     public String generateToken(long id, List<String> roles) {
-        long expiredTime = new Date().getTime() + expiration * 1000;
+        long expiredTime = System.currentTimeMillis() + expiration * 1000;
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .claim("id", id).
