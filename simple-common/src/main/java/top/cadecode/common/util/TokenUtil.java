@@ -114,4 +114,25 @@ public class TokenUtil {
     public List<String> getRolesFromClaims(JWTClaimsSet claimsSet) throws ParseException {
         return claimsSet.getStringListClaim(ROLES_KEY);
     }
+
+    /**
+     * 判断时间是否过期
+     *
+     * @param expiredDate 最大过期时间
+     * @return 是否过期
+     */
+    public boolean isExpired(Date expiredDate) {
+        return expiredDate.getTime() < System.currentTimeMillis();
+    }
+
+    /**
+     * 判断时间是否过期
+     *
+     * @param startDate  起始时间
+     * @param expiration 秒数
+     * @return 是否过期
+     */
+    public boolean isExpired(Date startDate, long expiration) {
+        return isExpired(new Date(startDate.getTime() + expiration * 1000));
+    }
 }
