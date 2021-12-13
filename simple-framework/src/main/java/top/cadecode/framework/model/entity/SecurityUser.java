@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public class SecurityUser implements UserDetails {
     // token
     private String refreshToken;
     // token 时间
-    private String tokenTime;
+    private Date tokenTime;
     // 角色
     List<SimpleGrantedAuthority> authorities;
 
