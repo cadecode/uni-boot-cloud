@@ -3,6 +3,7 @@ package top.cadecode.framework.model.vo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +23,8 @@ public class SecurityUserVo {
     private boolean enableFlag;
     private String token;
     private String refreshToken;
+    @JsonIgnore
+    private Date tokenTime;
     private List<String> roles;
 
 }
