@@ -16,6 +16,8 @@ public enum AuthErrorEnum implements ResponseCode {
     TOKEN_EXPIRED(1002, "Token 已过期"),
     TOKEN_NO_AUTHORITY(1003, "权限不足"),
     TOKEN_CREATE_ERROR(1004, "登录失败"),
+    TOKEN_REFRESH_ERROR(1005, "Refresh Token 错误"),
+    TOKEN_REFRESH_EXPIRED(1006, "Refresh Token 已过期"),
     ;
 
     private final String code;
