@@ -24,7 +24,7 @@ public class TokenUtilTest {
 
     @Test
     public void generateToken() {
-        String token = tokenUtil.generateToken(1, Collections.singletonList("user"));
+        String token = tokenUtil.generateToken(1, "user", Collections.singletonList("user"));
         log.info("token: {}", token);
         JWTClaimsSet set = tokenUtil.verifyToken(token);
         log.info("set: {}", set);
