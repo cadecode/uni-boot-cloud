@@ -36,21 +36,22 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication)  {
+                                        Authentication authentication) {
         // 从认证信息中获取用户对象
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
         // 创建用户 VO，并设置属性
         SecurityUserVo securityUserVo = new SecurityUserVo();
         BeanUtils.copyProperties(securityUser, securityUserVo);
-        // 获取用户名和角色
+        // 获取 ID，用户名和角色
         Long id = securityUser.getId();
+        String username = securityUser.getUsername();
         List<String> roles = securityUser.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         // 为用户 VO 设置角色
         securityUserVo.setRoles(roles);
         // 为用户 VO 设置 JWT Token
-        securityUserVo.setToken(tokenUtil.generateToken(id, roles));
+        securityUserVo.setToken(tokenUtil.generateToken(id, username, roles));
         // 为用户 VO 设置刷新 Token
         String refreshToken = UUID.randomUUID().toString();
         securityUserVo.setRefreshToken(refreshToken);

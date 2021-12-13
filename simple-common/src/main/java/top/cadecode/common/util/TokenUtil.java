@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import top.cadecode.common.core.exception.CommonException;
 import top.cadecode.common.enums.FrameErrorEnum;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,10 @@ public class TokenUtil {
     private Long refreshExpiration;
     private String secret;
 
+    private static final String ID_KEY = "id";
+    private static final String NAME_KEY = "name";
+    private static final String ROLES_KEY = "roles";
+
     /**
      * 生成 token
      *
@@ -40,12 +45,13 @@ public class TokenUtil {
      * @param roles 角色
      * @return token 字符串
      */
-    public String generateToken(long id, List<String> roles) {
+    public String generateToken(long id, String name, List<String> roles) {
         long expiredTime = System.currentTimeMillis() + expiration * 1000;
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .claim("id", id).
-                claim("roles", roles)
+                .claim(ID_KEY, id)
+                .claim(NAME_KEY, name)
+                .claim(ROLES_KEY, roles)
                 .expirationTime(new Date(expiredTime)).build();
         SignedJWT signedJWT = new SignedJWT(jwsHeader, jwtClaimsSet);
         try {
@@ -71,10 +77,41 @@ public class TokenUtil {
                 return signedJWT.getJWTClaimsSet();
             }
             return null;
-        } catch (CommonException e) {
-            throw e;
         } catch (Exception e) {
             throw CommonException.of(FrameErrorEnum.JWT_VERIFY_ERROR).suppressed(e);
         }
+    }
+
+    /**
+     * 从 claimsSet 获取 id
+     *
+     * @param claimsSet claims
+     * @return id
+     * @throws ParseException 转换异常
+     */
+    public long getIdFromClaims(JWTClaimsSet claimsSet) throws ParseException {
+        return claimsSet.getLongClaim(ID_KEY);
+    }
+
+    /**
+     * 从 claimsSet 获取 name
+     *
+     * @param claimsSet claims
+     * @return name
+     * @throws ParseException 转换异常
+     */
+    public String getNameFromClaims(JWTClaimsSet claimsSet) throws ParseException {
+        return claimsSet.getStringClaim(NAME_KEY);
+    }
+
+    /**
+     * 从 claimsSet 获取 roles
+     *
+     * @param claimsSet claims
+     * @return roles
+     * @throws ParseException 转换异常
+     */
+    public List<String> getRolesFromClaims(JWTClaimsSet claimsSet) throws ParseException {
+        return claimsSet.getStringListClaim(ROLES_KEY);
     }
 }
