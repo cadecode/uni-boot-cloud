@@ -48,6 +48,7 @@
         <knife4j.version>2.0.5</knife4j.version>
         <mybatis.version>2.2.0</mybatis.version>
         <user-agent.version>1.21</user-agent.version>
+        <guava.vsersion>31.0.1-jre</guava.vsersion>
     </properties>
 
     <dependencies>
@@ -94,6 +95,12 @@
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${user-agent.version}</version>
+            </dependency>
+            <!--配置 guava 版本-->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.vsersion}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
