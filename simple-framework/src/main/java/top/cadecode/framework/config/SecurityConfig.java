@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,9 +16,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.cadecode.framework.security.*;
 import top.cadecode.framework.security.filter.JwtTokenAuthenticationFilter;
+import top.cadecode.framework.security.voter.DbRoleVoter;
+
+import java.util.Arrays;
 
 /**
  * @author Cade Li
@@ -38,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final NoAuthenticationHandler noAuthenticationHandler;
     private final NoAuthorityHandler noAuthorityHandler;
     private final JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter;
+    private final DbRoleVoter dbRoleVoter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -57,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
+                // 尝试请求直接通过
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -71,14 +79,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(noAuthenticationHandler)
-                .accessDeniedHandler(noAuthorityHandler);
+                .accessDeniedHandler(noAuthorityHandler)
+                .and()
+                // 自定义的 accessDecisionManager
+                .authorizeRequests()
+                .accessDecisionManager(accessDecisionManager());
         // 注册 JWT 校验过滤器
         http.addFilterBefore(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Override
-    public void configure(WebSecurity web) {
-        // web.ignoring()
-        //         .anyRequest();
+    private AccessDecisionManager accessDecisionManager() {
+        return new UnanimousBased(Arrays.asList(
+                new WebExpressionVoter(),
+                dbRoleVoter
+        ));
     }
 }
