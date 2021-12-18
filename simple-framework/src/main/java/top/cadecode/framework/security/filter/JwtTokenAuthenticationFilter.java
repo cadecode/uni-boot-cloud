@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -102,11 +101,9 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
             String newToken = tokenUtil.generateToken(securityUser.getId(), securityUser.getUsername(), newRoles);
-            String newRefreshToken = UUID.randomUUID().toString();
             response.addHeader(tokenUtil.getHeader(), newToken);
-            response.addHeader(tokenUtil.getRefreshHeader(), newRefreshToken);
-            // 更新 refresh token
-            securityUserMapper.updateSecurityUserToken(securityUser.getId(), newRefreshToken);
+            // 更新 refresh token 时间
+            securityUserMapper.updateSecurityUserToken(securityUser.getId(), securityUser.getRefreshToken());
             setAuthentication(request, securityUser);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
