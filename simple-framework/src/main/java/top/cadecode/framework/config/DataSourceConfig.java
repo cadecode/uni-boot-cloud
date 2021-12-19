@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.util.Assert;
 import top.cadecode.common.core.datasource.DynamicDataSource;
 import top.cadecode.common.core.datasource.DynamicDataSourceHolder;
 
@@ -60,9 +61,7 @@ public class DataSourceConfig {
             }
         });
         // 判断是否设置默认数据源
-        if (!dynamicDS.hasDefaultDataSource()) {
-            throw new IllegalArgumentException("未指定默认数据源");
-        }
+        Assert.isTrue(dynamicDS.hasDefaultDataSource(), "未指定默认数据源");
         // 设置数据源到 dynamicDataSource
         dynamicDS.setTargetDataSources(dataSourceMap);
         return dynamicDS;
@@ -82,17 +81,14 @@ public class DataSourceConfig {
         try {
             dataSourceClass = (Class<DataSource>) Class.forName(type);
             // 判断是否是 DataSource 类型
-            if (!DataSource.class.isAssignableFrom(dataSourceClass)) {
-                throw new IllegalArgumentException("数据源 " + name + " 的类型 " + type + " 不合适");
-            }
+            boolean isDataSource = DataSource.class.isAssignableFrom(dataSourceClass);
+            Assert.isTrue(isDataSource, "数据源 " + name + " 的类型 " + type + " 不合适");
             // 生成数据源实例
             return Binder.get(environment)
                     .bind(DBS_PREFIX + name + DBS_SUFFIX, dataSourceClass)
                     .get();
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException("数据源 " + name + " 的类型 " + type + " 不存在");
-        } catch (Exception e) {
-            throw new IllegalArgumentException("创建数据源 " + name + " 时出现绑定错误");
         }
     }
 
