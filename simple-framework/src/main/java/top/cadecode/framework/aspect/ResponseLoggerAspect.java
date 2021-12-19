@@ -11,12 +11,12 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import top.cadecode.common.annotation.ResponseLogger;
-import top.cadecode.common.util.CollectUtil;
 import top.cadecode.common.util.JsonUtil;
-import top.cadecode.common.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
@@ -92,7 +92,7 @@ public class ResponseLoggerAspect {
     public static String getIpAddress(HttpServletRequest request) {
         // 解析请求头 X-Forwarded-For 获取主机地址
         String ip = request.getHeader("X-Forwarded-For");
-        if (StringUtil.isEmpty(ip)) {
+        if (!StringUtils.hasLength(ip)) {
             ip = request.getRemoteAddr();
             // 获取本机真正的ip地址
             if (LOCAL_IP_LIST.contains(ip)) {
@@ -114,7 +114,7 @@ public class ResponseLoggerAspect {
         MethodSignature methodSignature = (MethodSignature) signature;
         String[] names = methodSignature.getParameterNames();
         Object[] args = joinPoint.getArgs();
-        if (CollectUtil.isEmpty(names) || CollectUtil.isEmpty(args)) {
+        if (ObjectUtils.isEmpty(names) || ObjectUtils.isEmpty(args)) {
             return Collections.emptyMap();
         }
         if (names.length != args.length) {

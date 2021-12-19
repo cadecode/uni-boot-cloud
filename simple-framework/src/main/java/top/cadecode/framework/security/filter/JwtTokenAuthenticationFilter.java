@@ -10,11 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import top.cadecode.common.core.response.CommonResponse;
 import top.cadecode.common.enums.AuthErrorEnum;
 import top.cadecode.common.util.JsonUtil;
-import top.cadecode.common.util.StringUtil;
 import top.cadecode.common.util.TokenUtil;
 import top.cadecode.common.util.WebUtil;
 import top.cadecode.framework.model.entity.SecurityUser;
@@ -49,7 +49,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         // 取出 token
         String token = request.getHeader(tokenUtil.getHeader());
         // 判断 token 是否为空，为空则不拦截
-        if (StringUtil.isEmpty(token)) {
+        if (!StringUtils.hasLength(token)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -79,7 +79,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             // 如果 token 已过期
             String refreshHeader = request.getHeader(tokenUtil.getRefreshHeader());
             // 判断 refreshToken 是否为空
-            if (StringUtil.isEmpty(refreshHeader)) {
+            if (!StringUtils.hasLength(refreshHeader)) {
                 writeResponse(response, AuthErrorEnum.TOKEN_EXPIRED, requestURI);
                 return;
             }
