@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.util.StringUtils;
 import top.cadecode.common.core.exception.CommonException;
 import top.cadecode.common.enums.FrameErrorEnum;
 
@@ -83,7 +84,7 @@ public class JsonUtil {
      */
     @SuppressWarnings("unchecked")
     public static <T> T str2Obj(String str, Class<T> clazz) {
-        if (StringUtil.isEmpty(str) || clazz == null) {
+        if (!StringUtils.hasLength(str) || clazz == null) {
             return null;
         }
         if (clazz.equals(String.class)) {
@@ -105,7 +106,7 @@ public class JsonUtil {
      */
     @SuppressWarnings("unchecked")
     public static <T> T str2Obj(String str, TypeReference<T> typeReference) {
-        if (StringUtil.isEmpty(str) || typeReference == null) {
+        if (!StringUtils.hasLength(str) || typeReference == null) {
             return null;
         }
         if (typeReference.getType().equals(String.class)) {
