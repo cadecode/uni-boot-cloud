@@ -43,10 +43,11 @@ public class DynamicDataSourceAspect {
         }
         // 设置数据源
         if (!DynamicDataSourceHolder.containDataSourceKey(dataSourceKey)) {
-            log.info("数据源 {} 不存在，将使用默认数据源", dataSource.value());
+            log.info("切换数据源 => 数据源 {} 不存在，使用默认数据源", dataSource.value());
         } else {
             DynamicDataSourceHolder.setDataSourceKey(dataSourceKey);
-            log.info("切换数据源到 {}，在方法 [{}]", dataSourceKey, point.getSignature());
+            log.info("切换数据源 => 切换到 {}，执行方法 [{}]", dataSourceKey,
+                    point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName());
         }
     }
 
@@ -57,6 +58,6 @@ public class DynamicDataSourceAspect {
     public void resetDataSource(JoinPoint point, DataSource dataSource) {
         // 将数据源重置置为默认数据源
         DynamicDataSourceHolder.clearDataSourceKey();
-        log.info("重置默认数据源，在方法 [{}]", point.getSignature());
+        log.info("切换数据源 <= 重置默认数据源");
     }
 }

@@ -71,7 +71,7 @@ public class ResponseLoggerAspect {
         ResponseLoggingInfo loggingInfo = ResponseLoggingInfo.builder()
                 .threadId(Long.toString(Thread.currentThread().getId()))
                 .threadName(Thread.currentThread().getName())
-                .classMethod(point.getSignature().toString())
+                .classMethod(point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName())
                 .ip(ResponseLoggerAspect.getIpAddress(request))
                 .url(request.getRequestURL().toString())
                 .httpMethod(request.getMethod())
@@ -118,7 +118,7 @@ public class ResponseLoggerAspect {
             return Collections.emptyMap();
         }
         if (names.length != args.length) {
-            log.warn("方法 [{}] 参数名和参数值数量不一致", methodSignature.getName());
+            log.warn("请求响应日志 => 方法 [{}] 参数名和参数值数量不一致", methodSignature.getName());
             return Collections.emptyMap();
         }
         Map<String, Object> map = new HashMap<>();
