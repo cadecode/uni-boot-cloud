@@ -15,9 +15,9 @@
     <property name="filePath" value="${user.dir}/logs" />
     <!--输出格式-->
     <property name="patternWithColor"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %highlight(%-5level) %cyan(%logger{50}) : %msg%n" />
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %highlight(%-5level) %cyan(%-50logger{50}) : %msg%n" />
     <!--不带色彩的格式用以输出到文件-->
-    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %-5level %logger{50} : %msg%n" />
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %-5level %-50logger{50} : %msg%n" />
 
     <!--控制台输出日志-->
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
