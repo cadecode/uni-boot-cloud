@@ -1,17 +1,15 @@
-package top.cadecode.framework.model.mapper;
+package top.cadecode.framework.model.service;
 
-import org.apache.ibatis.annotations.Mapper;
 import top.cadecode.framework.model.vo.SecurityApiVo;
 
 import java.util.List;
 
 /**
  * @author Cade Li
- * @date 2021/12/10
- * @description 角色信息 DAO
+ * @date 2022/1/5
+ * @description spring security api service 接口
  */
-@Mapper
-public interface SecurityApiMapper {
+public interface SecurityApiService {
 
     /**
      * 查询所有接口及其角色

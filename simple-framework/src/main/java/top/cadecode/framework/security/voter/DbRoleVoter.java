@@ -1,24 +1,17 @@
 package top.cadecode.framework.security.voter;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
-import top.cadecode.common.util.TokenUtil;
-import top.cadecode.framework.model.mapper.SecurityApiMapper;
+import top.cadecode.framework.model.service.SecurityApiService;
 import top.cadecode.framework.model.vo.SecurityApiVo;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -26,38 +19,14 @@ import java.util.stream.Collectors;
  * @date 2021/12/15
  * @description 数据库加载权限 api 的投票器
  */
+@RequiredArgsConstructor
 @Component
 public class DbRoleVoter extends RoleVoter {
 
     // ant 匹配器
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
-    // api role 关系缓存
-    private final LoadingCache<String, List<SecurityApiVo>> apiRoleCache;
 
-    @Autowired
-    public DbRoleVoter(TokenUtil tokenUtil, SecurityApiMapper securityApiMapper) {
-        this.apiRoleCache = CacheBuilder.newBuilder()
-                .refreshAfterWrite(tokenUtil.getExpiration(), TimeUnit.SECONDS)
-                .build(new CacheLoader<String, List<SecurityApiVo>>() {
-                    @Override
-                    public List<SecurityApiVo> load(String key) {
-                        return securityApiMapper.listSecurityApiVo();
-                    }
-                });
-    }
-
-    /**
-     * 获取 api role 的关系缓存
-     *
-     * @return api role 关系列表
-     */
-    public List<SecurityApiVo> getDbRoleCache() {
-        try {
-            return apiRoleCache.get("");
-        } catch (ExecutionException e) {
-            return Collections.emptyList();
-        }
-    }
+    private final SecurityApiService securityApiService;
 
     @Override
     public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
@@ -68,7 +37,7 @@ public class DbRoleVoter extends RoleVoter {
         FilterInvocation fi = (FilterInvocation) object;
         String requestUrl = fi.getRequestUrl();
         // 获取 api role 的关系列表
-        List<SecurityApiVo> securityApiVos = this.getDbRoleCache();
+        List<SecurityApiVo> securityApiVos = securityApiService.listSecurityApiVos();
         // 获取用户角色
         List<String> roles = authentication.getAuthorities().stream()
                 .map(authority -> authority.getAuthority().replace("ROLE_", ""))
