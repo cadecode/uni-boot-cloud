@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@MapperScan("top.cadecode")
+@MapperScan("top.cadecode.**.mapper")
 @ComponentScan("top.cadecode")
 public class Application {
 
