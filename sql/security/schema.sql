@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS security_user
     create_time   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_time   TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    CONSTRAINT uk_username UNIQUE (username)
+    UNIQUE KEY uk_username (username)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
     COMMENT '系统用户表';
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS security_role
     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_time TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    CONSTRAINT uk_code UNIQUE (code)
+    UNIQUE KEY uk_code (code)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
     COMMENT '系统角色表';
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS security_api
     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_time TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
-    CONSTRAINT uk_url UNIQUE (url)
+    UNIQUE KEY uk_url (url)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
     COMMENT '系统权限表';
@@ -54,7 +54,9 @@ CREATE TABLE IF NOT EXISTS security_api
 CREATE TABLE IF NOT EXISTS security_role_user
 (
     role_id BIGINT UNSIGNED NOT NULL,
-    user_id BIGINT UNSIGNED NOT NULL
+    user_id BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY (role_id, user_id),
+    INDEX idx_user_id (user_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
     COMMENT '角色用户关系表';
@@ -64,7 +66,9 @@ CREATE TABLE IF NOT EXISTS security_role_user
 CREATE TABLE IF NOT EXISTS security_role_api
 (
     role_id BIGINT UNSIGNED NOT NULL,
-    api_id  BIGINT UNSIGNED NOT NULL
+    api_id  BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY (role_id, api_id),
+    INDEX idx_api_id (api_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
     COMMENT '角色权限关系表';
