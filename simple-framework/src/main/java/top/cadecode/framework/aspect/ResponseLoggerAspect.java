@@ -12,16 +12,17 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import top.cadecode.common.annotation.ResponseLogger;
 import top.cadecode.common.util.JsonUtil;
+import top.cadecode.common.util.WebUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Cade Li
@@ -32,9 +33,6 @@ import java.util.*;
 @Aspect
 @Component
 public class ResponseLoggerAspect {
-
-    // 本地 IP 地址
-    private static final List<String> LOCAL_IP_LIST = Arrays.asList("127.0.0.1", "0:0:0:0:0:0:0:1");
 
     /**
      * 环绕通知
@@ -72,7 +70,7 @@ public class ResponseLoggerAspect {
                 .threadId(Long.toString(Thread.currentThread().getId()))
                 .threadName(Thread.currentThread().getName())
                 .classMethod(point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName())
-                .ip(ResponseLoggerAspect.getIpAddress(request))
+                .ip(WebUtil.getIpAddress(request))
                 .url(request.getRequestURL().toString())
                 .httpMethod(request.getMethod())
                 .requestParams(ResponseLoggerAspect.getRequestParams(point))
@@ -84,26 +82,6 @@ public class ResponseLoggerAspect {
                 .build();
         log.info("请求响应日志 => {}", JsonUtil.objToStr(loggingInfo));
         return result;
-    }
-
-    /**
-     * 获取 IP 地址
-     */
-    public static String getIpAddress(HttpServletRequest request) {
-        // 解析请求头 X-Forwarded-For 获取主机地址
-        String ip = request.getHeader("X-Forwarded-For");
-        if (!StringUtils.hasLength(ip)) {
-            ip = request.getRemoteAddr();
-            // 获取本机真正的ip地址
-            if (LOCAL_IP_LIST.contains(ip)) {
-                try {
-                    ip = InetAddress.getLocalHost().getHostAddress();
-                } catch (UnknownHostException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
-        }
-        return ip;
     }
 
     /**
