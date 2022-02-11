@@ -8,22 +8,29 @@
 
     <!--配置参数常量-->
     <!--级别：trace<debug<info<warn<error 增加，通常仅需要 debug/info/error-->
-    <property name="level" value="debug" />
+    <property name="level" value="DEBUG" />
+
     <!--文件保留时间-->
     <property name="history" value="30" />
+
     <!--文件存放位置-->
-    <property name="filePath" value="${user.dir}/logs" />
+    <!--<property name="filePath" value="./logs" />-->
+
+    <!--文件存放位置-->
+    <!--从 SpringBoot 配置文件中获取（注意文件名需要为 logback-spring.xml）-->
+    <springProperty scope="context" name="filePath" source="logging.file.path" />
+
     <!--输出格式-->
-    <property name="patternWithColor"
+    <property name="consolePattern"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %highlight(%-5level) %cyan(%-50logger{50}) : %msg%n" />
     <!--不带色彩的格式用以输出到文件-->
-    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %-5level %-50logger{50} : %msg%n" />
+    <property name="filePattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %-5level %-50logger{50} : %msg%n" />
 
     <!--控制台输出日志-->
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <!--格式-->
         <encoder>
-            <pattern>${patternWithColor}</pattern>
+            <pattern>${consolePattern}</pattern>
             <charset>UTF-8</charset>
         </encoder>
     </appender>
@@ -43,7 +50,7 @@
         </rollingPolicy>
         <!--格式-->
         <encoder>
-            <pattern>${pattern}</pattern>
+            <pattern>${filePattern}</pattern>
             <charset>UTF-8</charset>
         </encoder>
         <!--只记录 debug-->
@@ -63,7 +70,7 @@
             <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
         <encoder>
-            <pattern>${pattern}</pattern>
+            <pattern>${filePattern}</pattern>
             <charset>UTF-8</charset>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -82,7 +89,7 @@
             <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
         <encoder>
-            <pattern>${pattern}</pattern>
+            <pattern>${filePattern}</pattern>
             <charset>UTF-8</charset>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -98,9 +105,8 @@
         additivity 指定是否将 root 的 appender 加入到 logger 中
     -->
     <logger name="top.cadecode" level="${level}" additivity="true">
-        <appender-ref ref="errorAppender" />
-        <appender-ref ref="debugAppender" />
         <appender-ref ref="infoAppender" />
+        <appender-ref ref="debugAppender" />
     </logger>
 
     <!-- SpringFramework 日志-->
