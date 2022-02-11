@@ -27,10 +27,10 @@ import java.util.Set;
 @Data
 @RequiredArgsConstructor
 @Configuration
-@ConfigurationProperties("simple.datasource")
+@ConfigurationProperties("custom")
 public class DataSourceConfig {
 
-    private static final String DBS_PREFIX = "simple.datasource.dbs.";
+    private static final String DBS_PREFIX = "custom.dbs.";
     private static final String DBS_SUFFIX = ".config";
 
     private final Environment environment;
