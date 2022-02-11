@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "simple.jwt")
+@ConfigurationProperties(prefix = "custom.jwt")
 public class TokenUtil {
 
     private String header;
