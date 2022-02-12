@@ -7,6 +7,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import top.cadecode.common.util.TokenUtil;
 
 import java.util.concurrent.TimeUnit;
@@ -22,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class CacheConfig {
 
     private final TokenUtil tokenUtil;
+    private final RedisConnectionFactory factory;
 
     @Bean("securityCacheManager")
     public CacheManager securityCacheManager() {
@@ -31,5 +35,17 @@ public class CacheConfig {
                 .expireAfterWrite(tokenUtil.getExpiration(), TimeUnit.SECONDS));
         caffeineCacheManager.setAllowNullValues(true);
         return caffeineCacheManager;
+    }
+
+    @Bean("redisTemplate")
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(factory);
+        // 设置 k v 的序列化方式
+        template.setKeySerializer(RedisSerializer.string());
+        template.setValueSerializer(RedisSerializer.json());
+        template.setHashKeySerializer(RedisSerializer.string());
+        template.setHashValueSerializer(RedisSerializer.json());
+        return template;
     }
 }
