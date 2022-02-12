@@ -37,7 +37,7 @@ public class JsonUtilTest {
                 "  \"name\" : \"map\",\n" +
                 "  \"writer\" : \"Cade\"\n" +
                 "}";
-        Map<String, String> map = JsonUtil.str2Obj(str, new TypeReference<Map<String, String>>() {});
+        Map<String, String> map = JsonUtil.strToObj(str, new TypeReference<Map<String, String>>() {});
         log.info("map: {}", map);
     }
 
