@@ -83,7 +83,7 @@ public class JsonUtil {
      * @return 自定义对象
      */
     @SuppressWarnings("unchecked")
-    public static <T> T str2Obj(String str, Class<T> clazz) {
+    public static <T> T strToObj(String str, Class<T> clazz) {
         if (!StringUtils.hasLength(str) || clazz == null) {
             return null;
         }
@@ -105,7 +105,7 @@ public class JsonUtil {
      * @return 自定义对象
      */
     @SuppressWarnings("unchecked")
-    public static <T> T str2Obj(String str, TypeReference<T> typeReference) {
+    public static <T> T strToObj(String str, TypeReference<T> typeReference) {
         if (!StringUtils.hasLength(str) || typeReference == null) {
             return null;
         }
