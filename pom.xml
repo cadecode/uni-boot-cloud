@@ -47,6 +47,7 @@
 
         <knife4j.version>2.0.5</knife4j.version>
         <mybatis.version>2.2.0</mybatis.version>
+        <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <user-agent.version>1.21</user-agent.version>
         <guava.vsersion>31.0.1-jre</guava.vsersion>
     </properties>
@@ -89,6 +90,12 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.version}</version>
+            </dependency>
+            <!--配置 mybatis plus 版本-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
             </dependency>
             <!--配置 UserAgentUtils 版本-->
             <dependency>
