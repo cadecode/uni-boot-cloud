@@ -1,7 +1,7 @@
 package top.cadecode.business.contorller;
 
 import org.springframework.web.bind.annotation.*;
-import top.cadecode.common.core.response.CommonResponse;
+import top.cadecode.common.core.response.Result;
 
 import java.util.*;
 
@@ -28,7 +28,7 @@ public class DemoController {
     }
 
     @PostMapping("res")
-    public CommonResponse<List<String>> res() {
-        return CommonResponse.ok(Arrays.asList("a", "b"));
+    public Result<List<String>> res() {
+        return Result.ok(Arrays.asList("a", "b"));
     }
 }

@@ -6,10 +6,10 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import top.cadecode.common.annotation.ResponseIgnore;
-import top.cadecode.common.core.exception.CommonException;
-import top.cadecode.common.core.response.CommonResponse;
-import top.cadecode.common.enums.ServiceErrorEnum;
+import top.cadecode.common.annotation.ResIgnore;
+import top.cadecode.common.core.exception.BaseException;
+import top.cadecode.common.core.response.Result;
+import top.cadecode.common.enums.BaseErrorEnum;
 import top.cadecode.common.util.JsonUtil;
 
 /**
@@ -18,7 +18,7 @@ import top.cadecode.common.util.JsonUtil;
  * @description 统一接口返回格式
  */
 @ControllerAdvice(basePackages = {"top.cadecode"})
-public class CommonResponseHandler implements ResponseBodyAdvice<Object> {
+public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
         return true;
@@ -31,26 +31,25 @@ public class CommonResponseHandler implements ResponseBodyAdvice<Object> {
         String path = request.getURI().getPath();
         // 判断 body 是否是 null
         if (body == null) {
-            throw CommonException.of(ServiceErrorEnum.RES_BODY_INVALID)
-                    .errorMsg("接口返回结果为空，path 为 " + path);
+            throw BaseException.of(BaseErrorEnum.RES_BODY_INVALID);
         }
         // 判断 body 是否是包装好的 SimpleRes
-        if (body instanceof CommonResponse) {
-            return ((CommonResponse<?>) body).path(path);
+        if (body instanceof Result) {
+            return ((Result<?>) body).path(path);
         }
         // 判断 body 是否是包装好的字符串
         if (body instanceof String) {
             // 设置统一的 Content-Type
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             // String 类型的 Body 需要返回 String 类型，否则报转换错误
-            return JsonUtil.objToStr(CommonResponse.ok(body).path(path));
+            return JsonUtil.objToStr(Result.ok(body).path(path));
         }
         // 判断是否有忽略格式化注解，有则直接返回
-        ResponseIgnore resIgnore = returnType.getMethodAnnotation(ResponseIgnore.class);
+        ResIgnore resIgnore = returnType.getMethodAnnotation(ResIgnore.class);
         if (resIgnore != null && resIgnore.value()) {
             return body;
         }
 
-        return CommonResponse.ok(body).path(path);
+        return Result.ok(body).path(path);
     }
 }

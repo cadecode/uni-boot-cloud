@@ -1,16 +1,14 @@
 package top.cadecode.common.core.response;
 
-import lombok.Getter;
-
 /**
  * @author Cade Li
  * @date 2021/12/9
  * @description 响应码接口
  */
-public interface ResponseCode {
+public interface ResultCode {
 
     // 执行成功的响应码
-    ResponseCode SUCCESS = new ResponseCode() {
+    ResultCode SUCCESS = new ResultCode() {
         @Override
         public String getCode() {
             return "SUCCESS";
@@ -23,7 +21,7 @@ public interface ResponseCode {
     };
 
     // 未知错误的响应码
-    ResponseCode UNKNOWN = new ResponseCode() {
+    ResultCode UNKNOWN = new ResultCode() {
         @Override
         public String getCode() {
             return "UNKNOWN";
@@ -43,20 +41,20 @@ public interface ResponseCode {
     /**
      * 异常枚举类 Code 前缀
      */
-    @Getter
-    enum CodePrefixEnum {
-
-        AUTH("A"),
-        CLIENT("C"),
-        FRAME("F"),
-        SERVICE("S"),
-        THIRD_PARTY("T"),
+    enum PrefixEnum {
+        BASE(""),
+        UTIL("U"),
         ;
 
         private final String prefix;
 
-        CodePrefixEnum(String prefix) {
+        PrefixEnum(String prefix) {
             this.prefix = prefix;
+        }
+
+        @Override
+        public String toString() {
+            return prefix;
         }
     }
 }

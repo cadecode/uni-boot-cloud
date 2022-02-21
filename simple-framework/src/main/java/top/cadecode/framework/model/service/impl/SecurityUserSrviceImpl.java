@@ -2,14 +2,13 @@ package top.cadecode.framework.model.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import top.cadecode.common.core.exception.CommonException;
-import top.cadecode.common.enums.AuthErrorEnum;
+import top.cadecode.common.core.exception.BaseException;
+import top.cadecode.common.enums.BaseErrorEnum;
 import top.cadecode.framework.model.entity.SecurityUser;
 import top.cadecode.framework.model.mapper.SecurityUserMapper;
 import top.cadecode.framework.model.service.SecurityUserSrvice;
@@ -35,11 +34,11 @@ public class SecurityUserSrviceImpl implements SecurityUserSrvice, UserDetailsSe
         SecurityUserVo securityUserVo = securityUserMapper.getSecurityUserVo(username);
         // 没有查询到任何记录
         if (securityUserVo == null) {
-            throw CommonException.of(AuthErrorEnum.TOKEN_CREATE_ERROR).errorMsg("用户名或密码错误");
+            throw BaseException.of(BaseErrorEnum.TOKEN_CREATE_ERROR).errorMsg("用户名或密码错误");
         }
         // 用户账号被关闭
         if (!securityUserVo.isEnableFlag()) {
-            throw CommonException.of(AuthErrorEnum.TOKEN_CREATE_ERROR).errorMsg("账号已被关闭");
+            throw BaseException.of(BaseErrorEnum.TOKEN_CREATE_ERROR).errorMsg("账号已被关闭");
         }
         // 创建 UserDetails，并设置属性
         SecurityUser securityUser = new SecurityUser();
