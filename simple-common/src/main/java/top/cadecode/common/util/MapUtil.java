@@ -11,16 +11,16 @@ import java.util.Map;
 public class MapUtil {
 
     public static MapBuilder<String, Object> create() {
-        return new MapBuilder<String, Object>(new LinkedHashMap<>());
+        return new MapBuilder<>(new LinkedHashMap<>());
     }
 
     public static <K, V> MapBuilder<K, V> create(Map<K, V> map) {
-        return new MapBuilder<K, V>(map);
+        return new MapBuilder<>(map);
     }
 
     public static class MapBuilder<K, V> {
 
-        private Map<K, V> map;
+        private final Map<K, V> map;
 
         /**
          * 私有构造
