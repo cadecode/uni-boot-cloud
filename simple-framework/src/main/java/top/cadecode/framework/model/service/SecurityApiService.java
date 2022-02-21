@@ -12,6 +12,12 @@ import java.util.List;
 public interface SecurityApiService {
 
     /**
+     * api role 缓存前缀
+     */
+    String API_ROLE_CACHE_PREFIX = "security:api.role:list";
+
+
+    /**
      * 查询所有接口及其角色
      *
      * @return api 列表
