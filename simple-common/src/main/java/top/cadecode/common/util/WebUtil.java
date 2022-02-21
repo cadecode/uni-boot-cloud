@@ -2,8 +2,8 @@ package top.cadecode.common.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import top.cadecode.common.core.exception.CommonException;
-import top.cadecode.common.enums.FrameErrorEnum;
+import top.cadecode.common.core.exception.BaseException;
+import top.cadecode.common.enums.UtilErrorEnum;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,8 +45,7 @@ public class WebUtil {
             writer.print(jsonString);
             writer.flush();
         } catch (IOException e) {
-            throw CommonException.of(FrameErrorEnum.RES_WRITE_JSON_ERROR)
-                    .suppressed(e);
+            throw BaseException.of(UtilErrorEnum.WRITE_JSON_RES_ERROR).suppressed(e);
         }
     }
 

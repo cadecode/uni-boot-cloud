@@ -3,8 +3,8 @@ package top.cadecode.framework.security;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import top.cadecode.common.core.response.CommonResponse;
-import top.cadecode.common.enums.AuthErrorEnum;
+import top.cadecode.common.core.response.Result;
+import top.cadecode.common.enums.BaseErrorEnum;
 import top.cadecode.common.util.JsonUtil;
 import top.cadecode.common.util.WebUtil;
 
@@ -21,8 +21,8 @@ public class NoAuthenticationHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) {
-        CommonResponse<Object> commonResponse = CommonResponse.of(AuthErrorEnum.TOKEN_NOT_EXIST)
+        Result<Object> result = Result.of(BaseErrorEnum.TOKEN_NOT_EXIST)
                 .path(request.getRequestURI());
-        WebUtil.writeJsonToResponse(response, JsonUtil.objToStr(commonResponse));
+        WebUtil.writeJsonToResponse(response, JsonUtil.objToStr(result));
     }
 }

@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.util.StringUtils;
-import top.cadecode.common.core.exception.CommonException;
-import top.cadecode.common.enums.FrameErrorEnum;
+import top.cadecode.common.core.exception.BaseException;
+import top.cadecode.common.enums.UtilErrorEnum;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -71,7 +71,7 @@ public class JsonUtil {
             }
             return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            throw CommonException.of(FrameErrorEnum.JSON_TO_STR_ERROR).suppressed(e);
+            throw BaseException.of(UtilErrorEnum.JSON_TO_STR_ERROR).suppressed(e);
         }
     }
 
@@ -93,7 +93,7 @@ public class JsonUtil {
         try {
             return objectMapper.readValue(str, clazz);
         } catch (Exception e) {
-            throw CommonException.of(FrameErrorEnum.JSON_TO_OBJ_ERROR).suppressed(e);
+            throw BaseException.of(UtilErrorEnum.JSON_TO_OBJ_ERROR).suppressed(e);
         }
     }
 
@@ -115,7 +115,7 @@ public class JsonUtil {
         try {
             return objectMapper.readValue(str, typeReference);
         } catch (IOException e) {
-            throw CommonException.of(FrameErrorEnum.JSON_TO_OBJ_ERROR).suppressed(e);
+            throw BaseException.of(UtilErrorEnum.JSON_TO_OBJ_ERROR).suppressed(e);
         }
     }
 }

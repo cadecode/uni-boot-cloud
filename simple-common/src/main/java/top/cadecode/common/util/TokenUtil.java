@@ -11,8 +11,8 @@ import com.nimbusds.jwt.SignedJWT;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-import top.cadecode.common.core.exception.CommonException;
-import top.cadecode.common.enums.FrameErrorEnum;
+import top.cadecode.common.core.exception.BaseException;
+import top.cadecode.common.enums.UtilErrorEnum;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -58,7 +58,7 @@ public class TokenUtil {
             signedJWT.sign(new MACSigner(secret));
             return signedJWT.serialize();
         } catch (JOSEException e) {
-            throw CommonException.of(FrameErrorEnum.JWT_CREATE_ERROR).suppressed(e);
+            throw BaseException.of(UtilErrorEnum.JWT_CREATE_ERROR).suppressed(e);
         }
     }
 
@@ -78,7 +78,7 @@ public class TokenUtil {
             }
             return null;
         } catch (Exception e) {
-            throw CommonException.of(FrameErrorEnum.JWT_VERIFY_ERROR).suppressed(e);
+            throw BaseException.of(UtilErrorEnum.JWT_VERIFY_ERROR).suppressed(e);
         }
     }
 

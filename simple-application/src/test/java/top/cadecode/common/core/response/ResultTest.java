@@ -10,18 +10,18 @@ import top.cadecode.common.util.JsonUtil;
  * @description
  */
 @Slf4j
-public class CommonResponseTest {
+public class ResultTest {
 
     @Test
     public void ok() {
-        String okJson = JsonUtil.objToStr(CommonResponse.ok("hello world!"),
+        String okJson = JsonUtil.objToStr(Result.ok("hello world!"),
                 true);
         log.info("okJson: {}", okJson);
     }
 
     @Test
     public void of() {
-        String failJson = JsonUtil.objToStr(CommonResponse.of(ResponseCode.UNKNOWN),
+        String failJson = JsonUtil.objToStr(Result.of(ResultCode.UNKNOWN),
                 true);
         log.info("failJson: {}", failJson);
     }

@@ -12,8 +12,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import top.cadecode.common.core.response.CommonResponse;
-import top.cadecode.common.enums.AuthErrorEnum;
+import top.cadecode.common.core.response.Result;
+import top.cadecode.common.enums.BaseErrorEnum;
 import top.cadecode.common.util.JsonUtil;
 import top.cadecode.common.util.TokenUtil;
 import top.cadecode.common.util.WebUtil;
@@ -80,20 +80,20 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             String refreshHeader = request.getHeader(tokenUtil.getRefreshHeader());
             // 判断 refreshToken 是否为空
             if (!StringUtils.hasLength(refreshHeader)) {
-                writeResponse(response, AuthErrorEnum.TOKEN_EXPIRED, requestURI);
+                writeResponse(response, BaseErrorEnum.TOKEN_EXPIRED, requestURI);
                 return;
             }
             // 根据 username 查询用户
             securityUser = (SecurityUser) userDetailsService.loadUserByUsername(name);
             // 判断 refreshToken 是否相符
             if (securityUser == null || !refreshHeader.equals(securityUser.getRefreshToken())) {
-                writeResponse(response, AuthErrorEnum.TOKEN_REFRESH_ERROR, requestURI);
+                writeResponse(response, BaseErrorEnum.TOKEN_REFRESH_ERROR, requestURI);
                 return;
             }
             // 判断 refreshToken 是否过期
             if (securityUser.getTokenTime() == null
                     || tokenUtil.isExpired(securityUser.getTokenTime(), tokenUtil.getRefreshExpiration())) {
-                writeResponse(response, AuthErrorEnum.TOKEN_REFRESH_EXPIRED, requestURI);
+                writeResponse(response, BaseErrorEnum.TOKEN_REFRESH_EXPIRED, requestURI);
                 return;
             }
             // 重颁发 token 并设置响应头
@@ -107,13 +107,13 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             setAuthentication(request, securityUser);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
-            writeResponse(response, AuthErrorEnum.TOKEN_ERROR, requestURI);
+            writeResponse(response, BaseErrorEnum.TOKEN_ERROR, requestURI);
         }
     }
 
-    private void writeResponse(HttpServletResponse response, AuthErrorEnum authErrorEnum, String requestURI) {
-        CommonResponse<Object> commonResponse = CommonResponse.of(authErrorEnum).path(requestURI);
-        WebUtil.writeJsonToResponse(response, JsonUtil.objToStr(commonResponse));
+    private void writeResponse(HttpServletResponse response, BaseErrorEnum BaseErrorEnum, String requestURI) {
+        Result<Object> result = Result.of(BaseErrorEnum).path(requestURI);
+        WebUtil.writeJsonToResponse(response, JsonUtil.objToStr(result));
     }
 
     private void setAuthentication(HttpServletRequest request, UserDetails userDetails) {

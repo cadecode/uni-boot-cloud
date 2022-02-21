@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import top.cadecode.common.annotation.ResponseLogger;
+import top.cadecode.common.annotation.ResLogger;
 import top.cadecode.common.util.JsonUtil;
 import top.cadecode.common.util.WebUtil;
 
@@ -41,18 +41,18 @@ public class ResponseLoggerAspect {
      * @return 原方法返回值
      * @throws Throwable 异常信息
      */
-    @Around("@within(responseLogger) || @annotation(responseLogger)")
-    public Object around(ProceedingJoinPoint point, ResponseLogger responseLogger) throws Throwable {
+    @Around("@within(resLogger) || @annotation(resLogger)")
+    public Object around(ProceedingJoinPoint point, ResLogger resLogger) throws Throwable {
         // 根据注解判断是否开启
         MethodSignature methodSignature = (MethodSignature) point.getSignature();
-        ResponseLogger mResponseLogging = methodSignature.getMethod().getAnnotation(ResponseLogger.class);
+        ResLogger mResponseLogging = methodSignature.getMethod().getAnnotation(ResLogger.class);
         boolean loggingFlag;
         if (mResponseLogging != null) {
             loggingFlag = mResponseLogging.value();
         } else {
             loggingFlag = methodSignature.getMethod()
                     .getDeclaringClass()
-                    .getAnnotation(ResponseLogger.class)
+                    .getAnnotation(ResLogger.class)
                     .value();
         }
         if (!loggingFlag) {

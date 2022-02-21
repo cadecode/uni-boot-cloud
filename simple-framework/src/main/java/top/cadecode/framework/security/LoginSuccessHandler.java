@@ -6,8 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import top.cadecode.common.core.response.CommonResponse;
-import top.cadecode.common.core.response.ResponseCode;
+import top.cadecode.common.core.response.Result;
+import top.cadecode.common.core.response.ResultCode;
 import top.cadecode.common.util.JsonUtil;
 import top.cadecode.common.util.TokenUtil;
 import top.cadecode.common.util.WebUtil;
@@ -58,9 +58,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         // 更新属性 Token
         securityUserMapper.updateSecurityUserToken(id, refreshToken);
         // 创建成功的返回内容
-        CommonResponse<SecurityUserVo> commonResponse = CommonResponse.of(ResponseCode.SUCCESS, securityUserVo)
+        Result<SecurityUserVo> result = Result.of(ResultCode.SUCCESS, securityUserVo)
                 .path(SecurityConfig.LOGIN_URL);
         // 写入响应
-        WebUtil.writeJsonToResponse(response, JsonUtil.objToStr(commonResponse));
+        WebUtil.writeJsonToResponse(response, JsonUtil.objToStr(result));
     }
 }

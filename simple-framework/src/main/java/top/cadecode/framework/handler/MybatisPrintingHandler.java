@@ -27,7 +27,7 @@ import java.util.List;
                 args = {MappedStatement.class, Object.class}),
         @Signature(type = Executor.class, method = "query",
                 args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
-public class MybatisSqlPrintingHandler implements Interceptor {
+public class MybatisPrintingHandler implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
