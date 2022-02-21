@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import top.cadecode.common.util.TokenUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,22 +23,27 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class CacheConfig {
 
-    private final TokenUtil tokenUtil;
     private final RedisConnectionFactory factory;
 
-    @Bean("securityCacheManager")
+    /**
+     * Caffeine 本地缓存
+     * 过期时间 5 s
+     *
+     * @return CaffeineCacheManager 实例
+     */
+    @Bean("caffeineCache")
     public CacheManager securityCacheManager() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
-        // 更新时间设置为 jwt token 配置时间
+        // 过期时间设置为 5 s
         caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
-                .expireAfterWrite(tokenUtil.getExpiration(), TimeUnit.SECONDS));
+                .expireAfterWrite(5, TimeUnit.SECONDS));
         caffeineCacheManager.setAllowNullValues(true);
         return caffeineCacheManager;
     }
 
     @Bean("redisTemplate")
-    public RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
+    public RedisTemplate<String, ?> redisTemplate() {
+        RedisTemplate<String, ?> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         // 设置 k v 的序列化方式
         template.setKeySerializer(RedisSerializer.string());
