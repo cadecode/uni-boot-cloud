@@ -2,6 +2,7 @@ package top.cadecode.framework.model.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +12,7 @@ import top.cadecode.common.core.exception.CommonException;
 import top.cadecode.common.enums.AuthErrorEnum;
 import top.cadecode.framework.model.entity.SecurityUser;
 import top.cadecode.framework.model.mapper.SecurityUserMapper;
+import top.cadecode.framework.model.service.SecurityUserSrvice;
 import top.cadecode.framework.model.vo.SecurityUserVo;
 
 import java.util.List;
@@ -19,11 +21,11 @@ import java.util.stream.Collectors;
 /**
  * @author Cade Li
  * @date 2021/12/11
- * @description Spring Security UserDetailsService 实现类
+ * @description Spring Security UserDetailsService 实现
  */
 @Service
 @RequiredArgsConstructor
-public class UserDetailServiceImpl implements UserDetailsService {
+public class SecurityUserSrviceImpl implements SecurityUserSrvice, UserDetailsService {
 
     private final SecurityUserMapper securityUserMapper;
 
