@@ -17,7 +17,7 @@
     </properties>
 
     <dependencies>
-        <!--引入 framework 模块-->
+        <!--framework 模块-->
         <dependency>
             <groupId>top.cadecode</groupId>
             <artifactId>simple-framework</artifactId>

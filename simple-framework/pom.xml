@@ -17,7 +17,7 @@
     </properties>
 
     <dependencies>
-        <!--引入兄弟项目-->
+        <!--common 模块-->
         <dependency>
             <groupId>top.cadecode</groupId>
             <artifactId>simple-common</artifactId>

@@ -16,14 +16,14 @@
     <packaging>pom</packaging>
     <name>simple-admin</name>
     <description>Demo project for Spring Boot</description>
-    <!--引入子项目模块-->
+    <!--子模块-->
     <modules>
         <module>simple-common</module>
         <module>simple-framework</module>
         <module>simple-business</module>
         <module>simple-application</module>
     </modules>
-    <!--配置阿里云镜像-->
+    <!--阿里云镜像-->
     <repositories>
         <repository>
             <id>aliyun</id>
@@ -38,7 +38,7 @@
         </repository>
     </repositories>
 
-    <!--统一管理依赖版本-->
+    <!--依赖版本-->
     <properties>
         <java.version>1.8</java.version>
         <simple-common.version>0.0.1-SNAPSHOT</simple-common.version>
@@ -50,10 +50,11 @@
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <user-agent.version>1.21</user-agent.version>
         <guava.vsersion>31.0.1-jre</guava.vsersion>
+        <hutool.vsersion>5.7.5</hutool.vsersion>
     </properties>
 
     <dependencies>
-        <!--引入 lombok-->
+        <!--lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -63,7 +64,7 @@
 
     <dependencyManagement>
         <dependencies>
-            <!--配置子模块版本-->
+            <!--子模块-->
             <dependency>
                 <groupId>top.cadecode</groupId>
                 <artifactId>simple-common</artifactId>
@@ -79,35 +80,41 @@
                 <artifactId>simple-business</artifactId>
                 <version>${simple-business.version}</version>
             </dependency>
-            <!--配置 swagger 版本-->
+            <!--swagger-->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
-            <!--配置 mybatis 版本-->
+            <!--mybatis-->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.version}</version>
             </dependency>
-            <!--配置 mybatis plus 版本-->
+            <!--mybatis plus-->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
-            <!--配置 UserAgentUtils 版本-->
+            <!--UserAgentUtils-->
             <dependency>
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${user-agent.version}</version>
             </dependency>
-            <!--配置 guava 版本-->
+            <!--guava-->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.vsersion}</version>
+            </dependency>
+            <!--hutool-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.vsersion}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

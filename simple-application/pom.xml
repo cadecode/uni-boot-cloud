@@ -17,24 +17,24 @@
     </properties>
 
     <dependencies>
-        <!--引入 business 模块-->
+        <!--business 模块-->
         <dependency>
             <groupId>top.cadecode</groupId>
             <artifactId>simple-business</artifactId>
         </dependency>
-        <!--引入 SpringBoot tomcat-->
+        <!--SpringBoot tomcat-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!--引入 SpringBoot test-->
+        <!--SpringBoot test-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--引入 SpringBoot devtools-->
+        <!--SpringBoot devtools-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
