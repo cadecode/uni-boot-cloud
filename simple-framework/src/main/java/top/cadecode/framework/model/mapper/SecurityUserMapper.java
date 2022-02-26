@@ -18,13 +18,4 @@ public interface SecurityUserMapper {
      * @return 用户信息 VO
      */
     SecurityUserVo getSecurityUserVo(String username);
-
-    /**
-     * 设置用户刷新 Token
-     *
-     * @param id    用户 ID
-     * @param token token
-     * @return 行数
-     */
-    int updateSecurityUserToken(long id, String token);
 }

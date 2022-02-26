@@ -8,25 +8,16 @@
         <result column="nick_name" property="nickName" />
         <result column="enable_flag" property="enableFlag" />
         <result column="refresh_token" property="refreshToken" />
-        <result column="token_time" property="tokenTime" />
         <collection property="roles" ofType="string">
             <result column="code" />
         </collection>
     </resultMap>
-    <update id="updateSecurityUserToken">
-        UPDATE security_user
-        SET refresh_token = #{token},
-            token_time    = CURRENT_TIMESTAMP()
-        WHERE id = #{id}
-    </update>
     <select id="getSecurityUserVo" resultMap="SecurityUserVoMap">
         SELECT sru.user_id,
                su.username,
                su.password,
                su.nick_name,
                su.enable_flag,
-               su.refresh_token,
-               su.token_time,
                sr.code
         FROM security_user su
                  LEFT JOIN security_role_user sru ON su.id = sru.user_id

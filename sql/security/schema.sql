@@ -8,8 +8,6 @@ CREATE TABLE IF NOT EXISTS security_user
     password      VARCHAR(100)     NOT NULL COMMENT '密码',
     nick_name     VARCHAR(50)      NOT NULL COMMENT '昵称',
     enable_flag   TINYINT UNSIGNED NOT NULL COMMENT '是否启用',
-    refresh_token CHAR(36) COMMENT 'token',
-    token_time    TIMESTAMP COMMENT 'token 时间',
     create_time   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_time   TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
