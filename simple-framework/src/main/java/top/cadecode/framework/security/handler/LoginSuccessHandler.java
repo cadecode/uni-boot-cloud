@@ -1,25 +1,29 @@
 package top.cadecode.framework.security.handler;
 
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.http.ContentType;
+import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import top.cadecode.common.core.response.Result;
 import top.cadecode.common.core.response.ResultCode;
-import top.cadecode.common.util.JsonUtil;
-import top.cadecode.common.util.TokenUtil;
-import top.cadecode.common.util.WebUtil;
 import top.cadecode.framework.config.SecurityConfig;
 import top.cadecode.framework.model.entity.SecurityUser;
-import top.cadecode.framework.model.mapper.SecurityUserMapper;
+import top.cadecode.framework.model.service.SecurityUserSrvice;
 import top.cadecode.framework.model.vo.SecurityUserVo;
+import top.cadecode.framework.security.JwtTokenHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -31,8 +35,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final TokenUtil tokenUtil;
-    private final SecurityUserMapper securityUserMapper;
+    private final JwtTokenHolder jwtTokenHolder;
+    private final StringRedisTemplate redisTemplate;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -51,16 +55,17 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         // 为用户 VO 设置角色
         securityUserVo.setRoles(roles);
         // 为用户 VO 设置 JWT Token
-        securityUserVo.setToken(tokenUtil.generateToken(id, username, roles));
-        // 为用户 VO 设置刷新 Token
+        securityUserVo.setToken(jwtTokenHolder.generateToken(id, username, roles));
+        // 为用户 VO 设置 refresh Token
         String refreshToken = UUID.randomUUID().toString();
         securityUserVo.setRefreshToken(refreshToken);
-        // 更新属性 Token
-        securityUserMapper.updateSecurityUserToken(id, refreshToken);
+        // 存储 refresh token 到 redis
+        String key = SecurityUserSrvice.USER_REFRESH_TOKEN_PREFIX + securityUser.getId();
+        redisTemplate.opsForValue().set(key, refreshToken, jwtTokenHolder.getRefreshExpiration(), TimeUnit.SECONDS);
         // 创建成功的返回内容
         Result<SecurityUserVo> result = Result.of(ResultCode.SUCCESS, securityUserVo)
                 .path(SecurityConfig.LOGIN_URL);
         // 写入响应
-        WebUtil.writeJsonToResponse(response, JsonUtil.objToStr(result));
+        ServletUtil.write(response, JSONUtil.toJsonStr(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
 }
