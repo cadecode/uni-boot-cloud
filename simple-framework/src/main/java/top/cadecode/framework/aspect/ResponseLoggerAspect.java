@@ -1,6 +1,7 @@
 package top.cadecode.framework.aspect;
 
-import eu.bitwalker.useragentutils.UserAgent;
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentUtil;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -65,7 +66,7 @@ public class ResponseLoggerAspect {
         Object result = point.proceed();
         // 解析 user-agent，生成日志信息
         String userAgentStr = request.getHeader("User-Agent");
-        UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
+        UserAgent userAgent = UserAgentUtil.parse(userAgentStr);
         ResponseLoggingInfo loggingInfo = ResponseLoggingInfo.builder()
                 .threadId(Long.toString(Thread.currentThread().getId()))
                 .threadName(Thread.currentThread().getName())
@@ -77,8 +78,8 @@ public class ResponseLoggerAspect {
                 .result(result)
                 .timeCost(System.currentTimeMillis() - startTime)
                 .userAgent(userAgentStr)
-                .browser(userAgent.getBrowser().toString())
-                .os(userAgent.getOperatingSystem().toString())
+                .browser(userAgent.getBrowser().getName())
+                .os(userAgent.getOs().getName())
                 .build();
         log.info("请求响应日志 => {}", JsonUtil.objToStr(loggingInfo));
         return result;
