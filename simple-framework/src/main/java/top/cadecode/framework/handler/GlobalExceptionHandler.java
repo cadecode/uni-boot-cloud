@@ -1,5 +1,6 @@
 package top.cadecode.framework.handler;
 
+import cn.hutool.core.lang.Dict;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
@@ -14,7 +15,6 @@ import top.cadecode.common.core.exception.BaseException;
 import top.cadecode.common.core.response.Result;
 import top.cadecode.common.core.response.ResultCode;
 import top.cadecode.common.enums.BaseErrorEnum;
-import top.cadecode.common.util.MapUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -108,11 +108,10 @@ public class GlobalExceptionHandler extends DefaultErrorAttributes {
      * 生成返回内容的 Map
      */
     private Map<String, Object> generateErrorAttributes(ResultCode resultCode, String path, String message) {
-        return MapUtil.create()
-                .add("code", resultCode.getCode())
-                .add("reason", resultCode.getReason())
-                .add("path", path)
-                .add("errorMsg", message)
-                .asMap();
+        return Dict.create()
+                .set("code", resultCode.getCode())
+                .set("reason", resultCode.getReason())
+                .set("path", path)
+                .set("errorMsg", message);
     }
 }
