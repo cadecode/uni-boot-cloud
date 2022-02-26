@@ -1,5 +1,6 @@
 package top.cadecode.framework.handler;
 
+import cn.hutool.json.JSONUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -10,7 +11,6 @@ import top.cadecode.common.annotation.ResIgnore;
 import top.cadecode.common.core.exception.BaseException;
 import top.cadecode.common.core.response.Result;
 import top.cadecode.common.enums.BaseErrorEnum;
-import top.cadecode.common.util.JsonUtil;
 
 /**
  * @author Cade Li
@@ -33,7 +33,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
         if (body == null) {
             throw BaseException.of(BaseErrorEnum.RES_BODY_INVALID);
         }
-        // 判断 body 是否是包装好的 SimpleRes
+        // 判断 body 是否是包装好的 Result
         if (body instanceof Result) {
             return ((Result<?>) body).path(path);
         }
@@ -42,7 +42,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice<Object> {
             // 设置统一的 Content-Type
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             // String 类型的 Body 需要返回 String 类型，否则报转换错误
-            return JsonUtil.objToStr(Result.ok(body).path(path));
+            return JSONUtil.toJsonStr(Result.ok(body).path(path));
         }
         // 判断是否有忽略格式化注解，有则直接返回
         ResIgnore resIgnore = returnType.getMethodAnnotation(ResIgnore.class);

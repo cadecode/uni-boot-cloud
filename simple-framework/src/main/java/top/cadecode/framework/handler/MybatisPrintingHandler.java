@@ -115,7 +115,7 @@ public class MybatisPrintingHandler implements Interceptor {
      * @param sqlId sql id
      */
     private static void logs(long time, String sql, String sqlId) {
-        log.info("sql 日志 => 执行 [" + sqlId + "] 用时 " + time + " 毫秒");
-        log.info("sql 日志 <= 语句：" + sql);
+        log.info("SQL LOG => exec [" + sqlId + "], cast " + time + " ms");
+        log.info("SQL LOG <= sql：" + sql);
     }
 }

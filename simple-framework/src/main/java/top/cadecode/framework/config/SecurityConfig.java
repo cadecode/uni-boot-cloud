@@ -87,6 +87,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    /**
+     * 配置投票器管理器
+     * UnanimousBased，全部投票器通过才算通过
+     *
+     * @return 投票器管理器
+     */
     private AccessDecisionManager accessDecisionManager() {
         return new UnanimousBased(Arrays.asList(
                 new WebExpressionVoter(),

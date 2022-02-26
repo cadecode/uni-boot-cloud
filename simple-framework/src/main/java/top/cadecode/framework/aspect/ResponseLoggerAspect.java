@@ -1,7 +1,9 @@
 package top.cadecode.framework.aspect;
 
+import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
+import cn.hutool.json.JSONUtil;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +18,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import top.cadecode.common.annotation.ResLogger;
-import top.cadecode.common.util.JsonUtil;
-import top.cadecode.common.util.WebUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
@@ -71,7 +71,7 @@ public class ResponseLoggerAspect {
                 .threadId(Long.toString(Thread.currentThread().getId()))
                 .threadName(Thread.currentThread().getName())
                 .classMethod(point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName())
-                .ip(WebUtil.getIpAddress(request))
+                .ip(ServletUtil.getClientIP(request))
                 .url(request.getRequestURL().toString())
                 .httpMethod(request.getMethod())
                 .requestParams(ResponseLoggerAspect.getRequestParams(point))
@@ -81,7 +81,7 @@ public class ResponseLoggerAspect {
                 .browser(userAgent.getBrowser().getName())
                 .os(userAgent.getOs().getName())
                 .build();
-        log.info("请求响应日志 => {}", JsonUtil.objToStr(loggingInfo));
+        log.info("API LOG => {}", JSONUtil.toJsonStr(loggingInfo));
         return result;
     }
 
@@ -97,7 +97,7 @@ public class ResponseLoggerAspect {
             return Collections.emptyMap();
         }
         if (names.length != args.length) {
-            log.warn("请求响应日志 => 方法 [{}] 参数名和参数值数量不一致", methodSignature.getName());
+            log.warn("API LOG => Method [{}] has different numbers of parameter names and values", methodSignature.getName());
             return Collections.emptyMap();
         }
         Map<String, Object> map = new HashMap<>();
