@@ -1,4 +1,4 @@
-package top.cadecode.framework.security;
+package top.cadecode.framework.security.handler;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;

@@ -1,4 +1,4 @@
-package top.cadecode.framework.security;
+package top.cadecode.framework.security.handler;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
