@@ -18,8 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.cadecode.sa.framework.security.filter.JwtTokenAuthenticationFilter;
-import top.cadecode.framework.security.handler.*;
-import top.cadecode.project.sa.framework.security.handler.*;
 import top.cadecode.sa.framework.security.handler.*;
 import top.cadecode.sa.framework.security.voter.DbRoleVoter;
 
