@@ -105,5 +105,6 @@ public class DataSourceConfig {
     public static class DbConfigObject {
         private String type;
         private boolean defaultFlag;
+        private Map<String, Object> config;
     }
 }
