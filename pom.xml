@@ -10,12 +10,12 @@
     </parent>
 
     <groupId>top.cadecode</groupId>
-    <artifactId>simple-admin</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>simple-rest-admin</artifactId>
+    <version>${sra.version}</version>
 
     <packaging>pom</packaging>
     <name>simple-admin</name>
-    <description>Demo project for Spring Boot</description>
+    <description>基于 SpringBoot 多模块开发，Rest 风格的后台管理系统</description>
     <!--子模块-->
     <modules>
         <module>simple-common</module>
@@ -23,27 +23,11 @@
         <module>simple-business</module>
         <module>simple-application</module>
     </modules>
-    <!--阿里云镜像-->
-    <repositories>
-        <repository>
-            <id>aliyun</id>
-            <name>aliyun</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <!--依赖版本-->
     <properties>
         <java.version>1.8</java.version>
-        <simple-common.version>0.0.1-SNAPSHOT</simple-common.version>
-        <simple-framework.version>0.0.1-SNAPSHOT</simple-framework.version>
-        <simple-business.version>0.0.1-SNAPSHOT</simple-business.version>
+        <sra.version>0.0.1-SNAPSHOT</sra.version>
 
         <knife4j.version>2.0.5</knife4j.version>
         <mybatis.version>2.2.0</mybatis.version>
@@ -67,17 +51,17 @@
             <dependency>
                 <groupId>top.cadecode</groupId>
                 <artifactId>simple-common</artifactId>
-                <version>${simple-common.version}</version>
+                <version>${sra.version}</version>
             </dependency>
             <dependency>
                 <groupId>top.cadecode</groupId>
                 <artifactId>simple-framework</artifactId>
-                <version>${simple-framework.version}</version>
+                <version>${sra.version}</version>
             </dependency>
             <dependency>
                 <groupId>top.cadecode</groupId>
                 <artifactId>simple-business</artifactId>
-                <version>${simple-business.version}</version>
+                <version>${sra.version}</version>
             </dependency>
             <!--swagger-->
             <dependency>
@@ -112,4 +96,32 @@
         </dependencies>
     </dependencyManagement>
 
+    <!--阿里云镜像-->
+    <repositories>
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyun-plugin</id>
+            <name>aliyun-plugin</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <!--配置父项目-->
     <parent>
-        <artifactId>simple-admin</artifactId>
+        <artifactId>simple-rest-admin</artifactId>
         <groupId>top.cadecode</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
