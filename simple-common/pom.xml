@@ -73,11 +73,6 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
         </dependency>
-        <!--JWT 工具-->
-        <dependency>
-            <groupId>com.nimbusds</groupId>
-            <artifactId>nimbus-jose-jwt</artifactId>
-        </dependency>
         <!--guava-->
         <dependency>
             <groupId>com.google.guava</groupId>
