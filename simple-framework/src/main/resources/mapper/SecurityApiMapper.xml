@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.cadecode.sa.framework.model.mapper.SecurityApiMapper">
-    <resultMap id="SecurityApiVoMap" type="top.cadecode.sa.framework.model.vo.SecurityApiVo">
+<mapper namespace="top.cadecode.sra.framework.model.mapper.SecurityApiMapper">
+    <resultMap id="SecurityApiVoMap" type="top.cadecode.sra.framework.model.vo.SecurityApiVo">
         <result column="id" property="id" />
         <result column="url" property="url" />
         <result column="description" property="description" />
