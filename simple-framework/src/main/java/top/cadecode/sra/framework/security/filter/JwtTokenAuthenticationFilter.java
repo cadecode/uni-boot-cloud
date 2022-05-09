@@ -15,8 +15,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import top.cadecode.sra.common.core.response.Result;
-import top.cadecode.sra.common.enums.BaseErrorEnum;
+import top.cadecode.sra.common.exception.ApiErrorCode;
+import top.cadecode.sra.common.response.ApiResult;
+import top.cadecode.sra.common.response.ApiStatus;
+import top.cadecode.sra.framework.enums.AuthErrorEnum;
 import top.cadecode.sra.framework.model.entity.SecurityUser;
 import top.cadecode.sra.framework.model.service.SecurityUserSrvice;
 import top.cadecode.sra.framework.model.vo.SecurityUserVo;
@@ -54,7 +56,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         }
         // if: token 不合法
         if (!jwtTokenHolder.verifyToken(token)) {
-            writeResponse(response, BaseErrorEnum.TOKEN_ERROR, requestURI);
+            writeResponse(response, AuthErrorEnum.TOKEN_ERROR, requestURI);
             return;
         }
         // 从 token 解析出用户信息
@@ -73,7 +75,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         String refreshToken = request.getHeader(jwtTokenHolder.getRefreshHeader());
         // if: 请求头中 refresh token 为空
         if (!StringUtils.hasLength(refreshToken)) {
-            writeResponse(response, BaseErrorEnum.TOKEN_EXPIRED, requestURI);
+            writeResponse(response, AuthErrorEnum.TOKEN_EXPIRED, requestURI);
             return;
         }
         // refresh token redis key
@@ -81,12 +83,12 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         String refreshTokenInRedis = redisTemplate.opsForValue().get(key);
         // if: redis 中 refresh token 为空
         if (!StringUtils.hasLength(refreshTokenInRedis)) {
-            writeResponse(response, BaseErrorEnum.TOKEN_REFRESH_EXPIRED, requestURI);
+            writeResponse(response, AuthErrorEnum.TOKEN_REFRESH_EXPIRED, requestURI);
             return;
         }
         // if: refresh token 和 redis 中不一致，注意 JSON 格式写入
         if (!refreshToken.equals(refreshTokenInRedis)) {
-            writeResponse(response, BaseErrorEnum.TOKEN_REFRESH_ERROR, requestURI);
+            writeResponse(response, AuthErrorEnum.TOKEN_REFRESH_ERROR, requestURI);
             return;
         }
         // 重颁发 token
@@ -102,11 +104,11 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
      * 将错误信息写入响应
      *
      * @param response   响应对象
-     * @param errorEnum  错误信息枚举类
+     * @param errorCode  错误信息枚举类
      * @param requestURI 请求路径
      */
-    private void writeResponse(HttpServletResponse response, BaseErrorEnum errorEnum, String requestURI) {
-        Result<Object> result = Result.of(errorEnum).path(requestURI);
+    private void writeResponse(HttpServletResponse response, ApiErrorCode errorCode, String requestURI) {
+        ApiResult<Object> result = ApiResult.error(errorCode).status(ApiStatus.NO_AUTHENTICATION).path(requestURI);
         ServletUtil.write(response, JSONUtil.toJsonStr(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
 

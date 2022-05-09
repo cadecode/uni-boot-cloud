@@ -11,8 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import top.cadecode.sra.common.core.response.Result;
-import top.cadecode.sra.common.core.response.ResultCode;
+import top.cadecode.sra.common.response.ApiResult;
 import top.cadecode.sra.framework.config.SecurityConfig;
 import top.cadecode.sra.framework.model.entity.SecurityUser;
 import top.cadecode.sra.framework.model.service.SecurityUserSrvice;
@@ -63,8 +62,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         String key = SecurityUserSrvice.USER_REFRESH_TOKEN_PREFIX + securityUser.getId();
         redisTemplate.opsForValue().set(key, refreshToken, jwtTokenHolder.getRefreshExpiration(), TimeUnit.SECONDS);
         // 创建成功的返回内容
-        Result<SecurityUserVo> result = Result.of(ResultCode.SUCCESS, securityUserVo)
-                .path(SecurityConfig.LOGIN_URL);
+        ApiResult<SecurityUserVo> result = ApiResult.ok(securityUserVo).path(SecurityConfig.LOGIN_URL);
         // 写入响应
         ServletUtil.write(response, JSONUtil.toJsonStr(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
