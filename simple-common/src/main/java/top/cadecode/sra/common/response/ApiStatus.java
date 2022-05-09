@@ -1,11 +1,11 @@
-package top.cadecode.sra.common.consts;
+package top.cadecode.sra.common.response;
 
 /**
  * @author Cade Li
  * @date 2022/5/8
  * @description Http 状态码
  */
-public class HttpStatus {
+public class ApiStatus {
 
     /**
      * 200	OK

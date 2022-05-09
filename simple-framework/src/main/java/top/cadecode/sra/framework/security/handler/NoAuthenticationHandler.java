@@ -7,8 +7,9 @@ import cn.hutool.json.JSONUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import top.cadecode.sra.common.core.response.Result;
-import top.cadecode.sra.common.enums.BaseErrorEnum;
+import top.cadecode.sra.common.response.ApiResult;
+import top.cadecode.sra.common.response.ApiStatus;
+import top.cadecode.sra.framework.enums.AuthErrorEnum;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +24,7 @@ public class NoAuthenticationHandler implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) {
-        Result<Object> result = Result.of(BaseErrorEnum.TOKEN_NOT_EXIST)
+        ApiResult<Object> result = ApiResult.of(ApiStatus.NO_AUTHENTICATION, AuthErrorEnum.TOKEN_NOT_EXIST, null)
                 .path(request.getRequestURI());
         ServletUtil.write(response, JSONUtil.toJsonStr(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }

@@ -7,8 +7,7 @@ import cn.hutool.json.JSONUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
-import top.cadecode.sra.common.core.response.Result;
-import top.cadecode.sra.common.core.response.ResultCode;
+import top.cadecode.sra.common.response.ApiResult;
 import top.cadecode.sra.framework.config.SecurityConfig;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +24,7 @@ public class SignOutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
                                 Authentication authentication) {
-        Result<Object> result = Result.of(ResultCode.SUCCESS)
-                .path(SecurityConfig.LOGOUT_URL);
+        ApiResult<Object> result = ApiResult.ok(null).path(SecurityConfig.LOGOUT_URL);
         ServletUtil.write(response, JSONUtil.toJsonStr(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
 }

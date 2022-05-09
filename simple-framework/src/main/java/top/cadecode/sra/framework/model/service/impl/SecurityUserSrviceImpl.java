@@ -7,8 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import top.cadecode.sra.common.core.exception.BaseException;
-import top.cadecode.sra.common.enums.BaseErrorEnum;
+import top.cadecode.sra.common.exception.ApiException;
 import top.cadecode.sra.framework.model.entity.SecurityUser;
 import top.cadecode.sra.framework.model.mapper.SecurityUserMapper;
 import top.cadecode.sra.framework.model.service.SecurityUserSrvice;
@@ -34,11 +33,11 @@ public class SecurityUserSrviceImpl implements SecurityUserSrvice, UserDetailsSe
         SecurityUserVo securityUserVo = securityUserMapper.getSecurityUserVo(username);
         // 没有查询到任何记录
         if (securityUserVo == null) {
-            throw BaseException.of(BaseErrorEnum.TOKEN_CREATE_ERROR).errorMsg("用户名或密码错误");
+            throw ApiException.of("该用户不存在");
         }
         // 用户账号被关闭
         if (!securityUserVo.isEnableFlag()) {
-            throw BaseException.of(BaseErrorEnum.TOKEN_CREATE_ERROR).errorMsg("账号已被关闭");
+            throw ApiException.of("账号已被关闭");
         }
         // 创建 UserDetails，并设置属性
         SecurityUser securityUser = new SecurityUser();
