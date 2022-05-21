@@ -9,7 +9,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import top.cadecode.sra.common.annotation.DataSource;
-import top.cadecode.sra.common.core.datasource.DynamicDataSourceHolder;
+import top.cadecode.sra.common.datasource.DynamicDSHolder;
 
 /**
  * @author Cade Li
@@ -42,10 +42,10 @@ public class DynamicDataSourceAspect {
                     .value();
         }
         // 设置数据源
-        if (!DynamicDataSourceHolder.containDataSourceKey(dataSourceKey)) {
+        if (!DynamicDSHolder.containDataSourceKey(dataSourceKey)) {
             log.info("切换数据源 => 数据源 {} 不存在，使用默认数据源", dataSource.value());
         } else {
-            DynamicDataSourceHolder.setDataSourceKey(dataSourceKey);
+            DynamicDSHolder.setDataSourceKey(dataSourceKey);
             log.info("切换数据源 => 切换到 {}，执行方法 [{}]", dataSourceKey,
                     point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName());
         }
@@ -57,7 +57,7 @@ public class DynamicDataSourceAspect {
     @After("@within(dataSource) || @annotation(dataSource)")
     public void resetDataSource(JoinPoint point, DataSource dataSource) {
         // 将数据源重置置为默认数据源
-        DynamicDataSourceHolder.clearDataSourceKey();
+        DynamicDSHolder.clearDataSourceKey();
         log.info("切换数据源 <= 重置默认数据源");
     }
 }

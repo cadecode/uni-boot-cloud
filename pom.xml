@@ -20,8 +20,8 @@
     <modules>
         <module>simple-common</module>
         <module>simple-framework</module>
-        <module>simple-business</module>
         <module>simple-application</module>
+        <module>simple-test</module>
     </modules>
 
     <!--依赖版本-->
@@ -60,7 +60,7 @@
             </dependency>
             <dependency>
                 <groupId>top.cadecode</groupId>
-                <artifactId>simple-business</artifactId>
+                <artifactId>simple-test</artifactId>
                 <version>${sra.version}</version>
             </dependency>
             <!--swagger-->

@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
-import top.cadecode.sra.common.core.datasource.DynamicDataSource;
-import top.cadecode.sra.common.core.datasource.DynamicDataSourceHolder;
+import top.cadecode.sra.common.datasource.DynamicDS;
+import top.cadecode.sra.common.datasource.DynamicDSHolder;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -41,13 +41,13 @@ public class DataSourceConfig {
     private Map<String, DbConfigObject> dbs;
 
     @Bean
-    public DynamicDataSource dynamicDataSource() {
+    public DynamicDS dynamicDataSource() {
         log.info("Starting configuring dynamic data source ");
-        DynamicDataSource dynamicDS = new DynamicDataSource();
+        DynamicDS dynamicDS = new DynamicDS();
         // 获取数据库 key 集合
         Set<String> keys = dbs.keySet();
         // 存储 keys
-        DynamicDataSourceHolder.addDataSourceKeys(keys);
+        DynamicDSHolder.addDataSourceKeys(keys);
         // 定义数据源容器
         Map<Object, Object> dataSourceMap = new HashMap<>();
         // 遍历 dbs

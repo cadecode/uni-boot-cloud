@@ -20,7 +20,7 @@
         <!--business 模块-->
         <dependency>
             <groupId>top.cadecode</groupId>
-            <artifactId>simple-business</artifactId>
+            <artifactId>simple-test</artifactId>
         </dependency>
         <!--SpringBoot tomcat-->
         <dependency>
