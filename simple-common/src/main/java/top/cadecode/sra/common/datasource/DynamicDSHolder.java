@@ -1,16 +1,18 @@
-package top.cadecode.sra.common.core.datasource;
+package top.cadecode.sra.common.datasource;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * @author Cade Li
  * @date 2021/12/3
  * @description 动态数据源控制器
  */
-public class DynamicDataSourceHolder {
-    // 定义容器，存储当前线程的数据源 key
-    private static final ThreadLocal<String> HOLDER = new ThreadLocal<>();
+public class DynamicDSHolder {
+
+    // 定义容器，存储当前线程的数据源 key，使用 stack 实现嵌套切换
+    private static final ThreadLocal<Stack<String>> HOLDER = ThreadLocal.withInitial(Stack::new);
     // 定义容器，存储所有数据源 key
     private static final Set<Object> KEYS = new HashSet<>();
 
@@ -18,21 +20,21 @@ public class DynamicDataSourceHolder {
      * 设置数据源 key
      */
     public static void setDataSourceKey(String key) {
-        HOLDER.set(key);
+        HOLDER.get().push(key);
     }
 
     /**
      * 取出数据源 key
      */
     public static String getDataSourceKey() {
-        return HOLDER.get();
+        return HOLDER.get().peek();
     }
 
     /**
-     * 重置数据源 key
+     * 删除数据源 key
      */
     public static void clearDataSourceKey() {
-        HOLDER.remove();
+        HOLDER.get().pop();
     }
 
     /**

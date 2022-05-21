@@ -1,4 +1,4 @@
-package top.cadecode.sra.common.core.datasource;
+package top.cadecode.sra.common.datasource;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
@@ -10,7 +10,7 @@ import java.util.Map;
  * @date 2021/12/3
  * @description 动态数据源类
  */
-public class DynamicDataSource extends AbstractRoutingDataSource {
+public class DynamicDS extends AbstractRoutingDataSource {
 
     private boolean hasDefaultDataSource;
 
@@ -19,7 +19,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
      */
     @Override
     protected Object determineCurrentLookupKey() {
-        return DynamicDataSourceHolder.getDataSourceKey();
+        return DynamicDSHolder.getDataSourceKey();
     }
 
     /**
@@ -29,7 +29,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     public void setTargetDataSources(Map<Object, Object> targetDataSources) {
         super.setTargetDataSources(targetDataSources);
         // 存储数据源 key
-        DynamicDataSourceHolder.addDataSourceKeys(targetDataSources.keySet());
+        DynamicDSHolder.addDataSourceKeys(targetDataSources.keySet());
     }
 
     /**
@@ -55,6 +55,4 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
     protected DataSource determineTargetDataSource() {
         return super.determineTargetDataSource();
     }
-
-
 }
