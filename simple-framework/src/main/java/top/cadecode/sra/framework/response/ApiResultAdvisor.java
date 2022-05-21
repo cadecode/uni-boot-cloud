@@ -9,7 +9,7 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import top.cadecode.sra.common.annotation.ApiResultFormat;
+import top.cadecode.sra.common.annotation.ApiFormat;
 import top.cadecode.sra.common.response.ApiResult;
 
 import java.util.Objects;
@@ -46,7 +46,7 @@ public class ApiResultAdvisor implements ResponseBodyAdvice<Object> {
     }
 
     /**
-     * 根据 @ApiResultFormat 判断是否需要包装成 ApiResult
+     * 根据 @ApiFormat 判断是否需要包装成 ApiResult
      *
      * @param returnType MethodParameter
      * @param body       响应体
@@ -55,14 +55,14 @@ public class ApiResultAdvisor implements ResponseBodyAdvice<Object> {
     private Object apiResultFormat(MethodParameter returnType, Object body, ServerHttpResponse response) {
         // 是否需要包装标记
         boolean formatFlag;
-        // 获取方法上的 ApiResultFormat 注解
-        ApiResultFormat formatM = returnType.getMethodAnnotation(ApiResultFormat.class);
+        // 获取方法上的 ApiFormat 注解
+        ApiFormat formatM = returnType.getMethodAnnotation(ApiFormat.class);
         // 以方法上注解为主
         if (Objects.nonNull(formatM)) {
             formatFlag = formatM.value();
         } else {
-            // 获取类上的 ApiResultFormat 注解
-            ApiResultFormat formatC = returnType.getContainingClass().getAnnotation(ApiResultFormat.class);
+            // 获取类上的 ApiFormat 注解
+            ApiFormat formatC = returnType.getContainingClass().getAnnotation(ApiFormat.class);
             formatFlag = Objects.nonNull(formatC) && formatC.value();
         }
         // 不需要包装，直接返回

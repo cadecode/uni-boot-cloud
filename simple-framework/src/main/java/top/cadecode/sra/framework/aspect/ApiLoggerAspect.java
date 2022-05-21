@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import top.cadecode.sra.common.annotation.ResLogger;
+import top.cadecode.sra.common.annotation.ApiLogger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
@@ -33,7 +33,7 @@ import java.util.Objects;
 @Slf4j
 @Aspect
 @Component
-public class ResponseLoggerAspect {
+public class ApiLoggerAspect {
 
     /**
      * 环绕通知
@@ -42,18 +42,18 @@ public class ResponseLoggerAspect {
      * @return 原方法返回值
      * @throws Throwable 异常信息
      */
-    @Around("@within(resLogger) || @annotation(resLogger)")
-    public Object around(ProceedingJoinPoint point, ResLogger resLogger) throws Throwable {
+    @Around("@within(apiLogger) || @annotation(apiLogger)")
+    public Object around(ProceedingJoinPoint point, ApiLogger apiLogger) throws Throwable {
         // 根据注解判断是否开启
         MethodSignature methodSignature = (MethodSignature) point.getSignature();
-        ResLogger mResponseLogging = methodSignature.getMethod().getAnnotation(ResLogger.class);
+        ApiLogger mResponseLogging = methodSignature.getMethod().getAnnotation(ApiLogger.class);
         boolean loggingFlag;
         if (mResponseLogging != null) {
             loggingFlag = mResponseLogging.value();
         } else {
             loggingFlag = methodSignature.getMethod()
                     .getDeclaringClass()
-                    .getAnnotation(ResLogger.class)
+                    .getAnnotation(ApiLogger.class)
                     .value();
         }
         if (!loggingFlag) {
@@ -74,7 +74,7 @@ public class ResponseLoggerAspect {
                 .ip(ServletUtil.getClientIP(request))
                 .url(request.getRequestURL().toString())
                 .httpMethod(request.getMethod())
-                .requestParams(ResponseLoggerAspect.getRequestParams(point))
+                .requestParams(ApiLoggerAspect.getRequestParams(point))
                 .result(result)
                 .timeCost(System.currentTimeMillis() - startTime)
                 .userAgent(userAgentStr)
