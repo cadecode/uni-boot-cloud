@@ -34,6 +34,7 @@
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <guava.vsersion>31.0.1-jre</guava.vsersion>
         <hutool.vsersion>5.7.5</hutool.vsersion>
+        <p6spy.version>3.8.1</p6spy.version>
     </properties>
 
     <dependencies>
@@ -92,6 +93,12 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.vsersion}</version>
+            </dependency>
+            <!--p6spy-->
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${p6spy.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
