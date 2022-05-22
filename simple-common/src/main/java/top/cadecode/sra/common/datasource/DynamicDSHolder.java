@@ -27,6 +27,10 @@ public class DynamicDSHolder {
      * 取出数据源 key
      */
     public static String getDataSourceKey() {
+        // 栈空时返回 null，自动使用默认数据源
+        if (HOLDER.get().isEmpty()) {
+            return null;
+        }
         return HOLDER.get().peek();
     }
 
@@ -34,7 +38,9 @@ public class DynamicDSHolder {
      * 删除数据源 key
      */
     public static void clearDataSourceKey() {
-        HOLDER.get().pop();
+        if (!HOLDER.get().isEmpty()) {
+            HOLDER.get().pop();
+        }
     }
 
     /**
