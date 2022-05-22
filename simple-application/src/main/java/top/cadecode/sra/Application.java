@@ -6,15 +6,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * @author Cade Li
  * @date 2022/5/8
  * @description 主启动类
  */
-@SpringBootApplication
-@MapperScan("top.cadecode.**.mapper")
 @ComponentScan("top.cadecode")
+@MapperScan("top.cadecode.**.mapper")
+@EnableAspectJAutoProxy(exposeProxy = true)
+@SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
