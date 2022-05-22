@@ -12,8 +12,6 @@ import java.util.Map;
  */
 public class DynamicDS extends AbstractRoutingDataSource {
 
-    private boolean hasDefaultDataSource;
-
     /**
      * 设置数据源 key
      */
@@ -38,14 +36,6 @@ public class DynamicDS extends AbstractRoutingDataSource {
     @Override
     public void setDefaultTargetDataSource(Object defaultTargetDataSource) {
         super.setDefaultTargetDataSource(defaultTargetDataSource);
-        this.hasDefaultDataSource = true;
-    }
-
-    /**
-     * 获取是否设置默认数据源
-     */
-    public boolean hasDefaultDataSource() {
-        return this.hasDefaultDataSource;
     }
 
     /**
