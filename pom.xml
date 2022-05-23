@@ -33,7 +33,7 @@
         <mybatis.version>2.2.0</mybatis.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <guava.vsersion>31.0.1-jre</guava.vsersion>
-        <hutool.vsersion>5.7.5</hutool.vsersion>
+        <hutool.vsersion>5.8.0</hutool.vsersion>
         <p6spy.version>3.8.1</p6spy.version>
     </properties>
 
@@ -43,6 +43,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <!--hutool-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.vsersion}</version>
         </dependency>
     </dependencies>
 
@@ -87,12 +93,6 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.vsersion}</version>
-            </dependency>
-            <!--hutool-->
-            <dependency>
-                <groupId>cn.hutool</groupId>
-                <artifactId>hutool-all</artifactId>
-                <version>${hutool.vsersion}</version>
             </dependency>
             <!--p6spy-->
             <dependency>
