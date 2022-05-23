@@ -44,6 +44,7 @@ custom:
 sra:
   config:
     dynamic-ds-on: true
+    swagger-on: true
   # 动态数据源配置
   dynamic-ds:
     master: db1
@@ -61,4 +62,15 @@ sra:
         username: root
         password: xxxx
         pool-name: db2_pool
+  # swagger 配置
+  swagger:
+    title: Swagger 在线文档
+    description: simple-rest-admin 在线文档 by swagger2
+    name: Cade Li
+    url: https://github.com/cadecode/simple-rest-admin
+    email: cadecode@foxmail.com
+    module:
+      framework: top.cadecode.sra.framework
+      test: top.cadecode.sra.test
+
 

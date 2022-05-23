@@ -19,8 +19,18 @@ import org.springframework.context.annotation.Configuration;
 public class SRAMainConfig {
 
     /**
+     * 版本号
+     */
+    private String version;
+
+    /**
      * 是否开启动态数据源配置
      */
-    private Boolean dynamicDsOn;
+    private boolean dynamicDsOn;
+
+    /**
+     * 是否开启 swagger 文档
+     */
+    private boolean swaggerOn;
 
 }
