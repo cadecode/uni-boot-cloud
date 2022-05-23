@@ -1,6 +1,5 @@
 package top.cadecode.sra.framework.response;
 
-import cn.hutool.json.JSONUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import top.cadecode.sra.common.annotation.ApiFormat;
 import top.cadecode.sra.common.response.ApiResult;
+import top.cadecode.sra.framework.util.JacksonUtil;
 
 import java.util.Objects;
 
@@ -74,7 +74,7 @@ public class ApiResultAdvisor implements ResponseBodyAdvice<Object> {
         if (body instanceof String) {
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             // String 类型的 Body 需要返回 String 类型，否则报转换错误
-            return JSONUtil.toJsonStr(ApiResult.ok(body));
+            return JacksonUtil.toJson(ApiResult.ok(body));
         }
         return ApiResult.ok(body);
     }
