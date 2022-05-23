@@ -3,7 +3,6 @@ package top.cadecode.sra.framework.aspect;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
-import cn.hutool.json.JSONUtil;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +11,14 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import top.cadecode.sra.common.annotation.ApiLogger;
+import top.cadecode.sra.framework.util.JacksonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
@@ -35,6 +36,12 @@ import java.util.Objects;
 @Component
 public class ApiLoggerAspect {
 
+    @Pointcut("@within(top.cadecode.sra.common.annotation.ApiLogger) " +
+            "|| @annotation(top.cadecode.sra.common.annotation.ApiLogger)")
+    public void pointCut() {
+
+    }
+
     /**
      * 环绕通知
      *
@@ -42,46 +49,24 @@ public class ApiLoggerAspect {
      * @return 原方法返回值
      * @throws Throwable 异常信息
      */
-    @Around("@within(apiLogger) || @annotation(apiLogger)")
-    public Object around(ProceedingJoinPoint point, ApiLogger apiLogger) throws Throwable {
+    @Around("pointCut()")
+    public Object around(ProceedingJoinPoint point) throws Throwable {
         // 根据注解判断是否开启
-        MethodSignature methodSignature = (MethodSignature) point.getSignature();
-        ApiLogger mResponseLogging = methodSignature.getMethod().getAnnotation(ApiLogger.class);
-        boolean loggingFlag;
-        if (mResponseLogging != null) {
-            loggingFlag = mResponseLogging.value();
-        } else {
-            loggingFlag = methodSignature.getMethod()
-                    .getDeclaringClass()
-                    .getAnnotation(ApiLogger.class)
-                    .value();
-        }
-        if (!loggingFlag) {
+        boolean logFlag = checkApiLogger(point);
+        if (!logFlag) {
             return point.proceed();
         }
-        // 开启处理日志
+        // 开启打印调用信息日志
         long startTime = System.currentTimeMillis();
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = Objects.requireNonNull(attributes).getRequest();
         Object result = point.proceed();
-        // 解析 user-agent，生成日志信息
-        String userAgentStr = request.getHeader("User-Agent");
-        UserAgent userAgent = UserAgentUtil.parse(userAgentStr);
-        ResponseLoggingInfo loggingInfo = ResponseLoggingInfo.builder()
-                .threadId(Long.toString(Thread.currentThread().getId()))
-                .threadName(Thread.currentThread().getName())
-                .classMethod(point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName())
-                .ip(ServletUtil.getClientIP(request))
-                .url(request.getRequestURL().toString())
-                .httpMethod(request.getMethod())
-                .requestParams(ApiLoggerAspect.getRequestParams(point))
-                .result(result)
-                .timeCost(System.currentTimeMillis() - startTime)
-                .userAgent(userAgentStr)
-                .browser(userAgent.getBrowser().getName())
-                .os(userAgent.getOs().getName())
-                .build();
-        log.info("API LOG => {}", JSONUtil.toJsonStr(loggingInfo));
+        // 解析请求对象
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (Objects.isNull(attributes)) {
+            return result;
+        }
+        HttpServletRequest request = attributes.getRequest();
+        ResponseLogInfo logInfo = generateLogInfo(point, result, request, startTime);
+        log.info("接口调用日志：{}", JacksonUtil.toJson(logInfo));
         return result;
     }
 
@@ -97,7 +82,7 @@ public class ApiLoggerAspect {
             return Collections.emptyMap();
         }
         if (names.length != args.length) {
-            log.warn("API LOG => Method [{}] has different numbers of parameter names and values", methodSignature.getName());
+            log.warn("接口调用日志：方法 [{}] 参数和传值不匹配", methodSignature.getName());
             return Collections.emptyMap();
         }
         Map<String, Object> map = new HashMap<>();
@@ -108,11 +93,53 @@ public class ApiLoggerAspect {
     }
 
     /**
+     * 检查是否需要打印 log
+     */
+    private boolean checkApiLogger(ProceedingJoinPoint point) {
+        MethodSignature methodSignature = (MethodSignature) point.getSignature();
+        ApiLogger loggerM = methodSignature.getMethod().getAnnotation(ApiLogger.class);
+        boolean logFlag;
+        if (loggerM != null) {
+            logFlag = loggerM.value();
+        } else {
+            logFlag = methodSignature.getMethod()
+                    .getDeclaringClass()
+                    .getAnnotation(ApiLogger.class)
+                    .value();
+        }
+        return logFlag;
+    }
+
+    /**
+     * 构造 ResponeLogInfo
+     */
+    private ResponseLogInfo generateLogInfo(ProceedingJoinPoint point, Object result,
+                                            HttpServletRequest request, long startTime) {
+        // 解析 user-agent，生成日志信息
+        String userAgentStr = request.getHeader("User-Agent");
+        UserAgent userAgent = UserAgentUtil.parse(userAgentStr);
+        return ResponseLogInfo.builder()
+                .threadId(Long.toString(Thread.currentThread().getId()))
+                .threadName(Thread.currentThread().getName())
+                .classMethod(point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName())
+                .ip(ServletUtil.getClientIP(request))
+                .url(request.getRequestURL().toString())
+                .httpMethod(request.getMethod())
+                .requestParams(getRequestParams(point))
+                .result(result)
+                .timeCost(System.currentTimeMillis() - startTime)
+                .userAgent(userAgentStr)
+                .browser(userAgent.getBrowser().getName())
+                .os(userAgent.getOs().getName())
+                .build();
+    }
+
+    /**
      * 请求日志信息类
      */
     @Data
     @Builder
-    static class ResponseLoggingInfo {
+    public static class ResponseLogInfo {
         // 线程id
         private String threadId;
         // 线程名称
