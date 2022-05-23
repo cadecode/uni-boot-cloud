@@ -35,6 +35,7 @@
         <guava.vsersion>31.0.1-jre</guava.vsersion>
         <hutool.vsersion>5.8.0</hutool.vsersion>
         <p6spy.version>3.8.1</p6spy.version>
+        <jasypt.version>2.1.1</jasypt.version>
     </properties>
 
     <dependencies>
@@ -75,6 +76,12 @@
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
+            </dependency>
+            <!--jasypt-->
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>${jasypt.version}</version>
             </dependency>
             <!--mybatis-->
             <dependency>
