@@ -14,12 +14,13 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
-    <name>simple-admin</name>
+    <name>simple-rest-admin</name>
     <description>基于 SpringBoot 多模块开发，Rest 风格的后台管理系统</description>
     <!--子模块-->
     <modules>
         <module>simple-common</module>
         <module>simple-framework</module>
+        <module>simple-system</module>
         <module>simple-application</module>
         <module>simple-test</module>
     </modules>
