@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <!--配置父项目-->
     <parent>
         <artifactId>simple-rest-admin</artifactId>
         <groupId>top.cadecode</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>simple-framework</artifactId>
+
+    <artifactId>simple-system</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -21,6 +21,11 @@
         <dependency>
             <groupId>top.cadecode</groupId>
             <artifactId>simple-common</artifactId>
+        </dependency>
+        <!--framework 模块-->
+        <dependency>
+            <groupId>top.cadecode</groupId>
+            <artifactId>simple-framework</artifactId>
         </dependency>
     </dependencies>
 </project>
