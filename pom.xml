@@ -30,11 +30,13 @@
         <java.version>1.8</java.version>
         <sra.version>0.0.1-SNAPSHOT</sra.version>
 
+        <lombok.version>1.18.24</lombok.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <hutool.vsersion>5.8.0</hutool.vsersion>
         <knife4j.version>2.0.5</knife4j.version>
         <mybatis.version>2.2.0</mybatis.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <guava.vsersion>31.0.1-jre</guava.vsersion>
-        <hutool.vsersion>5.8.0</hutool.vsersion>
         <p6spy.version>3.8.1</p6spy.version>
         <jasypt.version>2.1.1</jasypt.version>
     </properties>
@@ -44,7 +46,19 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
             <optional>true</optional>
+        </dependency>
+        <!--mapstruct-->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.version}</version>
         </dependency>
         <!--hutool-->
         <dependency>
