@@ -4,7 +4,7 @@ server:
 # spring config
 spring:
   application:
-    name: simple-admin
+    name: simple-rest-admin
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -12,6 +12,7 @@ spring:
     host: localhost
     port: 6379
     password: ENC(jIiKGruIMgDkKx5wj2gJRCROqPutkTvZ)
+    database: 0
     lettuce:
       pool:
         max-active: 8
@@ -31,20 +32,12 @@ logging:
   file:
     path: c:/logs
 
-# custom config
-custom:
-  jwt:
-    header: token
-    refresh-header: refresh-token
-    expiration: 86400
-    refresh-expiration: 86400
-    secret: 12345678123456781234567812345678
-
 # simple-rest-admin 配置
 sra:
   config:
     dynamic-ds-on: true
     swagger-on: true
+    security-on: true
   # 动态数据源配置
   dynamic-ds:
     master: db1
@@ -72,3 +65,13 @@ sra:
     module:
       framework: top.cadecode.sra.framework
       test: top.cadecode.sra.test
+  # security 配置
+  security:
+    auth-model: redis
+    jwt:
+      header: token
+      refresh-header: refresh-token
+      expiration: 86400
+      refresh-expiration: 86400
+      secret: 12345678123456781234567812345678
+

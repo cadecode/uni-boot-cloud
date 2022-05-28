@@ -33,4 +33,9 @@ public class SRAMainConfig {
      */
     private boolean swaggerOn;
 
+    /**
+     * 是否开启 spring security
+     */
+    private boolean securityOn;
+
 }
