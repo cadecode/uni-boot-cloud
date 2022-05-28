@@ -3,12 +3,12 @@ package top.cadecode.sra.framework.security.handler;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
-import cn.hutool.json.JSONUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
 import top.cadecode.sra.common.response.ApiResult;
-import top.cadecode.sra.framework.config.SecurityConfig;
+import top.cadecode.sra.framework.config.core.SecurityConfig;
+import top.cadecode.sra.framework.util.JacksonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +25,6 @@ public class SignOutSuccessHandler implements LogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
                                 Authentication authentication) {
         ApiResult<Object> result = ApiResult.ok(null).path(SecurityConfig.LOGOUT_URL);
-        ServletUtil.write(response, JSONUtil.toJsonStr(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
+        ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
 }

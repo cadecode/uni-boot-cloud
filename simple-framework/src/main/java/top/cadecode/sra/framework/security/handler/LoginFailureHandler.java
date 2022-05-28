@@ -3,16 +3,16 @@ package top.cadecode.sra.framework.security.handler;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
-import cn.hutool.json.JSONUtil;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+import top.cadecode.sra.common.enums.error.AuthErrorEnum;
 import top.cadecode.sra.common.exception.ApiException;
 import top.cadecode.sra.common.response.ApiResult;
 import top.cadecode.sra.common.response.ApiStatus;
-import top.cadecode.sra.framework.config.SecurityConfig;
-import top.cadecode.sra.framework.enums.AuthErrorEnum;
+import top.cadecode.sra.framework.config.core.SecurityConfig;
+import top.cadecode.sra.framework.util.JacksonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +36,6 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         } else if (cause instanceof BadCredentialsException) {
             result.moreInfo("密码错误");
         }
-        ServletUtil.write(response, JSONUtil.toJsonStr(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
+        ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
 }

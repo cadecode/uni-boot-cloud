@@ -16,25 +16,29 @@ import java.util.List;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "custom.jwt")
+@ConfigurationProperties("sra.security.jwt")
 public class JwtTokenHolder {
 
     /**
      * token 请求头字段
      */
     private String header;
+
     /**
      * refresh token 请求头字段
      */
     private String refreshHeader;
+
     /**
-     * token 过期时间
+     * token 过期时间，单位秒
      */
     private Long expiration;
+
     /**
-     * refresh token 过期时间
+     * refresh token 过期时间，单位秒
      */
     private Long refreshExpiration;
+
     /**
      * 密钥
      */
@@ -96,4 +100,13 @@ public class JwtTokenHolder {
         return JWT.of(token).getPayloads();
     }
 
+    /**
+     * 获取 token 内容 json 串
+     *
+     * @param token token 字符串
+     * @return json 串
+     */
+    public String getPayloadStr(String token) {
+        return JWT.of(token).getPayloads().toString();
+    }
 }
