@@ -22,10 +22,5 @@
             <groupId>top.cadecode</groupId>
             <artifactId>simple-common</artifactId>
         </dependency>
-        <!--framework 模块-->
-        <dependency>
-            <groupId>top.cadecode</groupId>
-            <artifactId>simple-framework</artifactId>
-        </dependency>
     </dependencies>
 </project>

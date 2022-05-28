@@ -17,16 +17,6 @@
     </properties>
 
     <dependencies>
-        <!--system 模块-->
-        <dependency>
-            <groupId>top.cadecode</groupId>
-            <artifactId>simple-system</artifactId>
-        </dependency>
-        <!--test 模块-->
-        <dependency>
-            <groupId>top.cadecode</groupId>
-            <artifactId>simple-test</artifactId>
-        </dependency>
         <!--SpringBoot tomcat-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -50,6 +40,17 @@
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
+        </dependency>
+        <!--子模块-->
+        <!--framework 模块-->
+        <dependency>
+            <groupId>top.cadecode</groupId>
+            <artifactId>simple-framework</artifactId>
+        </dependency>
+        <!--test 模块-->
+        <dependency>
+            <groupId>top.cadecode</groupId>
+            <artifactId>simple-test</artifactId>
         </dependency>
     </dependencies>
 
