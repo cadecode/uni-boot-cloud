@@ -1,5 +1,6 @@
 package top.cadecode.sra.framework.security;
 
+import cn.hutool.core.lang.UUID;
 import cn.hutool.json.JSONObject;
 import cn.hutool.jwt.JWT;
 import lombok.Data;
@@ -16,8 +17,8 @@ import java.util.List;
  */
 @Data
 @Component
-@ConfigurationProperties("sra.security.jwt")
-public class JwtTokenHolder {
+@ConfigurationProperties("sra.security.token")
+public class TokenAuthHolder {
 
     /**
      * token 请求头字段
@@ -25,19 +26,9 @@ public class JwtTokenHolder {
     private String header;
 
     /**
-     * refresh token 请求头字段
-     */
-    private String refreshHeader;
-
-    /**
      * token 过期时间，单位秒
      */
     private Long expiration;
-
-    /**
-     * refresh token 过期时间，单位秒
-     */
-    private Long refreshExpiration;
 
     /**
      * 密钥
@@ -49,7 +40,7 @@ public class JwtTokenHolder {
     private static final String ROLES_KEY = "roles";
 
     /**
-     * 生成 token
+     * 生成 Jwt token
      *
      * @param id    用户 ID
      * @param roles 角色
@@ -108,5 +99,15 @@ public class JwtTokenHolder {
      */
     public String getPayloadStr(String token) {
         return JWT.of(token).getPayloads().toString();
+    }
+
+    /**
+     * 生成 UUID token，用作 redis key
+     *
+     * @return UUID 字符串
+     */
+    public String generateUUID() {
+        // 使用两个 UUID 拼接
+        return UUID.fastUUID().toString(true) + UUID.fastUUID().toString(true);
     }
 }
