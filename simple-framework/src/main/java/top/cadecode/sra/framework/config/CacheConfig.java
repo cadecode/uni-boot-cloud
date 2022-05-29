@@ -26,8 +26,8 @@ public class CacheConfig {
      *
      * @return CaffeineCacheManager 实例
      */
-    @Bean("caffeineCache")
-    public CacheManager securityCacheManager() {
+    @Bean("localCache5s")
+    public CacheManager localCache5s() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
         // 过期时间设置为 5 s
         caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
