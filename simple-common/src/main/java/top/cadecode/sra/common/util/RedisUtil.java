@@ -1,4 +1,4 @@
-package top.cadecode.sra.framework.util;
+package top.cadecode.sra.common.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;

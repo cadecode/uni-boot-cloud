@@ -1,4 +1,4 @@
-package top.cadecode.sra.framework.util;
+package top.cadecode.sra.common.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
