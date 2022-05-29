@@ -9,10 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import top.cadecode.sra.common.enums.AuthModelEnum;
 import top.cadecode.sra.common.response.ApiResult;
+import top.cadecode.sra.common.util.JacksonUtil;
 import top.cadecode.sra.framework.config.core.SecurityConfig;
 import top.cadecode.sra.framework.security.LoginSuccessHandler;
 import top.cadecode.sra.framework.security.TokenAuthHolder;
-import top.cadecode.sra.framework.util.JacksonUtil;
 import top.cadecode.sra.system.bean.dto.SysUserDto;
 
 import javax.servlet.http.HttpServletRequest;

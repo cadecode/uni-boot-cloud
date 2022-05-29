@@ -5,7 +5,6 @@ import cn.hutool.core.util.ArrayUtil;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -137,7 +136,8 @@ public class SecurityConfig {
                         .accessDeniedHandler(noAuthorityHandler);
                 // 自定义的 accessDecisionManager
                 http.authorizeRequests()
-                        .accessDecisionManager(new UnanimousBased(Arrays.asList(new WebExpressionVoter())));
+                        .accessDecisionManager(new UnanimousBased(
+                                Arrays.asList(new WebExpressionVoter(), dataBaseRoleVoter)));
                 // 配置登录处理器
                 http.formLogin().permitAll()
                         .loginProcessingUrl(LOGIN_URL)

@@ -5,17 +5,17 @@ import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import top.cadecode.sra.common.consts.RedisKeyPrefix;
-import top.cadecode.sra.common.datasource.RedisKeyGenerator;
+import top.cadecode.sra.common.consts.CacheKeyPrefix;
+import top.cadecode.sra.common.datasource.CacheKeyGenerator;
 import top.cadecode.sra.common.enums.AuthModelEnum;
 import top.cadecode.sra.common.response.ApiResult;
+import top.cadecode.sra.common.util.JacksonUtil;
+import top.cadecode.sra.common.util.RedisUtil;
 import top.cadecode.sra.framework.config.core.SecurityConfig;
 import top.cadecode.sra.framework.security.LoginSuccessHandler;
 import top.cadecode.sra.framework.security.TokenAuthHolder;
-import top.cadecode.sra.framework.util.JacksonUtil;
 import top.cadecode.sra.system.bean.dto.SysUserDto;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,11 +37,6 @@ public class RedisLoginSuccessHandler extends LoginSuccessHandler {
      */
     private final TokenAuthHolder tokenAuthHolder;
 
-    /**
-     * RedisTemplate
-     */
-    private final RedisTemplate<String, Object> redisTemplate;
-
     @Override
     public AuthModelEnum getAuthModel() {
         return AuthModelEnum.REDIS;
@@ -57,8 +52,8 @@ public class RedisLoginSuccessHandler extends LoginSuccessHandler {
         // token 放在请求头
         response.addHeader(tokenAuthHolder.getHeader(), uuidToken);
         // 生成存放登录信息的 redis key
-        String loginUserKey = RedisKeyGenerator.key(RedisKeyPrefix.LOGIN_USER, uuidToken);
-        redisTemplate.opsForValue().set(loginUserKey, sysUserDto, tokenAuthHolder.getExpiration(), TimeUnit.SECONDS);
+        String loginUserKey = CacheKeyGenerator.key(CacheKeyPrefix.LOGIN_USER, uuidToken);
+        RedisUtil.set(loginUserKey, sysUserDto, tokenAuthHolder.getExpiration(), TimeUnit.SECONDS);
         // 写入响应
         ApiResult<SysUserDto> result = ApiResult.ok(sysUserDto).path(SecurityConfig.LOGOUT_URL);
         ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));

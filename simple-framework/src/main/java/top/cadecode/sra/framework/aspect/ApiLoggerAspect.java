@@ -18,7 +18,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import top.cadecode.sra.common.annotation.ApiLogger;
-import top.cadecode.sra.framework.util.JacksonUtil;
+import top.cadecode.sra.common.util.JacksonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
