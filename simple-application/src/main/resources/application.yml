@@ -37,7 +37,6 @@ sra:
   config:
     dynamic-ds-on: true
     swagger-on: true
-    security-on: true
   # 动态数据源配置
   dynamic-ds:
     master: db1
@@ -67,7 +66,7 @@ sra:
       test: top.cadecode.sra.test
   # security 配置
   security:
-    auth-model: redis
+    auth-model: jwt
     token:
       header: token
       expiration: 86400

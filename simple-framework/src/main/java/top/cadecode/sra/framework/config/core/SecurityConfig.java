@@ -11,24 +11,30 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.vote.UnanimousBased;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity.IgnoredRequestConfigurer;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.cadecode.sra.common.enums.AuthModelEnum;
+import top.cadecode.sra.framework.security.LoginSuccessHandler;
 import top.cadecode.sra.framework.security.TokenAuthFilter;
-import top.cadecode.sra.framework.security.handler.*;
+import top.cadecode.sra.framework.security.handler.LoginFailureHandler;
+import top.cadecode.sra.framework.security.handler.NoAuthenticationHandler;
+import top.cadecode.sra.framework.security.handler.NoAuthorityHandler;
+import top.cadecode.sra.framework.security.handler.SignOutSuccessHandler;
+import top.cadecode.sra.framework.security.voter.DataBaseRoleVoter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @author Cade Li
@@ -39,9 +45,9 @@ import java.util.stream.Collectors;
 @Data
 @RequiredArgsConstructor
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 @ConfigurationProperties("sra.security")
-@ConditionalOnProperty(name = "sra.config.security-on", havingValue = "true")
 public class SecurityConfig {
 
     /**
@@ -76,14 +82,38 @@ public class SecurityConfig {
     /**
      * 注入 Token 过滤器
      */
-    private final List<TokenAuthFilter> tokenAuthFilters;
+    private final TokenAuthFilter tokenAuthFilter;
 
     /**
-     * security 配置
+     * 注入投票器
+     */
+    private final DataBaseRoleVoter dataBaseRoleVoter;
+
+    /**
+     * 注入 UserDetailsService
+     */
+    private final UserDetailsService userDetailsService;
+
+    /**
+     * 密码加密器
      */
     @Bean
-    public WebSecurityConfigurerAdapter webSecurityConfigurer() {
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Security 配置
+     */
+    @Bean
+    public WebSecurityConfigurerAdapter webSecurityConfigurer(PasswordEncoder passwordEncoder) {
         return new WebSecurityConfigurerAdapter() {
+
+            @Override
+            protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+                auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+            }
+
             @Override
             protected void configure(HttpSecurity http) throws Exception {
                 // 关闭 csrf
@@ -95,11 +125,6 @@ public class SecurityConfig {
                         // 尝试请求直接通过
                         .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated();
-                // 配置登录处理器
-                http.formLogin().permitAll()
-                        .loginProcessingUrl(LOGIN_URL)
-                        .successHandler(loginSuccessHandler)
-                        .failureHandler(loginFailureHandler);
                 // 配置注销处理器
                 http.logout().permitAll()
                         .logoutUrl(LOGOUT_URL)
@@ -109,24 +134,18 @@ public class SecurityConfig {
                         // 配置未登录处理器
                         .authenticationEntryPoint(noAuthenticationHandler)
                         // 配置无权限处理器
-                        .accessDeniedHandler(noAuthorityHandler)
-                        .and()
-                        // 自定义的 accessDecisionManager
-                        .authorizeRequests()
+                        .accessDeniedHandler(noAuthorityHandler);
+                // 自定义的 accessDecisionManager
+                http.authorizeRequests()
                         .accessDecisionManager(new UnanimousBased(Arrays.asList(new WebExpressionVoter())));
-                // 根据认证模式配置过滤器
-                if (Objects.isNull(authModel)) {
-                    authModel = AuthModelEnum.JWT;
-                    log.info("没有配置认证模式，默认为 {}", authModel);
-                }
+                // 配置登录处理器
+                http.formLogin().permitAll()
+                        .loginProcessingUrl(LOGIN_URL)
+                        .successHandler(loginSuccessHandler)
+                        .failureHandler(loginFailureHandler);
                 // 配置 Token 校验过滤器
-                List<TokenAuthFilter> filters = tokenAuthFilters.stream()
-                        .filter(o -> o.getAuthModel() == authModel)
-                        .collect(Collectors.toList());
-                if (!filters.isEmpty()) {
-                    http.addFilterBefore(filters.get(0), UsernamePasswordAuthenticationFilter.class);
-                    log.info("完成 Security 配置，认证模式 {}", authModel);
-                }
+                http.addFilterBefore(tokenAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                log.info("完成 Security 配置，认证模式 {}", authModel);
             }
 
             @Override
@@ -143,13 +162,4 @@ public class SecurityConfig {
             }
         };
     }
-
-    /**
-     * 密码加密器
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 }
