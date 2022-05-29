@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author Cade Li
  * @date 2022/5/24
@@ -32,4 +34,9 @@ public class SysUserVo {
      * 是否启用
      */
     private boolean enableFlag;
+
+    /**
+     * 角色
+     */
+    private List<String> roles;
 }
