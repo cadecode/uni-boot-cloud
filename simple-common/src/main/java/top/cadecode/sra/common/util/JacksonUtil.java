@@ -20,8 +20,8 @@ import java.util.Objects;
  * @date 2022/5/23
  * @description Jackson 工具类
  */
-@Component
 @RequiredArgsConstructor
+@Component
 public class JacksonUtil implements InitializingBean {
 
     /**
@@ -29,7 +29,7 @@ public class JacksonUtil implements InitializingBean {
      */
     private final ObjectMapper objectMapper;
 
-    private static ObjectMapper OBJECT_MAPPER;
+    public static ObjectMapper OBJECT_MAPPER;
 
     /**
      * 转换对象到 json 串
