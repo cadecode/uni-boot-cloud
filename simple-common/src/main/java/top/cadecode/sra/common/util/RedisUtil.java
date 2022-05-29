@@ -36,7 +36,7 @@ public class RedisUtil implements InitializingBean {
      * 获取 value 并强转，带泛型
      */
     @SuppressWarnings("unchecked")
-    public static <T> T get(String key, TypeReference<T> typeReference) {
+    public static <T> T get(String key, CastRef<T> ref) {
         return (T) TEMPLATE.opsForValue().get(key);
     }
 
@@ -64,5 +64,12 @@ public class RedisUtil implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         TEMPLATE = redisTemplate;
+    }
+
+    /**
+     * 用于收集要强转的类型
+     */
+    public static class CastRef<T> {
+
     }
 }
