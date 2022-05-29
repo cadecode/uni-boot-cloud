@@ -20,10 +20,11 @@ spring:
         max-idle: 8
         max-wait: -1
 
-# mybatis config
-mybatis:
+# mybatis plus 配置
+mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
-  type-aliases-package: top.cadecode
+  type-aliases-package: top.cadecode.**.bean
+  type-enums-package: top.cadecode.**.enums
   configuration:
     map-underscore-to-camel-case: true
 
