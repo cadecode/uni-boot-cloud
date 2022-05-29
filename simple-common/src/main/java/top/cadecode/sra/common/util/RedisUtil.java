@@ -3,7 +3,7 @@ package top.cadecode.sra.common.util;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -18,33 +18,34 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtil implements InitializingBean {
 
     /**
-     * 自动注入 redisTemplate
+     * 自动注入 stringRedisTemplate
      */
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
 
-    private static RedisTemplate<String, Object> TEMPLATE;
+    public static StringRedisTemplate TEMPLATE;
 
     /**
-     * 获取 value 并强转
+     * 获取 value
      */
-    @SuppressWarnings("unchecked")
     public static <T> T get(String key, Class<T> clazz) {
-        return (T) TEMPLATE.opsForValue().get(key);
+        String json = TEMPLATE.opsForValue().get(key);
+        return JacksonUtil.toBean(json, clazz);
     }
 
     /**
-     * 获取 value 并强转，带泛型
+     * 获取 value
      */
-    @SuppressWarnings("unchecked")
-    public static <T> T get(String key, CastRef<T> ref) {
-        return (T) TEMPLATE.opsForValue().get(key);
+    public static <T> T get(String key, TypeReference<T> typeReference) {
+        String json = TEMPLATE.opsForValue().get(key);
+        return JacksonUtil.toBean(json, typeReference);
     }
 
     /**
      * 添加 key
      */
     public static void set(String key, Object o, long timeout, TimeUnit timeUnit) {
-        TEMPLATE.opsForValue().set(key, o, timeout, timeUnit);
+        String json = JacksonUtil.toJson(o);
+        TEMPLATE.opsForValue().set(key, json, timeout, timeUnit);
     }
 
     /**
@@ -63,13 +64,6 @@ public class RedisUtil implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        TEMPLATE = redisTemplate;
-    }
-
-    /**
-     * 用于收集要强转的类型
-     */
-    public static class CastRef<T> {
-
+        TEMPLATE = stringRedisTemplate;
     }
 }

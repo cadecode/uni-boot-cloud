@@ -1,12 +1,12 @@
 package top.cadecode.sra.system.serviceimpl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import top.cadecode.sra.common.consts.CacheKeyPrefix;
 import top.cadecode.sra.common.util.RedisUtil;
-import top.cadecode.sra.common.util.RedisUtil.CastRef;
 import top.cadecode.sra.system.bean.po.SysApi;
 import top.cadecode.sra.system.bean.vo.SysApiVo;
 import top.cadecode.sra.system.mapper.SysApiMapper;
@@ -30,13 +30,12 @@ public class SysApiServiceImpl extends ServiceImpl<SysApiMapper, SysApi> impleme
     @Cacheable(cacheNames = CacheKeyPrefix.API_ROLES, cacheManager = "localCache5s")
     @Override
     public List<SysApiVo> listSysApiVo() {
-        List<SysApiVo> sysApiVos = RedisUtil.get(CacheKeyPrefix.API_ROLES, new CastRef<>());
-        return Optional.ofNullable(sysApiVos)
-                .orElseGet(() -> {
-                    List<SysApiVo> voList = sysApiMapper.listSysApiVo(null);
-                    // 每三十分钟刷新一次
-                    RedisUtil.set(CacheKeyPrefix.API_ROLES, voList, 30, TimeUnit.MINUTES);
-                    return voList;
-                });
+        List<SysApiVo> sysApiVos = RedisUtil.get(CacheKeyPrefix.API_ROLES, new TypeReference<List<SysApiVo>>() {});
+        return Optional.ofNullable(sysApiVos).orElseGet(() -> {
+            List<SysApiVo> voList = sysApiMapper.listSysApiVo(null);
+            // 每三十分钟刷新一次
+            RedisUtil.set(CacheKeyPrefix.API_ROLES, voList, 30, TimeUnit.MINUTES);
+            return voList;
+        });
     }
 }
