@@ -1,5 +1,6 @@
 package top.cadecode.sra.system.bean.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,6 +31,7 @@ public class SysUserDto implements UserDetails {
     /**
      * 密码
      */
+    @JsonIgnore
     private String password;
 
     /**
