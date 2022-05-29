@@ -57,7 +57,7 @@ public class RedisUtil implements InitializingBean {
     /**
      * 删除 key
      */
-    public static Boolean del(String key, long timeout, TimeUnit timeUnit) {
+    public static Boolean expire(String key, long timeout, TimeUnit timeUnit) {
         return TEMPLATE.expire(key, timeout, timeUnit);
     }
 
