@@ -2,7 +2,11 @@ package top.cadecode.sra.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import top.cadecode.sra.system.bean.po.SysApi;
+import top.cadecode.sra.system.bean.vo.SysApiVo;
+
+import java.util.List;
 
 /**
  * @author Cade Li
@@ -11,4 +15,6 @@ import top.cadecode.sra.system.bean.po.SysApi;
  */
 @Mapper
 public interface SysApiMapper extends BaseMapper<SysApi> {
+
+    List<SysApiVo> listSysApiVo(@Param("apiIds") List<Long> apiIds);
 }

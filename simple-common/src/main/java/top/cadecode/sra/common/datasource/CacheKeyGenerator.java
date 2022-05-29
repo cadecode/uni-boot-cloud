@@ -5,7 +5,7 @@ package top.cadecode.sra.common.datasource;
  * @date 2022/5/29
  * @description Redis key 命名生成器
  */
-public class RedisKeyGenerator {
+public class CacheKeyGenerator {
 
     /**
      * 生成 ： 分割的 redis key

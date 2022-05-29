@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import top.cadecode.sra.common.annotation.ApiFormat;
 import top.cadecode.sra.common.response.ApiResult;
-import top.cadecode.sra.framework.util.JacksonUtil;
+import top.cadecode.sra.common.util.JacksonUtil;
 
 import java.util.Objects;
 
