@@ -31,7 +31,7 @@ mybatis-plus:
 # log config
 logging:
   file:
-    path: c:/logs
+    path: /log/sra
 
 # simple-rest-admin 配置
 sra:
