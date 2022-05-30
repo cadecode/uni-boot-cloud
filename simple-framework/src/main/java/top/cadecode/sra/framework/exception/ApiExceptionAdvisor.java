@@ -2,7 +2,6 @@ package top.cadecode.sra.framework.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import top.cadecode.sra.common.exception.ApiErrorCode;
 import top.cadecode.sra.common.exception.ApiException;
@@ -30,7 +29,6 @@ public class ApiExceptionAdvisor {
      * 兜底处理一般异常
      */
     @ExceptionHandler(Exception.class)
-    @ResponseBody
     public ApiResult<Object> handleException(Exception e) {
         log.error("Exception =>", e);
         return ApiResult.error(ApiErrorCode.UNKNOWN).moreInfo(e.getMessage());
