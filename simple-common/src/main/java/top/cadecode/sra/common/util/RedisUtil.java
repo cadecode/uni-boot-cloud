@@ -6,6 +6,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,8 +14,8 @@ import java.util.concurrent.TimeUnit;
  * @date 2022/5/29
  * @description Redis 工具类
  */
-@Component
 @RequiredArgsConstructor
+@Component
 public class RedisUtil implements InitializingBean {
 
     /**
@@ -49,6 +50,22 @@ public class RedisUtil implements InitializingBean {
     }
 
     /**
+     * 添加 key，如果不存在
+     */
+    public static Boolean setIfAbsent(String key, Object o, long timeout, TimeUnit timeUnit) {
+        String json = JacksonUtil.toJson(o);
+        return TEMPLATE.opsForValue().setIfAbsent(key, json, timeout, timeUnit);
+    }
+
+    /**
+     * 添加 key，如果不存在
+     */
+    public static Boolean setIfPresent(String key, Object o, long timeout, TimeUnit timeUnit) {
+        String json = JacksonUtil.toJson(o);
+        return TEMPLATE.opsForValue().setIfPresent(key, json, timeout, timeUnit);
+    }
+
+    /**
      * 删除 key
      */
     public static Boolean del(String key) {
@@ -56,7 +73,14 @@ public class RedisUtil implements InitializingBean {
     }
 
     /**
-     * 删除 key
+     * 是否存在 key
+     */
+    public static Boolean has(String key) {
+        return TEMPLATE.hasKey(key);
+    }
+
+    /**
+     * 设置 key 过期时间
      */
     public static Boolean expire(String key, long timeout, TimeUnit timeUnit) {
         return TEMPLATE.expire(key, timeout, timeUnit);
@@ -65,5 +89,8 @@ public class RedisUtil implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         TEMPLATE = stringRedisTemplate;
+        if (Objects.isNull(TEMPLATE)) {
+            throw new IllegalArgumentException("无法注入依赖：stringRedisTemplate");
+        }
     }
 }
