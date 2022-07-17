@@ -1,24 +1,12 @@
-server:
-  port: 8000
-
 # spring config
 spring:
+  profiles:
+    active: @profileActive@
   application:
     name: simple-rest-admin
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-  redis:
-    host: localhost
-    port: 6379
-    password: ENC(jIiKGruIMgDkKx5wj2gJRCROqPutkTvZ)
-    database: 0
-    lettuce:
-      pool:
-        max-active: 8
-        min-idle: 0
-        max-idle: 8
-        max-wait: -1
 
 # mybatis plus 配置
 mybatis-plus:
@@ -32,44 +20,4 @@ mybatis-plus:
 logging:
   file:
     path: /log/sra
-
-# simple-rest-admin 配置
-sra:
-  config:
-    dynamic-ds-on: true
-    swagger-on: true
-  # 动态数据源配置
-  dynamic-ds:
-    master: db1
-    datasource:
-      db1:
-        # url 加上 p6spy 开启 sql 监控
-        jdbc-url: jdbc:p6spy:mysql://localhost:3306/demo?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-        driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-        username: root
-        password: ENC(donQ3DazAc4/6B+NFSRdxw==)
-        pool-name: db1_pool
-      db2:
-        jdbc-url: jdbc:p6spy:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-        driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-        username: root
-        password: ENC(donQ3DazAc4/6B+NFSRdxw==)
-        pool-name: db2_pool
-  # swagger 配置
-  swagger:
-    title: Swagger 在线文档
-    description: simple-rest-admin 在线文档 by swagger2
-    name: Cade Li
-    url: https://github.com/cadecode/simple-rest-admin
-    email: cadecode@foxmail.com
-    module:
-      framework: top.cadecode.sra.framework
-      test: top.cadecode.sra.test
-  # security 配置
-  security:
-    auth-model: jwt
-    token:
-      header: token
-      expiration: 86400
-      secret: 12345678123456781234567812345678
 
