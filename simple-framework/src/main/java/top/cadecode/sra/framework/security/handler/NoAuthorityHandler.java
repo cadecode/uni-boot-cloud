@@ -8,7 +8,6 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import top.cadecode.sra.common.enums.error.AuthErrorEnum;
 import top.cadecode.sra.common.response.ApiResult;
-import top.cadecode.sra.common.response.ApiStatus;
 import top.cadecode.sra.common.util.JacksonUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +23,7 @@ public class NoAuthorityHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) {
-        ApiResult<Object> result = ApiResult.of(ApiStatus.NO_AUTHORITY, AuthErrorEnum.TOKEN_NO_AUTHORITY, null)
-                .path(request.getRequestURI());
+        ApiResult<Object> result = ApiResult.error(AuthErrorEnum.TOKEN_NO_AUTHORITY).path(request.getRequestURI());
         ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
 }

@@ -67,16 +67,16 @@ public class ApiResult<T> {
      * @return ApiResult
      */
     public static <T> ApiResult<T> ok(T data) {
-        return ApiResult.of(ApiStatus.OK, null, data);
+        return ApiResult.of(null, data).status(ApiStatus.OK);
     }
 
     /**
-     * 返回错误的响应，使用 500 状态码
+     * 返回错误的响应，使用 ApiErrorCode 的状态码
      *
      * @return ApiResult
      */
     public static ApiResult<Object> error(ApiErrorCode code) {
-        return ApiResult.of(ApiStatus.SERVER_ERROR, code, null);
+        return ApiResult.of(code, null);
     }
 
     /**
@@ -86,11 +86,13 @@ public class ApiResult<T> {
      * @param data 数据
      * @return ApiResult
      */
-    public static <T> ApiResult<T> of(int status, ApiErrorCode code, T data) {
+    public static <T> ApiResult<T> of(ApiErrorCode code, T data) {
         ApiResult<T> result = new ApiResult<>();
-        result.setStatus(status);
         result.setData(data);
         if (Objects.nonNull(code)) {
+            // http status
+            result.setStatus(code.getStatus());
+            // message
             ErrorMessage error = new ErrorMessage();
             error.setCode(code.getCode());
             error.setMessage(code.getMessage());
@@ -117,7 +119,7 @@ public class ApiResult<T> {
      * @return ApiResult
      */
     public ApiResult<T> path(String path) {
-        if (Objects.nonNull(error)){
+        if (Objects.nonNull(error)) {
             error.setPath(path);
         }
         return this;
@@ -130,7 +132,7 @@ public class ApiResult<T> {
      * @return ApiResult
      */
     public ApiResult<T> moreInfo(String moreInfo) {
-        if (Objects.nonNull(error)){
+        if (Objects.nonNull(error)) {
             error.setMoreInfo(moreInfo);
         }
         return this;

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import top.cadecode.sra.common.enums.error.AuthErrorEnum;
 import top.cadecode.sra.common.exception.ApiException;
 import top.cadecode.sra.common.response.ApiResult;
-import top.cadecode.sra.common.response.ApiStatus;
 import top.cadecode.sra.common.util.JacksonUtil;
 import top.cadecode.sra.framework.config.core.SecurityConfig;
 
@@ -28,8 +27,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) {
-        ApiResult<Object> result = ApiResult.of(ApiStatus.OK, AuthErrorEnum.TOKEN_CREATE_ERROR, null)
-                .path(SecurityConfig.LOGIN_URL);
+        ApiResult<Object> result = ApiResult.error(AuthErrorEnum.TOKEN_CREATE_ERROR).path(SecurityConfig.LOGIN_URL);
         Throwable cause = exception.getCause() == null ? exception : exception.getCause();
         if (cause instanceof ApiException) {
             result.moreInfo(((ApiException) cause).getMoreInfo());

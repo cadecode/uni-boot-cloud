@@ -1,5 +1,7 @@
 package top.cadecode.sra.common.exception;
 
+import top.cadecode.sra.common.response.ApiStatus;
+
 /**
  * @author Cade Li
  * @date 2022/5/8
@@ -7,23 +9,20 @@ package top.cadecode.sra.common.exception;
  */
 public interface ApiErrorCode {
 
-    String getCode();
+    default String getCode() {
+        return "UNKNOWN";
+    }
 
-    String getMessage();
+    default String getMessage() {
+        return "未知错误";
+    }
 
-    String UNKNOWN_CODE = "UNKNOWN";
+    default int getStatus() {
+        return ApiStatus.SERVER_ERROR;
+    }
 
-    String UNKNOWN_MESSAGE = "未知错误";
-
-    ApiErrorCode UNKNOWN = new ApiErrorCode() {
-        @Override
-        public String getCode() {
-            return UNKNOWN_CODE;
-        }
-
-        @Override
-        public String getMessage() {
-            return UNKNOWN_MESSAGE;
-        }
-    };
+    /**
+     * 未知异常
+     */
+    ApiErrorCode UNKNOWN = new ApiErrorCode() {};
 }
