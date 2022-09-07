@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import top.cadecode.sra.common.enums.error.FrameErrorEnum;
 import top.cadecode.sra.common.exception.ApiErrorCode;
 import top.cadecode.sra.common.response.ApiResult;
-import top.cadecode.sra.common.response.ApiStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -41,8 +40,7 @@ public class FrameExceptionAdvisor {
         String msg = e.getBindingResult().getFieldErrors().stream()
                 .map(o -> "[" + o.getField() + "]" + o.getDefaultMessage())
                 .collect(Collectors.joining(","));
-        return ApiResult.of(ApiStatus.BAD_REQUEST, FrameErrorEnum.VALIDATED_ERROR, null)
-                .moreInfo(msg).path(request.getRequestURI());
+        return ApiResult.error(FrameErrorEnum.VALIDATED_ERROR).moreInfo(msg).path(request.getRequestURI());
     }
 
     /**
@@ -78,8 +76,6 @@ public class FrameExceptionAdvisor {
                 .map(Entry::getValue)
                 .findFirst()
                 .orElse(ApiErrorCode.UNKNOWN);
-        return ApiResult.of(ApiStatus.BAD_REQUEST, errorCode, null)
-                .moreInfo(e.getMessage())
-                .path(requestURI);
+        return ApiResult.error(errorCode).moreInfo(e.getMessage()).path(requestURI);
     }
 }
