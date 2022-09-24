@@ -10,25 +10,25 @@
     </parent>
 
     <groupId>top.cadecode</groupId>
-    <artifactId>simple-rest-admin</artifactId>
+    <artifactId>uni-boot-admin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
-    <name>simple-rest-admin</name>
-    <description>基于 SpringBoot 多模块开发，Rest 风格的后台管理系统</description>
+    <name>uni-boot-admin</name>
+    <description>基于 SpringBoot 多模块开发的通用后台管理系统骨架</description>
     <!--子模块-->
     <modules>
-        <module>simple-common</module>
-        <module>simple-framework</module>
-        <module>simple-system</module>
-        <module>simple-application</module>
-        <module>simple-test</module>
+        <module>uni-boot-common</module>
+        <module>uni-boot-framework</module>
+        <module>uni-boot-system</module>
+        <module>uni-boot-application</module>
+        <module>uni-boot-demo</module>
     </modules>
 
     <!--依赖版本-->
     <properties>
         <java.version>1.8</java.version>
-        <sra.version>0.0.1-SNAPSHOT</sra.version>
+        <uni.version>0.0.1-SNAPSHOT</uni.version>
 
         <lombok.version>1.18.24</lombok.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
@@ -86,23 +86,23 @@
             <!--子模块-->
             <dependency>
                 <groupId>top.cadecode</groupId>
-                <artifactId>simple-common</artifactId>
-                <version>${sra.version}</version>
+                <artifactId>uni-boot-common</artifactId>
+                <version>${uni.version}</version>
             </dependency>
             <dependency>
                 <groupId>top.cadecode</groupId>
-                <artifactId>simple-framework</artifactId>
-                <version>${sra.version}</version>
+                <artifactId>uni-boot-framework</artifactId>
+                <version>${uni.version}</version>
             </dependency>
             <dependency>
                 <groupId>top.cadecode</groupId>
-                <artifactId>simple-system</artifactId>
-                <version>${sra.version}</version>
+                <artifactId>uni-boot-system</artifactId>
+                <version>${uni.version}</version>
             </dependency>
             <dependency>
                 <groupId>top.cadecode</groupId>
-                <artifactId>simple-test</artifactId>
-                <version>${sra.version}</version>
+                <artifactId>uni-boot-demo</artifactId>
+                <version>${uni.version}</version>
             </dependency>
             <!--swagger-->
             <dependency>

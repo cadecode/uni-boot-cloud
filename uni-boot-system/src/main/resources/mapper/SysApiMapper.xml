@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.cadecode.uniboot.system.mapper.SysApiMapper">
+    <resultMap id="SysApiVoMap" type="top.cadecode.uniboot.system.bean.vo.SysApiVo">
+        <result column="id" property="id" />
+        <result column="url" property="url" />
+        <result column="description" property="description" />
+        <collection property="roles" ofType="string">
+            <result column="code" />
+        </collection>
+    </resultMap>
+    <select id="listSysApiVo" resultMap="SysApiVoMap">
+        SELECT sa.id, sa.url, sa.description, sr.code
+        FROM sys_api sa
+        LEFT JOIN sys_role_api sra ON sra.api_id = sa.id
+        LEFT JOIN sys_role sr ON sra.role_id = sr.id
+        <if test="apiIds != null and apiIds.size > 0">
+            WHERE sa.id IN (
+            <foreach collection="apiIds" item="apiId" separator=",">
+                #{apiId}
+            </foreach>
+            )
+        </if>
+        GROUP BY sa.url, sr.code
+    </select>
+</mapper>
