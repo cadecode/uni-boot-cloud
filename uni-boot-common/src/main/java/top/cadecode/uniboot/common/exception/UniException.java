@@ -74,7 +74,7 @@ public class UniException extends RuntimeException {
      * @param moreInfo  更多异常信息
      * @return UniException
      */
-    private static UniException of(UniErrorCode errorCode, Throwable throwable, String moreInfo) {
+    public static UniException of(UniErrorCode errorCode, Throwable throwable, String moreInfo) {
         return new UniException(errorCode, throwable, moreInfo);
     }
 
