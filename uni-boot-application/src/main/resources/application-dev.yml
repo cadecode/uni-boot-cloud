@@ -28,7 +28,7 @@ uni-boot:
     email: cadecode@foxmail.com
     module:
       framework: top.cadecode.uniboot.framework
-      test: top.cadecode.uniboot.test
+      demo: top.cadecode.uniboot.demo
   # security 配置
   security:
     auth-model: jwt
@@ -36,6 +36,8 @@ uni-boot:
       header: token
       expiration: 86400
       secret: 12345678123456781234567812345678
+    ignore-urls:
+      - /demo/**
   # 动态数据源配置
   dynamic-ds:
     master: db1
