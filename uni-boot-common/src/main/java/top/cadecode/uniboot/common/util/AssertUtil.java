@@ -4,6 +4,8 @@ import cn.hutool.core.util.ObjectUtil;
 import top.cadecode.uniboot.common.exception.UniErrorCode;
 import top.cadecode.uniboot.common.exception.UniException;
 
+import java.util.function.Supplier;
+
 /**
  * 断言工具类
  *
@@ -15,12 +17,12 @@ public class AssertUtil {
     /**
      * 判断是否为 true，如果是就抛出运行时异常
      *
-     * @param expression 布尔表达式
-     * @param exception  运行时异常
+     * @param expression        布尔表达式
+     * @param exceptionSupplier 运行时异常提供者
      */
-    public static void isTrue(boolean expression, RuntimeException exception) {
+    public static void isTrue(boolean expression, Supplier<RuntimeException> exceptionSupplier) {
         if (expression) {
-            throw exception;
+            throw exceptionSupplier.get();
         }
     }
 
@@ -31,7 +33,7 @@ public class AssertUtil {
      * @param moreInfo   异常信息
      */
     public static void isTrue(boolean expression, String moreInfo) {
-        isTrue(expression, UniException.of(moreInfo));
+        isTrue(expression, () -> UniException.of(moreInfo));
     }
 
     /**
@@ -42,7 +44,7 @@ public class AssertUtil {
      * @param moreInfo   异常信息
      */
     public static void isTrue(boolean expression, UniErrorCode errorCode, String moreInfo) {
-        isTrue(expression, UniException.of(errorCode, moreInfo));
+        isTrue(expression, () -> UniException.of(errorCode, moreInfo));
     }
 
     /**
@@ -54,17 +56,17 @@ public class AssertUtil {
      * @param moreInfo   异常信息
      */
     public static void isTrue(boolean expression, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(expression, UniException.of(errorCode, throwable, moreInfo));
+        isTrue(expression, () -> UniException.of(errorCode, throwable, moreInfo));
     }
 
     /**
      * 判断是否为 false，如果是就抛出运行时异常
      *
-     * @param expression 布尔表达式
-     * @param exception  运行时异常
+     * @param expression        布尔表达式
+     * @param exceptionSupplier 运行时异常提供者
      */
-    public static void isFalse(boolean expression, RuntimeException exception) {
-        isTrue(!expression, exception);
+    public static void isFalse(boolean expression, Supplier<RuntimeException> exceptionSupplier) {
+        isTrue(!expression, exceptionSupplier);
     }
 
     /**
@@ -74,7 +76,7 @@ public class AssertUtil {
      * @param moreInfo   异常信息
      */
     public static void isFalse(boolean expression, String moreInfo) {
-        isTrue(!expression, UniException.of(moreInfo));
+        isTrue(!expression, () -> UniException.of(moreInfo));
     }
 
     /**
@@ -85,7 +87,7 @@ public class AssertUtil {
      * @param moreInfo   异常信息
      */
     public static void isFalse(boolean expression, UniErrorCode errorCode, String moreInfo) {
-        isTrue(!expression, UniException.of(errorCode, moreInfo));
+        isTrue(!expression, () -> UniException.of(errorCode, moreInfo));
     }
 
     /**
@@ -97,17 +99,17 @@ public class AssertUtil {
      * @param moreInfo   异常信息
      */
     public static void isFalse(boolean expression, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(!expression, UniException.of(errorCode, throwable, moreInfo));
+        isTrue(!expression, () -> UniException.of(errorCode, throwable, moreInfo));
     }
 
     /**
      * 判断是否为 null，如果是就抛出运行时异常
      *
-     * @param o         对象
-     * @param exception 运行时异常
+     * @param o                 对象
+     * @param exceptionSupplier 运行时异常提供者
      */
-    public static void isNull(Object o, RuntimeException exception) {
-        isTrue(ObjectUtil.isNull(o), exception);
+    public static void isNull(Object o, Supplier<RuntimeException> exceptionSupplier) {
+        isTrue(ObjectUtil.isNull(o), exceptionSupplier);
     }
 
     /**
@@ -117,7 +119,7 @@ public class AssertUtil {
      * @param moreInfo 异常信息
      */
     public static void isNull(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isNull(o), UniException.of(moreInfo));
+        isTrue(ObjectUtil.isNull(o), () -> UniException.of(moreInfo));
     }
 
     /**
@@ -128,7 +130,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNull(Object o, UniErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isNull(o), UniException.of(errorCode, moreInfo));
+        isTrue(ObjectUtil.isNull(o), () -> UniException.of(errorCode, moreInfo));
     }
 
     /**
@@ -140,17 +142,17 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNull(Object o, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isNull(o), UniException.of(errorCode, throwable, moreInfo));
+        isTrue(ObjectUtil.isNull(o), () -> UniException.of(errorCode, throwable, moreInfo));
     }
 
     /**
      * 判断是否不为 null，如果是就抛出运行时异常
      *
-     * @param o         对象
-     * @param exception 运行时异常
+     * @param o                 对象
+     * @param exceptionSupplier 运行时异常提供者
      */
-    public static void isNotNull(Object o, RuntimeException exception) {
-        isTrue(ObjectUtil.isNotNull(o), exception);
+    public static void isNotNull(Object o, Supplier<RuntimeException> exceptionSupplier) {
+        isTrue(ObjectUtil.isNotNull(o), exceptionSupplier);
     }
 
     /**
@@ -160,7 +162,7 @@ public class AssertUtil {
      * @param moreInfo 异常信息
      */
     public static void isNotNull(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isNotNull(o), UniException.of(moreInfo));
+        isTrue(ObjectUtil.isNotNull(o), () -> UniException.of(moreInfo));
     }
 
     /**
@@ -171,7 +173,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNotNull(Object o, UniErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isNotNull(o), UniException.of(errorCode, moreInfo));
+        isTrue(ObjectUtil.isNotNull(o), () -> UniException.of(errorCode, moreInfo));
     }
 
     /**
@@ -183,17 +185,17 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNotNull(Object o, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isNotNull(o), UniException.of(errorCode, throwable, moreInfo));
+        isTrue(ObjectUtil.isNotNull(o), () -> UniException.of(errorCode, throwable, moreInfo));
     }
 
     /**
      * 判断是否为空，如果是就抛出运行时异常
      *
-     * @param o         对象
-     * @param exception 运行时异常
+     * @param o                 对象
+     * @param exceptionSupplier 运行时异常提供者
      */
-    public static void isEmpty(Object o, RuntimeException exception) {
-        isTrue(ObjectUtil.isEmpty(o), exception);
+    public static void isEmpty(Object o, Supplier<RuntimeException> exceptionSupplier) {
+        isTrue(ObjectUtil.isEmpty(o), exceptionSupplier);
     }
 
     /**
@@ -203,7 +205,7 @@ public class AssertUtil {
      * @param moreInfo 异常信息
      */
     public static void isEmpty(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isEmpty(o), UniException.of(moreInfo));
+        isTrue(ObjectUtil.isEmpty(o), () -> UniException.of(moreInfo));
     }
 
     /**
@@ -214,7 +216,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isEmpty(Object o, UniErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isEmpty(o), UniException.of(errorCode, moreInfo));
+        isTrue(ObjectUtil.isEmpty(o), () -> UniException.of(errorCode, moreInfo));
     }
 
     /**
@@ -226,17 +228,17 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isEmpty(Object o, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isEmpty(o), UniException.of(errorCode, throwable, moreInfo));
+        isTrue(ObjectUtil.isEmpty(o), () -> UniException.of(errorCode, throwable, moreInfo));
     }
 
     /**
      * 判断是否不为空，如果是就抛出运行时异常
      *
-     * @param o         对象
-     * @param exception 运行时异常
+     * @param o                 对象
+     * @param exceptionSupplier 运行时异常提供者
      */
-    public static void isNotEmpty(Object o, RuntimeException exception) {
-        isTrue(ObjectUtil.isNotEmpty(o), exception);
+    public static void isNotEmpty(Object o, Supplier<RuntimeException> exceptionSupplier) {
+        isTrue(ObjectUtil.isNotEmpty(o), exceptionSupplier);
     }
 
     /**
@@ -246,7 +248,7 @@ public class AssertUtil {
      * @param moreInfo 异常信息
      */
     public static void isNotEmpty(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isNotEmpty(o), UniException.of(moreInfo));
+        isTrue(ObjectUtil.isNotEmpty(o), () -> UniException.of(moreInfo));
     }
 
     /**
@@ -257,7 +259,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNotEmpty(Object o, UniErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isNotEmpty(o), UniException.of(errorCode, moreInfo));
+        isTrue(ObjectUtil.isNotEmpty(o), () -> UniException.of(errorCode, moreInfo));
     }
 
     /**
@@ -269,7 +271,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNotEmpty(Object o, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isNotEmpty(o), UniException.of(errorCode, throwable, moreInfo));
+        isTrue(ObjectUtil.isNotEmpty(o), () -> UniException.of(errorCode, throwable, moreInfo));
     }
 
 }
