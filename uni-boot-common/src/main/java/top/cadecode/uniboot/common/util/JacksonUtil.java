@@ -7,8 +7,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -21,16 +22,21 @@ import java.util.Objects;
  * @author Cade Li
  * @date 2022/5/23
  */
-@RequiredArgsConstructor
+@Slf4j
 @Component
 public class JacksonUtil implements InitializingBean {
+
+    public static ObjectMapper OBJECT_MAPPER;
+
+    private ObjectMapper objectMapper;
 
     /**
      * 注入 Spring 管理的 ObjectMapper
      */
-    private final ObjectMapper objectMapper;
-
-    public static ObjectMapper OBJECT_MAPPER;
+    @Autowired(required = false)
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     /**
      * 转换对象到 json 串
@@ -62,7 +68,7 @@ public class JacksonUtil implements InitializingBean {
             }
             return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(bean);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("转换 Bean 到 Json 出错", e);
+            throw new RuntimeException("cast bean to json fail", e);
         }
     }
 
@@ -84,7 +90,7 @@ public class JacksonUtil implements InitializingBean {
         try {
             return OBJECT_MAPPER.readValue(json, clazz);
         } catch (Exception e) {
-            throw new RuntimeException("转换 Json 到 Bean 出错", e);
+            throw new RuntimeException("cast json to bean fail", e);
         }
     }
 
@@ -106,7 +112,7 @@ public class JacksonUtil implements InitializingBean {
         try {
             return OBJECT_MAPPER.readValue(json, typeReference);
         } catch (IOException e) {
-            throw new RuntimeException("转换 Json 到 Bean 出错", e);
+            throw new RuntimeException("cast json to bean fail", e);
         }
     }
 
@@ -114,6 +120,7 @@ public class JacksonUtil implements InitializingBean {
     public void afterPropertiesSet() {
         OBJECT_MAPPER = this.objectMapper;
         if (Objects.isNull(OBJECT_MAPPER)) {
+            log.warn("Bean objectMapper not found, use default config by JacksonUtil");
             OBJECT_MAPPER = new ObjectMapper();
             // 定义日期格式
             String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";

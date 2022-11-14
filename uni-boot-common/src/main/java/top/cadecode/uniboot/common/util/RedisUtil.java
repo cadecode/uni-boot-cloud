@@ -1,8 +1,8 @@
 package top.cadecode.uniboot.common.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -15,16 +15,20 @@ import java.util.concurrent.TimeUnit;
  * @author Cade Li
  * @date 2022/5/29
  */
-@RequiredArgsConstructor
 @Component
 public class RedisUtil implements InitializingBean {
+
+    public static StringRedisTemplate TEMPLATE;
+
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 自动注入 stringRedisTemplate
      */
-    private final StringRedisTemplate stringRedisTemplate;
-
-    public static StringRedisTemplate TEMPLATE;
+    @Autowired(required = false)
+    public void setStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
+        this.stringRedisTemplate = stringRedisTemplate;
+    }
 
     /**
      * 获取 value
@@ -45,13 +49,37 @@ public class RedisUtil implements InitializingBean {
     /**
      * 添加 key
      */
+    public static void set(String key, Object o) {
+        String json = JacksonUtil.toJson(o);
+        TEMPLATE.opsForValue().set(key, json);
+    }
+
+    /**
+     * 添加 key，如果不存在
+     */
+    public static Boolean setIfAbsent(String key, Object o) {
+        String json = JacksonUtil.toJson(o);
+        return TEMPLATE.opsForValue().setIfAbsent(key, json);
+    }
+
+    /**
+     * 添加 key，如果不存在
+     */
+    public static Boolean setIfPresent(String key, Object o) {
+        String json = JacksonUtil.toJson(o);
+        return TEMPLATE.opsForValue().setIfPresent(key, json);
+    }
+
+    /**
+     * 添加 key 并设置有效期
+     */
     public static void set(String key, Object o, long timeout, TimeUnit timeUnit) {
         String json = JacksonUtil.toJson(o);
         TEMPLATE.opsForValue().set(key, json, timeout, timeUnit);
     }
 
     /**
-     * 添加 key，如果不存在
+     * 添加 key 并设置有效期，如果不存在
      */
     public static Boolean setIfAbsent(String key, Object o, long timeout, TimeUnit timeUnit) {
         String json = JacksonUtil.toJson(o);
@@ -59,7 +87,7 @@ public class RedisUtil implements InitializingBean {
     }
 
     /**
-     * 添加 key，如果不存在
+     * 添加 key 并设置有效期，如果不存在
      */
     public static Boolean setIfPresent(String key, Object o, long timeout, TimeUnit timeUnit) {
         String json = JacksonUtil.toJson(o);
@@ -91,7 +119,7 @@ public class RedisUtil implements InitializingBean {
     public void afterPropertiesSet() {
         TEMPLATE = stringRedisTemplate;
         if (Objects.isNull(TEMPLATE)) {
-            throw new IllegalArgumentException("无法注入依赖：stringRedisTemplate");
+            throw new IllegalArgumentException("Bean stringRedisTemplate not found");
         }
     }
 }
