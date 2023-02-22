@@ -7,6 +7,45 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  # redis 公共配置
+  redis:
+    lettuce:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+        max-wait: -1
+  # 数据源公共配置
+  datasource:
+    druid:
+      initialSize: 5
+      minIdle: 10
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      maxEvictableIdleTimeMillis: 900000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: true
+        allow:
+        url-pattern: /druid/*
+        login-username: admin
+        login-password: admin123
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
 
 # mybatis plus 配置
 mybatis-plus:

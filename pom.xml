@@ -40,6 +40,8 @@
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <p6spy.version>3.8.1</p6spy.version>
         <jasypt.version>2.1.1</jasypt.version>
+        <druid.version>1.2.15</druid.version>
+        <dynamic-ds.version>3.6.0</dynamic-ds.version>
     </properties>
 
     <dependencies>
@@ -133,6 +135,16 @@
                 <groupId>p6spy</groupId>
                 <artifactId>p6spy</artifactId>
                 <version>${p6spy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic-ds.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

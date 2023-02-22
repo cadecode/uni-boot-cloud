@@ -6,19 +6,29 @@ spring:
     port: 6379
     password: ENC(jIiKGruIMgDkKx5wj2gJRCROqPutkTvZ)
     database: 0
-    lettuce:
-      pool:
-        max-active: 8
-        min-idle: 0
-        max-idle: 8
-        max-wait: -1
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    dynamic:
+      primary: master
+      datasource:
+        master:
+          url: jdbc:mysql://localhost:3306/demo?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: ENC(donQ3DazAc4/6B+NFSRdxw==)
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        slave1:
+          url: jdbc:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: ENC(donQ3DazAc4/6B+NFSRdxw==)
+          driver-class-name: com.mysql.cj.jdbc.Driver
+
 # uni-boot-admin 配置
 uni-boot:
   config:
     name: UniBootAdmin
     version: 0.0.1
     swagger-on: true
-    dynamic-ds-on: true
+    dynamic-ds-on: false
   # swagger 配置
   swagger:
     title: Swagger 在线文档
@@ -37,21 +47,5 @@ uni-boot:
       expiration: 86400
       secret: 12345678123456781234567812345678
     ignore-urls:
+      - /druid/**
       - /demo/**
-  # 动态数据源配置
-  dynamic-ds:
-    master: db1
-    datasource:
-      db1:
-        # url 加上 p6spy 开启 sql 监控
-        jdbc-url: jdbc:p6spy:mysql://localhost:3306/demo?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-        driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-        username: root
-        password: ENC(donQ3DazAc4/6B+NFSRdxw==)
-        pool-name: db1_pool
-      db2:
-        jdbc-url: jdbc:p6spy:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-        driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-        username: root
-        password: ENC(donQ3DazAc4/6B+NFSRdxw==)
-        pool-name: db2_pool
