@@ -93,5 +93,15 @@
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
         </dependency>
+        <!--druid 连接池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+        <!--动态数据源-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+        </dependency>
     </dependencies>
 </project>
