@@ -47,6 +47,14 @@ spring:
           config:
             multi-statement-allow: true
 
+# pagehelper
+pagehelper:
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  auto-dialect: true
+  auto-runtime-dialect: true
+
 # mybatis plus 配置
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
