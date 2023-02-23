@@ -37,6 +37,7 @@
         <vavr.vsersion>1.0.0-alpha-4</vavr.vsersion>
         <knife4j.version>2.0.5</knife4j.version>
         <mybatis.version>2.2.0</mybatis.version>
+        <pagehelper.version>1.4.0</pagehelper.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <p6spy.version>3.8.1</p6spy.version>
         <jasypt.version>2.1.1</jasypt.version>
@@ -123,6 +124,12 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.version}</version>
+            </dependency>
+            <!--pagehelper-->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.version}</version>
             </dependency>
             <!--mybatis plus-->
             <dependency>
