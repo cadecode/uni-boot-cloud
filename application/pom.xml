@@ -47,11 +47,6 @@
             <groupId>top.cadecode</groupId>
             <artifactId>uni-boot-framework</artifactId>
         </dependency>
-        <!--test 模块-->
-        <dependency>
-            <groupId>top.cadecode</groupId>
-            <artifactId>uni-boot-demo</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
