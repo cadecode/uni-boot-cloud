@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.datasource.AbstractDataSource;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import java.sql.SQLException;
 @Slf4j
 @RequiredArgsConstructor
 @Api(tags = "dynamic-datasource 测试")
+@DependsOn("dataSource")
 @RestController
 @RequestMapping("demo/ds")
 public class DynamicDsController {

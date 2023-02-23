@@ -22,7 +22,6 @@
         <module>framework</module>
         <module>system</module>
         <module>application</module>
-        <module>demo</module>
     </modules>
 
     <!--依赖版本-->
@@ -100,11 +99,6 @@
             <dependency>
                 <groupId>top.cadecode</groupId>
                 <artifactId>uni-boot-system</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>top.cadecode</groupId>
-                <artifactId>uni-boot-demo</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <!--swagger-->

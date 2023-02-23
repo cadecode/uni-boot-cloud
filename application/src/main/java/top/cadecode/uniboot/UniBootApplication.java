@@ -11,7 +11,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 /**
  *
  */
-@MapperScan("top.decode.**.mapper")
+@MapperScan("top.cadecode.**.mapper")
 @EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class UniBootApplication extends SpringBootServletInitializer {
