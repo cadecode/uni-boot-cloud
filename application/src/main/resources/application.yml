@@ -7,6 +7,10 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:1111
   # redis 公共配置
   redis:
     lettuce:
@@ -67,4 +71,12 @@ mybatis-plus:
 logging:
   file:
     path: /log/${uni-boot.config.name}
+
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 

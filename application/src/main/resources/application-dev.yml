@@ -48,4 +48,5 @@ uni-boot:
       secret: 12345678123456781234567812345678
     ignore-urls:
       - /druid/**
+      - /actuator/**
       - /demo/**
