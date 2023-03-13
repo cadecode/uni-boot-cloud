@@ -32,5 +32,5 @@
 - [x] 集成 dynamic-ds
 - [x] 集成 druid 连接池
 - [x] 集成 pagehelper
-- [ ] 集成 Spring Boot Admin 监控
+- [x] 集成 Spring Boot Admin 监控
 - [ ] 集成 dynamicTp
