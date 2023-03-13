@@ -42,6 +42,7 @@
         <jasypt.version>2.1.1</jasypt.version>
         <druid.version>1.2.15</druid.version>
         <dynamic-ds.version>3.6.0</dynamic-ds.version>
+        <sba.version>2.6.11</sba.version>
     </properties>
 
     <dependencies>
@@ -146,6 +147,11 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${dynamic-ds.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${sba.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
