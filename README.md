@@ -33,4 +33,5 @@
 - [x] 集成 druid 连接池
 - [x] 集成 pagehelper
 - [x] 集成 Spring Boot Admin 监控
+- [x] 集成 TransmittableThreadLocal
 - [ ] 集成 dynamicTp
