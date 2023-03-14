@@ -43,6 +43,7 @@
         <druid.version>1.2.15</druid.version>
         <dynamic-ds.version>3.6.0</dynamic-ds.version>
         <sba.version>2.6.11</sba.version>
+        <ttl.version>2.12.2</ttl.version>
     </properties>
 
     <dependencies>
@@ -152,6 +153,11 @@
                 <groupId>de.codecentric</groupId>
                 <artifactId>spring-boot-admin-starter-client</artifactId>
                 <version>${sba.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${ttl.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
