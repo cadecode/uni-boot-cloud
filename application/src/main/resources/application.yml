@@ -50,6 +50,23 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+  dynamic:
+    tp:
+      collectorTypes: logging
+      logPath: /log/${uni-boot.config.name}
+      monitorInterval: 10
+      executors:
+        - threadPoolName: asyncExecutor
+          thread-name-prefix: asyncExecutor
+          corePoolSize: 6
+          maximumPoolSize: 8
+          queueCapacity: 1000
+          queueType: VariableLinkedBlockingQueue
+          rejectedHandlerType: CallerRunsPolicy
+          keepAliveTime: 50
+          waitForTasksToCompleteOnShutdown: true
+          awaitTerminationSeconds: 5
+          notifyEnabled: false
 
 # pagehelper
 pagehelper:
