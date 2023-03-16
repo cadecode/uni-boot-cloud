@@ -53,7 +53,7 @@ spring:
   dynamic:
     tp:
       collectorTypes: logging
-      logPath: /log/${uni-boot.config.name}
+      logPath: ${logging.file.path}
       monitorInterval: 10
       executors:
         - threadPoolName: asyncExecutor
@@ -87,7 +87,7 @@ mybatis-plus:
 # log config
 logging:
   file:
-    path: /log/${uni-boot.config.name}
+    path: /log/uni_boot_admin
 
 # actuator
 management:

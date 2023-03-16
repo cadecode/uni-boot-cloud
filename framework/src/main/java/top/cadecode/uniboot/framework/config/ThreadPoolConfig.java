@@ -1,7 +1,6 @@
 package top.cadecode.uniboot.framework.config;
 
-import com.dtp.core.thread.DtpExecutor;
-import lombok.RequiredArgsConstructor;
+import com.dtp.core.DtpRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 import java.util.concurrent.Executor;
 
@@ -36,32 +34,25 @@ public class ThreadPoolConfig {
         return scheduler;
     }
 
+    @Bean
+    public SchedulingConfigurer schedulingConfigurer(ThreadPoolTaskScheduler taskScheduler) {
+        return taskRegistrar -> taskRegistrar.setTaskScheduler(taskScheduler);
+    }
 
-    @Slf4j
-    @RequiredArgsConstructor
-    @Configuration
-    public static class ExecutorConfig implements AsyncConfigurer, SchedulingConfigurer {
+    @Bean
+    public AsyncConfigurer asyncConfigurer() {
+        return new AsyncConfigurer() {
+            @Override
+            public Executor getAsyncExecutor() {
+                return DtpRegistry.getDtpExecutor("asyncExecutor");
+            }
 
-        private final DtpExecutor asyncExecutor;
-        private final ThreadPoolTaskScheduler taskScheduler;
-
-        @Override
-        public Executor getAsyncExecutor() {
-            return asyncExecutor;
-        }
-
-        @Override
-        public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-            return (throwable, method, objects) -> {
-                log.error("异步任务执行出现异常, message {}, method {}, params {}",
-                        throwable, method, objects);
-            };
-
-        }
-
-        @Override
-        public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-            taskRegistrar.setTaskScheduler(taskScheduler);
-        }
+            @Override
+            public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+                return (throwable, method, objects) -> {
+                    log.error("Async task execute fail, method {}, params {}", method, objects, throwable);
+                };
+            }
+        };
     }
 }
