@@ -1,11 +1,14 @@
 package top.cadecode.uniboot.framework.config;
 
 import com.dtp.core.DtpRegistry;
+import com.dtp.core.spring.EnableDynamicTp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
@@ -18,6 +21,9 @@ import java.util.concurrent.Executor;
  * @date 2023/3/15
  */
 @Slf4j
+@EnableDynamicTp
+@EnableAsync
+@EnableScheduling
 @Configuration
 public class ThreadPoolConfig {
 
@@ -28,7 +34,7 @@ public class ThreadPoolConfig {
     public ThreadPoolTaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
         scheduler.setPoolSize(6);
-        scheduler.setThreadNamePrefix("taskScheduler");
+        scheduler.setThreadNamePrefix("taskScheduler-");
         scheduler.setWaitForTasksToCompleteOnShutdown(true);
         scheduler.setAwaitTerminationSeconds(5);
         return scheduler;

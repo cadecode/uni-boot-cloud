@@ -57,7 +57,7 @@ spring:
       monitorInterval: 10
       executors:
         - threadPoolName: asyncExecutor
-          thread-name-prefix: asyncExecutor
+          thread-name-prefix: asyncExecutor-
           corePoolSize: 6
           maximumPoolSize: 8
           queueCapacity: 1000
