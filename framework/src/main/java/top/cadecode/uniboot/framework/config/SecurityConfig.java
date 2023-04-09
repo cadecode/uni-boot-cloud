@@ -146,7 +146,7 @@ public class SecurityConfig {
                         .failureHandler(loginFailureHandler);
                 // 配置 Token 校验过滤器
                 http.addFilterBefore(tokenAuthFilter, UsernamePasswordAuthenticationFilter.class);
-                log.info("完成 Security 配置，认证模式 {}", authModel);
+                log.info("Config Security over，AuthModel:{}", authModel);
             }
 
             @Override
@@ -157,7 +157,7 @@ public class SecurityConfig {
                 ignoring.antMatchers("/doc.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs/**");
                 // 设置忽略的路径
                 if (CollUtil.isNotEmpty(ignoreUrls)) {
-                    log.info("配置 Security 放行 {}", ignoreUrls);
+                    log.info("Config Security ignore urls:{}", ignoreUrls);
                     ignoring.antMatchers(ArrayUtil.toArray(ignoreUrls, String.class));
                 }
             }

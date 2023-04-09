@@ -43,16 +43,16 @@ public class DynamicDSConfig {
 
     @Bean
     public DynamicDS dynamicDS() {
-        log.info("检查动态数据源配置");
+        log.info("Checking dynamic datasource config");
         checkDynamicDSConfig();
-        log.info("开始创建动态数据源");
+        log.info("Starting to create dynamic datasource");
         // 创建数据源
         Map<Object, Object> dataSourceMap;
         try {
             dataSourceMap = datasource.entrySet().stream()
                     .collect(Collectors.toMap(Entry::getKey, e -> new HikariDataSource(e.getValue())));
         } catch (Exception e) {
-            throw new RuntimeException("创建数据源失败", e);
+            throw new RuntimeException("Create dynamic datasource fail", e);
         }
         DynamicDS dynamicDS = new DynamicDS();
         // 添加数据源
@@ -60,7 +60,7 @@ public class DynamicDSConfig {
         // 设置默认数据源
         dynamicDS.setDefaultTargetDataSource(dataSourceMap.get(master));
         DynamicDSHolder.setDataSourceKey(master);
-        log.info("创建动态数据源完成，默认数据源设置为 {}", master);
+        log.info("Create dynamic datasource over，set default to {}", master);
         return dynamicDS;
     }
 
@@ -70,11 +70,11 @@ public class DynamicDSConfig {
     private void checkDynamicDSConfig() {
         // 检查是否配置了数据源
         if (Objects.isNull(datasource) || datasource.isEmpty()) {
-            throw new RuntimeException("找不到数据源配置");
+            throw new RuntimeException("Dynamic datasource config not found");
         }
         // 检查是否指定主数据源
         if (Objects.isNull(master) || !datasource.containsKey(master)) {
-            throw new RuntimeException("没有指定主数据源或主数据源不在配置中");
+            throw new RuntimeException("Not found default datasource config");
         }
     }
 }
