@@ -66,6 +66,13 @@ public class SecurityConfig {
     public static final String LOGIN_URL = "/login";
 
     /**
+     * 登录参数
+     */
+    public static final String USERNAME_PARAMETER = "username";
+    public static final String PASSWORD_PARAMETER = "password";
+
+
+    /**
      * 注销路径
      */
     public static final String LOGOUT_URL = "/logout";
@@ -142,6 +149,8 @@ public class SecurityConfig {
                 // 配置登录处理器
                 http.formLogin().permitAll()
                         .loginProcessingUrl(LOGIN_URL)
+                        .usernameParameter(USERNAME_PARAMETER)
+                        .passwordParameter(PASSWORD_PARAMETER)
                         .successHandler(loginSuccessHandler)
                         .failureHandler(loginFailureHandler);
                 // 配置 Token 校验过滤器
