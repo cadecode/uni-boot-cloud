@@ -32,8 +32,8 @@ public class DataBaseRoleVoter extends RoleVoter {
 
     @Override
     public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
-        if (authentication == null) {
-            return ACCESS_DENIED;
+        if (authentication == null || !(authentication.getPrincipal() instanceof SysUserDto)) {
+            return ACCESS_ABSTAIN;
         }
         // 获取请求 url
         FilterInvocation fi = (FilterInvocation) object;
