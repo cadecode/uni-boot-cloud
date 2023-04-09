@@ -39,12 +39,12 @@ public class DynamicDSAspect {
         String dataSourceKey = getDataSourceKey(point);
         // 设置数据源
         if (!DynamicDSHolder.containDataSourceKey(dataSourceKey)) {
-            log.info("切换数据源失败，{} 不存在", dataSourceKey);
+            log.info("Switch datasource fail，{} not found", dataSourceKey);
             return;
         }
         DynamicDSHolder.setDataSourceKey(dataSourceKey);
         String methodName = point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName();
-        log.info("切换数据源到 {}，执行方法 [{}]", dataSourceKey, methodName);
+        log.info("Switch datasource to {}，execute method [{}]", dataSourceKey, methodName);
     }
 
     /**
@@ -54,7 +54,7 @@ public class DynamicDSAspect {
     public void resetDataSource(JoinPoint point) {
         // 将数据源恢复为之前的数据源
         DynamicDSHolder.clearDataSourceKey();
-        log.info("恢复数据源到 {}", DynamicDSHolder.getDataSourceKey());
+        log.info("Reset datasource to {}", DynamicDSHolder.getDataSourceKey());
     }
 
     /**

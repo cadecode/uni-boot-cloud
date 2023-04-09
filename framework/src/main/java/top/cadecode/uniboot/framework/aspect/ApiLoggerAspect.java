@@ -67,7 +67,7 @@ public class ApiLoggerAspect {
         }
         HttpServletRequest request = attributes.getRequest();
         ResponseLogInfo logInfo = generateLogInfo(point, result, request, startTime);
-        log.info("接口调用日志：{}", JacksonUtil.toJson(logInfo));
+        log.info("Api log：{}", JacksonUtil.toJson(logInfo));
         return result;
     }
 
@@ -83,7 +83,7 @@ public class ApiLoggerAspect {
             return Collections.emptyMap();
         }
         if (names.length != args.length) {
-            log.warn("接口调用日志：方法 [{}] 参数和传值不匹配", methodSignature.getName());
+            log.warn("Api log：method [{}] param and the pass value do not match", methodSignature.getName());
             return Collections.emptyMap();
         }
         Map<String, Object> map = new HashMap<>();

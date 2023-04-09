@@ -79,9 +79,9 @@ public class SwaggerConfig implements WebMvcConfigurer, ApplicationContextAware 
      */
     @PostConstruct
     public void init() {
-        log.info("开始配置 Swagger dockets");
+        log.info("Starting to config swagger dockets");
         if (Objects.isNull(module) || Objects.isNull(applicationContext)) {
-            log.info("没有找到 Swagger dockets 相关配置");
+            log.info("Swagger dockets config not found");
             return;
         }
         // 获取 BeanFactory，动态注册 Docket
