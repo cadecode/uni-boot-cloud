@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,31 @@ public class SysUserDto implements UserDetails {
      * 是否启用
      */
     private Boolean enableFlag;
+
+    /**
+     * 性别
+     */
+    private String sex;
+
+    /**
+     * 邮箱
+     */
+    private String mail;
+
+    /**
+     * 电话
+     */
+    private String phone;
+
+    /**
+     * 登录 IP
+     */
+    private String loginIp;
+
+    /**
+     * 登录时间
+     */
+    private Date loginDate;
 
     /**
      * 角色
