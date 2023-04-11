@@ -29,6 +29,7 @@ uni-boot:
     version: 0.0.1
     swagger-on: true
     dynamic-ds-on: false
+    file-base-path: D:/uniboot/file/temp/
   # swagger 配置
   swagger:
     title: Swagger 在线文档
@@ -46,4 +47,4 @@ uni-boot:
       header: token
       expiration: 86400
       secret: 12345678123456781234567812345678
-    ignore-urls: /auth/**,/druid/**,/actuator/**,/demo/**
+    ignore-urls: /auth/**,/druid/**,/actuator/**,/demo/**,/common/download**

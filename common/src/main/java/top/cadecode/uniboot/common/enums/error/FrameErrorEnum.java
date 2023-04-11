@@ -49,6 +49,9 @@ public enum FrameErrorEnum implements UniErrorCode {
             return ApiStatus.TOO_MANY_REQUESTS;
         }
     },
+    EXTENSION_NOT_ALLOWED(6, "上传或下载文件的类型不被允许"),
+    UPLOAD_FILE_FAIL(7, "上传文件失败"),
+    FILE_NOT_FOUND(8, "文件未找到"),
     ;
 
     private final String code;
