@@ -41,6 +41,31 @@ public class SysUser {
      */
     private boolean enableFlag;
 
+    /**
+     * 性别
+     */
+    private String sex;
+
+    /**
+     * 邮箱
+     */
+    private String mail;
+
+    /**
+     * 电话
+     */
+    private String phone;
+
+    /**
+     * 登录 IP
+     */
+    private String loginIp;
+
+    /**
+     * 登录时间
+     */
+    private Date loginDate;
+
     private Date createTime;
 
     private Date updateTime;

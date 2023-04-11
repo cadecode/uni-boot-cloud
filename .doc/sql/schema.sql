@@ -8,6 +8,12 @@ CREATE TABLE IF NOT EXISTS sys_user
     password    VARCHAR(100) NOT NULL COMMENT '密码',
     nick_name   VARCHAR(50)  NOT NULL COMMENT '昵称',
     enable_flag TINYINT      NOT NULL COMMENT '是否启用',
+    sex         CHAR(1)      null comment '性别',
+    mail        VARCHAR(50)  null comment '邮箱',
+    phone       VARCHAR(50)  null comment '电话',
+    login_ip    VARCHAR(50)  null comment '登录IP',
+    login_date  DATETIME     null comment '登录时间',
+
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     update_time DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     update_user VARCHAR(100) NULL,
