@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto;
+import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -145,7 +146,7 @@ public class TokenAuthHolder {
      * @param authentication Security认证信息
      * @return token
      */
-    public boolean isAuthenticated(Authentication authentication) {
+    public static boolean isAuthenticated(Authentication authentication) {
         if (ObjectUtil.isNull(authentication)) {
             authentication = SecurityContextHolder.getContext().getAuthentication();
         }
@@ -158,7 +159,7 @@ public class TokenAuthHolder {
      * @param authentication Security认证信息
      * @return SysUserDetailsDto
      */
-    public SysUserDto.SysUserDetailsDto getUserDetails(Authentication authentication) {
+    public static SysUserDetailsDto getUserDetails(Authentication authentication) {
         if (ObjectUtil.isNull(authentication)) {
             authentication = SecurityContextHolder.getContext().getAuthentication();
         }
