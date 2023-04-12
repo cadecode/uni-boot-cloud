@@ -2,9 +2,9 @@ package top.cadecode.uniboot.system.convert;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import top.cadecode.uniboot.system.bean.dto.SysUserDto;
+import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 import top.cadecode.uniboot.system.bean.po.SysUser;
-import top.cadecode.uniboot.system.bean.vo.SysUserVo;
+import top.cadecode.uniboot.system.bean.vo.SysUserVo.SysUserRolesVo;
 
 /**
  * 系统用户 BEAN 转换
@@ -17,7 +17,7 @@ public interface SysUserConvert {
 
     SysUserConvert INSTANCE = Mappers.getMapper(SysUserConvert.class);
 
-    SysUserVo poToVo(SysUser po);
+    SysUserRolesVo poToRolesVo(SysUser po);
 
-    SysUserDto poToDto(SysUser po);
+    SysUserDetailsDto poToDetailsDto(SysUser po);
 }

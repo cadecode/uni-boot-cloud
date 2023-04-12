@@ -10,14 +10,17 @@ import java.util.List;
  * @author Cade Li
  * @date 2022/5/24
  */
-@Data
 public class SysApiVo {
 
-    private Long id;
+    @Data
+    public static class SysApiRolesVo {
 
-    private String url;
+        private Long id;
 
-    private String description;
+        private String url;
 
-    private List<String> roles;
+        private String description;
+
+        private List<String> roles;
+    }
 }

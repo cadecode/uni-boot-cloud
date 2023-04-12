@@ -12,6 +12,7 @@ import top.cadecode.uniboot.framework.config.SecurityConfig;
 import top.cadecode.uniboot.framework.security.LoginSuccessHandler;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto;
+import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 import top.cadecode.uniboot.system.service.SysUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,17 +45,17 @@ public class RedisLoginSuccessHandler extends LoginSuccessHandler {
     }
 
     @Override
-    public ApiResult<SysUserDto> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    public ApiResult<SysUserDto.SysUserDetailsDto> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         // 从认证信息中获取用户对象
-        SysUserDto sysUserDto = (SysUserDto) authentication.getPrincipal();
+        SysUserDetailsDto sysUserDetailsDto = (SysUserDetailsDto) authentication.getPrincipal();
         // 生成 uuid token
         String uuidToken = tokenAuthHolder.generateUUID();
         // token 放在请求头
         response.addHeader(tokenAuthHolder.getHeader(), uuidToken);
         // 生成存放登录信息的 redis key
         String loginUserKey = CacheKeyGenerator.key(CacheKeyPrefix.LOGIN_USER, uuidToken);
-        RedisUtil.set(loginUserKey, sysUserDto, tokenAuthHolder.getExpiration(), TimeUnit.SECONDS);
-        return ApiResult.ok(sysUserDto).path(SecurityConfig.LOGOUT_URL);
+        RedisUtil.set(loginUserKey, sysUserDetailsDto, tokenAuthHolder.getExpiration(), TimeUnit.SECONDS);
+        return ApiResult.ok(sysUserDetailsDto).path(SecurityConfig.LOGOUT_URL);
     }
 
 }

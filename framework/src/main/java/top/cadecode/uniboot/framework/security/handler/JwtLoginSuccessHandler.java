@@ -9,6 +9,7 @@ import top.cadecode.uniboot.framework.config.SecurityConfig;
 import top.cadecode.uniboot.framework.security.LoginSuccessHandler;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto;
+import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 import top.cadecode.uniboot.system.service.SysUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,14 +41,14 @@ public class JwtLoginSuccessHandler extends LoginSuccessHandler {
     }
 
     @Override
-    public ApiResult<SysUserDto> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    public ApiResult<SysUserDetailsDto> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         // 从认证信息中获取用户对象
-        SysUserDto sysUserDto = (SysUserDto) authentication.getPrincipal();
+        SysUserDto.SysUserDetailsDto sysUserDetailsDto = (SysUserDto.SysUserDetailsDto) authentication.getPrincipal();
         // 生成 jwt token
-        String jwtToken = tokenAuthHolder.generateToken(sysUserDto.getId(), sysUserDto.getUsername(), sysUserDto.getRoles());
+        String jwtToken = tokenAuthHolder.generateToken(sysUserDetailsDto.getId(), sysUserDetailsDto.getUsername(), sysUserDetailsDto.getRoles());
         // token 放在请求头
         response.addHeader(tokenAuthHolder.getHeader(), jwtToken);
-        return ApiResult.ok(sysUserDto).path(SecurityConfig.LOGOUT_URL);
+        return ApiResult.ok(sysUserDetailsDto).path(SecurityConfig.LOGOUT_URL);
     }
 
 }

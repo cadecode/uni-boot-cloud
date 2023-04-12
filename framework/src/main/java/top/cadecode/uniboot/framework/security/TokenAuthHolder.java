@@ -149,21 +149,21 @@ public class TokenAuthHolder {
         if (ObjectUtil.isNull(authentication)) {
             authentication = SecurityContextHolder.getContext().getAuthentication();
         }
-        return authentication != null && authentication.getPrincipal() instanceof SysUserDto;
+        return authentication != null && authentication.getPrincipal() instanceof SysUserDto.SysUserDetailsDto;
     }
 
     /**
-     * SpringSecurity相关，取出UserDetails SysUserDto
+     * SpringSecurity相关，取出UserDetails SysUserDetailsDto
      *
      * @param authentication Security认证信息
-     * @return SysUserDto
+     * @return SysUserDetailsDto
      */
-    public SysUserDto getUserDetails(Authentication authentication) {
+    public SysUserDto.SysUserDetailsDto getUserDetails(Authentication authentication) {
         if (ObjectUtil.isNull(authentication)) {
             authentication = SecurityContextHolder.getContext().getAuthentication();
         }
-        if (authentication != null && authentication.getPrincipal() instanceof SysUserDto) {
-            return (SysUserDto) authentication.getPrincipal();
+        if (authentication != null && authentication.getPrincipal() instanceof SysUserDto.SysUserDetailsDto) {
+            return (SysUserDto.SysUserDetailsDto) authentication.getPrincipal();
         }
         return null;
     }

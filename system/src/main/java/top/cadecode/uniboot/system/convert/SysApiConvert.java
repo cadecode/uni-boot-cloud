@@ -3,7 +3,7 @@ package top.cadecode.uniboot.system.convert;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import top.cadecode.uniboot.system.bean.po.SysApi;
-import top.cadecode.uniboot.system.bean.vo.SysApiVo;
+import top.cadecode.uniboot.system.bean.vo.SysApiVo.SysApiRolesVo;
 
 /**
  * 系统接口 BEAN 转换
@@ -16,6 +16,6 @@ public interface SysApiConvert {
 
     SysApiConvert INSTANCE = Mappers.getMapper(SysApiConvert.class);
 
-    SysApiVo poToVo(SysApi po);
+    SysApiRolesVo poToRolesVo(SysApi po);
 
 }

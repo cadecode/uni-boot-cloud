@@ -10,6 +10,7 @@ import top.cadecode.uniboot.common.enums.AuthModelEnum;
 import top.cadecode.uniboot.common.response.ApiResult;
 import top.cadecode.uniboot.common.util.JacksonUtil;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto;
+import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 import top.cadecode.uniboot.system.bean.po.SysUser;
 import top.cadecode.uniboot.system.service.SysUserService;
 
@@ -36,27 +37,27 @@ public abstract class LoginSuccessHandler implements AuthenticationSuccessHandle
      */
     public abstract AuthModelEnum getAuthModel();
 
-    public abstract ApiResult<SysUserDto> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication);
+    public abstract ApiResult<SysUserDetailsDto> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication);
 
     /**
      * 更新登录信息
      *
-     * @param sysUserDto 系统用户 DTO
+     * @param sysUserDetailsDto 系统用户 DTO
      */
-    public void updateLoginInfo(SysUserDto sysUserDto) {
-        sysUserDto.setLoginIp(NetUtil.getLocalhost().getHostAddress());
-        sysUserDto.setLoginDate(new Date());
+    public void updateLoginInfo(SysUserDto.SysUserDetailsDto sysUserDetailsDto) {
+        sysUserDetailsDto.setLoginIp(NetUtil.getLocalhost().getHostAddress());
+        sysUserDetailsDto.setLoginDate(new Date());
         // 同步到用户表
         sysUserService.lambdaUpdate()
-                .eq(SysUser::getId, sysUserDto.getId())
-                .set(SysUser::getLoginIp, sysUserDto.getLoginIp())
-                .set(SysUser::getLoginDate, sysUserDto.getLoginDate())
+                .eq(SysUser::getId, sysUserDetailsDto.getId())
+                .set(SysUser::getLoginIp, sysUserDetailsDto.getLoginIp())
+                .set(SysUser::getLoginDate, sysUserDetailsDto.getLoginDate())
                 .update();
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        ApiResult<SysUserDto> result = getResult(request, response, authentication);
+        ApiResult<SysUserDto.SysUserDetailsDto> result = getResult(request, response, authentication);
         updateLoginInfo(result.getData());
         ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
