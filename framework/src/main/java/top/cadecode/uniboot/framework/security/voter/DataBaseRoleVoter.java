@@ -31,11 +31,9 @@ public class DataBaseRoleVoter extends RoleVoter {
 
     private final SysApiService sysApiService;
 
-    private final TokenAuthHolder tokenAuthHolder;
-
     @Override
     public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
-        if (!tokenAuthHolder.isAuthenticated(authentication)) {
+        if (!TokenAuthHolder.isAuthenticated(authentication)) {
             return ACCESS_ABSTAIN;
         }
         // 获取请求 url
@@ -44,7 +42,7 @@ public class DataBaseRoleVoter extends RoleVoter {
         // 获取 api role 的关系列表
         List<SysApiRolesVo> sysApiRolesVos = sysApiService.listSysApiVo();
         // 获取用户角色
-        SysUserDto.SysUserDetailsDto sysUserDetailsDto = tokenAuthHolder.getUserDetails(authentication);
+        SysUserDto.SysUserDetailsDto sysUserDetailsDto = TokenAuthHolder.getUserDetails(authentication);
         List<String> roles = sysUserDetailsDto.getRoles();
         // 获取与 url 相同的配置，不存在与 url 相同配置则使用 ant 风格匹配
         SysApiRolesVo sysApiRolesVo = sysApiRolesVos.stream()
