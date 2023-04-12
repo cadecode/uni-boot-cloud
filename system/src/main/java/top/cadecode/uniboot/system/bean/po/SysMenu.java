@@ -51,7 +51,7 @@ public class SysMenu {
     /**
      * 排序
      */
-    private Integer order;
+    private Integer orderNum;
 
     /**
      * 是否启用
