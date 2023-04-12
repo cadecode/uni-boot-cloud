@@ -42,7 +42,7 @@ public class RedisTokenAuthFilter extends TokenAuthFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-        String uuidToken = request.getHeader(tokenAuthHolder.getHeader());
+        String uuidToken = tokenAuthHolder.getTokenFromRequest(request);
         // token 不存在
         if (StrUtil.isEmpty(uuidToken)) {
             filterChain.doFilter(request, response);

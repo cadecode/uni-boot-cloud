@@ -1,14 +1,19 @@
 package top.cadecode.uniboot.framework.security;
 
 import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.jwt.JWT;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * JWT Token 工具类（基于 hutool）
@@ -110,5 +115,24 @@ public class TokenAuthHolder {
     public String generateUUID() {
         // 使用两个 UUID 拼接
         return UUID.fastUUID().toString(true) + UUID.fastUUID().toString(true);
+    }
+
+    /**
+     * 从request对象解析token，cookie or header
+     *
+     * @param request HttpServletRequest
+     * @return token
+     */
+    public String getTokenFromRequest(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (ObjectUtil.isNotEmpty(cookies)) {
+            Optional<Cookie> optionalCookie = Arrays.stream(cookies)
+                    .filter(c -> ObjectUtil.equal(c.getName(), getHeader()))
+                    .findAny();
+            if (optionalCookie.isPresent()) {
+                return optionalCookie.get().getValue();
+            }
+        }
+        return request.getHeader(getHeader());
     }
 }
