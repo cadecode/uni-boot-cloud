@@ -2,7 +2,7 @@ package top.cadecode.uniboot.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import top.cadecode.uniboot.system.bean.po.SysApi;
-import top.cadecode.uniboot.system.bean.vo.SysApiVo;
+import top.cadecode.uniboot.system.bean.vo.SysApiVo.SysApiRolesVo;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface SysApiService extends IService<SysApi> {
 
-    List<SysApiVo> listSysApiVo();
+    List<SysApiRolesVo> listSysApiVo();
 }

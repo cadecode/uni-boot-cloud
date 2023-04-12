@@ -17,60 +17,66 @@ import java.util.stream.Collectors;
  * @author Cade Li
  * @date 2022/5/24
  */
-@Data
-public class SysUserDto implements UserDetails {
+public class SysUserDto {
 
-    private Long id;
+    /**
+     * SpringSecurity UserDetails实现
+     */
+    @Data
+    public static class SysUserDetailsDto implements UserDetails {
 
-    private String username;
+        private Long id;
 
-    @JsonIgnore
-    private String password;
+        private String username;
 
-    private String nickName;
+        @JsonIgnore
+        private String password;
 
-    private Boolean enableFlag;
+        private String nickName;
 
-    private String sex;
+        private Boolean enableFlag;
 
-    private String mail;
+        private String sex;
 
-    private String phone;
+        private String mail;
 
-    private String loginIp;
+        private String phone;
 
-    private Date loginDate;
+        private String loginIp;
 
-    List<String> roles;
+        private Date loginDate;
 
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // 重写获取权限的方法，从角色字符串创建 SimpleGrantedAuthority
-        return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-    }
+        List<String> roles;
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+        @JsonIgnore
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            // 重写获取权限的方法，从角色字符串创建 SimpleGrantedAuthority
+            return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        }
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+        @JsonIgnore
+        @Override
+        public boolean isAccountNonExpired() {
+            return true;
+        }
 
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+        @JsonIgnore
+        @Override
+        public boolean isAccountNonLocked() {
+            return true;
+        }
 
-    @JsonIgnore
-    @Override
-    public boolean isEnabled() {
-        return true;
+        @JsonIgnore
+        @Override
+        public boolean isCredentialsNonExpired() {
+            return true;
+        }
+
+        @JsonIgnore
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
     }
 }

@@ -11,26 +11,29 @@ import java.util.List;
  * @author Cade Li
  * @date 2022/5/24
  */
-@Data
 public class SysUserVo {
 
-    private Long id;
+    @Data
+    public static class SysUserRolesVo {
 
-    private String username;
+        private Long id;
 
-    private String nickName;
+        private String username;
 
-    private boolean enableFlag;
+        private String nickName;
 
-    private String sex;
+        private boolean enableFlag;
 
-    private String mail;
+        private String sex;
 
-    private String phone;
+        private String mail;
 
-    private String loginIp;
+        private String phone;
 
-    private Date loginDate;
+        private String loginIp;
 
-    private List<String> roles;
+        private Date loginDate;
+
+        private List<String> roles;
+    }
 }

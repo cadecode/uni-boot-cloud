@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import top.cadecode.uniboot.system.bean.po.SysApi;
-import top.cadecode.uniboot.system.bean.vo.SysApiVo;
+import top.cadecode.uniboot.system.bean.vo.SysApiVo.SysApiRolesVo;
 
 import java.util.List;
 
@@ -17,5 +17,5 @@ import java.util.List;
 @Mapper
 public interface SysApiMapper extends BaseMapper<SysApi> {
 
-    List<SysApiVo> listSysApiVo(@Param("apiIds") List<Long> apiIds);
+    List<SysApiRolesVo> listSysApiVo(@Param("apiIds") List<Long> apiIds);
 }

@@ -12,6 +12,7 @@ import top.cadecode.uniboot.common.util.RedisUtil;
 import top.cadecode.uniboot.framework.security.TokenAuthFilter;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto;
+import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -50,16 +51,16 @@ public class RedisTokenAuthFilter extends TokenAuthFilter {
         }
         // 查询 redis 中 token
         String loginUserKey = CacheKeyGenerator.key(CacheKeyPrefix.LOGIN_USER, uuidToken);
-        SysUserDto sysUserDto = RedisUtil.get(loginUserKey, SysUserDto.class);
+        SysUserDetailsDto sysUserDetailsDto = RedisUtil.get(loginUserKey, SysUserDto.SysUserDetailsDto.class);
         // redis 中用户不存在
-        if (Objects.isNull(sysUserDto)) {
+        if (Objects.isNull(sysUserDetailsDto)) {
             writeResponse(response, AuthErrorEnum.TOKEN_EXPIRED, requestURI);
             return;
         }
         // 用户存在，刷新过期时间
         RedisUtil.expire(loginUserKey, tokenAuthHolder.getExpiration(), TimeUnit.SECONDS);
         // 设置 AuthenticationToken
-        setAuthentication(request, sysUserDto);
+        setAuthentication(request, sysUserDetailsDto);
         filterChain.doFilter(request, response);
     }
 }

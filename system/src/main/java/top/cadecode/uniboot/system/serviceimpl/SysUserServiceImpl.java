@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import top.cadecode.uniboot.common.exception.UniException;
-import top.cadecode.uniboot.system.bean.dto.SysUserDto;
+import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 import top.cadecode.uniboot.system.bean.po.SysRole;
 import top.cadecode.uniboot.system.bean.po.SysUser;
 import top.cadecode.uniboot.system.convert.SysUserConvert;
@@ -41,9 +41,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (!sysUserOpt.get().isEnableFlag()) {
             throw UniException.of("账号已被关闭");
         }
-        SysUserDto sysUserDto = SysUserConvert.INSTANCE.poToDto(sysUserOpt.get());
-        List<SysRole> sysRoles = sysRoleMapper.listByUserId(sysUserDto.getId());
-        sysUserDto.setRoles(sysRoles.stream().map(SysRole::getCode).collect(Collectors.toList()));
-        return sysUserDto;
+        SysUserDetailsDto sysUserDetailsDto = SysUserConvert.INSTANCE.poToDetailsDto(sysUserOpt.get());
+        List<SysRole> sysRoles = sysRoleMapper.listByUserId(sysUserDetailsDto.getId());
+        sysUserDetailsDto.setRoles(sysRoles.stream().map(SysRole::getCode).collect(Collectors.toList()));
+        return sysUserDetailsDto;
     }
 }

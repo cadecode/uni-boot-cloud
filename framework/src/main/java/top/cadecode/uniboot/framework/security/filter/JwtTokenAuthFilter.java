@@ -9,7 +9,7 @@ import top.cadecode.uniboot.common.enums.AuthModelEnum;
 import top.cadecode.uniboot.common.enums.error.AuthErrorEnum;
 import top.cadecode.uniboot.framework.security.TokenAuthFilter;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
-import top.cadecode.uniboot.system.bean.dto.SysUserDto;
+import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -56,9 +56,9 @@ public class JwtTokenAuthFilter extends TokenAuthFilter {
         }
         // 获取 jwt 内容
         JSONObject payload = tokenAuthHolder.getPayload(jwtToken);
-        SysUserDto sysUserDto = payload.toBean(SysUserDto.class);
+        SysUserDetailsDto sysUserDetailsDto = payload.toBean(SysUserDetailsDto.class);
         // 设置 AuthenticationToken
-        setAuthentication(request, sysUserDto);
+        setAuthentication(request, sysUserDetailsDto);
         // 判断是否需要刷新 token
         // 获取过期时间，单位秒
         int expiresAt = (int) payload.get("exp");
@@ -67,7 +67,7 @@ public class JwtTokenAuthFilter extends TokenAuthFilter {
         // 如果当时时间距离过期时间不到配置的 expiration 一半，就下发新的 token
         if (expiresAt - System.currentTimeMillis() / 1000 < halfExpiration) {
             // 生成 jwt token
-            String newJwtToken = tokenAuthHolder.generateToken(sysUserDto.getId(), sysUserDto.getUsername(), sysUserDto.getRoles());
+            String newJwtToken = tokenAuthHolder.generateToken(sysUserDetailsDto.getId(), sysUserDetailsDto.getUsername(), sysUserDetailsDto.getRoles());
             // token 放在请求头
             response.addHeader(tokenAuthHolder.getHeader(), newJwtToken);
         }

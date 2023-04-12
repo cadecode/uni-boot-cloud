@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import top.cadecode.uniboot.common.consts.CacheKeyPrefix;
 import top.cadecode.uniboot.common.util.RedisUtil;
 import top.cadecode.uniboot.system.bean.po.SysApi;
-import top.cadecode.uniboot.system.bean.vo.SysApiVo;
+import top.cadecode.uniboot.system.bean.vo.SysApiVo.SysApiRolesVo;
 import top.cadecode.uniboot.system.mapper.SysApiMapper;
 import top.cadecode.uniboot.system.service.SysApiService;
 
@@ -30,10 +30,11 @@ public class SysApiServiceImpl extends ServiceImpl<SysApiMapper, SysApi> impleme
 
     @Cacheable(cacheNames = CacheKeyPrefix.API_ROLES, cacheManager = "localCache5s")
     @Override
-    public List<SysApiVo> listSysApiVo() {
-        List<SysApiVo> sysApiVos = RedisUtil.get(CacheKeyPrefix.API_ROLES, new TypeReference<List<SysApiVo>>() {});
-        return Optional.ofNullable(sysApiVos).orElseGet(() -> {
-            List<SysApiVo> voList = sysApiMapper.listSysApiVo(null);
+    public List<SysApiRolesVo> listSysApiVo() {
+        List<SysApiRolesVo> sysApiRolesVos = RedisUtil.get(CacheKeyPrefix.API_ROLES, new TypeReference<List<SysApiRolesVo>>() {
+        });
+        return Optional.ofNullable(sysApiRolesVos).orElseGet(() -> {
+            List<SysApiRolesVo> voList = sysApiMapper.listSysApiVo(null);
             // 每三十分钟刷新一次
             RedisUtil.set(CacheKeyPrefix.API_ROLES, voList, 30, TimeUnit.MINUTES);
             return voList;

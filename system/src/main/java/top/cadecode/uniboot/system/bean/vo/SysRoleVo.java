@@ -8,14 +8,17 @@ import lombok.Data;
  * @author Cade Li
  * @date 2022/5/24
  */
-@Data
 public class SysRoleVo {
 
-    private Long id;
+    @Data
+    public static class SysRoleListVo {
 
-    private String code;
+        private Long id;
 
-    private String name;
+        private String code;
 
-    private String description;
+        private String name;
+
+        private String description;
+    }
 }
