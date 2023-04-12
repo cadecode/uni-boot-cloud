@@ -6,7 +6,10 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.jwt.JWT;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import top.cadecode.uniboot.system.bean.dto.SysUserDto;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -134,5 +137,34 @@ public class TokenAuthHolder {
             }
         }
         return request.getHeader(getHeader());
+    }
+
+    /**
+     * SpringSecurity相关，判断是否认证
+     *
+     * @param authentication Security认证信息
+     * @return token
+     */
+    public boolean isAuthenticated(Authentication authentication) {
+        if (ObjectUtil.isNull(authentication)) {
+            authentication = SecurityContextHolder.getContext().getAuthentication();
+        }
+        return authentication != null && authentication.getPrincipal() instanceof SysUserDto;
+    }
+
+    /**
+     * SpringSecurity相关，取出UserDetails SysUserDto
+     *
+     * @param authentication Security认证信息
+     * @return SysUserDto
+     */
+    public SysUserDto getUserDetails(Authentication authentication) {
+        if (ObjectUtil.isNull(authentication)) {
+            authentication = SecurityContextHolder.getContext().getAuthentication();
+        }
+        if (authentication != null && authentication.getPrincipal() instanceof SysUserDto) {
+            return (SysUserDto) authentication.getPrincipal();
+        }
+        return null;
     }
 }
