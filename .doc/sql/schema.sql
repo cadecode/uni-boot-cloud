@@ -86,12 +86,12 @@ CREATE TABLE IF NOT EXISTS sys_menu
 (
     id          BIGINT UNSIGNED,
     parent_id   BIGINT UNSIGNED,
-    route_name  VARCHAR(100) NOT NULL COMMENT '菜单昵称',
-    route_path  TEXT         NULL COMMENT '路由',
+    route_name  VARCHAR(100) NOT NULL COMMENT '路由名称',
+    route_path  TEXT         NOT NULL COMMENT '路由路径',
     menu_name   VARCHAR(100) NOT NULL COMMENT '菜单名称',
     leaf_flag   TINYINT      NOT NULL COMMENT '是否页面',
     icon        TEXT         NULL COMMENT '图标',
-    order       INT          NULL COMMENT '排序',
+    order_num   INT          NULL COMMENT '排序',
     enable_flag TINYINT      NOT NULL COMMENT '是否启用',
 
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
