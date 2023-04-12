@@ -20,60 +20,27 @@ import java.util.stream.Collectors;
 @Data
 public class SysUserDto implements UserDetails {
 
-    /**
-     * id
-     */
     private Long id;
 
-    /**
-     * 用户名
-     */
     private String username;
 
-    /**
-     * 密码
-     */
     @JsonIgnore
     private String password;
 
-    /**
-     * 昵称
-     */
     private String nickName;
 
-    /**
-     * 是否启用
-     */
     private Boolean enableFlag;
 
-    /**
-     * 性别
-     */
     private String sex;
 
-    /**
-     * 邮箱
-     */
     private String mail;
 
-    /**
-     * 电话
-     */
     private String phone;
 
-    /**
-     * 登录 IP
-     */
     private String loginIp;
 
-    /**
-     * 登录时间
-     */
     private Date loginDate;
 
-    /**
-     * 角色
-     */
     List<String> roles;
 
     @JsonIgnore
