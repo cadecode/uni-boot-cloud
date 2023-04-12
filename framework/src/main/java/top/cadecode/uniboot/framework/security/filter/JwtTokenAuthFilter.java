@@ -38,7 +38,7 @@ public class JwtTokenAuthFilter extends TokenAuthFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-        String jwtToken = request.getHeader(tokenAuthHolder.getHeader());
+        String jwtToken = tokenAuthHolder.getTokenFromRequest(request);
         // token 不存在
         if (StrUtil.isEmpty(jwtToken)) {
             filterChain.doFilter(request, response);
