@@ -8,6 +8,7 @@
 
 - Java 版本：8
 - Spring 版本：SpringBoot 2.5.2
+- 数据库版本：MySQL8
 - 构建工具：Maven 3.6.3
 
 ## 代码结构
