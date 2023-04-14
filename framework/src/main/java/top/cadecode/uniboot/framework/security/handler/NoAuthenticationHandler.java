@@ -25,6 +25,7 @@ public class NoAuthenticationHandler implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) {
         ApiResult<Object> result = ApiResult.error(AuthErrorEnum.TOKEN_NOT_EXIST).path(request.getRequestURI());
+        response.setStatus(AuthErrorEnum.TOKEN_NOT_EXIST.getStatus());
         ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
 }

@@ -29,6 +29,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) {
         ApiResult<Object> result = ApiResult.error(AuthErrorEnum.TOKEN_CREATE_ERROR).path(SecurityConfig.LOGIN_URL);
+        response.setStatus(AuthErrorEnum.TOKEN_CREATE_ERROR.getStatus());
         Throwable cause = exception.getCause() == null ? exception : exception.getCause();
         if (cause instanceof UniException) {
             result.moreInfo(((UniException) cause).getMoreInfo());

@@ -25,6 +25,7 @@ public class NoAuthorityHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) {
         ApiResult<Object> result = ApiResult.error(AuthErrorEnum.TOKEN_NO_AUTHORITY).path(request.getRequestURI());
+        response.setStatus(AuthErrorEnum.TOKEN_NO_AUTHORITY.getStatus());
         ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
 }
