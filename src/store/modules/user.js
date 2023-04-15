@@ -7,7 +7,9 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: []
+    roles: [],
+    // login接口后端对象
+    userInfo: {}
   }
 }
 
@@ -28,27 +30,31 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_USER_INFO: (state, userInfo) => {
+    state.userInfo = userInfo
   }
 }
 
 const actions = {
-  // user login
+  // 登录
   login({ commit }, userInfo) {
     const formData = new FormData()
     Object.keys(userInfo).forEach(k => formData.append(k, userInfo[k]))
     return new Promise((resolve, reject) => {
-      login(formData).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+      login(formData).then(res => {
+        const { data } = res
+        const { nickName, roles } = data
+        commit('SET_USER_INFO', data)
+        commit('SET_NAME', nickName)
+        commit('SET_ROLES', roles)
         resolve()
       }).catch(error => {
         reject(error)
       })
     })
   },
-
-  // get user info
+  // 获取用户信息
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
@@ -74,12 +80,13 @@ const actions = {
       })
     })
   },
-
-  // user logout
-  logout({ commit, state }) {
+  // 注销
+  logout({ commit }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
+      logout().then(() => {
+        // 清理cookie token
+        removeToken()
+        // 清理路由
         resetRouter()
         commit('RESET_STATE')
         resolve()
@@ -88,11 +95,15 @@ const actions = {
       })
     })
   },
-
-  // remove token
+  // 设置token
+  setToken({ commit }, token) {
+    commit('SET_TOKEN', token)
+    setToken(token)
+  },
+  // 重置token
   resetToken({ commit }) {
     return new Promise(resolve => {
-      removeToken() // must remove  token  first
+      removeToken()
       commit('RESET_STATE')
       resolve()
     })

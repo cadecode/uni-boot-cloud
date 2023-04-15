@@ -10,7 +10,7 @@
     >
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">Uni Boot Admin 管理系统</h3>
       </div>
 
       <el-form-item prop="username">
@@ -53,7 +53,8 @@
         type="primary"
         style="width:100%;margin-bottom:30px;"
         @click.native.prevent="handleLogin"
-      >Login
+      >
+        登录
       </el-button>
 
       <div class="tips" />
@@ -126,7 +127,7 @@ export default {
             this.loading = false
           })
         } else {
-          console.log('error submit!!')
+          console.log('login form validate fail')
           return false
         }
       })

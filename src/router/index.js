@@ -45,7 +45,8 @@ const router = createRouter()
 // detail:https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+  // reset router
+  router.matcher = newRouter.matcher
 }
 
 export default router
