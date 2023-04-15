@@ -43,6 +43,12 @@ public enum AuthErrorEnum implements UniErrorCode {
             return ApiStatus.OK;
         }
     },
+    TOKEN_LOGOUT(5, "用户主动注销") {
+        @Override
+        public int getStatus() {
+            return ApiStatus.NO_AUTHENTICATION;
+        }
+    },
     ;
 
     private final String code;
