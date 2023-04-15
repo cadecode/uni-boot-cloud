@@ -47,4 +47,4 @@ uni-boot:
       header: token
       expiration: 86400
       secret: 12345678123456781234567812345678
-    ignore-urls: /auth/**,/demo/**,/common/download**
+    ignore-urls: /auth/login,/demo/**,/common/download**
