@@ -9,7 +9,7 @@
             <result column="code"/>
         </collection>
     </resultMap>
-    <select id="listSysApiVo" resultMap="SysApiRolesVoMap">
+    <select id="listRolesVo" resultMap="SysApiRolesVoMap">
         SELECT sa.id, sa.url, sa.description, sr.code
         FROM sys_api sa
         LEFT JOIN sys_role_api sra ON sra.api_id = sa.id

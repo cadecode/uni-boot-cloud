@@ -17,5 +17,5 @@ import java.util.List;
 @Mapper
 public interface SysApiMapper extends BaseMapper<SysApi> {
 
-    List<SysApiRolesVo> listSysApiVo(@Param("apiIds") List<Long> apiIds);
+    List<SysApiRolesVo> listRolesVo(@Param("apiIds") List<Long> apiIds);
 }

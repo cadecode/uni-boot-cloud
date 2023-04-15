@@ -30,11 +30,11 @@ public class SysApiServiceImpl extends ServiceImpl<SysApiMapper, SysApi> impleme
 
     @Cacheable(cacheNames = CacheKeyPrefix.API_ROLES, cacheManager = "localCache5s")
     @Override
-    public List<SysApiRolesVo> listSysApiVo() {
+    public List<SysApiRolesVo> listRolesVo() {
         List<SysApiRolesVo> sysApiRolesVos = RedisUtil.get(CacheKeyPrefix.API_ROLES, new TypeReference<List<SysApiRolesVo>>() {
         });
         return Optional.ofNullable(sysApiRolesVos).orElseGet(() -> {
-            List<SysApiRolesVo> voList = sysApiMapper.listSysApiVo(null);
+            List<SysApiRolesVo> voList = sysApiMapper.listRolesVo(null);
             // 每三十分钟刷新一次
             RedisUtil.set(CacheKeyPrefix.API_ROLES, voList, 30, TimeUnit.MINUTES);
             return voList;

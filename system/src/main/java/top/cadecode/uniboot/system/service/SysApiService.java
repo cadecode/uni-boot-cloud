@@ -14,5 +14,5 @@ import java.util.List;
  */
 public interface SysApiService extends IService<SysApi> {
 
-    List<SysApiRolesVo> listSysApiVo();
+    List<SysApiRolesVo> listRolesVo();
 }
