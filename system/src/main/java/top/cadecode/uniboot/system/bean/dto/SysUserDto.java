@@ -1,10 +1,14 @@
 package top.cadecode.uniboot.system.bean.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import top.cadecode.uniboot.system.bean.vo.SysMenuVo.SysMenuTreeVo;
 
 import java.util.Collection;
 import java.util.Date;
@@ -78,5 +82,13 @@ public class SysUserDto {
         public boolean isEnabled() {
             return true;
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class SysUserInfoDto {
+        private List<SysMenuTreeVo> menuList;
     }
 }
