@@ -164,6 +164,8 @@ public class SecurityConfig {
                 IgnoredRequestConfigurer ignoring = web.ignoring();
                 // 放行 swagger knife 文档
                 ignoring.antMatchers("/doc.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs/**");
+                // 放行其他框架
+                ignoring.antMatchers("/error", "/druid/**", "/actuator/**");
                 // 设置忽略的路径
                 if (CollUtil.isNotEmpty(ignoreUrls)) {
                     log.info("Config Security ignore urls:{}", ignoreUrls);
