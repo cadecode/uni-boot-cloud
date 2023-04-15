@@ -10,6 +10,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.stereotype.Component;
 import top.cadecode.uniboot.common.consts.CacheKeyPrefix;
 import top.cadecode.uniboot.common.datasource.CacheKeyGenerator;
+import top.cadecode.uniboot.common.enums.error.AuthErrorEnum;
 import top.cadecode.uniboot.common.response.ApiResult;
 import top.cadecode.uniboot.common.util.JacksonUtil;
 import top.cadecode.uniboot.common.util.RedisUtil;
@@ -41,7 +42,8 @@ public class SignOutSuccessHandler implements LogoutSuccessHandler {
             RedisUtil.del(loginUserKey);
         }
         // 写入响应
-        ApiResult<Object> result = ApiResult.ok(null).path(SecurityConfig.LOGOUT_URL);
+        ApiResult<Object> result = ApiResult.error(AuthErrorEnum.TOKEN_LOGOUT).path(SecurityConfig.LOGOUT_URL);
+        response.setStatus(AuthErrorEnum.TOKEN_LOGOUT.getStatus());
         ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
 }
