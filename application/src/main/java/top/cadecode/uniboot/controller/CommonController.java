@@ -31,7 +31,7 @@ import java.io.IOException;
 @ApiFormat
 @Slf4j
 @RequiredArgsConstructor
-@Api(tags = "通用API")
+@Api(tags = "通用接口")
 @RestController
 public class CommonController {
 

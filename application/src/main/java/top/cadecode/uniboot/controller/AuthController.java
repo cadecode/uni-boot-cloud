@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 @ApiFormat
 @Slf4j
 @RequiredArgsConstructor
-@Api(tags = "认证API")
+@Api(tags = "登录认证")
 @RestController
 @RequestMapping("auth")
 public class AuthController {
