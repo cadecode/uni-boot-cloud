@@ -40,7 +40,7 @@ public class DataBaseRoleVoter extends RoleVoter {
         FilterInvocation fi = (FilterInvocation) object;
         String requestUrl = fi.getRequest().getRequestURI();
         // 获取 api role 的关系列表
-        List<SysApiRolesVo> sysApiRolesVos = sysApiService.listSysApiVo();
+        List<SysApiRolesVo> sysApiRolesVos = sysApiService.listRolesVo();
         // 获取用户角色
         SysUserDto.SysUserDetailsDto sysUserDetailsDto = TokenAuthHolder.getUserDetails(authentication);
         List<String> roles = sysUserDetailsDto.getRoles();
