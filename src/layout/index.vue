@@ -12,8 +12,10 @@
 </template>
 
 <script>
-import { AppMain, Navbar, Sidebar } from './components'
-import ResizeMixin from './mixin/ResizeHandler'
+import AppMain from '@/layout/component/AppMain.vue'
+import Navbar from '@/layout/component/Navbar.vue'
+import Sidebar from '@/layout/component/Sidebar'
+import ResizeMixin from '@/layout/mixin/ResizeHandler'
 
 export default {
   name: 'Layout',
@@ -51,8 +53,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/mixin.scss";
-@import "~@/styles/variables.scss";
+@import "~@/style/mixin.scss";
+@import "~@/style/variables.scss";
 
 .app-wrapper {
   @include clearfix;

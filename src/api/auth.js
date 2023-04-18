@@ -1,7 +1,7 @@
-import request from '@/utils/request'
-import defaultSettings from '@/settings'
+import request from '@/util/request'
+import settings from '@/settings'
 
-const { loginUrl, logoutUrl } = defaultSettings
+const { loginUrl, logoutUrl } = settings
 
 export function login(data) {
   return request({

@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
-import defaultSettings from '@/settings'
+import settings from '@/settings'
 
-const { tokenKey } = defaultSettings
+const { tokenKey } = settings
 
 export function getToken() {
   return Cookies.get(tokenKey)

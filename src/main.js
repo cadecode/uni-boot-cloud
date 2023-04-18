@@ -6,16 +6,16 @@ import 'element-ui/lib/theme-chalk/index.css'
 // A modern alternative to CSS resets
 import 'normalize.css/normalize.css'
 // global css
-import '@/styles/index.scss'
+import '@/style/index.scss'
 
 import App from './App'
 import store from './store'
 import router from './router'
 
 // icon
-import '@/icons'
+import '@/icon'
 // 权限控制
-import '@/permission'
+import '@/util/permission'
 
 // 使用ElementUI
 Vue.use(ElementUI)

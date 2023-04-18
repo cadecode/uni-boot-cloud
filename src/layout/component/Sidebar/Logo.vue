@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import defaultSettings from '@/settings'
+import settings from '@/settings'
 
-const { title, sidebarLogoSrc } = defaultSettings
+const { title, sidebarLogoSrc } = settings
 
 export default {
   name: 'SidebarLogo',

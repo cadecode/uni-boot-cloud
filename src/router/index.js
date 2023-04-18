@@ -15,13 +15,13 @@ Vue.use(Router)
 export const constantRoutes = [
   {
     path: '/login',
-    component: () => import('@/views/Login'),
+    component: () => import('@/view/Login'),
     hidden: true
   },
 
   {
     path: '/404',
-    component: () => import('@/views/404'),
+    component: () => import('@/view/404'),
     hidden: true
   }
 ]

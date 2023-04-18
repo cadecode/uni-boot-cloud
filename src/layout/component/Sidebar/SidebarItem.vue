@@ -28,10 +28,10 @@
 
 <script>
 import path from 'path'
-import { isExternal } from '@/utils/validate'
-import Item from './Item'
-import AppLink from './Link'
-import FixIOSBug from './FixIOSBug'
+import { isExternal } from '@/util/validate'
+import Item from './Item.vue'
+import AppLink from './Link.vue'
+import FixIOSBug from '@/layout/mixin/FixIOSBug'
 
 export default {
   name: 'SidebarItem',

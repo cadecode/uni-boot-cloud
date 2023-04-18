@@ -20,7 +20,7 @@ function convertAsyncRoutes(menuList) {
             {
               path: m.routePath,
               name: m.routeName,
-              component: (resolve) => require([`@/views${m.routePath}/index`], resolve),
+              component: (resolve) => require([`@/view${m.routePath}/index`], resolve),
               meta: { title: m.menuName, icon: m.icon }
             }
           ]
@@ -33,7 +33,7 @@ function convertAsyncRoutes(menuList) {
           {
             path: 'index',
             name: m.routeName,
-            component: (resolve) => require([`@/views${m.routePath}/index`], resolve),
+            component: (resolve) => require([`@/view${m.routePath}/index`], resolve),
             meta: { title: m.menuName, icon: m.icon }
           }
         ]
@@ -54,7 +54,7 @@ function convertAsyncRoutes(menuList) {
       route = {
         path: m.routePath,
         name: m.routeName,
-        component: (resolve) => require([`@/views${m.routePath}/index`], resolve),
+        component: (resolve) => require([`@/view${m.routePath}/index`], resolve),
         meta: { title: m.menuName, icon: m.icon }
       }
     }

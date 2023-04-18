@@ -2,10 +2,10 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
 import router from '@/router'
-import { getToken } from '@/utils/auth'
-import defaultSettings from '@/settings'
+import { getToken } from '@/util/auth'
+import settings from '@/settings'
 
-const { tokenKey } = defaultSettings
+const { tokenKey } = settings
 
 const service = axios.create({
   // url = base url + request url

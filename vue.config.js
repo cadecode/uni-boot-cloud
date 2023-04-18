@@ -1,13 +1,13 @@
 'use strict'
 const path = require('path')
-const defaultSettings = require('./src/settings.js')
+const settings = require('./src/settings.js')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
 // page title
-const name = defaultSettings.title || 'UniBootAdminVue'
+const name = settings.title || 'UniBootAdminVue'
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -78,12 +78,12 @@ module.exports = {
     // set svg-sprite-loader
     config.module
       .rule('svg')
-      .exclude.add(resolve('src/icons'))
+      .exclude.add(resolve('src/icon'))
       .end()
     config.module
-      .rule('icons')
+      .rule('icon')
       .test(/\.svg$/)
-      .include.add(resolve('src/icons'))
+      .include.add(resolve('src/icon'))
       .end()
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
@@ -135,7 +135,7 @@ module.exports = {
               commons: {
                 name: 'chunk-commons',
                 // can customize your rules
-                test: resolve('src/components'),
+                test: resolve('src/component'),
                 //  minimum common number
                 minChunks: 3,
                 priority: 5,

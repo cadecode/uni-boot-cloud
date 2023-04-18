@@ -1,11 +1,11 @@
-import router from './router'
-import store from './store'
+import router from '../router'
+import store from '../store'
 // NProgress and style
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-import { setPageTitle } from '@/utils/pageTitle'
-import { getToken } from '@/utils/auth'
+import { setPageTitle } from '@/util/pageTitle'
+import { getToken } from '@/util/auth'
 
 // NProgress config
 NProgress.configure({ showSpinner: false })
