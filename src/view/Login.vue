@@ -10,7 +10,7 @@
     >
 
       <div class="title-container">
-        <h3 class="title">Uni Boot Admin 管理系统</h3>
+        <h3 class="title">{{ title }}</h3>
       </div>
 
       <el-form-item prop="username">
@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import { title } from '@/settings'
+
 export default {
   name: 'Login',
   data() {
@@ -82,6 +84,7 @@ export default {
       }
     }
     return {
+      title,
       loginForm: {
         username: 'admin',
         password: '12345'
