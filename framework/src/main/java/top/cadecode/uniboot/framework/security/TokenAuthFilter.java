@@ -11,7 +11,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import top.cadecode.uniboot.common.enums.AuthModelEnum;
 import top.cadecode.uniboot.common.exception.UniErrorCode;
 import top.cadecode.uniboot.common.response.ApiResult;
-import top.cadecode.uniboot.common.response.ApiStatus;
 import top.cadecode.uniboot.common.util.JacksonUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +52,8 @@ public abstract class TokenAuthFilter extends OncePerRequestFilter {
      * @param requestURI 请求路径
      */
     protected void writeResponse(HttpServletResponse response, UniErrorCode errorCode, String requestURI) {
-        ApiResult<Object> result = ApiResult.error(errorCode).status(ApiStatus.NO_AUTHENTICATION).path(requestURI);
+        ApiResult<Object> result = ApiResult.error(errorCode).path(requestURI);
+        response.setStatus(errorCode.getStatus());
         ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
 }

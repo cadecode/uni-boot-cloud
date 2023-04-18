@@ -74,9 +74,13 @@ public class TokenAuthHolder {
      * @return 是否通过校验
      */
     public boolean verifyToken(String token) {
-        return JWT.of(token)
-                .setKey(secret.getBytes())
-                .verify();
+        try {
+            return JWT.of(token)
+                    .setKey(secret.getBytes())
+                    .verify();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
