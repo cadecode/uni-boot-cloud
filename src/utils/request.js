@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
+import router from '@/router'
 import { getToken } from '@/utils/auth'
 import defaultSettings from '@/settings'
 
@@ -47,6 +48,7 @@ service.interceptors.response.use(
     const response = error.response
     if (response && response.data) {
       checkResError(response)
+      return
     }
     Message({ message: error.message, type: 'error', duration: 5 * 1000 })
     throw error
@@ -68,8 +70,10 @@ function checkResError(response) {
         confirmButtonText: '返回登录页',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        store.dispatch('user/resetToken').then(() => location.reload())
+      }).then(async() => {
+        // 清理token并返回登录页
+        await store.dispatch('user/resetToken')
+        router.push(`/login?redirect=${router.currentRoute.fullPath}`)
       })
       return
     }

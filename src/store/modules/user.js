@@ -1,4 +1,4 @@
-import { getInfo, login, logout } from '@/api/user'
+import { getInfo, login, logout } from '@/api/auth'
 import { getToken, removeToken, setToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -55,26 +55,11 @@ const actions = {
     })
   },
   // 获取用户信息
-  getInfo({ commit, state }) {
+  getInfo({ commit }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-
-        const { roles, name, avatar } = data
-
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
-
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
+      getInfo().then(async(res) => {
+        const { menuList } = res.data
+        resolve(menuList)
       }).catch(error => {
         reject(error)
       })

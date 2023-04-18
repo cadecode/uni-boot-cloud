@@ -119,6 +119,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
+            // 登录成功后跳转到redirect或者/
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {

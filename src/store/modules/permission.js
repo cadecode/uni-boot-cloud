@@ -1,37 +1,68 @@
 import { asyncRoutes, constantRoutes } from '@/router'
-// TODO
-/**
- * Use meta.role to determine if the current user has permission
- * @param roles
- * @param route
- */
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.includes(role))
-  } else {
-    return true
-  }
-}
+import Layout from '@/layout/index'
 
 /**
- * Filter asynchronous routing tables by recursion
- * @param routes asyncRoutes
- * @param roles
+ * 从后端menuList构建asyncRoutes
  */
-export function filterAsyncRoutes(routes, roles) {
-  const res = []
-
-  routes.forEach(route => {
-    const tmp = { ...route }
-    if (hasPermission(roles, tmp)) {
-      if (tmp.children) {
-        tmp.children = filterAsyncRoutes(tmp.children, roles)
+function convertAsyncRoutes(menuList) {
+  let hasHomeFlag = false
+  return menuList.map(m => {
+    // 顶级且是页面，特殊处理，兼容vue-admin-template风格
+    if (m.parentId === null && m.leafFlag) {
+      // 第一个作为首页
+      if (!hasHomeFlag) {
+        hasHomeFlag = true
+        return {
+          path: '/',
+          redirect: m.routePath,
+          component: Layout,
+          children: [
+            {
+              path: m.routePath,
+              name: m.routeName,
+              component: (resolve) => require([`@/views${m.routePath}/index`], resolve),
+              meta: { title: m.menuName, icon: m.icon }
+            }
+          ]
+        }
       }
-      res.push(tmp)
+      return {
+        path: m.routePath,
+        component: Layout,
+        children: [
+          {
+            path: 'index',
+            name: m.routeName,
+            component: (resolve) => require([`@/views${m.routePath}/index`], resolve),
+            meta: { title: m.menuName, icon: m.icon }
+          }
+        ]
+      }
     }
+    let route
+    // 顶级且是菜单
+    if (m.parentId === null && !m.leafFlag) {
+      route = {
+        path: m.routePath,
+        name: m.routeName,
+        component: Layout,
+        meta: { title: m.menuName, icon: m.icon }
+      }
+    }
+    // 子级
+    if (m.parentId !== null) {
+      route = {
+        path: m.routePath,
+        name: m.routeName,
+        component: (resolve) => require([`@/views${m.routePath}/index`], resolve),
+        meta: { title: m.menuName, icon: m.icon }
+      }
+    }
+    if (m.children) {
+      route.children = convertAsyncRoutes(m.children)
+    }
+    return route
   })
-
-  return res
 }
 
 const state = {
@@ -47,16 +78,12 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
+  generateRoutes({ commit }, menuList) {
     return new Promise(resolve => {
-      let accessedRoutes
-      if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes || []
-      } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
-      commit('SET_ROUTES', accessedRoutes)
-      resolve(accessedRoutes)
+      const menuRoutes = convertAsyncRoutes(menuList) || []
+      const routes = menuRoutes.concat(asyncRoutes)
+      commit('SET_ROUTES', routes)
+      resolve(routes)
     })
   }
 }
