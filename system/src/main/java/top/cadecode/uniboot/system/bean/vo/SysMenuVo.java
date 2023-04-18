@@ -23,6 +23,8 @@ public class SysMenuVo {
 
         private String routePath;
 
+        private String componentPath;
+
         private String menuName;
 
         private Boolean leafFlag;
