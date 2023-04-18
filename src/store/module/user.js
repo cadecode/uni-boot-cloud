@@ -44,8 +44,6 @@ const mutations = {
     state.userInfo = userInfo;
   },
   SET_ROUTES: (state, routes) => {
-    // 添加404兜底路由
-    routes.push(notFoundRoute);
     state.addRoutes = routes;
     state.routes = constRoutes.concat(routes);
   }
@@ -56,43 +54,29 @@ const actions = {
   login({commit}, userInfo) {
     const formData = new FormData();
     Object.keys(userInfo).forEach(k => formData.append(k, userInfo[k]));
-    return new Promise((resolve, reject) => {
-      login(formData).then(res => {
-        const {data} = res;
-        const {nickName, roles} = data;
-        commit('SET_USER_INFO', data);
-        commit('SET_NAME', nickName);
-        commit('SET_ROLES', roles);
-        resolve();
-      }).catch(error => {
-        reject(error);
-      });
+    return login(formData).then(res => {
+      const {data} = res;
+      const {nickName, roles} = data;
+      commit('SET_USER_INFO', data);
+      commit('SET_NAME', nickName);
+      commit('SET_ROLES', roles);
     });
   },
   // 获取用户信息
-  getInfo({commit}) {
-    return new Promise((resolve, reject) => {
-      getInfo().then(async(res) => {
-        const {menuList} = res.data;
-        resolve(menuList);
-      }).catch(error => {
-        reject(error);
-      });
+  getInfo() {
+    return getInfo().then(async(res) => {
+      const {menuList} = res.data;
+      return menuList;
     });
   },
   // 注销
   logout({commit}) {
-    return new Promise((resolve, reject) => {
-      logout().then(() => {
-        // 清理cookie token
-        removeToken();
-        // 清理路由
-        resetRouter();
-        commit('RESET_STATE');
-        resolve();
-      }).catch(error => {
-        reject(error);
-      });
+    return logout().then(() => {
+      // 清理cookie token
+      removeToken();
+      // 清理路由
+      resetRouter();
+      commit('RESET_STATE');
     });
   },
   // 设置token
@@ -111,6 +95,8 @@ const actions = {
   generateRoutes({commit}, menuList) {
     return new Promise(resolve => {
       const asyncRoutes = convertAsyncRoutes(menuList) || [];
+      // 添加404兜底路由
+      asyncRoutes.push(notFoundRoute);
       commit('SET_ROUTES', asyncRoutes);
       resolve(asyncRoutes);
     });

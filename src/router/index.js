@@ -68,7 +68,7 @@ router.beforeEach(async(to, from, next) => {
       return;
     }
     // 跳转login
-    next(`/login?redirect=${to.path}`);
+    next(`/login?redirect=${to.fullPath}`);
     NProgress.done();
     return;
   }
