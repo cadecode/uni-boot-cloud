@@ -64,25 +64,25 @@
 </template>
 
 <script>
-import { title } from '@/settings'
+import {title} from '@/settings';
 
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (value.length < 1) {
-        callback(new Error('用户名不能为空'))
+        callback(new Error('用户名不能为空'));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 1) {
-        callback(new Error('密码不能为空'))
+        callback(new Error('密码不能为空'));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
       title,
       loginForm: {
@@ -90,18 +90,18 @@ export default {
         password: '12345'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{required: true, trigger: 'blur', validator: validateUsername}],
+        password: [{required: true, trigger: 'blur', validator: validatePassword}]
       },
       loading: false,
       passwordType: 'password',
       redirect: undefined
-    }
+    };
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect
+        this.redirect = route.query && route.query.redirect;
       },
       immediate: true
     }
@@ -109,33 +109,33 @@ export default {
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
-        this.passwordType = ''
+        this.passwordType = '';
       } else {
-        this.passwordType = 'password'
+        this.passwordType = 'password';
       }
       this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
+        this.$refs.password.focus();
+      });
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
+          this.loading = true;
           this.$store.dispatch('user/login', this.loginForm).then(() => {
             // 登录成功后跳转到redirect或者/
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
+            this.$router.push({path: this.redirect || '/'});
+            this.loading = false;
           }).catch(() => {
-            this.loading = false
-          })
+            this.loading = false;
+          });
         } else {
-          console.log('login form validate fail')
-          return false
+          console.log('login form validate fail');
+          return false;
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

@@ -13,23 +13,23 @@ export default {
     }
   },
   render(h, context) {
-    const { icon, title } = context.props
-    const vNodes = []
+    const {icon, title} = context.props;
+    const vNodes = [];
 
     if (icon) {
       if (icon.includes('el-icon')) {
-        vNodes.push(<i class={[icon, 'sub-el-icon']}/>)
+        vNodes.push(<i class={[icon, 'sub-el-icon']}/>);
       } else {
-        vNodes.push(<svg-icon icon-class={icon}/>)
+        vNodes.push(<svg-icon icon-class={icon}/>);
       }
     }
 
     if (title) {
-      vNodes.push(<span slot='title'>{(title)}</span>)
+      vNodes.push(<span slot='title'>{(title)}</span>);
     }
-    return vNodes
+    return vNodes;
   }
-}
+};
 </script>
 
 <style scoped>

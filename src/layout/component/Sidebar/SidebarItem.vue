@@ -27,15 +27,15 @@
 </template>
 
 <script>
-import path from 'path'
-import { isExternal } from '@/util/validate'
-import Item from './Item.vue'
-import AppLink from './Link.vue'
-import FixIOSBug from '@/layout/mixin/FixIOSBug'
+import path from 'path';
+import {isExternalUrl} from '@/util/menu';
+import Item from './Item.vue';
+import AppLink from './Link.vue';
+import FixIOSBug from '@/layout/mixin/FixIOSBug';
 
 export default {
   name: 'SidebarItem',
-  components: { Item, AppLink },
+  components: {Item, AppLink},
   mixins: [FixIOSBug],
   props: {
     item: {
@@ -56,38 +56,38 @@ export default {
     // this.onlyOneChild = null
     return {
       onlyOneChild: null
-    }
+    };
   },
   methods: {
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
-          return false
+          return false;
         } else {
-          this.onlyOneChild = item
-          return true
+          this.onlyOneChild = item;
+          return true;
         }
-      })
+      });
       // 当只有一个子路由器，默认显示子路由
       if (showingChildren.length === 1) {
-        return true
+        return true;
       }
       // 没用子路由时显示父级
       if (showingChildren.length === 0) {
-        this.onlyOneChild = { ...parent, path: '', noShowingChildren: true }
-        return true
+        this.onlyOneChild = {...parent, path: '', noShowingChildren: true};
+        return true;
       }
-      return false
+      return false;
     },
     resolvePath(routePath) {
-      if (isExternal(routePath)) {
-        return routePath
+      if (isExternalUrl(routePath)) {
+        return routePath;
       }
-      if (isExternal(this.basePath)) {
-        return this.basePath
+      if (isExternalUrl(this.basePath)) {
+        return this.basePath;
       }
-      return path.resolve(this.basePath, routePath)
+      return path.resolve(this.basePath, routePath);
     }
   }
-}
+};
 </script>

@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import settings from '@/settings'
+import settings from '@/settings';
 
-const { title, sidebarLogoSrc } = settings
+const {title, sidebarLogoSrc} = settings;
 
 export default {
   name: 'SidebarLogo',
@@ -30,9 +30,9 @@ export default {
     return {
       title: title,
       logo: sidebarLogoSrc
-    }
+    };
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { isExternal } from '@/util/validate'
+import {isExternalUrl} from '@/util/menu';
 
 export default {
   props: {
@@ -15,29 +15,29 @@ export default {
     }
   },
   computed: {
-    isExternal() {
-      return isExternal(this.to)
+    isExternalUrl() {
+      return isExternalUrl(this.to);
     },
     type() {
-      if (this.isExternal) {
-        return 'a'
+      if (this.isExternalUrl) {
+        return 'a';
       }
-      return 'router-link'
+      return 'router-link';
     }
   },
   methods: {
     linkProps(to) {
-      if (this.isExternal) {
+      if (this.isExternalUrl) {
         return {
           href: to,
           target: '_blank',
           rel: 'noopener'
-        }
+        };
       }
       return {
         to: to
-      }
+      };
     }
   }
-}
+};
 </script>

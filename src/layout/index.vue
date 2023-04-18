@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import AppMain from '@/layout/component/AppMain.vue'
-import Navbar from '@/layout/component/Navbar.vue'
-import Sidebar from '@/layout/component/Sidebar'
-import ResizeMixin from '@/layout/mixin/ResizeHandler'
+import AppMain from '@/layout/component/AppMain.vue';
+import Navbar from '@/layout/component/Navbar.vue';
+import Sidebar from '@/layout/component/Sidebar';
+import ResizeMixin from '@/layout/mixin/ResizeHandler';
 
 export default {
   name: 'Layout',
@@ -27,13 +27,13 @@ export default {
   mixins: [ResizeMixin],
   computed: {
     sidebar() {
-      return this.$store.state.app.sidebar
+      return this.$store.state.app.sidebar;
     },
     device() {
-      return this.$store.state.app.device
+      return this.$store.state.app.device;
     },
     fixedHeader() {
-      return this.$store.state.settings.fixedHeaderFlag
+      return this.$store.state.app.fixedHeaderFlag;
     },
     classObj() {
       return {
@@ -41,15 +41,15 @@ export default {
         openSidebar: this.sidebar.opened,
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile'
-      }
+      };
     }
   },
   methods: {
     handleClickOutside() {
-      this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
+      this.$store.dispatch('app/closeSideBar', {withoutAnimation: false});
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

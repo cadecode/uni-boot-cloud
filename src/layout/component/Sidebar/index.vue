@@ -19,36 +19,36 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Logo from './Logo.vue'
-import SidebarItem from './SidebarItem.vue'
-import variables from '@/style/variables.scss'
+import {mapGetters} from 'vuex';
+import Logo from './Logo.vue';
+import SidebarItem from './SidebarItem.vue';
+import variables from '@/style/variables.scss';
 
 export default {
-  components: { SidebarItem, Logo },
+  components: {SidebarItem, Logo},
   computed: {
     ...mapGetters([
       'routes',
       'sidebar'
     ]),
     activeMenu() {
-      const route = this.$route
-      const { meta, path } = route
+      const route = this.$route;
+      const {meta, path} = route;
       // 当路由设置了该属性，则会高亮相对应的侧边栏
       if (meta.activeMenu) {
-        return meta.activeMenu
+        return meta.activeMenu;
       }
-      return path
+      return path;
     },
     showLogo() {
-      return this.$store.state.settings.sidebarLogoFlag
+      return this.$store.state.app.sidebarLogoFlag;
     },
     variables() {
-      return variables
+      return variables;
     },
     isCollapse() {
-      return !this.sidebar.opened
+      return !this.sidebar.opened;
     }
   }
-}
+};
 </script>

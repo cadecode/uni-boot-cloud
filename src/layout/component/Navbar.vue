@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/component/Breadcrumb/index.vue'
-import Hamburger from '@/component/Hamburger/index.vue'
+import {mapGetters} from 'vuex';
+import Breadcrumb from '@/component/Breadcrumb/index.vue';
+import Hamburger from '@/component/Hamburger/index.vue';
 
 export default {
   components: {
@@ -49,13 +49,13 @@ export default {
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('app/toggleSideBar')
+      this.$store.dispatch('app/toggleSideBar');
     },
     logout() {
-      this.$store.dispatch('user/logout')
+      this.$store.dispatch('user/logout');
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

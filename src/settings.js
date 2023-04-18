@@ -31,4 +31,4 @@ module.exports = {
    * 注销url
    */
   logoutUrl: '/auth/logout'
-}
+};
