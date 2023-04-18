@@ -22,22 +22,29 @@ INSERT INTO sys_role (id, code, name, description)
 -- ----------------------------
 -- 插入菜单
 -- ----------------------------
-INSERT INTO sys_menu(id, parent_id, route_name, route_path, menu_name, leaf_flag, order_num, enable_flag)
-    VALUE (1, null, 'Dashboard', '/dashboard', '首页', 1, 0, 1);
+INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
+                     enable_flag)
+    VALUE (1, null, 'Home', '/home', '/Home', '首页', 1, 0, 1);
 
-INSERT INTO sys_menu(id, parent_id, route_name, route_path, menu_name, leaf_flag, order_num, enable_flag)
-    VALUE (2, null, 'SystemManagement', '/system_management', '系统管理', 0, 1, 1);
-INSERT INTO sys_menu(id, parent_id, route_name, route_path, menu_name, leaf_flag, order_num, enable_flag)
-    VALUE (3, 2, 'UserManagement', '/system_management/user', '用户管理', 1, 101, 1);
-INSERT INTO sys_menu(id, parent_id, route_name, route_path, menu_name, leaf_flag, order_num, enable_flag)
-    VALUE (4, 2, 'RoleManagement', 'role', '角色管理', 1, 102, 1);
-INSERT INTO sys_menu(id, parent_id, route_name, route_path, menu_name, leaf_flag, order_num, enable_flag)
-    VALUE (5, 2, 'MenuManagement', 'menu', '菜单管理', 1, 103, 1);
-INSERT INTO sys_menu(id, parent_id, route_name, route_path, menu_name, leaf_flag, order_num, enable_flag)
-    VALUE (6, 2, 'ApiManagement', 'api', 'API管理', 1, 104, 1);
+INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
+                     enable_flag)
+    VALUE (2, null, 'SystemManagement', '/system_management', null, '系统管理', 0, 1, 1);
+INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
+                     enable_flag)
+    VALUE (3, 2, 'UserManagement', '/system_management/user', '/SystemManagement/User', '用户管理', 1, 101, 1);
+INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
+                     enable_flag)
+    VALUE (4, 2, 'RoleManagement', '/system_management/role', '/SystemManagement/Role', '角色管理', 1, 102, 1);
+INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
+                     enable_flag)
+    VALUE (5, 2, 'MenuManagement', '/system_management/menu', '/SystemManagement/Menu', '菜单管理', 1, 103, 1);
+INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
+                     enable_flag)
+    VALUE (6, 2, 'ApiManagement', '/system_management/api', '/SystemManagement/Api', 'API管理', 1, 104, 1);
 
-INSERT INTO sys_menu(id, parent_id, route_name, route_path, menu_name, leaf_flag, order_num, enable_flag)
-    VALUE (7, null, 'GithubUrl', 'https://github.com/cadecode/uni-boot-admin', '源码仓库', 1, 2, 1);
+INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
+                     enable_flag)
+    VALUE (7, null, 'GithubUrl', 'https://github.com/cadecode/uni-boot-admin', null, '源码仓库', 1, 2, 1);
 -- ----------------------------
 -- 插入 API
 -- ----------------------------

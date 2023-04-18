@@ -42,6 +42,30 @@ CREATE TABLE IF NOT EXISTS sys_role
   DEFAULT CHARSET = utf8
     COMMENT '系统角色表';
 -- ----------------------------
+-- 系统菜单表
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS sys_menu
+(
+    id             BIGINT UNSIGNED,
+    parent_id      BIGINT UNSIGNED,
+    route_name     VARCHAR(100) NOT NULL COMMENT '路由名称',
+    route_path     TEXT         NOT NULL COMMENT '路由路径',
+    component_path TEXT         NULL COMMENT '组件路径',
+    menu_name      VARCHAR(100) NOT NULL COMMENT '菜单名称',
+    leaf_flag      TINYINT      NOT NULL COMMENT '是否页面',
+    icon           TEXT         NULL COMMENT '图标',
+    order_num      INT          NULL COMMENT '排序',
+    enable_flag    TINYINT      NOT NULL COMMENT '是否启用',
+
+    create_time    DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time    DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    update_user    VARCHAR(100) NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_route_name (route_name)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+    COMMENT '系统菜单表';
+-- ----------------------------
 -- 系统权限表
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS sys_api
@@ -81,29 +105,6 @@ CREATE TABLE IF NOT EXISTS sys_role_api
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
     COMMENT '角色权限关系表';
--- ----------------------------
--- 系统菜单表
--- ----------------------------
-CREATE TABLE IF NOT EXISTS sys_menu
-(
-    id          BIGINT UNSIGNED,
-    parent_id   BIGINT UNSIGNED,
-    route_name  VARCHAR(100) NOT NULL COMMENT '路由名称',
-    route_path  TEXT         NOT NULL COMMENT '路由路径',
-    menu_name   VARCHAR(100) NOT NULL COMMENT '菜单名称',
-    leaf_flag   TINYINT      NOT NULL COMMENT '是否页面',
-    icon        TEXT         NULL COMMENT '图标',
-    order_num   INT          NULL COMMENT '排序',
-    enable_flag TINYINT      NOT NULL COMMENT '是否启用',
-
-    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-    update_time DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-    update_user VARCHAR(100) NULL,
-    PRIMARY KEY (id),
-    UNIQUE KEY uk_route_name (route_name)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-    COMMENT '系统菜单表';
 -- ----------------------------
 -- 角色菜单关系表
 -- ----------------------------

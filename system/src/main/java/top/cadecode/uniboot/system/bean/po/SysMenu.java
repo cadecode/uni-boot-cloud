@@ -34,6 +34,11 @@ public class SysMenu {
     private String routePath;
 
     /**
+     * 组件路径
+     */
+    private String componentPath;
+
+    /**
      * 菜单名称
      */
     private String menuName;
