@@ -8,12 +8,10 @@
         <img class="pic-404__child right" src="@/asset/404_image/404_cloud.png" alt="404">
       </div>
       <div class="bullshit">
-        <div class="bullshit__oops">OOPS!</div>
+        <div class="bullshit__oops">您进入了未知的页面！</div>
         <div class="bullshit__headline">{{ message }}</div>
-        <div class="bullshit__info">Please check that the URL you entered is correct, or click the button below to
-          return to the homepage.
-        </div>
-        <a href="" class="bullshit__return-home">Back to home</a>
+        <div class="bullshit__info">请检查输入的地址是否正确，或者返回主页</div>
+        <a href="" class="bullshit__return-home">返回主页</a>
       </div>
     </div>
   </div>
@@ -25,7 +23,7 @@ export default {
   name: 'Page404',
   computed: {
     message() {
-      return 'The webmaster said that you can not enter this page...';
+      return '未找到页面资源，请联系站点管理员';
     }
   }
 };
