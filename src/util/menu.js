@@ -45,11 +45,11 @@ function menuToRoute(menu) {
   if (menu.parentId === null && !menu.leafFlag) {
     const route = {
       alwaysShow: true,
-      redirect: 'noRedirect',
       path: menu.routePath,
       name: menu.routeName,
       component: Layout,
-      meta: {title: menu.menuName, icon: menu.icon}
+      // noRedirect面包屑中是否可点击导航
+      meta: {title: menu.menuName, icon: menu.icon, noRedirect: true}
     };
     return {route, currRoute: route};
   }
