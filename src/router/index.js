@@ -5,7 +5,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
 import store from '@/store';
 import {getPageTitle} from '@/util/common';
 import {getToken} from '@/util/token';
@@ -32,6 +31,11 @@ const constRoutes = [
 ];
 
 /**
+ * home路由，需要修改redirect使用
+ */
+const homeRoute = {path: '/', hidden: true};
+
+/**
  * 404兜底路由
  */
 const notFoundRoute = {path: '*', redirect: '/404', hidden: true};
@@ -44,7 +48,6 @@ const createRouter = () => new Router({
   scrollBehavior: () => ({y: 0}),
   routes: constRoutes
 });
-const router = createRouter();
 
 /**
  * 重置router，重置matcher以清除旧的路由匹配
@@ -55,7 +58,11 @@ function resetRouter() {
   router.matcher = newRouter.matcher;
 }
 
-// 全局路由守卫
+const router = createRouter();
+
+/**
+ * 全局路由守卫
+ */
 router.beforeEach(async(to, from, next) => {
   NProgress.start();
   document.title = getPageTitle(to.meta.title);
@@ -80,6 +87,7 @@ router.beforeEach(async(to, from, next) => {
     const menuList = await store.dispatch('user/getInfo');
     // 生成路由
     const asyncRoutes = await store.dispatch('user/generateRoutes', menuList);
+    // 加载路由
     router.addRoutes(asyncRoutes);
     next({...to, replace: true});
     NProgress.done();
@@ -87,7 +95,6 @@ router.beforeEach(async(to, from, next) => {
   }
   next();
 });
-
 router.afterEach(() => {
   NProgress.done();
 });
@@ -95,6 +102,7 @@ router.afterEach(() => {
 export {
   router as default,
   constRoutes,
+  homeRoute,
   notFoundRoute,
   resetRouter
 };

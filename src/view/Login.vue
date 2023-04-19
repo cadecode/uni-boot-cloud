@@ -129,7 +129,6 @@ export default {
             this.loading = false;
           });
         } else {
-          console.log('login form validate fail');
           return false;
         }
       });

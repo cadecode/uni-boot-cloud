@@ -31,19 +31,7 @@ export default {
   methods: {
     getBreadcrumb() {
       // 只显示meta有title的路由
-      let matched = this.$route.matched.filter(item => item.meta && item.meta.title);
-      const first = matched[0];
-      if (!this.isHome(first)) {
-        const addRoutes = this.$store.state.user.addRoutes;
-        if (addRoutes && addRoutes.length > 1) {
-          // /下有且仅有一个child，即首页
-          matched = [{...addRoutes[0].children[0]}].concat(matched);
-        }
-      }
-      this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false);
-    },
-    isHome(route) {
-      return route.meta.homeFlag;
+      this.levelList = this.$route.matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false);
     },
     pathCompile(path) {
       // fix:https://github.com/PanJiaChen/vue-element-admin/issues/561

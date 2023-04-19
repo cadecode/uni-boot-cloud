@@ -4,7 +4,7 @@
  */
 import {getInfo, login, logout} from '@/api/login';
 import {getToken, removeToken, setToken} from '@/util/token';
-import {constRoutes, notFoundRoute, resetRouter} from '@/router';
+import {constRoutes, homeRoute, notFoundRoute, resetRouter} from '@/router';
 import {convertAsyncRoutes} from '@/util/menu';
 
 const getDefaultState = () => {
@@ -92,9 +92,16 @@ const actions = {
       resolve();
     });
   },
+  // 生成路由表
   generateRoutes({commit}, menuList) {
     return new Promise(resolve => {
       const asyncRoutes = convertAsyncRoutes(menuList) || [];
+      // 第一条作为home路由
+      if (asyncRoutes.length > 0) {
+        // 设置home路由重定向
+        homeRoute.redirect = asyncRoutes[0].path;
+        asyncRoutes.push(homeRoute);
+      }
       // 添加404兜底路由
       asyncRoutes.push(notFoundRoute);
       commit('SET_ROUTES', asyncRoutes);
