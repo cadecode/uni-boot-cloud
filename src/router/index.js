@@ -5,6 +5,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 import store from '@/store';
 import {getPageTitle} from '@/util/common';
 import {getToken} from '@/util/token';
