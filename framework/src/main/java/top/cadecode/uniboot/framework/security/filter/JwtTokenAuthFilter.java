@@ -61,7 +61,7 @@ public class JwtTokenAuthFilter extends TokenAuthFilter {
         setAuthentication(request, sysUserDetailsDto);
         // 判断是否需要刷新 token
         // 获取过期时间，单位秒
-        int expiresAt = (int) payload.get("exp");
+        long expiresAt = Long.parseLong(String.valueOf(payload.get("exp")));
         // 过期时间的一半，秒转为毫秒
         long halfExpiration = tokenAuthHolder.getExpiration() / 2;
         // 如果当时时间距离过期时间不到配置的 expiration 一半，就下发新的 token
