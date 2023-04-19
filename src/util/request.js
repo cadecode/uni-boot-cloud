@@ -30,8 +30,8 @@ service.interceptors.request.use(
     return config;
   },
   error => {
-    console.log(error);
-    return Promise.reject(error);
+    console.error(error);
+    throw error;
   }
 );
 
@@ -40,18 +40,18 @@ service.interceptors.request.use(
  * uni-boot-admin 响应格式 {status, data, error:{code, message, path, moreInfo}}
  */
 service.interceptors.response.use(
-  response => {
+  async(response) => {
     const res = response.data;
-    checkResError(response);
-    checkResToken(response);
+    await checkResError(response);
+    await checkResToken(response);
     return res;
   },
-  (error) => {
+  async(error) => {
     console.error(error);
     const response = error.response;
+    // 存在返回的json数据
     if (response && response.data) {
-      checkResError(response);
-      return;
+      await checkResError(response);
     }
     Message({message: error.message, type: 'error', duration: 5 * 1000});
     throw error;
@@ -66,29 +66,24 @@ function checkResError(response) {
   let errorMessage;
   // 判断有没有返回error
   if (res && res.error) {
-    // 未登录跳转到登录页
+    // 401未登录，跳转到登录页
     if (res.status === 401) {
-      errorMessage = res.error.message + ', 是否重新登录';
-      MessageBox.confirm(errorMessage, '登录状态失效', {
+      errorMessage = res.error.message;
+      return MessageBox.confirm(errorMessage + ', 是否重新登录', '登录状态失效', {
         confirmButtonText: '返回登录页',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async() => {
         // 清理token并返回登录页
-        await store.dispatch('user/resetToken');
+        await store.dispatch('user/resetToken').catch(e => console.log(e));
         router.push(`/login?redirect=${router.currentRoute.fullPath}`);
+        throw new Error(errorMessage);
       });
-      return;
     }
     errorMessage = '错误: ' + JSON.stringify(res.error);
     // 此处res.error可兼容SpringBoot原生接口异常
-    Message({
-      message: errorMessage || '未知错误',
-      type: 'error',
-      duration: 5 * 1000,
-      dangerouslyUseHTMLString: true
-    });
-    throw new Error(errorMessage || '未知错误');
+    Message({message: errorMessage, type: 'error', duration: 5 * 1000});
+    throw new Error(errorMessage);
   }
 }
 
@@ -97,7 +92,7 @@ function checkResError(response) {
  */
 function checkResToken(response) {
   if (response.headers && response.headers[tokenKey]) {
-    store.dispatch('user/setToken', response.headers[tokenKey]);
+    return store.dispatch('user/setToken', response.headers[tokenKey]);
   }
 }
 

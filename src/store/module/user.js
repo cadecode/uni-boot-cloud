@@ -70,24 +70,25 @@ const actions = {
     });
   },
   // 注销
-  logout({commit}) {
-    return logout().then(() => {
-      // 清理cookie token
-      removeToken();
-      // 清理路由
-      resetRouter();
-      commit('RESET_STATE');
-    });
+  logout() {
+    return logout();
   },
   // 设置token
   setToken({commit}, token) {
-    commit('SET_TOKEN', token);
-    setToken(token);
+    return new Promise(resolve => {
+      commit('SET_TOKEN', token);
+      setToken(token);
+      resolve();
+    });
   },
   // 重置token
   resetToken({commit}) {
     return new Promise(resolve => {
+      // 清理cookie token
       removeToken();
+      // 重置路由
+      resetRouter();
+      // 重置state
       commit('RESET_STATE');
       resolve();
     });
