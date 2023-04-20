@@ -7,7 +7,7 @@
 
 <script>
 // docs:https://panjiachen.github.io/vue-element-admin-site/feature/component/svg-icon.html#usage
-import {isExternalUrl} from '@/util/menu';
+import {isExternalUrl} from '@/util/common';
 
 export default {
   name: 'SvgIcon',

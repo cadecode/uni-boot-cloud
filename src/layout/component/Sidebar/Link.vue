@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import {isExternalUrl} from '@/util/menu';
+import {isExternalUrl} from '@/util/common';
 
 export default {
   props: {

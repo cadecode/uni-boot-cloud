@@ -123,9 +123,17 @@ function formatTime(time, option) {
   }
 }
 
+/**
+ * 是否是外部链接
+ */
+function isExternalUrl(path) {
+  return /^(https?:|mailto:|tel:)/.test(path);
+}
+
 export {
   getPageTitle,
   queryToObject,
   parseTime,
-  formatTime
+  formatTime,
+  isExternalUrl
 };

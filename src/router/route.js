@@ -1,16 +1,45 @@
-/**
- * 菜单路由转换工具
- */
-import Layout from '@/layout';
 import {Message} from 'element-ui';
 import NProgress from 'nprogress';
+import Layout from '@/layout';
 
 /**
- * 是否是外部链接
+ * 固定路由
  */
-function isExternalUrl(path) {
-  return /^(https?:|mailto:|tel:)/.test(path);
-}
+const constRoutes = [
+  {
+    path: '/login',
+    component: () => import('@/view/Login'),
+    hidden: true
+  },
+  {
+    path: '/404',
+    component: () => import('@/view/404'),
+    hidden: true
+  },
+  {
+    path: '/user_center',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'UserCenter',
+        component: () => import('@/view/UserCenter'),
+        meta: {title: '个人中心'}
+      }
+    ]
+  }
+];
+
+/**
+ * home路由，需要修改redirect使用
+ */
+const homeRoute = {path: '/', hidden: true};
+
+/**
+ * 404兜底路由
+ */
+const notFoundRoute = {path: '*', redirect: '/404', hidden: true};
 
 /**
  * 后端menu转为路由
@@ -102,6 +131,8 @@ function convertAsyncRoutes(menuList) {
 }
 
 export {
-  isExternalUrl,
+  constRoutes,
+  homeRoute,
+  notFoundRoute,
   convertAsyncRoutes
 };

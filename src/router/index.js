@@ -5,54 +5,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import NProgress from 'nprogress';
-import store from '@/store';
-import {getPageTitle} from '@/util/common';
-import {getToken} from '@/util/token';
-import Layout from '@/layout';
-
-Vue.use(Router);
-
+import {constRoutes} from '@/router/route';
+import {setGuard} from '@/router/guard';
 // NProgress config
 NProgress.configure({showSpinner: false});
 
-/**
- * 固定路由
- */
-const constRoutes = [
-  {
-    path: '/login',
-    component: () => import('@/view/Login'),
-    hidden: true
-  },
-  {
-    path: '/404',
-    component: () => import('@/view/404'),
-    hidden: true
-  },
-  {
-    path: '/user_center',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '',
-        name: 'UserCenter',
-        component: () => import('@/view/UserCenter'),
-        meta: {title: '个人中心'}
-      }
-    ]
-  }
-];
-
-/**
- * home路由，需要修改redirect使用
- */
-const homeRoute = {path: '/', hidden: true};
-
-/**
- * 404兜底路由
- */
-const notFoundRoute = {path: '*', redirect: '/404', hidden: true};
+Vue.use(Router);
 
 /**
  * 创建router
@@ -74,49 +32,9 @@ function resetRouter() {
 
 const router = createRouter();
 
-/**
- * 全局路由守卫
- */
-router.beforeEach(async(to, from, next) => {
-  NProgress.start();
-  document.title = getPageTitle(to.meta.title);
-  // 从cookie获取，刷新后不丢失
-  const hasToken = getToken();
-  // 未登录
-  if (!hasToken) {
-    // 未登录时放通login
-    if (to.path === '/login') {
-      next();
-      return;
-    }
-    // 跳转login
-    next(`/login?redirect=${to.fullPath}`);
-    NProgress.done();
-    return;
-  }
-  const routes = store.getters.routes;
-  // 若没有设置routes
-  if (routes && routes.length === 0) {
-    // 获取menuList
-    const menuList = await store.dispatch('user/getInfo');
-    // 生成路由
-    const asyncRoutes = await store.dispatch('user/generateRoutes', menuList);
-    // 加载路由
-    router.addRoutes(asyncRoutes);
-    next({...to, replace: true});
-    NProgress.done();
-    return;
-  }
-  next();
-});
-router.afterEach(() => {
-  NProgress.done();
-});
+setGuard(router);
 
 export {
   router as default,
-  constRoutes,
-  homeRoute,
-  notFoundRoute,
   resetRouter
 };

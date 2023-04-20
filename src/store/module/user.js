@@ -4,8 +4,8 @@
  */
 import {getInfo, login, logout} from '@/api/login';
 import {getToken, removeToken, setToken} from '@/util/token';
-import {constRoutes, homeRoute, notFoundRoute, resetRouter} from '@/router';
-import {convertAsyncRoutes} from '@/util/menu';
+import {resetRouter} from '@/router';
+import {constRoutes, convertAsyncRoutes, homeRoute, notFoundRoute} from '@/router/route';
 
 const getDefaultState = () => {
   return {

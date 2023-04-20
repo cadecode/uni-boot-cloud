@@ -30,7 +30,7 @@
 
 <script>
 import path from 'path';
-import {isExternalUrl} from '@/util/menu';
+import {isExternalUrl} from '@/util/common';
 import Item from './Item.vue';
 import AppLink from './Link.vue';
 import FixIOSBug from '@/layout/mixin/FixIOSBug';
