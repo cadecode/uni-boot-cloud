@@ -75,7 +75,7 @@ function checkResError(response) {
         type: 'warning'
       }).then(async() => {
         // 清理token并返回登录页
-        await store.dispatch('user/resetToken').catch(e => console.log(e));
+        await store.dispatch('user/resetToken');
         router.push(`/login?redirect=${router.currentRoute.fullPath}`);
         throw new Error(errorMessage);
       });
