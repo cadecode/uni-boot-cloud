@@ -22,6 +22,11 @@ spring:
           password: ENC(donQ3DazAc4/6B+NFSRdxw==)
           driver-class-name: com.mysql.cj.jdbc.Driver
 
+# 关闭swagger认证
+knife4j:
+  basic:
+    enable: false
+
 # uni-boot-admin 配置
 uni-boot:
   config:

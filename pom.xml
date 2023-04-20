@@ -34,7 +34,7 @@
         <hutool.vsersion>5.8.0</hutool.vsersion>
         <guava.vsersion>31.0.1-jre</guava.vsersion>
         <vavr.vsersion>1.0.0-alpha-4</vavr.vsersion>
-        <knife4j.version>2.0.5</knife4j.version>
+        <knife4j.version>2.0.9</knife4j.version>
         <mybatis.version>2.2.0</mybatis.version>
         <pagehelper.version>1.4.0</pagehelper.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
