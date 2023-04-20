@@ -11,7 +11,7 @@
         <div class="bullshit__oops">您进入了未知的页面！</div>
         <div class="bullshit__headline">{{ message }}</div>
         <div class="bullshit__info">请检查输入的地址是否正确，或者返回主页</div>
-        <a href="" class="bullshit__return-home">返回主页</a>
+        <router-link to="/" class="bullshit__return-home">返回主页</router-link>
       </div>
     </div>
   </div>
