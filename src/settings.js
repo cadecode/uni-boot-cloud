@@ -10,7 +10,7 @@ module.exports = {
   /**
    * 是否显示侧边栏logo
    */
-  sidebarLogoFlag: false,
+  sidebarLogoFlag: true,
 
   /**
    * 侧边栏logo src
