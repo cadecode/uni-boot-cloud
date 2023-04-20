@@ -84,6 +84,14 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
 
+# swagger配置
+knife4j:
+  enable: true
+  basic:
+    enable: true
+    username: dev
+    password: dev123
+
 # log config
 logging:
   file:
