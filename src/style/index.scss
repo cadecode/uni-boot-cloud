@@ -4,6 +4,22 @@
 @import './element-ui.scss';
 @import './sidebar.scss';
 
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px
+}
+
+::-webkit-scrollbar-thumb {
+  min-height: 28px;
+  background-color: #c2c2c2!important;
+  background-clip: padding-box;
+  border-radius: 0!important
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: #fff
+}
+
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
