@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import ElementUI from 'element-ui';
+import ElementUI, {Message, MessageBox} from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'nprogress/nprogress.css';
 
@@ -37,6 +37,8 @@ import router from '@/router';
  * 使用ElementUI
  */
 Vue.use(ElementUI);
+Vue.prototype.$message = Message;
+Vue.prototype.$messageBox = MessageBox;
 
 /**
  * 开启生产提示，正式环境可只为false以减少warn
