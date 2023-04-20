@@ -8,6 +8,7 @@ import NProgress from 'nprogress';
 import store from '@/store';
 import {getPageTitle} from '@/util/common';
 import {getToken} from '@/util/token';
+import Layout from '@/layout';
 
 Vue.use(Router);
 
@@ -27,6 +28,19 @@ const constRoutes = [
     path: '/404',
     component: () => import('@/view/404'),
     hidden: true
+  },
+  {
+    path: '/user_center',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'UserCenter',
+        component: () => import('@/view/UserCenter'),
+        meta: {title: '个人中心'}
+      }
+    ]
   }
 ];
 

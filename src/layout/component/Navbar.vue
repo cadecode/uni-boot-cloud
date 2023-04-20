@@ -15,9 +15,9 @@
           <router-link to="/">
             <el-dropdown-item>首页</el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/cadecode/uni-boot-admin-vue">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
+          <router-link to="/user_center">
+            <el-dropdown-item>个人中心</el-dropdown-item>
+          </router-link>
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">注销</span>
           </el-dropdown-item>
