@@ -39,8 +39,8 @@ spring:
         enabled: true
         allow:
         url-pattern: /druid/*
-        login-username: admin
-        login-password: admin123
+        login-username: dev
+        login-password: dev123
       filter:
         stat:
           enabled: true
