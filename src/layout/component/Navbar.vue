@@ -9,6 +9,7 @@
         <div class="avatar-wrapper">
           <img v-if="avatar" :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar" alt="">
           <i v-else class="el-icon-user-solid" />
+          <span class="avtar-wrapper-username">{{ name }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -40,7 +41,8 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'name'
     ])
   },
   methods: {
@@ -124,11 +126,16 @@ export default {
           border-radius: 10px;
         }
 
+        .avtar-wrapper-username{
+          vertical-align: middle;
+          font-size: 16px;
+        }
+
         .el-icon-caret-bottom {
           position: absolute;
           right: -20px;
-          top: 25px;
-          font-size: 12px;
+          top: 20px;
+          font-size: 15px;
         }
       }
     }
