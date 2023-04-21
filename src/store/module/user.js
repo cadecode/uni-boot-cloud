@@ -3,18 +3,30 @@
  * 管理登录信息、用户信息、路由表
  */
 import {getInfo, login, logout} from '@/api/login';
-import {getToken, removeToken, setToken} from '@/util/token';
+import {
+  getAvatar,
+  getName,
+  getRoles,
+  getToken,
+  getUserInfo,
+  removeToken,
+  setAvatar,
+  setName,
+  setRoles,
+  setToken,
+  setUserInfo
+} from '@/util/cookie';
 import {resetRouter} from '@/router';
 import {constRoutes, convertAsyncRoutes, homeRoute, notFoundRoute} from '@/router/route';
 
 const getDefaultState = () => {
   return {
     token: getToken(),
-    name: '',
-    avatar: '',
-    roles: [],
+    name: getName(),
+    avatar: getAvatar(),
+    roles: getRoles(),
     // login接口后端对象
-    userInfo: {},
+    userInfo: getUserInfo(),
     // 全部路由
     routes: [],
     // 新添路由
@@ -30,18 +42,23 @@ const mutations = {
   },
   SET_TOKEN: (state, token) => {
     state.token = token;
+    setToken(token);
   },
   SET_NAME: (state, name) => {
     state.name = name;
+    setName(name);
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar;
+    setAvatar(avatar);
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles;
+    setRoles(roles);
   },
   SET_USER_INFO: (state, userInfo) => {
     state.userInfo = userInfo;
+    setUserInfo(userInfo);
   },
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes;
@@ -56,9 +73,10 @@ const actions = {
     Object.keys(userInfo).forEach(k => formData.append(k, userInfo[k]));
     return login(formData).then(res => {
       const {data} = res;
-      const {nickName, roles} = data;
+      const {nickName, roles, avatar} = data;
       commit('SET_USER_INFO', data);
       commit('SET_NAME', nickName);
+      commit('SET_AVATAR', avatar);
       commit('SET_ROLES', roles);
     });
   },
@@ -77,7 +95,6 @@ const actions = {
   setToken({commit}, token) {
     return new Promise(resolve => {
       commit('SET_TOKEN', token);
-      setToken(token);
       resolve();
     });
   },

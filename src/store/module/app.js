@@ -2,14 +2,14 @@
  * store app模块
  * 管理应用配置与设定相关
  */
-import Cookies from 'js-cookie';
 import settings from '@/settings';
+import {getSidebarStatus, setSidebarStatus} from '@/util/cookie';
 
 const {fixedHeaderFlag, sidebarLogoFlag} = settings;
 
 const state = {
   sidebar: {
-    opened: Cookies.get('sidebarStatus') ? Boolean(Cookies.get('sidebarStatus')) : true,
+    opened: getSidebarStatus(),
     withoutAnimation: false
   },
   device: 'desktop',
@@ -22,13 +22,13 @@ const mutations = {
     state.sidebar.opened = !state.sidebar.opened;
     state.sidebar.withoutAnimation = false;
     if (state.sidebar.opened) {
-      Cookies.set('sidebarStatus', 1);
+      setSidebarStatus(1);
     } else {
-      Cookies.set('sidebarStatus', 0);
+      setSidebarStatus(0);
     }
   },
   CLOSE_SIDEBAR: (state, withoutAnimation) => {
-    Cookies.set('sidebarStatus', 0);
+    setSidebarStatus(0);
     state.sidebar.opened = false;
     state.sidebar.withoutAnimation = withoutAnimation;
   },

@@ -1,7 +1,7 @@
 import NProgress from 'nprogress';
 import store from '@/store';
 import {getPageTitle} from '@/util/common';
-import {getToken} from '@/util/token';
+import {getToken} from '@/util/cookie';
 
 /**
  * 设置router的全局路由守卫

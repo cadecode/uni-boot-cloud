@@ -13,7 +13,7 @@ module.exports = {
   testMatch: [
     '**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)'
   ],
-  collectCoverageFrom: ['src/util/**/*.{js,vue}', '!src/util/token.js', '!src/util/request.js', 'src/component/**/*.{js,vue}'],
+  collectCoverageFrom: ['src/util/**/*.{js,vue}', '!src/util/cookie.js', '!src/util/request.js', 'src/component/**/*.{js,vue}'],
   coverageDirectory: '<rootDir>/tests/unit/coverage',
   // 'collectCoverage': true,
   'coverageReporters': [
@@ -21,4 +21,4 @@ module.exports = {
     'text-summary'
   ],
   testURL: 'http://localhost/'
-}
+};

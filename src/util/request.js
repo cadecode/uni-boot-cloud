@@ -5,7 +5,7 @@ import axios from 'axios';
 import {Message, MessageBox} from 'element-ui';
 import store from '@/store';
 import router from '@/router';
-import {getToken} from '@/util/token';
+import {getToken} from '@/util/cookie';
 import settings from '@/settings';
 
 const {tokenKey} = settings;
