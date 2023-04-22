@@ -1,3 +1,4 @@
+import {Message} from 'element-ui';
 import NProgress from 'nprogress';
 import store from '@/store';
 import {getPageTitle} from '@/util/common';
@@ -31,9 +32,15 @@ function setGuard(router) {
       const menuList = await store.dispatch('user/getInfo');
       // 生成路由
       const asyncRoutes = await store.dispatch('user/generateRoutes', menuList);
-      // 加载路由
-      router.addRoutes(asyncRoutes);
-      next({...to, replace: true});
+      if (asyncRoutes.length > 1) {
+        // 加载路由
+        router.addRoutes(asyncRoutes);
+        next({...to, replace: true});
+      } else {
+        // 没有菜单权限，跳转到个人中心页面
+        next(`/user_center`);
+        Message({message: '没有任何菜单权限，请联系管理员添加', type: 'warning', duration: 5 * 1000});
+      }
       NProgress.done();
       return;
     }
