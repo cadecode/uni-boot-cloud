@@ -40,6 +40,22 @@ function queryToObject(url) {
 }
 
 /**
+ * 对象转url查询参数
+ * @param obj 支持 {a:1, b:[2,3,4]} 格式的对象，不支持嵌套对象
+ * @return {string}
+ */
+function objectToQuery(obj) {
+  return Object.keys(obj).reduce((p, n) => {
+    if (Array.isArray(obj[n])) {
+      obj[n].forEach(o => p.append(n, o));
+      return p;
+    }
+    p.append(n, obj[n]);
+    return p;
+  }, new URLSearchParams()).toString();
+}
+
+/**
  * 转换时间到字符串
  * @param {(Object|string|number)} time
  * @param {string} cFormat
@@ -132,6 +148,7 @@ function isExternalUrl(path) {
 
 export {
   getPageTitle,
+  objectToQuery,
   queryToObject,
   parseTime,
   formatTime,

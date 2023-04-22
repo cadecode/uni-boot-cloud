@@ -76,9 +76,7 @@ const mutations = {
 const actions = {
   // 登录
   login({commit}, userInfo) {
-    const formData = new FormData();
-    Object.keys(userInfo).forEach(k => formData.append(k, userInfo[k]));
-    return login(formData).then(res => {
+    return login(userInfo).then(res => {
       const {data} = res;
       const {nickName, roles, avatar} = data;
       commit('SET_USER_INFO', data);

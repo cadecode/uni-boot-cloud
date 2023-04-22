@@ -1,10 +1,10 @@
-import request from '@/util/request';
+import request, {requestFormData} from '@/util/request';
 import settings from '@/settings';
 
 const {loginUrl, logoutUrl} = settings;
 
 export function login(data) {
-  return request({
+  return requestFormData({
     url: loginUrl,
     method: 'post',
     data

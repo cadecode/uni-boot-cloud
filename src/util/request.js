@@ -7,6 +7,7 @@ import store from '@/store';
 import router from '@/router';
 import {getToken} from '@/util/cookie';
 import settings from '@/settings';
+import {objectToQuery} from '@/util/common';
 
 const {tokenKey} = settings;
 
@@ -96,4 +97,29 @@ function checkResToken(response) {
   }
 }
 
-export default service;
+/**
+ * 查询字符串式的请求，a=1&b=2
+ * axios自动设置x-www-form-urlencoded
+ */
+function requestQuery(config) {
+  config.data = objectToQuery((config.data));
+  return service(config);
+}
+
+/**
+ * FormData式请求，new FormData()
+ * axios自动设置x-www-form-urlencoded
+ */
+function requestFormData(config) {
+  config.data = Object.keys(config.data).reduce((p, n) => {
+    p.append(n, config.data[n]);
+    return p;
+  }, new FormData());
+  return service(config);
+}
+
+export {
+  service as default,
+  requestFormData,
+  requestQuery
+};
