@@ -70,6 +70,7 @@ function checkResError(response) {
     // 401未登录，跳转到登录页
     if (res.status === 401) {
       errorMessage = res.error.message;
+      // await此结果将抛出错误
       return MessageBox.confirm(`${errorMessage}, 是否重新登录`, '登录状态失效', {
         type: 'warning',
         confirmButtonText: '返回登录页',
@@ -81,7 +82,7 @@ function checkResError(response) {
         throw new Error(errorMessage);
       });
     }
-    errorMessage = '错误: ' + JSON.stringify(res.error);
+    errorMessage = 'Error: ' + JSON.stringify(res.error);
     // 此处res.error可兼容SpringBoot原生接口异常
     Message.error({message: errorMessage, duration: 5 * 1000});
     throw new Error(errorMessage);
@@ -98,28 +99,54 @@ function checkResToken(response) {
 }
 
 /**
+ * 发送请求
+ * customConfig.messageFn: res => res.data.flag，根据flag决定是否弹出提示
+ * @param config axios配置
+ * @param customConfig 自定义配置
+ */
+function request(config, customConfig) {
+  return service(config).then(res => {
+    if (customConfig && customConfig.messageFn) {
+      let flag;
+      try {
+        flag = customConfig.messageFn(res);
+      } catch (e) {
+        flag = false;
+      }
+      // 操作成功
+      if (flag) {
+        Message.success('操作成功');
+      } else {
+        Message.success('操作失败');
+      }
+    }
+    return res;
+  });
+}
+
+/**
  * 查询字符串式的请求，a=1&b=2
  * axios自动设置x-www-form-urlencoded
  */
-function requestQuery(config) {
+function requestQuery(config, customConfig) {
   config.data = objectToQuery((config.data));
-  return service(config);
+  return request(config, customConfig);
 }
 
 /**
  * FormData式请求，new FormData()
  * axios自动设置x-www-form-urlencoded
  */
-function requestFormData(config) {
+function requestFormData(config, customConfig) {
   config.data = Object.keys(config.data).reduce((p, n) => {
     p.append(n, config.data[n]);
     return p;
   }, new FormData());
-  return service(config);
+  return request(config, customConfig);
 }
 
 export {
-  service as default,
+  request as default,
   requestFormData,
   requestQuery
 };
