@@ -19,6 +19,13 @@ import {
 import {resetRouter} from '@/router';
 import {constRoutes, convertAsyncRoutes, homeRoute, notFoundRoute} from '@/router/route';
 
+/**
+ * @return userInfo.nickName 昵称
+ * @return userInfo.sex 性别
+ * @return userInfo.mail 邮箱
+ * @return userInfo.loginIp 登录ip
+ * @return userInfo.loginDate 登陆时间
+ */
 const getDefaultState = () => {
   return {
     token: getToken(),
