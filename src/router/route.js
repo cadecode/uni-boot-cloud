@@ -101,12 +101,7 @@ function requireComponent(path) {
   return (resolve) => {
     return require([`@/view${path}`], resolve)
       .catch(e => {
-        Message({
-          message: `加载组件失败，@/view${path}`,
-          type: 'error',
-          duration: 5 * 1000,
-          dangerouslyUseHTMLString: true
-        });
+        Message.error({message: `加载组件失败，@/view${path}`, duration: 5 * 1000});
         NProgress.done();
         throw e;
       });

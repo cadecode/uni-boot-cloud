@@ -2,18 +2,11 @@ import Clipboard from 'clipboard';
 import {Message} from 'element-ui';
 
 function clipboardSuccess() {
-  Message({
-    message: '已复制',
-    type: 'success',
-    duration: 1500
-  });
+  Message.success({message: '已复制', duration: 1500});
 }
 
 function clipboardError() {
-  Message({
-    message: '复制失败',
-    type: 'error'
-  });
+  Message.error('复制失败');
 }
 
 export default function handleClipboard(text, event) {

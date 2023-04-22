@@ -39,7 +39,7 @@ function setGuard(router) {
       } else {
         // 没有菜单权限，跳转到个人中心页面
         next(`/user_center`);
-        Message({message: '没有任何菜单权限，请联系管理员添加', type: 'warning', duration: 5 * 1000});
+        Message.warning({message: '没有任何菜单权限，请联系管理员添加', duration: 5 * 1000});
       }
       NProgress.done();
       return;

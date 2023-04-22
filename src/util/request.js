@@ -54,7 +54,7 @@ service.interceptors.response.use(
     if (response && response.data) {
       await checkResError(response);
     }
-    Message({message: error.message, type: 'error', duration: 5 * 1000});
+    Message.error({message: error.message, duration: 5 * 1000});
     throw error;
   }
 );
@@ -70,10 +70,10 @@ function checkResError(response) {
     // 401未登录，跳转到登录页
     if (res.status === 401) {
       errorMessage = res.error.message;
-      return MessageBox.confirm(errorMessage + ', 是否重新登录', '登录状态失效', {
+      return MessageBox.confirm(`${errorMessage}, 是否重新登录`, '登录状态失效', {
+        type: 'warning',
         confirmButtonText: '返回登录页',
-        cancelButtonText: '取消',
-        type: 'warning'
+        cancelButtonText: '取消'
       }).then(async() => {
         // 清理token并返回登录页
         await store.dispatch('user/resetToken');
@@ -83,7 +83,7 @@ function checkResError(response) {
     }
     errorMessage = '错误: ' + JSON.stringify(res.error);
     // 此处res.error可兼容SpringBoot原生接口异常
-    Message({message: errorMessage, type: 'error', duration: 5 * 1000});
+    Message.error({message: errorMessage, duration: 5 * 1000});
     throw new Error(errorMessage);
   }
 }
