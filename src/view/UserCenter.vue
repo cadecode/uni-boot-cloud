@@ -40,18 +40,18 @@
     </el-tabs>
     <el-tabs type="border-card" class="user-center-modify">
       <el-tab-pane label="修改信息">
-        <el-form ref="modifyInfoForm" :model="modifyInfoForm" :rules="modifyInfoFormRules">
+        <el-form ref="modifyInfoForm" :model="modifyInfoForm.data" :rules="modifyInfoForm.rule">
           <el-form-item label="昵称" prop="nickName">
-            <el-input v-model="modifyInfoForm.nickName" />
+            <el-input v-model="modifyInfoForm.data.nickName" />
           </el-form-item>
           <el-form-item label="电话" prop="phone">
-            <el-input v-model="modifyInfoForm.phone" />
+            <el-input v-model="modifyInfoForm.data.phone" />
           </el-form-item>
           <el-form-item label="邮箱" prop="mail">
-            <el-input v-model="modifyInfoForm.mail" />
+            <el-input v-model="modifyInfoForm.data.mail" />
           </el-form-item>
           <el-form-item label="性别" prop="sex">
-            <el-radio-group v-model="modifyInfoForm.sex">
+            <el-radio-group v-model="modifyInfoForm.data.sex">
               <el-radio label="女" />
               <el-radio label="男" />
             </el-radio-group>
@@ -63,15 +63,15 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="修改密码">
-        <el-form ref="modifyPassForm" :model="modifyPassForm" :rules="modifyPassFormRules">
+        <el-form ref="modifyPassForm" :model="modifyPassForm.data" :rules="modifyPassForm.rules">
           <el-form-item label="原密码" prop="oldPass">
-            <el-input v-model="modifyPassForm.oldPass" show-password />
+            <el-input v-model="modifyPassForm.data.oldPass" show-password />
           </el-form-item>
           <el-form-item label="新密码" prop="newPass">
-            <el-input v-model="modifyPassForm.newPass" show-password />
+            <el-input v-model="modifyPassForm.data.newPass" show-password />
           </el-form-item>
           <el-form-item label="确认新密码" prop="confirmedPass">
-            <el-input v-model="modifyPassForm.confirmedPass" show-password />
+            <el-input v-model="modifyPassForm.data.confirmedPass" show-password />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="modifyPass">修改</el-button>
@@ -93,30 +93,36 @@ export default {
   data() {
     return {
       modifyInfoForm: {
-        nickName: this.$store.getters.userInfo.nickName,
-        phone: this.$store.getters.userInfo.phone,
-        mail: this.$store.getters.userInfo.mail,
-        sex: this.$store.getters.userInfo.sex
-      },
-      modifyInfoFormRules: {
-        nickName: [{required: true, message: '请输入昵称', trigger: 'blur'}],
-        sex: [{required: true, message: '请选择性别', trigger: 'blur'}]
+        data: {
+          nickName: this.$store.getters.userInfo.nickName,
+          phone: this.$store.getters.userInfo.phone,
+          mail: this.$store.getters.userInfo.mail,
+          sex: this.$store.getters.userInfo.sex
+        },
+        rule: {
+          nickName: [{required: true, message: '请输入昵称', trigger: 'blur'}],
+          sex: [{required: true, message: '请选择性别', trigger: 'blur'}]
+        }
       },
       modifyPassForm: {
-        oldPass: '',
-        newPass: '',
-        confirmedPass: ''
-      },
-      modifyPassFormRules: {
-        oldPass: [{required: true, message: '请输入原密码', trigger: 'blur'}],
-        newPass: [{required: true, message: '请输入新密码', trigger: 'blur'}],
-        confirmedPass: [{validator: (rule, value, callback) => {
-          if (this.modifyPassForm.newPass === this.modifyPassForm.confirmedPass) {
-            callback();
-          } else {
-            callback(new Error('新密码和确认密码不一致'));
-          }
-        }, trigger: 'blur'}]
+        data: {
+          oldPass: '',
+          newPass: '',
+          confirmedPass: ''
+        },
+        rules: {
+          oldPass: [{required: true, message: '请输入原密码', trigger: 'blur'}],
+          newPass: [{required: true, message: '请输入新密码', trigger: 'blur'}],
+          confirmedPass: [{
+            validator: (rule, value, callback) => {
+              if (this.modifyPassForm.data.newPass === this.modifyPassForm.data.confirmedPass) {
+                callback();
+              } else {
+                callback(new Error('新密码和确认密码不一致'));
+              }
+            }, trigger: 'blur'
+          }]
+        }
       }
     };
   },
@@ -135,10 +141,10 @@ export default {
     modifyInfo() {
       this.$refs['modifyInfoForm'].validate((valid) => {
         if (valid) {
-          modifyInfo(this.modifyInfoForm).then(res => {
+          modifyInfo(this.modifyInfoForm.data).then(res => {
             if (res.data) {
-              this.$store.commit('user/SET_NAME', this.modifyInfoForm.nickName);
-              this.$store.commit('user/SET_USER_INFO', {...this.userInfo, ...this.modifyInfoForm});
+              this.$store.commit('user/SET_NAME', this.modifyInfoForm.data.nickName);
+              this.$store.commit('user/SET_USER_INFO', {...this.userInfo, ...this.modifyInfoForm.data});
             }
           });
         }
@@ -147,7 +153,7 @@ export default {
     modifyPass() {
       this.$refs['modifyPassForm'].validate((valid) => {
         if (valid) {
-          modifyPass(this.modifyPassForm);
+          modifyPass(this.modifyPassForm.data);
         }
       });
     }
