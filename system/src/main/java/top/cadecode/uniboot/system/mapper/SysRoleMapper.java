@@ -18,4 +18,9 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
 
     List<SysRole> listByUserId(@Param("userId") Long userId);
 
+    List<SysRole> listByMenuId(@Param("menuId") Long menuId);
+
+    List<SysRole> listByApiId(@Param("apiId") Long apiId);
+
+
 }
