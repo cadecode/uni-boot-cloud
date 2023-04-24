@@ -4,6 +4,10 @@
       <el-tab-pane label="个人资料">
         <el-descriptions :column="1" :border="true">
           <el-descriptions-item>
+            <span slot="label"><i class="el-icon-key" />用户ID</span>
+            {{ userInfo.id }}
+          </el-descriptions-item>
+          <el-descriptions-item>
             <span slot="label"><i class="el-icon-user-solid" />用户名</span>
             {{ userInfo.username }}
           </el-descriptions-item>
