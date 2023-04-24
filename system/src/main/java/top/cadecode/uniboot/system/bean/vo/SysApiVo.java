@@ -2,6 +2,7 @@ package top.cadecode.uniboot.system.bean.vo;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +21,12 @@ public class SysApiVo {
         private String url;
 
         private String description;
+
+        private Date createTime;
+
+        private Date updateTime;
+
+        private String updateUser;
 
         private List<String> roles;
     }
