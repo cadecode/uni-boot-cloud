@@ -1,4 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.cadecode.uniboot.system.mapper.SysUserMapper">
+    <resultMap id="SysUserRolesVoMap" type="top.cadecode.uniboot.system.bean.vo.SysUserVo$SysUserRolesVo">
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="password" property="password"/>
+        <result column="enable_flag" property="enableFlag"/>
+        <result column="sex" property="sex"/>
+        <result column="phone" property="phone"/>
+        <result column="mail" property="mail"/>
+        <result column="loginIp" property="loginIp"/>
+        <result column="loginDate" property="loginDate"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
+        <collection property="roles" ofType="string">
+            <result column="r_code"/>
+        </collection>
+    </resultMap>
+    <select id="listRolesVo" resultMap="SysUserRolesVoMap">
+        SELECT su.*, sr.code r_code
+        FROM sys_user su
+        LEFT JOIN sys_role_user sru ON sru.user_id = su.id
+        LEFT JOIN sys_role sr ON sru.role_id = sr.id
+        <if test="userIds != null and userIds.size > 0">
+            WHERE su.id IN (
+            <foreach collection="userIds" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+        </if>
+        GROUP BY su.username, sr.code
+    </select>
+    <select id="listRolesVoByUsername" resultMap="SysUserRolesVoMap">
+        SELECT su.*, sr.code r_code
+        FROM sys_user su
+        LEFT JOIN sys_role_user sru ON sru.user_id = su.id
+        LEFT JOIN sys_role sr ON sru.role_id = sr.id
+        WHERE su.username = #{username}
+        GROUP BY su.username, sr.code
+    </select>
 </mapper>

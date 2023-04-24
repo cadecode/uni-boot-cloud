@@ -39,7 +39,7 @@ public class SysUser {
     /**
      * 是否启用
      */
-    private boolean enableFlag;
+    private Boolean enableFlag;
 
     /**
      * 性别
