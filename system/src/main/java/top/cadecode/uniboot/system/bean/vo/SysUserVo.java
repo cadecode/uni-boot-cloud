@@ -1,5 +1,6 @@
 package top.cadecode.uniboot.system.bean.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
@@ -20,9 +21,12 @@ public class SysUserVo {
 
         private String username;
 
+        @JsonIgnore
+        private String password;
+
         private String nickName;
 
-        private boolean enableFlag;
+        private Boolean enableFlag;
 
         private String sex;
 
@@ -33,6 +37,12 @@ public class SysUserVo {
         private String loginIp;
 
         private Date loginDate;
+
+        private Date createTime;
+
+        private Date updateTime;
+
+        private String updateUser;
 
         private List<String> roles;
     }
