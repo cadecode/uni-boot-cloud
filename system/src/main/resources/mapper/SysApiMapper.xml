@@ -5,12 +5,15 @@
         <result column="id" property="id"/>
         <result column="url" property="url"/>
         <result column="description" property="description"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
         <collection property="roles" ofType="string">
-            <result column="code"/>
+            <result column="r_code"/>
         </collection>
     </resultMap>
     <select id="listRolesVo" resultMap="SysApiRolesVoMap">
-        SELECT sa.id, sa.url, sa.description, sr.code
+        SELECT sa.*, sr.code r_code
         FROM sys_api sa
         LEFT JOIN sys_role_api sra ON sra.api_id = sa.id
         LEFT JOIN sys_role sr ON sra.role_id = sr.id
