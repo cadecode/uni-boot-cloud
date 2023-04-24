@@ -5,6 +5,8 @@ import org.mapstruct.factory.Mappers;
 import top.cadecode.uniboot.system.bean.po.SysRole;
 import top.cadecode.uniboot.system.bean.vo.SysRoleVo.SysRoleListVo;
 
+import java.util.List;
+
 /**
  * 系统角色 BEAN 转换
  *
@@ -17,5 +19,7 @@ public interface SysRoleConvert {
     SysRoleConvert INSTANCE = Mappers.getMapper(SysRoleConvert.class);
 
     SysRoleListVo poToListVo(SysRole po);
+
+    List<SysRoleListVo> poToListVo(List<SysRole> po);
 
 }

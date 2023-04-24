@@ -16,11 +16,16 @@ import top.cadecode.uniboot.common.exception.UniException;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserInfoDto;
+import top.cadecode.uniboot.system.bean.po.SysRole;
 import top.cadecode.uniboot.system.bean.po.SysUser;
 import top.cadecode.uniboot.system.bean.vo.SysMenuVo.SysMenuTreeVo;
+import top.cadecode.uniboot.system.bean.vo.SysRoleVo.SysRoleListVo;
+import top.cadecode.uniboot.system.convert.SysRoleConvert;
 import top.cadecode.uniboot.system.request.SysUserRequest.SysUserModifyInfoRequest;
 import top.cadecode.uniboot.system.request.SysUserRequest.SysUserModifyPassRequest;
+import top.cadecode.uniboot.system.service.SysApiService;
 import top.cadecode.uniboot.system.service.SysMenuService;
+import top.cadecode.uniboot.system.service.SysRoleService;
 import top.cadecode.uniboot.system.service.SysUserService;
 
 import javax.validation.Valid;
@@ -43,6 +48,8 @@ public class SystemController {
 
     private final SysUserService sysUserService;
     private final SysMenuService sysMenuService;
+    private final SysRoleService sysRoleService;
+    private final SysApiService sysApiService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -89,4 +96,10 @@ public class SystemController {
                 .update();
     }
 
+    @ApiOperation("查询角色列表")
+    @PostMapping("role/list")
+    public List<SysRoleListVo> roleList(){
+        List<SysRole> roleList = sysRoleService.list();
+        return SysRoleConvert.INSTANCE.poToListVo(roleList);
+    }
 }
