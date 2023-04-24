@@ -10,8 +10,8 @@
         <result column="sex" property="sex"/>
         <result column="phone" property="phone"/>
         <result column="mail" property="mail"/>
-        <result column="loginIp" property="loginIp"/>
-        <result column="loginDate" property="loginDate"/>
+        <result column="login_ip" property="loginIp"/>
+        <result column="login_date" property="loginDate"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="update_user" property="updateUser"/>
