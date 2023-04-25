@@ -2,7 +2,7 @@
   <div class="user-center-container">
     <el-tabs type="border-card" class="user-center-info">
       <el-tab-pane label="个人资料">
-        <el-descriptions :column="1" :border="true">
+        <el-descriptions :column="1" border>
           <el-descriptions-item>
             <span slot="label"><i class="el-icon-key" />用户ID</span>
             {{ userInfo.id }}
@@ -62,7 +62,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="modifyInfo">修改</el-button>
-            <el-button @click="resetForm('modifyInfoForm')">重置</el-button>
+            <el-button @click="() => this.$refs['modifyInfoForm'].resetFields()">重置</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -79,7 +79,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="modifyPass">修改</el-button>
-            <el-button @click="resetForm('modifyPassForm')">重置</el-button>
+            <el-button @click="() => this.$refs['modifyPassForm'].resetFields()">重置</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -139,9 +139,6 @@ export default {
     ])
   },
   methods: {
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
     modifyInfo() {
       this.$refs['modifyInfoForm'].validate((valid) => {
         if (valid) {
@@ -167,18 +164,21 @@ export default {
 
 <style lang="scss" scoped>
 .user-center-container {
+  height: calc(100vh - 60px);
   margin: 10px 20px 0;
   overflow: hidden;
 
   .user-center-info {
     display: inline-block;
-    width: 28%;
+    height: calc(100vh - 80px);
+    width: 48%;
     margin-right: 1%;
   }
 
   .user-center-modify {
     display: inline-block;
-    width: 70%;
+    height: calc(100vh - 80px);
+    width: 50%;
     vertical-align: top;
   }
 }
