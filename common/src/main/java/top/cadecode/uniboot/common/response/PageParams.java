@@ -13,9 +13,9 @@ import javax.validation.constraints.NotNull;
 @Data
 public class PageParams {
     @NotNull
-    private Long pageSize;
+    private Integer pageSize = 1;
     @NotNull
-    private Long pageNumber;
+    private Integer pageNumber = 10;
 
     private String orderBy;
 }
