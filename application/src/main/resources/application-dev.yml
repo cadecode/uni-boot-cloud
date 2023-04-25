@@ -12,15 +12,15 @@ spring:
       primary: master
       datasource:
         master:
-          url: jdbc:mysql://localhost:3306/demo?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          url: jdbc:p6spy:mysql://localhost:3306/demo?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
           username: root
           password: ENC(donQ3DazAc4/6B+NFSRdxw==)
-          driver-class-name: com.mysql.cj.jdbc.Driver
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
         slave1:
-          url: jdbc:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          url: jdbc:p6spy:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
           username: root
           password: ENC(donQ3DazAc4/6B+NFSRdxw==)
-          driver-class-name: com.mysql.cj.jdbc.Driver
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
 
 # 关闭swagger认证
 knife4j:
@@ -47,7 +47,7 @@ uni-boot:
       demo: top.cadecode.uniboot.demo.controller
   # security 配置
   security:
-    auth-model: jwt
+    auth-model: redis
     token:
       header: token
       expiration: 86400
