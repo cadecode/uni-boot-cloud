@@ -1,6 +1,7 @@
 package top.cadecode.uniboot.controller;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.cadecode.uniboot.common.annotation.ApiFormat;
 import top.cadecode.uniboot.common.exception.UniException;
+import top.cadecode.uniboot.common.response.PageResult;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserInfoDto;
@@ -20,9 +22,11 @@ import top.cadecode.uniboot.system.bean.po.SysRole;
 import top.cadecode.uniboot.system.bean.po.SysUser;
 import top.cadecode.uniboot.system.bean.vo.SysMenuVo.SysMenuTreeVo;
 import top.cadecode.uniboot.system.bean.vo.SysRoleVo.SysRoleListVo;
+import top.cadecode.uniboot.system.bean.vo.SysUserVo.SysUserRolesVo;
 import top.cadecode.uniboot.system.convert.SysRoleConvert;
 import top.cadecode.uniboot.system.request.SysUserRequest.SysUserModifyInfoRequest;
 import top.cadecode.uniboot.system.request.SysUserRequest.SysUserModifyPassRequest;
+import top.cadecode.uniboot.system.request.SysUserRequest.SysUserRolesRequest;
 import top.cadecode.uniboot.system.service.SysApiService;
 import top.cadecode.uniboot.system.service.SysMenuService;
 import top.cadecode.uniboot.system.service.SysRoleService;
@@ -83,7 +87,7 @@ public class SystemController {
         SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
         SysUser sysUser = sysUserService.lambdaQuery().select(SysUser::getPassword)
                 .eq(SysUser::getId, userDetails.getId()).one();
-        if (ObjectUtil.notEqual(request.getNewPass(), request.getConfirmedPass())){
+        if (ObjectUtil.notEqual(request.getNewPass(), request.getConfirmedPass())) {
             throw UniException.of("新密码和确认密码不一致");
         }
         if (!passwordEncoder.matches(request.getOldPass(), sysUser.getPassword())) {
@@ -96,9 +100,16 @@ public class SystemController {
                 .update();
     }
 
+    @ApiOperation("查询用户列表（带角色）")
+    @PostMapping("user/page_roles_vo")
+    public PageResult<SysUserRolesVo> userPageRolesVo(@RequestBody @Valid SysUserRolesRequest request) {
+        PageInfo<SysUserRolesVo> rolesVoPage = sysUserService.pageRolesVo(request);
+        return new PageResult<>((int) rolesVoPage.getTotal(), rolesVoPage.getList());
+    }
+
     @ApiOperation("查询角色列表")
     @PostMapping("role/list")
-    public List<SysRoleListVo> roleList(){
+    public List<SysRoleListVo> roleList() {
         List<SysRole> roleList = sysRoleService.list();
         return SysRoleConvert.INSTANCE.poToListVo(roleList);
     }

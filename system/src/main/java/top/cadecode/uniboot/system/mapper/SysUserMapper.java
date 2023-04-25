@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import top.cadecode.uniboot.system.bean.po.SysUser;
 import top.cadecode.uniboot.system.bean.vo.SysUserVo.SysUserRolesVo;
+import top.cadecode.uniboot.system.request.SysUserRequest.SysUserRolesRequest;
 
 import java.util.List;
 
@@ -17,7 +18,10 @@ import java.util.List;
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    List<SysUserRolesVo> listRolesVo(@Param("userIds") List<Long> userIds);
+    List<SysUserRolesVo> listRolesVoByUserIds(@Param("userIds") List<Long> userIds);
 
     List<SysUserRolesVo> listRolesVoByUsername(@Param("username") String username);
+
+    List<SysUserRolesVo> listRolesVo(@Param("request") SysUserRolesRequest request);
+
 }
