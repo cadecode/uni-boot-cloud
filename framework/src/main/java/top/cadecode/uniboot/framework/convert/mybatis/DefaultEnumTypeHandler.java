@@ -29,12 +29,12 @@ public class DefaultEnumTypeHandler<E extends Enum<?>> extends BaseTypeHandler<E
 
     public DefaultEnumTypeHandler(Class<E> type) {
         if (Objects.isNull(type)) {
-            throw new IllegalArgumentException("类型不能为空");
+            throw new IllegalArgumentException("type can not be null");
         }
         this.type = type;
         E[] enums = type.getEnumConstants();
         if (Objects.isNull(enums)) {
-            throw new IllegalArgumentException(type.getSimpleName() + " 不是一个枚举类型");
+            throw new IllegalArgumentException(type.getSimpleName() + " is not an enum type");
         }
         enumMap = Arrays.stream(enums).collect(toMap(o -> {
             // 实现 EnumConvertor 的枚举根据 persistBy 持久化
@@ -93,7 +93,7 @@ public class DefaultEnumTypeHandler<E extends Enum<?>> extends BaseTypeHandler<E
         if (Objects.nonNull(e)) {
             return e;
         }
-        throw new IllegalArgumentException("未知的泛型元素：" + type.getSimpleName() + "." + value);
+        throw new IllegalArgumentException("Unknown generic element：" + type.getSimpleName() + "." + value);
     }
 
     /**
