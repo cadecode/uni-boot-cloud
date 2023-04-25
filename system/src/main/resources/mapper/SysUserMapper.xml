@@ -19,7 +19,7 @@
             <result column="r_code"/>
         </collection>
     </resultMap>
-    <select id="listRolesVo" resultMap="SysUserRolesVoMap">
+    <select id="listRolesVoByUserIds" resultMap="SysUserRolesVoMap">
         SELECT su.*, sr.code r_code
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
@@ -39,6 +39,33 @@
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id
         WHERE su.username = #{username}
+        GROUP BY su.username, sr.code
+    </select>
+    <select id="listRolesVo" resultMap="SysUserRolesVoMap">
+        SELECT su.*, sr.code r_code
+        FROM sys_user su
+        LEFT JOIN sys_role_user sru ON sru.user_id = su.id
+        LEFT JOIN sys_role sr ON sru.role_id = sr.id
+        <if test="request != null">
+            <where>
+                <if test="request.username != null and request.username.length > 0">
+                    su.username like CONCAT(#{request.username}, '%')
+                </if>
+                <if test="request.nickName != null and request.nickName.length > 0">
+                    AND su.nick_name like CONCAT(#{request.nickName}, '%')
+                </if>
+                <if test="request.enableFlag != null">
+                    AND su.enable_flag = #{request.enableFlag}
+                </if>
+                <if test="request.roleIdList != null and request.roleIdList.size > 0 ">
+                    AND sr.id in (
+                    <foreach collection="request.roleIdList" item="id" separator=",">
+                        #{id}
+                    </foreach>
+                    )
+                </if>
+            </where>
+        </if>
         GROUP BY su.username, sr.code
     </select>
 </mapper>

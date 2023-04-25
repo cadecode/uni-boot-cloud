@@ -2,6 +2,8 @@ package top.cadecode.uniboot.system.serviceimpl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import top.cadecode.uniboot.system.bean.po.SysUser;
 import top.cadecode.uniboot.system.bean.vo.SysUserVo.SysUserRolesVo;
 import top.cadecode.uniboot.system.convert.SysUserConvert;
 import top.cadecode.uniboot.system.mapper.SysUserMapper;
+import top.cadecode.uniboot.system.request.SysUserRequest.SysUserRolesRequest;
 import top.cadecode.uniboot.system.service.SysUserService;
 
 import java.util.List;
@@ -45,7 +48,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public List<SysUserRolesVo> listRolesVo(List<Long> userIds) {
-        return sysUserMapper.listRolesVo(userIds);
+    public List<SysUserRolesVo> listRolesVoByUserIds(List<Long> userIds) {
+        return sysUserMapper.listRolesVoByUserIds(userIds);
+    }
+
+    @Override
+    public List<SysUserRolesVo> listRolesVo(SysUserRolesRequest request) {
+        return sysUserMapper.listRolesVo(request);
+    }
+
+    @Override
+    public PageInfo<SysUserRolesVo> pageRolesVo(SysUserRolesRequest request) {
+        return PageHelper.startPage(request.getPageNumber(), request.getPageSize())
+                .doSelectPageInfo(() -> sysUserMapper.listRolesVo(request));
     }
 }
