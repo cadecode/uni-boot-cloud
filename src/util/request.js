@@ -117,7 +117,7 @@ function request(config, customConfig) {
       if (flag) {
         Message.success('操作成功');
       } else {
-        Message.success('操作失败');
+        Message.error('操作失败');
       }
     }
     return res;
