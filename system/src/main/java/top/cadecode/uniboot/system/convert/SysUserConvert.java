@@ -21,6 +21,6 @@ public interface SysUserConvert {
 
     SysUserDetailsDto poToDetailsDto(SysUser po);
 
-    SysUserDetailsDto rolesVoToDetailsDto(SysUserRolesVo vo);
+    SysUserDetailsDto voToDetailsDto(SysUserRolesVo vo);
 
 }
