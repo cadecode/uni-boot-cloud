@@ -6,7 +6,8 @@ export function modifyInfo(data) {
     method: 'post',
     data
   }, {
-    messageFn: res => res.data
+    messageFn: res => res.data,
+    messagePrefix: '更新用户信息'
   });
 }
 
@@ -16,6 +17,7 @@ export function modifyPass(data) {
     method: 'post',
     data
   }, {
-    messageFn: res => res.data
+    messageFn: res => res.data,
+    messagePrefix: '更新用户密码'
   });
 }

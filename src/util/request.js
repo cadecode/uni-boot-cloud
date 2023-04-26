@@ -100,9 +100,10 @@ function checkResToken(response) {
 
 /**
  * 发送请求
- * customConfig.messageFn: res => res.data.flag，根据flag决定是否弹出提示
  * @param config axios配置
  * @param customConfig 自定义配置
+ * @param customConfig.messageFn res => res.data.flag，根据flag决定是否弹出提示
+ * @param customConfig.messagePrefix 提示内容的前缀
  */
 function request(config, customConfig) {
   return service(config).then(res => {
@@ -113,11 +114,12 @@ function request(config, customConfig) {
       } catch (e) {
         flag = false;
       }
+      const prefix = customConfig.messagePrefix ? customConfig.messagePrefix + '，' : '';
       // 操作成功
       if (flag) {
-        Message.success('操作成功');
+        Message.success(`${prefix}操作成功`);
       } else {
-        Message.error('操作失败');
+        Message.error(`${prefix}操作失败`);
       }
     }
     return res;
