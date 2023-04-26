@@ -44,7 +44,7 @@
           <el-table-column property="nickName" label="昵称" />
           <el-table-column property="enableFlag" label="启用状态">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.enableFlag" />
+              <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.row)" />
             </template>
           </el-table-column>
           <el-table-column property="updateTime" label="更新时间" />
@@ -91,7 +91,7 @@
   </div>
 </template>
 <script>
-import {listRole, pageUserRolesVo} from '@/api/system';
+import {listRole, pageUserRolesVo, updateUserEnable} from '@/api/system';
 
 export default {
   name: 'UserManagement',
@@ -111,7 +111,7 @@ export default {
         page: {
           total: 0,
           pageNumber: 1,
-          pageSize: 2
+          pageSize: 10
         }
       },
       roleTree: {
@@ -144,6 +144,15 @@ export default {
         this.userListTable.data = res.data.records;
         this.userListTable.page.total = res.data.total;
       });
+    },
+    updateEnable(flag, row) {
+      updateUserEnable({id: row.id, enableFlag: flag})
+        .then(res => {
+          // 没修改成功则恢复原值
+          if (!res.data) {
+            row.enableFlag = !flag;
+          }
+        });
     },
     loadRoleTree(node, resolve) {
       if (node.level === 0) {
