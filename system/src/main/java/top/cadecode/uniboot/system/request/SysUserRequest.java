@@ -6,6 +6,7 @@ import top.cadecode.uniboot.common.response.PageParams;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -42,6 +43,14 @@ public class SysUserRequest {
         private String username;
         private String nickName;
         private List<Long> roleIdList;
+        private Boolean enableFlag;
+    }
+
+    @Data
+    public static class SysUserUpdateEnableRequest{
+        @NotNull
+        private Long id;
+        @NotNull
         private Boolean enableFlag;
     }
 }
