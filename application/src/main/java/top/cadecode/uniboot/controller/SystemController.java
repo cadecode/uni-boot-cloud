@@ -35,6 +35,8 @@ import top.cadecode.uniboot.system.service.SysUserService;
 import javax.validation.Valid;
 import java.util.List;
 
+import static top.cadecode.uniboot.system.request.SysUserRequest.SysUserUpdateEnableRequest;
+
 /**
  * 系统管理API
  *
@@ -105,6 +107,15 @@ public class SystemController {
     public PageResult<SysUserRolesVo> userPageRolesVo(@RequestBody @Valid SysUserRolesRequest request) {
         PageInfo<SysUserRolesVo> rolesVoPage = sysUserService.pageRolesVo(request);
         return new PageResult<>((int) rolesVoPage.getTotal(), rolesVoPage.getList());
+    }
+
+    @ApiOperation("更新用户启用状态")
+    @PostMapping("user/update_enable")
+    public boolean userUpdateEnable(@RequestBody @Valid SysUserUpdateEnableRequest request) {
+       return sysUserService.lambdaUpdate()
+                .eq(SysUser::getId, request.getId())
+                .set(SysUser::getEnableFlag, request.getEnableFlag())
+                .update();
     }
 
     @ApiOperation("查询角色列表")
