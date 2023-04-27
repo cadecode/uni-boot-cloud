@@ -7,10 +7,8 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
-import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 
 import java.util.Date;
-import java.util.Optional;
 
 /**
  * mybatis 配置类
@@ -47,12 +45,7 @@ public class MybatisConfig {
             }
 
             public void updateUser(MetaObject metaObject) {
-                SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
-                String updateUser = Optional.ofNullable(userDetails)
-                        .map(SysUserDetailsDto::getUsername)
-                        .map(String::valueOf)
-                        .orElse(null);
-                this.setFieldValByName("updateUser", updateUser, metaObject);
+                this.setFieldValByName("updateUser", TokenAuthHolder.getUsername(), metaObject);
             }
         };
     }

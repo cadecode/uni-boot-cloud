@@ -172,4 +172,15 @@ public class TokenAuthHolder {
         }
         return null;
     }
+
+    /**
+     * SpringSecurity相关，取出用户名
+     */
+    public static String getUsername() {
+        SysUserDetailsDto userDetails = getUserDetails(null);
+        return Optional.ofNullable(userDetails)
+                .map(SysUserDetailsDto::getUsername)
+                .map(String::valueOf)
+                .orElse(null);
+    }
 }
