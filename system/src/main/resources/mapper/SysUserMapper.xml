@@ -66,6 +66,6 @@
                 </if>
             </where>
         </if>
-        GROUP BY su.username, sr.code
+        ORDER BY su.create_time DESC, sr.code
     </select>
 </mapper>
