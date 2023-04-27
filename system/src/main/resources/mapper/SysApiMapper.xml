@@ -24,6 +24,6 @@
             </foreach>
             )
         </if>
-        GROUP BY sa.url, sr.code
+        ORDER BY sa.create_time DESC, sr.code
     </select>
 </mapper>
