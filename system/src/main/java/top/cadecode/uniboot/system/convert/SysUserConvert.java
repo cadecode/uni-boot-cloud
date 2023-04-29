@@ -5,6 +5,7 @@ import org.mapstruct.factory.Mappers;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 import top.cadecode.uniboot.system.bean.po.SysUser;
 import top.cadecode.uniboot.system.bean.vo.SysUserVo.SysUserRolesVo;
+import top.cadecode.uniboot.system.request.SysUserRequest.SysUserAddRequest;
 
 /**
  * 系统用户 BEAN 转换
@@ -22,5 +23,7 @@ public interface SysUserConvert {
     SysUserDetailsDto poToDetailsDto(SysUser po);
 
     SysUserDetailsDto voToDetailsDto(SysUserRolesVo vo);
+
+    SysUser requestToPo(SysUserAddRequest request);
 
 }

@@ -53,4 +53,37 @@ public class SysUserRequest {
         @NotNull
         private Boolean enableFlag;
     }
+
+    @Data
+    public static class SysUserUpdateRequest{
+        @NotNull
+        private Long id;
+        @NotEmpty
+        private String username;
+        @NotEmpty
+        private String nickName;
+        private String password;
+        private String phone;
+        @Email
+        private String mail;
+        @NotEmpty
+        private String sex;
+    }
+
+    @Data
+    public static class SysUserAddRequest{
+        @NotEmpty
+        private String username;
+        @NotEmpty
+        private String nickName;
+        @NotEmpty
+        private String password;
+        private String phone;
+        @Email
+        private String mail;
+        @NotEmpty
+        private String sex;
+        @NotNull
+        private Boolean enableFlag;
+    }
 }
