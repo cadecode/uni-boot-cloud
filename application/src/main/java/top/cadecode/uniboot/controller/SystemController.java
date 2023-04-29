@@ -79,7 +79,7 @@ public class SystemController {
                 .set(SysUser::getPhone, request.getPhone())
                 .set(SysUser::getMail, request.getMail())
                 .set(SysUser::getSex, request.getSex())
-                .update();
+                .update(new SysUser());
     }
 
     @ApiOperation("修改用户密码（用户中心）")
@@ -98,7 +98,7 @@ public class SystemController {
                 .eq(SysUser::getId, userDetails.getId())
                 .eq(SysUser::getPassword, sysUser.getPassword())
                 .set(SysUser::getPassword, passwordEncoder.encode(request.getNewPass()))
-                .update();
+                .update(new SysUser());
     }
 
     @ApiOperation("查询用户列表（带角色）")
@@ -114,7 +114,7 @@ public class SystemController {
         return sysUserService.lambdaUpdate()
                 .eq(SysUser::getId, request.getId())
                 .set(SysUser::getEnableFlag, request.getEnableFlag())
-                .update();
+                .update(new SysUser());
     }
 
     @ApiOperation("更新用户")
@@ -132,7 +132,7 @@ public class SystemController {
                 .set(SysUser::getPhone, request.getPhone())
                 .set(SysUser::getMail, request.getMail())
                 .set(SysUser::getSex, request.getSex())
-                .update();
+                .update(new SysUser());
     }
 
     @ApiOperation("添加用户")
