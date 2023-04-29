@@ -24,18 +24,17 @@ import top.cadecode.uniboot.system.bean.vo.SysMenuVo.SysMenuTreeVo;
 import top.cadecode.uniboot.system.bean.vo.SysRoleVo.SysRoleListVo;
 import top.cadecode.uniboot.system.bean.vo.SysUserVo.SysUserRolesVo;
 import top.cadecode.uniboot.system.convert.SysRoleConvert;
-import top.cadecode.uniboot.system.request.SysUserRequest.SysUserModifyInfoRequest;
-import top.cadecode.uniboot.system.request.SysUserRequest.SysUserModifyPassRequest;
-import top.cadecode.uniboot.system.request.SysUserRequest.SysUserRolesRequest;
+import top.cadecode.uniboot.system.convert.SysUserConvert;
 import top.cadecode.uniboot.system.service.SysApiService;
 import top.cadecode.uniboot.system.service.SysMenuService;
 import top.cadecode.uniboot.system.service.SysRoleService;
 import top.cadecode.uniboot.system.service.SysUserService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
-import static top.cadecode.uniboot.system.request.SysUserRequest.SysUserUpdateEnableRequest;
+import static top.cadecode.uniboot.system.request.SysUserRequest.*;
 
 /**
  * 系统管理API
@@ -70,7 +69,7 @@ public class SystemController {
         return SysUserInfoDto.builder().menuList(sysMenuTreeVos).build();
     }
 
-    @ApiOperation("修改用户信息")
+    @ApiOperation("修改用户信息（用户中心）")
     @PostMapping("user/modify_info")
     public boolean userModifyInfo(@RequestBody @Valid SysUserModifyInfoRequest request) {
         SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
@@ -83,7 +82,7 @@ public class SystemController {
                 .update();
     }
 
-    @ApiOperation("修改用户密码")
+    @ApiOperation("修改用户密码（用户中心）")
     @PostMapping("user/modify_pass")
     public boolean userModifyPass(@RequestBody @Valid SysUserModifyPassRequest request) {
         SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
@@ -112,10 +111,44 @@ public class SystemController {
     @ApiOperation("更新用户启用状态")
     @PostMapping("user/update_enable")
     public boolean userUpdateEnable(@RequestBody @Valid SysUserUpdateEnableRequest request) {
-       return sysUserService.lambdaUpdate()
+        return sysUserService.lambdaUpdate()
                 .eq(SysUser::getId, request.getId())
                 .set(SysUser::getEnableFlag, request.getEnableFlag())
                 .update();
+    }
+
+    @ApiOperation("更新用户")
+    @PostMapping("user/update")
+    public boolean userUpdate(@RequestBody @Valid SysUserUpdateRequest request) {
+        String encodePass = null;
+        if (ObjectUtil.isNotEmpty(request.getPassword())) {
+            encodePass = passwordEncoder.encode(request.getPassword());
+        }
+        return sysUserService.lambdaUpdate()
+                .eq(SysUser::getId, request.getId())
+                .set(SysUser::getUsername, request.getUsername())
+                .set(SysUser::getNickName, request.getNickName())
+                .set(ObjectUtil.isNotEmpty(encodePass), SysUser::getPassword, encodePass)
+                .set(SysUser::getPhone, request.getPhone())
+                .set(SysUser::getMail, request.getMail())
+                .set(SysUser::getSex, request.getSex())
+                .update();
+    }
+
+    @ApiOperation("添加用户")
+    @PostMapping("user/add")
+    public boolean userAdd(@RequestBody @Valid SysUserAddRequest request) {
+        if (ObjectUtil.isNotEmpty(request.getPassword())) {
+            request.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+        SysUser sysUser = SysUserConvert.INSTANCE.requestToPo(request);
+        return sysUserService.save(sysUser);
+    }
+
+    @ApiOperation("删除用户（多选）")
+    @PostMapping("user/delete")
+    public boolean userDelete(@RequestBody @NotEmpty List<Long> userIdList) {
+        return sysUserService.removeBatchByIds(userIdList);
     }
 
     @ApiOperation("查询角色列表")
