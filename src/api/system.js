@@ -52,6 +52,14 @@ export function deleteUser(data) {
   });
 }
 
+export function listUserRolesVoByUserIds(data) {
+  return request({
+    url: '/system/user/list_roles_vo_by_user_ids',
+    method: 'post',
+    data
+  });
+}
+
 export function listRole() {
   return request({
     url: '/system/role/list',

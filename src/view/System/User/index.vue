@@ -160,7 +160,15 @@
   </div>
 </template>
 <script>
-import {listRole, pageUserRolesVo, updateUserEnable, updateUser, addUser, deleteUser} from '@/api/system';
+import {
+  addUser,
+  deleteUser,
+  listRole,
+  listUserRolesVoByUserIds,
+  pageUserRolesVo,
+  updateUser,
+  updateUserEnable
+} from '@/api/system';
 
 export default {
   name: 'UserManagement',
@@ -251,17 +259,28 @@ export default {
         this.userListTable.page.total = res.data.total;
       });
     },
+    // 修改用户后刷新列表该行内容
+    refreshUser(row) {
+      return listUserRolesVoByUserIds([row.id]).then(res => {
+        Object.keys(res.data[0]).forEach(k => {
+          row[k] = res.data[0][k];
+        });
+      });
+    },
     updateEnable(flag, index, row) {
       updateUserEnable({id: row.id, enableFlag: flag})
         .then(res => {
-          // 没修改成功则刷回原值
-          if (!res.data) {
-            row.enableFlag = !flag;
+          if (res.data) {
+            this.refreshUser(row);
+            return;
           }
+          // 没修改成功则刷回原值
+          row.enableFlag = !flag;
         });
     },
     updateUser(index, row) {
       this.updateUserForm.showDialog = true;
+      // 存放一个引用，用于修改后刷新内容
       this.updateUserForm.row = row;
       // 保证表单初始值是data中的初始值
       this.$nextTick(() => {
@@ -275,11 +294,8 @@ export default {
         if (valid) {
           updateUser(this.updateUserForm.data).then(res => {
             if (res.data) {
-              // 修改内容刷到列表中，不包括更新时间/人
-              Object.keys(this.updateUserForm.data).forEach(k => {
-                this.updateUserForm.row[k] = this.updateUserForm.data[k];
-              });
               this.updateUserForm.showDialog = false;
+              this.refreshUser(this.updateUserForm.row);
             }
           });
         }
