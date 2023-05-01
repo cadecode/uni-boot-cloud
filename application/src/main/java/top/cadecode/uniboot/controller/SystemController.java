@@ -151,6 +151,12 @@ public class SystemController {
         return sysUserService.removeBatchByIds(userIdList);
     }
 
+    @ApiOperation("获取用户（带角色）byUserIds")
+    @PostMapping("user/list_roles_vo_by_user_ids")
+    public List<SysUserRolesVo> userListRolesVoByUserIds(@RequestBody @NotEmpty List<Long> userIdList) {
+        return sysUserService.listRolesVoByUserIds(userIdList);
+    }
+
     @ApiOperation("查询角色列表")
     @PostMapping("role/list")
     public List<SysRoleListVo> roleList() {
