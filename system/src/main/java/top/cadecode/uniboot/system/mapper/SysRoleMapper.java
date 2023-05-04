@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import top.cadecode.uniboot.system.bean.po.SysRole;
+import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleMappingRequest;
 
 import java.util.List;
 
@@ -34,4 +35,16 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
 
     int deleteRoleApiByRoleIds(@Param("roleIds") List<Long> roleIds);
 
+    int deleteRoleUser(List<SysRoleMappingRequest> list);
+
+    int deleteRoleMenu(List<SysRoleMappingRequest> list);
+
+    int deleteRoleApi(List<SysRoleMappingRequest> list);
+
+    int insertRoleUser(List<SysRoleMappingRequest> list);
+
+    int insertRoleMenu(List<SysRoleMappingRequest> list);
+
+    int insertRoleApi(List<SysRoleMappingRequest> list);
+    
 }

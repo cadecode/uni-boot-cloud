@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.cadecode.uniboot.system.bean.po.SysRole;
 import top.cadecode.uniboot.system.mapper.SysRoleMapper;
+import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleMappingRequest;
 import top.cadecode.uniboot.system.service.SysRoleService;
 
 import java.util.List;
@@ -64,5 +65,35 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public int removeRoleApiByRoleIds(List<Long> roleIds) {
         return sysRoleMapper.deleteRoleApiByRoleIds(roleIds);
+    }
+
+    @Override
+    public int removeRoleUser(List<SysRoleMappingRequest> list) {
+        return sysRoleMapper.deleteRoleUser(list);
+    }
+
+    @Override
+    public int removeRoleMenu(List<SysRoleMappingRequest> list) {
+        return sysRoleMapper.deleteRoleMenu(list);
+    }
+
+    @Override
+    public int removeRoleApi(List<SysRoleMappingRequest> list) {
+        return sysRoleMapper.deleteRoleApi(list);
+    }
+
+    @Override
+    public int addRoleUser(List<SysRoleMappingRequest> list) {
+        return sysRoleMapper.insertRoleUser(list);
+    }
+
+    @Override
+    public int addRoleMenu(List<SysRoleMappingRequest> list) {
+        return sysRoleMapper.insertRoleMenu(list);
+    }
+
+    @Override
+    public int addRoleApi(List<SysRoleMappingRequest> list) {
+        return sysRoleMapper.insertRoleApi(list);
     }
 }
