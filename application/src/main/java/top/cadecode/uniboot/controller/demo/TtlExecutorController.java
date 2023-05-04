@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.demo.controller;
+package top.cadecode.uniboot.controller.demo;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.alibaba.ttl.threadpool.TtlExecutors;

@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.demo.controller;
+package top.cadecode.uniboot.controller.demo;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import io.swagger.annotations.Api;

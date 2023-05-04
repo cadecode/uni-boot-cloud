@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.controller;
+package top.cadecode.uniboot.controller.system;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageInfo;
@@ -19,14 +19,10 @@ import top.cadecode.uniboot.common.response.PageResult;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
 import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserInfoDto;
-import top.cadecode.uniboot.system.bean.po.SysRole;
 import top.cadecode.uniboot.system.bean.po.SysUser;
 import top.cadecode.uniboot.system.bean.vo.SysMenuVo.SysMenuTreeVo;
-import top.cadecode.uniboot.system.bean.vo.SysRoleVo.SysRoleListVo;
 import top.cadecode.uniboot.system.bean.vo.SysUserVo.SysUserRolesVo;
-import top.cadecode.uniboot.system.convert.SysRoleConvert;
 import top.cadecode.uniboot.system.convert.SysUserConvert;
-import top.cadecode.uniboot.system.service.SysApiService;
 import top.cadecode.uniboot.system.service.SysMenuService;
 import top.cadecode.uniboot.system.service.SysRoleService;
 import top.cadecode.uniboot.system.service.SysUserService;
@@ -38,7 +34,7 @@ import java.util.List;
 import static top.cadecode.uniboot.system.request.SysUserRequest.*;
 
 /**
- * 系统管理API
+ * 用户管理API
  *
  * @author Cade Li
  * @since 2023/4/12
@@ -46,16 +42,15 @@ import static top.cadecode.uniboot.system.request.SysUserRequest.*;
 @ApiFormat
 @Slf4j
 @RequiredArgsConstructor
-@Api(tags = "系统管理")
-@RequestMapping("system")
+@Api(tags = "用户管理")
+@RequestMapping("system/user")
 @RestController
 @Validated
-public class SystemController {
+public class SysUserController {
 
     private final SysUserService sysUserService;
     private final SysMenuService sysMenuService;
     private final SysRoleService sysRoleService;
-    private final SysApiService sysApiService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -63,7 +58,7 @@ public class SystemController {
      * 获取用户信息
      */
     @ApiOperation("获取用户信息")
-    @PostMapping("user/get_info")
+    @PostMapping("get_info")
     public SysUserInfoDto userGetInfo() {
         SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
         List<SysMenuTreeVo> sysMenuTreeVos = sysMenuService.listTreeVoByRoles(userDetails.getRoles());
@@ -71,7 +66,7 @@ public class SystemController {
     }
 
     @ApiOperation("修改用户信息（用户中心）")
-    @PostMapping("user/modify_info")
+    @PostMapping("modify_info")
     public boolean userModifyInfo(@RequestBody @Valid SysUserModifyInfoRequest request) {
         SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
         return sysUserService.lambdaUpdate()
@@ -84,7 +79,7 @@ public class SystemController {
     }
 
     @ApiOperation("修改用户密码（用户中心）")
-    @PostMapping("user/modify_pass")
+    @PostMapping("modify_pass")
     public boolean userModifyPass(@RequestBody @Valid SysUserModifyPassRequest request) {
         SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
         SysUser sysUser = sysUserService.lambdaQuery().select(SysUser::getPassword)
@@ -103,14 +98,14 @@ public class SystemController {
     }
 
     @ApiOperation("查询用户列表（带角色）")
-    @PostMapping("user/page_roles_vo")
+    @PostMapping("page_roles_vo")
     public PageResult<SysUserRolesVo> userPageRolesVo(@RequestBody @Valid SysUserRolesRequest request) {
         PageInfo<SysUserRolesVo> rolesVoPage = sysUserService.pageRolesVo(request);
         return new PageResult<>((int) rolesVoPage.getTotal(), rolesVoPage.getList());
     }
 
     @ApiOperation("更新用户启用状态")
-    @PostMapping("user/update_enable")
+    @PostMapping("update_enable")
     public boolean userUpdateEnable(@RequestBody @Valid SysUserUpdateEnableRequest request) {
         return sysUserService.lambdaUpdate()
                 .eq(SysUser::getId, request.getId())
@@ -119,7 +114,7 @@ public class SystemController {
     }
 
     @ApiOperation("更新用户")
-    @PostMapping("user/update")
+    @PostMapping("update")
     public boolean userUpdate(@RequestBody @Valid SysUserUpdateRequest request) {
         String encodePass = null;
         if (ObjectUtil.isNotEmpty(request.getPassword())) {
@@ -137,7 +132,7 @@ public class SystemController {
     }
 
     @ApiOperation("添加用户")
-    @PostMapping("user/add")
+    @PostMapping("add")
     public boolean userAdd(@RequestBody @Valid SysUserAddRequest request) {
         if (ObjectUtil.isNotEmpty(request.getPassword())) {
             request.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -147,7 +142,7 @@ public class SystemController {
     }
 
     @ApiOperation("删除用户（多选）")
-    @PostMapping("user/delete")
+    @PostMapping("delete")
     @Transactional(rollbackFor = Exception.class)
     public boolean userDelete(@RequestBody @NotEmpty List<Long> userIdList) {
         // 清理用户角色绑定关系
@@ -156,16 +151,9 @@ public class SystemController {
     }
 
     @ApiOperation("获取用户（带角色）byUserIds")
-    @PostMapping("user/list_roles_vo_by_user_ids")
+    @PostMapping("list_roles_vo_by_user_ids")
     public List<SysUserRolesVo> userListRolesVoByUserIds(@RequestBody @NotEmpty List<Long> userIdList) {
         return sysUserService.listRolesVoByUserIds(userIdList);
-    }
-
-    @ApiOperation("查询角色列表")
-    @PostMapping("role/list")
-    public List<SysRoleListVo> roleList() {
-        List<SysRole> roleList = sysRoleService.list();
-        return SysRoleConvert.INSTANCE.poToListVo(roleList);
     }
 
 }

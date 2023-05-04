@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.demo.controller;
+package top.cadecode.uniboot.controller.demo;
 
 import com.dtp.core.thread.DtpExecutor;
 import io.swagger.annotations.Api;
