@@ -1,5 +1,6 @@
 package top.cadecode.uniboot.system.serviceimpl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import top.cadecode.uniboot.system.mapper.SysApiMapper;
 import top.cadecode.uniboot.system.service.SysApiService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -31,13 +31,19 @@ public class SysApiServiceImpl extends ServiceImpl<SysApiMapper, SysApi> impleme
     @Cacheable(cacheNames = CacheKeyPrefix.API_ROLES, cacheManager = "localCache5s")
     @Override
     public List<SysApiRolesVo> listRolesVo() {
-        List<SysApiRolesVo> sysApiRolesVos = RedisUtil.get(CacheKeyPrefix.API_ROLES, new TypeReference<List<SysApiRolesVo>>() {
-        });
-        return Optional.ofNullable(sysApiRolesVos).orElseGet(() -> {
+        List<SysApiRolesVo> sysApiRolesVos = RedisUtil.get(CacheKeyPrefix.API_ROLES, new TypeReference<List<SysApiRolesVo>>() {});
+        if (ObjectUtil.isNotNull(sysApiRolesVos)) {
+            return sysApiRolesVos;
+        }
+        synchronized (this) {
+            sysApiRolesVos = RedisUtil.get(CacheKeyPrefix.API_ROLES, new TypeReference<List<SysApiRolesVo>>() {});
+            if (ObjectUtil.isNotNull(sysApiRolesVos)) {
+                return sysApiRolesVos;
+            }
             List<SysApiRolesVo> voList = sysApiMapper.selectRolesVo(null);
             // 每三十分钟刷新一次
             RedisUtil.set(CacheKeyPrefix.API_ROLES, voList, 30, TimeUnit.MINUTES);
             return voList;
-        });
+        }
     }
 }
