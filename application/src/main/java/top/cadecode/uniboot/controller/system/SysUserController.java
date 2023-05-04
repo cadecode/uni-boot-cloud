@@ -146,7 +146,7 @@ public class SysUserController {
     @Transactional(rollbackFor = Exception.class)
     public boolean userDelete(@RequestBody @NotEmpty List<Long> userIdList) {
         // 清理用户角色绑定关系
-        sysRoleService.deleteRoleUserByUserIds(userIdList);
+        sysRoleService.removeRoleUserByUserIds(userIdList);
         return sysUserService.removeBatchByIds(userIdList);
     }
 

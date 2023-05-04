@@ -18,10 +18,10 @@ import java.util.List;
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    List<SysUserRolesVo> listRolesVoByUserIds(@Param("userIds") List<Long> userIds);
+    List<SysUserRolesVo> selectRolesVoByUserIds(@Param("userIds") List<Long> userIds);
 
-    List<SysUserRolesVo> listRolesVoByUsername(@Param("username") String username);
+    List<SysUserRolesVo> selectRolesVoByUsername(@Param("username") String username);
 
-    List<SysUserRolesVo> listRolesVo(@Param("request") SysUserRolesRequest request);
+    List<SysUserRolesVo> selectRolesVo(@Param("request") SysUserRolesRequest request);
 
 }

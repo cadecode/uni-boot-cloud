@@ -23,47 +23,46 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public List<SysRole> listByUserIds(List<Long> userIds) {
-        return sysRoleMapper.listByUserIds(userIds);
+        return sysRoleMapper.selectByUserIds(userIds);
     }
 
     @Override
     public List<SysRole> listByMenuIds(List<Long> menuIds) {
-        return sysRoleMapper.listByMenuIds(menuIds);
+        return sysRoleMapper.selectByMenuIds(menuIds);
     }
 
     @Override
     public List<SysRole> listByApiIds(List<Long> apiIds) {
-        return sysRoleMapper.listByApiIds(apiIds);
+        return sysRoleMapper.selectByApiIds(apiIds);
     }
 
     @Override
-    public int deleteRoleUserByUserIds(List<Long> userIds) {
+    public int removeRoleUserByUserIds(List<Long> userIds) {
         return sysRoleMapper.deleteRoleUserByUserIds(userIds);
     }
 
     @Override
-    public int deleteRoleUserByRoleIds(List<Long> roleIds) {
+    public int removeRoleUserByRoleIds(List<Long> roleIds) {
         return sysRoleMapper.deleteRoleUserByRoleIds(roleIds);
     }
 
     @Override
-    public int deleteRoleMenuByMenuIds(List<Long> menuIds) {
+    public int removeRoleMenuByMenuIds(List<Long> menuIds) {
         return sysRoleMapper.deleteRoleMenuByMenuIds(menuIds);
     }
 
     @Override
-    public int deleteRoleMenuByRoleIds(List<Long> roleIds) {
+    public int removeRoleMenuByRoleIds(List<Long> roleIds) {
         return sysRoleMapper.deleteRoleMenuByRoleIds(roleIds);
-
     }
 
     @Override
-    public int deleteRoleApiByApiIds(List<Long> apiIds) {
+    public int removeRoleApiByApiIds(List<Long> apiIds) {
         return sysRoleMapper.deleteRoleApiByApiIds(apiIds);
     }
 
     @Override
-    public int deleteRoleApiByRoleIds(List<Long> roleIds) {
+    public int removeRoleApiByRoleIds(List<Long> roleIds) {
         return sysRoleMapper.deleteRoleApiByRoleIds(roleIds);
     }
 }

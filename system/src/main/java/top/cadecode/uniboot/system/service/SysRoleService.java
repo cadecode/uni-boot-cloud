@@ -19,15 +19,15 @@ public interface SysRoleService extends IService<SysRole> {
 
     List<SysRole> listByApiIds(List<Long> apiIds);
 
-    int deleteRoleUserByUserIds(List<Long> userIds);
+    int removeRoleUserByUserIds(List<Long> userIds);
 
-    int deleteRoleUserByRoleIds(List<Long> roleIds);
+    int removeRoleUserByRoleIds(List<Long> roleIds);
 
-    int deleteRoleMenuByMenuIds(List<Long> menuIds);
+    int removeRoleMenuByMenuIds(List<Long> menuIds);
 
-    int deleteRoleMenuByRoleIds(List<Long> roleIds);
+    int removeRoleMenuByRoleIds(List<Long> roleIds);
 
-    int deleteRoleApiByApiIds(List<Long> apiIds);
+    int removeRoleApiByApiIds(List<Long> apiIds);
 
-    int deleteRoleApiByRoleIds(List<Long> roleIds);
+    int removeRoleApiByRoleIds(List<Long> roleIds);
 }
