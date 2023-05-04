@@ -5,7 +5,8 @@
         SELECT DISTINCT sm.*
         FROM sys_menu sm LEFT JOIN sys_role_menu srm ON sm.id = srm.menu_id
         LEFT JOIN sys_role sr ON srm.role_id = sr.id
-        <foreach collection="roleCodes" item="roleCode" separator="," open="where sr.code IN (" close=")">
+        where sm.enable_flag = 1
+        <foreach collection="roleCodes" item="roleCode" separator="," open="and sr.code IN (" close=")">
             #{roleCode}
         </foreach>
         ORDER BY sm.order_num
