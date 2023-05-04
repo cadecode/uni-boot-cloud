@@ -39,63 +39,96 @@
     </select>
     <delete id="deleteRoleUserByUserIds">
         DELETE FROM sys_role_user ru
-        <if test="userIds != null and userIds.size > 0">
-            WHERE ru.user_id IN (
-            <foreach collection="userIds" item="id" separator=",">
-                #{id}
-            </foreach>
-            )
-        </if>
+        WHERE ru.user_id IN (
+        <foreach collection="userIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
     </delete>
     <delete id="deleteRoleUserByRoleIds">
         DELETE FROM sys_role_user ru
-        <if test="userIds != null and userIds.size > 0">
-            WHERE ru.role_id IN (
-            <foreach collection="roleIds" item="id" separator=",">
-                #{id}
-            </foreach>
-            )
-        </if>
+        WHERE ru.role_id IN (
+        <foreach collection="roleIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
     </delete>
     <delete id="deleteRoleMenuByMenuIds">
         DELETE FROM sys_role_menu rm
-        <if test="menuIds != null and menuIds.size > 0">
-            WHERE rm.menu_id IN (
-            <foreach collection="menuIds" item="id" separator=",">
-                #{id}
-            </foreach>
-            )
-        </if>
+        WHERE rm.menu_id IN (
+        <foreach collection="menuIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
     </delete>
     <delete id="deleteRoleMenuByRoleIds">
         DELETE FROM sys_role_menu rm
-        <if test="menuIds != null and menuIds.size > 0">
             WHERE rm.role_id IN (
-            <foreach collection="roleIds" item="id" separator=",">
-                #{id}
-            </foreach>
-            )
-        </if>
+        <foreach collection="roleIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
     </delete>
     <delete id="deleteRoleApiByApiIds">
         DELETE FROM sys_role_api ra
-        <if test="apiIds != null and apiIds.size > 0">
-            WHERE ra.api_id IN (
-            <foreach collection="apiIds" item="id" separator=",">
-                #{id}
-            </foreach>
-            )
-        </if>
+        WHERE ra.api_id IN (
+        <foreach collection="apiIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
     </delete>
     <delete id="deleteRoleApiByRoleIds">
         DELETE FROM sys_role_api ra
-        <if test="apiIds != null and apiIds.size > 0">
-            WHERE ra.role_id IN (
-            <foreach collection="roleIds" item="id" separator=",">
-                #{id}
-            </foreach>
-            )
-        </if>
+        WHERE ra.role_id IN (
+        <foreach collection="roleIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
     </delete>
+    <delete id="deleteRoleUser">
+        DELETE FROM sys_role_user ru
+        WHERE (ru.user_id, ru.role_id) IN (
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteRoleMenu">
+        DELETE FROM sys_role_menu rm
+        WHERE (rm.menu_id, rm.role_id) IN (
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteRoleApi">
+        DELETE FROM sys_role_api ra
+        WHERE (ra.api_id, ra.role_id) IN (
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+        )
+    </delete>
+    <insert id="insertRoleUser">
+        INSERT INTO sys_role_user (user_id, role_id)
+        VALUES
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+    </insert>
+    <insert id="insertRoleMenu">
+        INSERT INTO sys_role_menu (menu_id, role_id)
+        VALUES
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+    </insert>
+    <insert id="insertRoleApi">
+        INSERT INTO sys_role_api (api_id, role_id)
+        VALUES
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+    </insert>
 
 </mapper>
