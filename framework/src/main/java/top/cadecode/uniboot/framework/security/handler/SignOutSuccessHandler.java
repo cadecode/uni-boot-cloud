@@ -15,7 +15,9 @@ import top.cadecode.uniboot.common.response.ApiResult;
 import top.cadecode.uniboot.common.util.JacksonUtil;
 import top.cadecode.uniboot.common.util.RedisUtil;
 import top.cadecode.uniboot.framework.config.SecurityConfig;
+import top.cadecode.uniboot.framework.security.TokenAuthFilter;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
+import top.cadecode.uniboot.framework.security.filter.RedisTokenAuthFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,13 +33,14 @@ import javax.servlet.http.HttpServletResponse;
 public class SignOutSuccessHandler implements LogoutSuccessHandler {
 
     private final TokenAuthHolder tokenAuthHolder;
+    private final TokenAuthFilter tokenAuthFilter;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
                                 Authentication authentication) {
         // 删除保存登录信息的 redis key
         String uuidToken = request.getHeader(tokenAuthHolder.getHeader());
-        if (StrUtil.isNotEmpty(uuidToken)) {
+        if (StrUtil.isNotEmpty(uuidToken) && tokenAuthFilter instanceof RedisTokenAuthFilter) {
             String loginUserKey = CacheKeyGenerator.key(CacheKeyPrefix.LOGIN_USER, uuidToken);
             RedisUtil.del(loginUserKey);
         }
