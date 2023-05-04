@@ -1,13 +1,13 @@
-'use strict'
-const path = require('path')
-const settings = require('./src/settings.js')
+'use strict';
+const path = require('path');
+const settings = require('./src/settings.js');
 
 function resolve(dir) {
-  return path.join(__dirname, dir)
+  return path.join(__dirname, dir);
 }
 
 // page title
-const name = settings.title || 'UniBootAdminVue'
+const name = settings.title || 'UniBootAdminVue';
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -15,7 +15,7 @@ const name = settings.title || 'UniBootAdminVue'
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
 // dev port
-const port = process.env.port || process.env.npm_config_port || 9528
+const port = process.env.port || process.env.npm_config_port || 9528;
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -70,16 +70,16 @@ module.exports = {
         fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
         include: 'initial'
       }
-    ])
+    ]);
 
     // when there are many pages, it will cause too many meaningless requests
-    config.plugins.delete('prefetch')
+    config.plugins.delete('prefetch');
 
     // set svg-sprite-loader
     config.module
       .rule('svg')
       .exclude.add(resolve('src/icon'))
-      .end()
+      .end();
     config.module
       .rule('icon')
       .test(/\.svg$/)
@@ -90,7 +90,7 @@ module.exports = {
       .options({
         symbolId: 'icon-[name]'
       })
-      .end()
+      .end();
 
     // set preserveWhitespace
     config.module
@@ -98,10 +98,10 @@ module.exports = {
       .use('vue-loader')
       .loader('vue-loader')
       .tap(options => {
-        options.compilerOptions.preserveWhitespace = true
-        return options
+        options.compilerOptions.preserveWhitespace = true;
+        return options;
       })
-      .end()
+      .end();
 
     config
       .when(process.env.NODE_ENV !== 'development',
@@ -113,7 +113,7 @@ module.exports = {
               // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
-            .end()
+            .end();
           config.optimization.splitChunks({
             chunks: 'all',
             cacheGroups: {
@@ -142,10 +142,10 @@ module.exports = {
                 reuseExistingChunk: true
               }
             }
-          })
+          });
           // docs:https://webpack.js.org/configuration/optimization/#optimizationruntimechunk
-          config.optimization.runtimeChunk('single')
+          config.optimization.runtimeChunk('single');
         }
-      )
+      );
   }
-}
+};
