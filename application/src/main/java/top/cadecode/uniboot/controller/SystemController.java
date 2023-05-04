@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -147,7 +148,10 @@ public class SystemController {
 
     @ApiOperation("删除用户（多选）")
     @PostMapping("user/delete")
+    @Transactional(rollbackFor = Exception.class)
     public boolean userDelete(@RequestBody @NotEmpty List<Long> userIdList) {
+        // 清理用户角色绑定关系
+        sysRoleService.deleteRoleUserByUserIds(userIdList);
         return sysUserService.removeBatchByIds(userIdList);
     }
 
@@ -163,4 +167,5 @@ public class SystemController {
         List<SysRole> roleList = sysRoleService.list();
         return SysRoleConvert.INSTANCE.poToListVo(roleList);
     }
+
 }
