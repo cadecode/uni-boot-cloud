@@ -67,3 +67,25 @@ export function listRole() {
   });
 }
 
+export function addRoleUser(data){
+  return request({
+    url: '/system/role/add_user_mapping',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '添加用户角色绑定'
+  });
+}
+
+export function removeRoleUser(data){
+  return request({
+    url: '/system/role/remove_user_mapping',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '删除用户角色绑定'
+  });
+}
+

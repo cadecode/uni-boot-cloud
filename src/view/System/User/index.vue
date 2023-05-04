@@ -3,10 +3,10 @@
     <div class="user-management-filter">
       <el-form ref="usersFilterForm" size="small" inline :model="usersFilterForm.data" :rules="usersFilterForm.rules">
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="usersFilterForm.data.username" />
+          <el-input v-model="usersFilterForm.data.username"/>
         </el-form-item>
         <el-form-item label="昵称" prop="nickName">
-          <el-input v-model="usersFilterForm.data.nickName" />
+          <el-input v-model="usersFilterForm.data.nickName"/>
         </el-form-item>
         <el-form-item label="角色" prop="roleIdList">
           <el-select v-model="usersFilterForm.data.roleIdList" collapse-tags multiple filterable placeholder="请选择">
@@ -38,18 +38,19 @@
           height="calc(100vh - 221px)"
           :data="userListTable.data"
           highlight-current-row
+          @current-change="userListTableClick"
         >
-          <el-table-column property="id" label="ID" />
-          <el-table-column property="username" label="用户名" />
-          <el-table-column property="nickName" label="昵称" />
+          <el-table-column property="id" label="ID"/>
+          <el-table-column property="username" label="用户名"/>
+          <el-table-column property="nickName" label="昵称"/>
           <el-table-column property="enableFlag" label="启用状态">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.$index, scope.row)" />
+              <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.$index, scope.row)"/>
             </template>
           </el-table-column>
-          <el-table-column property="updateTime" label="更新时间" />
-          <el-table-column property="updateUser" label="更新人" />
-          <el-table-column property="createTime" label="创建时间" />
+          <el-table-column property="updateTime" label="更新时间"/>
+          <el-table-column property="updateUser" label="更新人"/>
+          <el-table-column property="createTime" label="创建时间"/>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button size="mini" @click="updateUser(scope.$index, scope.row)">编辑</el-button>
@@ -79,7 +80,16 @@
     </el-tabs>
     <el-tabs type="border-card" class="user-management-role">
       <el-tab-pane label="角色绑定">
-        <el-tree :props="roleTree.props" :load="loadRoleTree" show-checkbox lazy />
+        <el-tree
+          v-if="userListTable.currClick"
+          ref="roleTree"
+          :data="roleTree.data"
+          :props="roleTree.props"
+          node-key="code"
+          show-checkbox
+          @check="roleCheck"
+        />
+        <span v-else class="no-curr-text">请先点击表格选择一行数据</span>
       </el-tab-pane>
     </el-tabs>
     <el-dialog title="更新用户" :visible.sync="updateUserForm.showDialog" width="30%">
@@ -91,24 +101,24 @@
         :rules="updateUserForm.rule"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="updateUserForm.data.username" />
+          <el-input v-model="updateUserForm.data.username"/>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="updateUserForm.data.password" placeholder="如不需要修改密码请置空" />
+          <el-input v-model="updateUserForm.data.password" placeholder="如不需要修改密码请置空"/>
         </el-form-item>
         <el-form-item label="昵称" prop="nickName">
-          <el-input v-model="updateUserForm.data.nickName" />
+          <el-input v-model="updateUserForm.data.nickName"/>
         </el-form-item>
         <el-form-item label="电话" prop="phone">
-          <el-input v-model="updateUserForm.data.phone" />
+          <el-input v-model="updateUserForm.data.phone"/>
         </el-form-item>
         <el-form-item label="邮箱" prop="mail">
-          <el-input v-model="updateUserForm.data.mail" />
+          <el-input v-model="updateUserForm.data.mail"/>
         </el-form-item>
         <el-form-item label="性别" prop="sex">
           <el-radio-group v-model="updateUserForm.data.sex">
-            <el-radio label="女" />
-            <el-radio label="男" />
+            <el-radio label="女"/>
+            <el-radio label="男"/>
           </el-radio-group>
         </el-form-item>
         <el-form-item>
@@ -127,27 +137,27 @@
         :rules="addUserForm.rule"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="addUserForm.data.username" />
+          <el-input v-model="addUserForm.data.username"/>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="addUserForm.data.password" show-password />
+          <el-input v-model="addUserForm.data.password" show-password/>
         </el-form-item>
         <el-form-item label="昵称" prop="nickName">
-          <el-input v-model="addUserForm.data.nickName" />
+          <el-input v-model="addUserForm.data.nickName"/>
         </el-form-item>
         <el-form-item label="启用" prop="enableFlag">
-          <el-switch v-model="addUserForm.data.enableFlag" />
+          <el-switch v-model="addUserForm.data.enableFlag"/>
         </el-form-item>
         <el-form-item label="电话" prop="phone">
-          <el-input v-model="addUserForm.data.phone" />
+          <el-input v-model="addUserForm.data.phone"/>
         </el-form-item>
         <el-form-item label="邮箱" prop="mail">
-          <el-input v-model="addUserForm.data.mail" />
+          <el-input v-model="addUserForm.data.mail"/>
         </el-form-item>
         <el-form-item label="性别" prop="sex">
           <el-radio-group v-model="addUserForm.data.sex">
-            <el-radio label="女" />
-            <el-radio label="男" />
+            <el-radio label="女"/>
+            <el-radio label="男"/>
           </el-radio-group>
         </el-form-item>
         <el-form-item>
@@ -161,11 +171,13 @@
 </template>
 <script>
 import {
+  addRoleUser,
   addUser,
   deleteUser,
   listRole,
   listUserRolesVoByUserIds,
   pageUserRolesVo,
+  removeRoleUser,
   updateUser,
   updateUserEnable
 } from '@/api/system';
@@ -184,6 +196,7 @@ export default {
         rules: {}
       },
       userListTable: {
+        currClick: null,
         data: [],
         page: {
           total: 0,
@@ -239,6 +252,7 @@ export default {
   },
   created() {
     this.listUsers();
+    this.loadRoleTree();
   },
   methods: {
     listUsers() {
@@ -321,19 +335,42 @@ export default {
         }
       });
     },
-    loadRoleTree(node, resolve) {
-      if (node.level === 0) {
-        // 查询role列表
-        listRole().then(res => {
-          this.roleTree.data = res.data;
-          this.roleTree.data.forEach(o => {
-            o.isLeaf = true;
-          });
-          resolve(this.roleTree.data);
+    loadRoleTree() {
+      // 查询role列表
+      listRole().then(res => {
+        this.roleTree.data = res.data;
+        this.roleTree.data.forEach(o => {
+          o.isLeaf = true;
+        });
+      });
+    },
+    userListTableClick(curr, old) {
+      this.userListTable.currClick = curr;
+      if (curr) {
+        this.$nextTick(() => {
+          this.$refs['roleTree'].setCheckedKeys(curr.roles);
+        });
+      }
+    },
+    roleCheck(obj, state) {
+      const checked = state.checkedNodes.includes(obj);
+      // 启用该角色
+      if (checked) {
+        addRoleUser([{id: this.userListTable.currClick.id, roleId: obj.id}]).then(res => {
+          if (res.data) {
+            // 添加到对象中
+            this.userListTable.currClick.roles.push(obj.code);
+          }
         });
         return;
       }
-      resolve([]);
+      removeRoleUser([{id: this.userListTable.currClick.id, roleId: obj.id}]).then(res => {
+        if (res.data) {
+          // 删除该角色
+          const index = this.userListTable.currClick.roles.indexOf(obj.code);
+          this.userListTable.currClick.roles.splice(index, 1);
+        }
+      });
     }
   }
 };
@@ -369,6 +406,16 @@ export default {
 
     ::v-deep .el-tree-node__expand-icon {
       display: none;
+    }
+
+    .no-curr-text {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: #909399;
+      font-size: 14px;
+      text-align: center;
     }
   }
 }
