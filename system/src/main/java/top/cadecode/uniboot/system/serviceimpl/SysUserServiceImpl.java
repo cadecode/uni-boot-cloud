@@ -34,7 +34,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     @Override
     public UserDetails loadUserByUsername(String username) {
-        List<SysUserRolesVo> userRolesVoList = sysUserMapper.listRolesVoByUsername(username);
+        List<SysUserRolesVo> userRolesVoList = sysUserMapper.selectRolesVoByUsername(username);
         // 用户账户不存在
         if (ObjectUtil.isEmpty(userRolesVoList)) {
             throw UniException.of("该用户不存在");
@@ -49,17 +49,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public List<SysUserRolesVo> listRolesVoByUserIds(List<Long> userIds) {
-        return sysUserMapper.listRolesVoByUserIds(userIds);
+        return sysUserMapper.selectRolesVoByUserIds(userIds);
     }
 
     @Override
     public List<SysUserRolesVo> listRolesVo(SysUserRolesRequest request) {
-        return sysUserMapper.listRolesVo(request);
+        return sysUserMapper.selectRolesVo(request);
     }
 
     @Override
     public PageInfo<SysUserRolesVo> pageRolesVo(SysUserRolesRequest request) {
         return PageHelper.startPage(request.getPageNumber(), request.getPageSize())
-                .doSelectPageInfo(() -> sysUserMapper.listRolesVo(request));
+                .doSelectPageInfo(() -> sysUserMapper.selectRolesVo(request));
     }
 }

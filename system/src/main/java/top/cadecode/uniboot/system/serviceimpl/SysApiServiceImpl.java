@@ -34,7 +34,7 @@ public class SysApiServiceImpl extends ServiceImpl<SysApiMapper, SysApi> impleme
         List<SysApiRolesVo> sysApiRolesVos = RedisUtil.get(CacheKeyPrefix.API_ROLES, new TypeReference<List<SysApiRolesVo>>() {
         });
         return Optional.ofNullable(sysApiRolesVos).orElseGet(() -> {
-            List<SysApiRolesVo> voList = sysApiMapper.listRolesVo(null);
+            List<SysApiRolesVo> voList = sysApiMapper.selectRolesVo(null);
             // 每三十分钟刷新一次
             RedisUtil.set(CacheKeyPrefix.API_ROLES, voList, 30, TimeUnit.MINUTES);
             return voList;

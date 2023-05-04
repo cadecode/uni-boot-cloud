@@ -19,7 +19,7 @@
             <result column="r_code"/>
         </collection>
     </resultMap>
-    <select id="listRolesVoByUserIds" resultMap="SysUserRolesVoMap">
+    <select id="selectRolesVoByUserIds" resultMap="SysUserRolesVoMap">
         SELECT su.*, sr.code r_code
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
@@ -33,7 +33,7 @@
         </if>
         GROUP BY su.username, sr.code
     </select>
-    <select id="listRolesVoByUsername" resultMap="SysUserRolesVoMap">
+    <select id="selectRolesVoByUsername" resultMap="SysUserRolesVoMap">
         SELECT su.*, sr.code r_code
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
@@ -41,7 +41,7 @@
         WHERE su.username = #{username}
         GROUP BY su.username, sr.code
     </select>
-    <select id="listRolesVo" resultMap="SysUserRolesVoMap">
+    <select id="selectRolesVo" resultMap="SysUserRolesVoMap">
         SELECT su.*, sr.code r_code
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id

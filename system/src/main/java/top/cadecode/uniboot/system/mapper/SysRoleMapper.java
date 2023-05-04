@@ -16,11 +16,11 @@ import java.util.List;
 @Mapper
 public interface SysRoleMapper extends BaseMapper<SysRole> {
 
-    List<SysRole> listByUserIds(@Param("userIds") List<Long> userIds);
+    List<SysRole> selectByUserIds(@Param("userIds") List<Long> userIds);
 
-    List<SysRole> listByMenuIds(@Param("menuIds") List<Long> menuIds);
+    List<SysRole> selectByMenuIds(@Param("menuIds") List<Long> menuIds);
 
-    List<SysRole> listByApiIds(@Param("apiIds") List<Long> apiIds);
+    List<SysRole> selectByApiIds(@Param("apiIds") List<Long> apiIds);
 
     int deleteRoleUserByUserIds(@Param("userIds") List<Long> userIds);
 
