@@ -13,9 +13,21 @@ import java.util.List;
  */
 public interface SysRoleService extends IService<SysRole> {
 
-    List<SysRole> listByUserId( Long userId);
+    List<SysRole> listByUserIds(List<Long> userIds);
 
-    List<SysRole> listByMenuId(Long menuId);
+    List<SysRole> listByMenuIds(List<Long> menuIds);
 
-    List<SysRole> listByApiId(Long apiId);
+    List<SysRole> listByApiIds(List<Long> apiIds);
+
+    int deleteRoleUserByUserIds(List<Long> userIds);
+
+    int deleteRoleUserByRoleIds(List<Long> roleIds);
+
+    int deleteRoleMenuByMenuIds(List<Long> menuIds);
+
+    int deleteRoleMenuByRoleIds(List<Long> roleIds);
+
+    int deleteRoleApiByApiIds(List<Long> apiIds);
+
+    int deleteRoleApiByRoleIds(List<Long> roleIds);
 }
