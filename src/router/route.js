@@ -85,6 +85,7 @@ function menuToRoute(menu) {
   // 子级
   if (menu.parentId !== null) {
     const route = {
+      alwaysShow: !menu.leafFlag,
       path: menu.routePath,
       name: menu.routeName,
       component: requireComponent(menu.componentPath),
