@@ -15,12 +15,13 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="update_user" property="updateUser"/>
+        <result column="r_code" property="rolesJson"/>
         <collection property="roles" ofType="string">
             <result column="r_code"/>
         </collection>
     </resultMap>
     <select id="selectRolesVoByUserIds" resultMap="SysUserRolesVoMap">
-        SELECT su.*, sr.code r_code
+        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id
@@ -31,7 +32,8 @@
             </foreach>
             )
         </if>
-        ORDER BY su.create_time DESC, sr.code
+        GROUP BY su.id, su.create_time
+        ORDER BY su.create_time DESC
     </select>
     <select id="selectRolesVoByUsername" resultMap="SysUserRolesVoMap">
         SELECT su.*, sr.code r_code
@@ -41,7 +43,7 @@
         WHERE su.username = #{username}
     </select>
     <select id="selectRolesVo" resultMap="SysUserRolesVoMap">
-        SELECT su.*, sr.code r_code
+        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id
@@ -65,6 +67,7 @@
                 </if>
             </where>
         </if>
-        ORDER BY su.create_time DESC, sr.code
+        GROUP BY su.id, su.create_time
+        ORDER BY su.create_time DESC
     </select>
 </mapper>
