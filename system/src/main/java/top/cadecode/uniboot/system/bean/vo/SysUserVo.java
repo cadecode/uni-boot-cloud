@@ -45,5 +45,8 @@ public class SysUserVo {
         private String updateUser;
 
         private List<String> roles;
+
+        @JsonIgnore
+        private String rolesJson;
     }
 }

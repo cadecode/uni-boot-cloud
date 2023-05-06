@@ -15,6 +15,7 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="update_user" property="updateUser"/>
+        <result column="r_code" property="rolesJson"/>
         <collection property="roles" ofType="string">
             <result column="r_code"/>
         </collection>
@@ -30,7 +31,7 @@
         ORDER BY sm.order_num
     </select>
     <select id="selectRolesVo" resultMap="SysMenuRolesVoMap">
-        SELECT sm.*, sr.code r_code
+        SELECT sm.*, JSON_ARRAYAGG(sr.code) r_code
         FROM sys_menu sm
         LEFT JOIN sys_role_menu srm ON srm.menu_id = sm.id
         LEFT JOIN sys_role sr ON srm.role_id = sr.id
@@ -54,10 +55,11 @@
                 </if>
             </where>
         </if>
-        ORDER BY sm.create_time DESC, sr.code
+        GROUP BY sm.id, sm.create_time
+        ORDER BY sm.create_time DESC
     </select>
     <select id="selectRolesVoByMenuIds" resultMap="SysMenuRolesVoMap">
-        SELECT sm.*, sr.code r_code
+        SELECT sm.*, JSON_ARRAYAGG(sr.code) r_code
         FROM sys_menu sm
         LEFT JOIN sys_role_menu srm ON srm.menu_id = sm.id
         LEFT JOIN sys_role sr ON srm.role_id = sr.id
@@ -68,6 +70,7 @@
             </foreach>
             )
         </if>
-        ORDER BY sm.create_time DESC, sr.code
+        GROUP BY sm.id, sm.create_time
+        ORDER BY sm.create_time DESC
     </select>
 </mapper>
