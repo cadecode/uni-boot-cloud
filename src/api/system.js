@@ -67,7 +67,7 @@ export function listRole() {
   });
 }
 
-export function addRoleUser(data){
+export function addRoleUser(data) {
   return request({
     url: '/system/role/add_user_mapping',
     method: 'post',
@@ -78,7 +78,7 @@ export function addRoleUser(data){
   });
 }
 
-export function removeRoleUser(data){
+export function removeRoleUser(data) {
   return request({
     url: '/system/role/remove_user_mapping',
     method: 'post',

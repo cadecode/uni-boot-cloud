@@ -3,10 +3,10 @@
     <div class="user-management-filter">
       <el-form ref="usersFilterForm" size="small" inline :model="usersFilterForm.data" :rules="usersFilterForm.rules">
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="usersFilterForm.data.username"/>
+          <el-input v-model="usersFilterForm.data.username" />
         </el-form-item>
         <el-form-item label="昵称" prop="nickName">
-          <el-input v-model="usersFilterForm.data.nickName"/>
+          <el-input v-model="usersFilterForm.data.nickName" />
         </el-form-item>
         <el-form-item label="角色" prop="roleIdList">
           <el-select v-model="usersFilterForm.data.roleIdList" collapse-tags multiple filterable placeholder="请选择">
@@ -40,17 +40,17 @@
           highlight-current-row
           @current-change="userListTableClick"
         >
-          <el-table-column property="id" label="ID"/>
-          <el-table-column property="username" label="用户名"/>
-          <el-table-column property="nickName" label="昵称"/>
+          <el-table-column property="id" label="ID" />
+          <el-table-column property="username" label="用户名" />
+          <el-table-column property="nickName" label="昵称" />
           <el-table-column property="enableFlag" label="启用状态">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.$index, scope.row)"/>
+              <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.$index, scope.row)" />
             </template>
           </el-table-column>
-          <el-table-column property="updateTime" label="更新时间"/>
-          <el-table-column property="updateUser" label="更新人"/>
-          <el-table-column property="createTime" label="创建时间"/>
+          <el-table-column property="updateTime" label="更新时间" />
+          <el-table-column property="updateUser" label="更新人" />
+          <el-table-column property="createTime" label="创建时间" />
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button size="mini" @click="updateUser(scope.$index, scope.row)">编辑</el-button>
@@ -101,24 +101,24 @@
         :rules="updateUserForm.rule"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="updateUserForm.data.username"/>
+          <el-input v-model="updateUserForm.data.username" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="updateUserForm.data.password" placeholder="如不需要修改密码请置空"/>
+          <el-input v-model="updateUserForm.data.password" placeholder="如不需要修改密码请置空" />
         </el-form-item>
         <el-form-item label="昵称" prop="nickName">
-          <el-input v-model="updateUserForm.data.nickName"/>
+          <el-input v-model="updateUserForm.data.nickName" />
         </el-form-item>
         <el-form-item label="电话" prop="phone">
-          <el-input v-model="updateUserForm.data.phone"/>
+          <el-input v-model="updateUserForm.data.phone" />
         </el-form-item>
         <el-form-item label="邮箱" prop="mail">
-          <el-input v-model="updateUserForm.data.mail"/>
+          <el-input v-model="updateUserForm.data.mail" />
         </el-form-item>
         <el-form-item label="性别" prop="sex">
           <el-radio-group v-model="updateUserForm.data.sex">
-            <el-radio label="女"/>
-            <el-radio label="男"/>
+            <el-radio label="女" />
+            <el-radio label="男" />
           </el-radio-group>
         </el-form-item>
         <el-form-item>
@@ -137,27 +137,27 @@
         :rules="addUserForm.rule"
       >
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="addUserForm.data.username"/>
+          <el-input v-model="addUserForm.data.username" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="addUserForm.data.password" show-password/>
+          <el-input v-model="addUserForm.data.password" show-password />
         </el-form-item>
         <el-form-item label="昵称" prop="nickName">
-          <el-input v-model="addUserForm.data.nickName"/>
+          <el-input v-model="addUserForm.data.nickName" />
         </el-form-item>
         <el-form-item label="启用" prop="enableFlag">
-          <el-switch v-model="addUserForm.data.enableFlag"/>
+          <el-switch v-model="addUserForm.data.enableFlag" />
         </el-form-item>
         <el-form-item label="电话" prop="phone">
-          <el-input v-model="addUserForm.data.phone"/>
+          <el-input v-model="addUserForm.data.phone" />
         </el-form-item>
         <el-form-item label="邮箱" prop="mail">
-          <el-input v-model="addUserForm.data.mail"/>
+          <el-input v-model="addUserForm.data.mail" />
         </el-form-item>
         <el-form-item label="性别" prop="sex">
           <el-radio-group v-model="addUserForm.data.sex">
-            <el-radio label="女"/>
-            <el-radio label="男"/>
+            <el-radio label="女" />
+            <el-radio label="男" />
           </el-radio-group>
         </el-form-item>
         <el-form-item>
