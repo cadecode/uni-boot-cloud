@@ -59,7 +59,7 @@ public class SysUserController {
      */
     @ApiOperation("获取用户信息")
     @PostMapping("get_info")
-    public SysUserInfoDto userGetInfo() {
+    public SysUserInfoDto getInfo() {
         SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
         List<SysMenuTreeVo> sysMenuTreeVos = sysMenuService.listTreeVoByRoles(userDetails.getRoles());
         return SysUserInfoDto.builder().menuList(sysMenuTreeVos).build();
@@ -67,7 +67,7 @@ public class SysUserController {
 
     @ApiOperation("修改用户信息（用户中心）")
     @PostMapping("modify_info")
-    public boolean userModifyInfo(@RequestBody @Valid SysUserModifyInfoRequest request) {
+    public boolean modifyInfo(@RequestBody @Valid SysUserModifyInfoRequest request) {
         SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
         return sysUserService.lambdaUpdate()
                 .eq(SysUser::getId, userDetails.getId())
@@ -80,7 +80,7 @@ public class SysUserController {
 
     @ApiOperation("修改用户密码（用户中心）")
     @PostMapping("modify_pass")
-    public boolean userModifyPass(@RequestBody @Valid SysUserModifyPassRequest request) {
+    public boolean modifyPass(@RequestBody @Valid SysUserModifyPassRequest request) {
         SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
         SysUser sysUser = sysUserService.lambdaQuery().select(SysUser::getPassword)
                 .eq(SysUser::getId, userDetails.getId()).one();
@@ -99,14 +99,14 @@ public class SysUserController {
 
     @ApiOperation("查询用户列表（带角色）")
     @PostMapping("page_roles_vo")
-    public PageResult<SysUserRolesVo> userPageRolesVo(@RequestBody @Valid SysUserRolesRequest request) {
+    public PageResult<SysUserRolesVo> pageRolesVo(@RequestBody @Valid SysUserRolesRequest request) {
         PageInfo<SysUserRolesVo> rolesVoPage = sysUserService.pageRolesVo(request);
         return new PageResult<>((int) rolesVoPage.getTotal(), rolesVoPage.getList());
     }
 
     @ApiOperation("更新用户启用状态")
     @PostMapping("update_enable")
-    public boolean userUpdateEnable(@RequestBody @Valid SysUserUpdateEnableRequest request) {
+    public boolean updateEnable(@RequestBody @Valid SysUserUpdateEnableRequest request) {
         return sysUserService.lambdaUpdate()
                 .eq(SysUser::getId, request.getId())
                 .set(SysUser::getEnableFlag, request.getEnableFlag())
@@ -115,7 +115,7 @@ public class SysUserController {
 
     @ApiOperation("更新用户")
     @PostMapping("update")
-    public boolean userUpdate(@RequestBody @Valid SysUserUpdateRequest request) {
+    public boolean update(@RequestBody @Valid SysUserUpdateRequest request) {
         String encodePass = null;
         if (ObjectUtil.isNotEmpty(request.getPassword())) {
             encodePass = passwordEncoder.encode(request.getPassword());
@@ -133,7 +133,7 @@ public class SysUserController {
 
     @ApiOperation("添加用户")
     @PostMapping("add")
-    public boolean userAdd(@RequestBody @Valid SysUserAddRequest request) {
+    public boolean add(@RequestBody @Valid SysUserAddRequest request) {
         if (ObjectUtil.isNotEmpty(request.getPassword())) {
             request.setPassword(passwordEncoder.encode(request.getPassword()));
         }
@@ -144,7 +144,7 @@ public class SysUserController {
     @ApiOperation("删除用户（多选）")
     @PostMapping("delete")
     @Transactional(rollbackFor = Exception.class)
-    public boolean userDelete(@RequestBody @NotEmpty List<Long> userIdList) {
+    public boolean delete(@RequestBody @NotEmpty List<Long> userIdList) {
         // 清理用户角色绑定关系
         sysRoleService.removeRoleUserByUserIds(userIdList);
         return sysUserService.removeBatchByIds(userIdList);
@@ -152,7 +152,7 @@ public class SysUserController {
 
     @ApiOperation("获取用户（带角色）byUserIds")
     @PostMapping("list_roles_vo_by_user_ids")
-    public List<SysUserRolesVo> userListRolesVoByUserIds(@RequestBody @NotEmpty List<Long> userIdList) {
+    public List<SysUserRolesVo> listRolesVoByUserIds(@RequestBody @NotEmpty List<Long> userIdList) {
         return sysUserService.listRolesVoByUserIds(userIdList);
     }
 
