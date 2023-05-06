@@ -89,3 +89,85 @@ export function removeRoleUser(data) {
   });
 }
 
+export function pageMenuRolesVo(data) {
+  return request({
+    url: '/system/menu/page_roles_vo',
+    method: 'post',
+    data
+  });
+}
+
+export function updateMenuEnable(data) {
+  return request({
+    url: '/system/menu/update_enable',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '更新启用状态'
+  });
+}
+
+export function updateMenu(data) {
+  return request({
+    url: '/system/menu/update',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '更新菜单'
+  });
+}
+
+export function addMenu(data) {
+  return request({
+    url: '/system/menu/add',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '添加菜单'
+  });
+}
+
+export function deleteMenu(data) {
+  return request({
+    url: '/system/menu/delete',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '删除菜单'
+  });
+}
+
+export function listMenuRolesVoByMenuIds(data) {
+  return request({
+    url: '/system/menu/list_roles_vo_by_menu_ids',
+    method: 'post',
+    data
+  });
+}
+
+export function addRoleMenu(data) {
+  return request({
+    url: '/system/role/add_menu_mapping',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '添加菜单角色绑定'
+  });
+}
+
+export function removeRoleMenu(data) {
+  return request({
+    url: '/system/role/remove_menu_mapping',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '删除菜单角色绑定'
+  });
+}
+
