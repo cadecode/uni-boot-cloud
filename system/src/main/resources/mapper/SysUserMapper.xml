@@ -31,7 +31,7 @@
             </foreach>
             )
         </if>
-        GROUP BY su.username, sr.code
+        ORDER BY su.create_time DESC, sr.code
     </select>
     <select id="selectRolesVoByUsername" resultMap="SysUserRolesVoMap">
         SELECT su.*, sr.code r_code
@@ -39,7 +39,6 @@
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id
         WHERE su.username = #{username}
-        GROUP BY su.username, sr.code
     </select>
     <select id="selectRolesVo" resultMap="SysUserRolesVoMap">
         SELECT su.*, sr.code r_code
