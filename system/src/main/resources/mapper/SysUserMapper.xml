@@ -48,10 +48,12 @@
         <if test="request != null">
             <where>
                 <if test="request.username != null and request.username.length > 0">
-                    su.username like CONCAT('%', #{request.username}, '%')
+                    <bind name="bindUsername" value="'%' + request.username + '%'"/>
+                    su.username like #{bindUsername}
                 </if>
                 <if test="request.nickName != null and request.nickName.length > 0">
-                    AND su.nick_name like CONCAT('%', #{request.nickName}, '%')
+                    <bind name="binNickName" value="'%' + request.nickName + '%'"/>
+                    AND su.nick_name like #{binNickName}
                 </if>
                 <if test="request.enableFlag != null">
                     AND su.enable_flag = #{request.enableFlag}
