@@ -1,6 +1,5 @@
 package top.cadecode.uniboot.system.bean.vo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -66,7 +65,5 @@ public class SysMenuVo {
 
         private String updateUser;
 
-        @JsonIgnore
-        private String rolesJson;
     }
 }
