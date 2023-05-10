@@ -2,12 +2,10 @@ package top.cadecode.uniboot.system.serviceimpl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import top.cadecode.uniboot.common.util.JacksonUtil;
 import top.cadecode.uniboot.system.bean.po.SysMenu;
 import top.cadecode.uniboot.system.bean.vo.SysMenuVo.SysMenuRolesVo;
 import top.cadecode.uniboot.system.bean.vo.SysMenuVo.SysMenuTreeVo;
@@ -49,9 +47,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public List<SysMenuRolesVo> listRolesVo(SysMenuRolesRequest request) {
-        return sysMenuMapper.selectRolesVo(request).stream()
-                .peek(o -> o.setRoles(JacksonUtil.toBean(o.getRolesJson(), new TypeReference<List<String>>() {})))
-                .collect(Collectors.toList());
+        return sysMenuMapper.selectRolesVo(request);
     }
 
     @Override
@@ -62,9 +58,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public List<SysMenuRolesVo> listRolesVoByMenuIds(List<Long> menuIds) {
-        return sysMenuMapper.selectRolesVoByMenuIds(menuIds).stream()
-                .peek(o -> o.setRoles(JacksonUtil.toBean(o.getRolesJson(), new TypeReference<List<String>>() {})))
-                .collect(Collectors.toList());
+        return sysMenuMapper.selectRolesVoByMenuIds(menuIds);
     }
 
     private List<SysMenuTreeVo> generateMenuTree(List<SysMenuTreeVo> menus, Long rootId) {

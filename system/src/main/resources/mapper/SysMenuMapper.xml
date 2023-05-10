@@ -15,10 +15,7 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="update_user" property="updateUser"/>
-        <result column="r_code" property="rolesJson"/>
-        <collection property="roles" ofType="string">
-            <result column="r_code"/>
-        </collection>
+        <result column="r_code" property="roles" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
     </resultMap>
     <select id="selectByRoles" resultType="top.cadecode.uniboot.system.bean.po.SysMenu">
         SELECT DISTINCT sm.*
@@ -38,10 +35,10 @@
         <if test="request != null">
             <where>
                 <if test="request.routeName != null and request.routeName.length > 0">
-                    sm.route_name like CONCAT(#{request.routeName}, '%')
+                    sm.route_name like CONCAT('%', #{request.routeName}, '%')
                 </if>
                 <if test="request.menuName != null and request.menuName.length > 0">
-                    AND sm.menu_name like CONCAT(#{request.menuName}, '%')
+                    AND sm.menu_name like CONCAT('%', #{request.menuName}, '%')
                 </if>
                 <if test="request.enableFlag != null">
                     AND sm.enable_flag = #{request.enableFlag}

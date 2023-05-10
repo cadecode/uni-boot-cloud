@@ -15,10 +15,7 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="update_user" property="updateUser"/>
-        <result column="r_code" property="rolesJson"/>
-        <collection property="roles" ofType="string">
-            <result column="r_code"/>
-        </collection>
+        <result column="r_code" property="roles" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
     </resultMap>
     <select id="selectRolesVoByUserIds" resultMap="SysUserRolesVoMap">
         SELECT su.*, JSON_ARRAYAGG(sr.code) r_code
@@ -36,11 +33,12 @@
         ORDER BY su.create_time DESC
     </select>
     <select id="selectRolesVoByUsername" resultMap="SysUserRolesVoMap">
-        SELECT su.*, sr.code r_code
+        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id
         WHERE su.username = #{username}
+        GROUP BY su.id
     </select>
     <select id="selectRolesVo" resultMap="SysUserRolesVoMap">
         SELECT su.*, JSON_ARRAYAGG(sr.code) r_code
@@ -50,10 +48,10 @@
         <if test="request != null">
             <where>
                 <if test="request.username != null and request.username.length > 0">
-                    su.username like CONCAT(#{request.username}, '%')
+                    su.username like CONCAT('%', #{request.username}, '%')
                 </if>
                 <if test="request.nickName != null and request.nickName.length > 0">
-                    AND su.nick_name like CONCAT(#{request.nickName}, '%')
+                    AND su.nick_name like CONCAT('%', #{request.nickName}, '%')
                 </if>
                 <if test="request.enableFlag != null">
                     AND su.enable_flag = #{request.enableFlag}
