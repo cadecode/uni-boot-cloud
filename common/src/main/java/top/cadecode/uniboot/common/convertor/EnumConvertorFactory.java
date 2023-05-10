@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.framework.convert;
+package top.cadecode.uniboot.common.convertor;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;

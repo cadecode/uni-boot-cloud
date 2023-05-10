@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.framework.convert;
+package top.cadecode.uniboot.common.convertor;
 
 /**
  * 请求参数枚举转换接口
