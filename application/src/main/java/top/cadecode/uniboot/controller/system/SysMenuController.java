@@ -53,10 +53,10 @@ public class SysMenuController {
     @ApiOperation("更新用户启用状态")
     @PostMapping("update_enable")
     public boolean updateEnable(@RequestBody @Valid SysMenuUpdateEnableRequest request) {
-        return sysMenuService.lambdaUpdate()
-                .eq(SysMenu::getId, request.getId())
-                .set(SysMenu::getEnableFlag, request.getEnableFlag())
-                .update(new SysMenu());
+        return sysMenuService.updateById(SysMenu.builder()
+                .id(request.getId())
+                .enableFlag(request.getEnableFlag())
+                .build());
     }
 
     @ApiOperation("更新用户")
