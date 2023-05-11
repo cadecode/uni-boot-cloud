@@ -11,11 +11,11 @@
         <result column="leaf_flag" property="leafFlag"/>
         <result column="icon" property="icon"/>
         <result column="order_num" property="orderNum"/>
-        <result column="enable_flag" property="enableFlag"/>
+        <result column="enable_flag" property="enableFlag" typeHandler="BoolToIntTypeHandler"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="update_user" property="updateUser"/>
-        <result column="r_code" property="roles" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+        <result column="r_code" property="roles" typeHandler="ObjToStrTypeHandler"/>
     </resultMap>
     <select id="selectByRoles" resultType="top.cadecode.uniboot.system.bean.po.SysMenu">
         SELECT DISTINCT sm.*
@@ -43,7 +43,7 @@
                     AND sm.menu_name like #{bindMenuName }
                 </if>
                 <if test="request.enableFlag != null">
-                    AND sm.enable_flag = #{request.enableFlag}
+                    AND sm.enable_flag = #{request.enableFlag, typeHandler=BoolToIntTypeHandler}
                 </if>
                 <if test="request.roleIdList != null and request.roleIdList.size > 0 ">
                     AND sr.id in (
