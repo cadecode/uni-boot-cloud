@@ -1,8 +1,8 @@
-package top.cadecode.uniboot.framework.convert.mybatis;
+package top.cadecode.uniboot.common.mybatis;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
-import top.cadecode.uniboot.framework.convert.EnumConvertor;
+import top.cadecode.uniboot.common.convertor.EnumConvertor;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
