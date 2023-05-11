@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import top.cadecode.uniboot.common.mybatis.handler.BoolToIntTypeHandler;
 
 import java.util.Date;
 
@@ -15,6 +19,9 @@ import java.util.Date;
  * @since 2023/4/11
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class SysMenu {
 
     @TableId(type = IdType.ASSIGN_ID)
@@ -48,6 +55,7 @@ public class SysMenu {
     /**
      * 是否页面
      */
+    @TableField(typeHandler = BoolToIntTypeHandler.class)
     private Boolean leafFlag;
 
     /**
@@ -63,6 +71,7 @@ public class SysMenu {
     /**
      * 是否启用
      */
+    @TableField(typeHandler = BoolToIntTypeHandler.class)
     private Boolean enableFlag;
 
     @TableField(fill = FieldFill.INSERT)
