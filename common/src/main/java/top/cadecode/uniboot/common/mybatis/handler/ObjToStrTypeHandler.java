@@ -22,6 +22,11 @@ import java.util.List;
 @MappedJdbcTypes(JdbcType.VARCHAR)
 public class ObjToStrTypeHandler extends BaseTypeHandler<Object> {
 
+    /**
+     * 用于 mybatis plus update set mapping 参数指定 typeHandler 为 ObjToStrTypeHandler
+     */
+    public static final String MAPPING = "typeHandler=ObjToStrTypeHandler";
+
     private final Class<?> type;
 
     public ObjToStrTypeHandler(Class<?> type) {
