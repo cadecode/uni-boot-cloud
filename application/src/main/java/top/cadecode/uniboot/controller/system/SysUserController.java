@@ -69,13 +69,9 @@ public class SysUserController {
     @PostMapping("modify_info")
     public boolean modifyInfo(@RequestBody @Valid SysUserModifyInfoRequest request) {
         SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
-        return sysUserService.lambdaUpdate()
-                .eq(SysUser::getId, userDetails.getId())
-                .set(SysUser::getNickName, request.getNickName())
-                .set(SysUser::getPhone, request.getPhone())
-                .set(SysUser::getMail, request.getMail())
-                .set(SysUser::getSex, request.getSex())
-                .update(new SysUser());
+        SysUser po = SysUserConvert.INSTANCE.requestToPo(request);
+        po.setId(userDetails.getId());
+        return sysUserService.updateById(po);
     }
 
     @ApiOperation("修改用户密码（用户中心）")
@@ -91,10 +87,13 @@ public class SysUserController {
             throw UniException.of("原密码错误");
         }
         return sysUserService.lambdaUpdate()
-                .eq(SysUser::getId, userDetails.getId())
-                .eq(SysUser::getPassword, sysUser.getPassword())
-                .set(SysUser::getPassword, passwordEncoder.encode(request.getNewPass()))
-                .update(new SysUser());
+                .setEntity(SysUser.builder()
+                        .id(userDetails.getId())
+                        .password(sysUser.getPassword())
+                        .build())
+                .update(SysUser.builder()
+                        .password(passwordEncoder.encode(request.getNewPass()))
+                        .build());
     }
 
     @ApiOperation("查询用户列表（带角色）")
@@ -107,10 +106,10 @@ public class SysUserController {
     @ApiOperation("更新用户启用状态")
     @PostMapping("update_enable")
     public boolean updateEnable(@RequestBody @Valid SysUserUpdateEnableRequest request) {
-        return sysUserService.lambdaUpdate()
-                .eq(SysUser::getId, request.getId())
-                .set(SysUser::getEnableFlag, request.getEnableFlag())
-                .update(new SysUser());
+        return sysUserService.updateById(SysUser.builder()
+                .id(request.getId())
+                .enableFlag(request.getEnableFlag())
+                .build());
     }
 
     @ApiOperation("更新用户")
@@ -120,15 +119,9 @@ public class SysUserController {
         if (ObjectUtil.isNotEmpty(request.getPassword())) {
             encodePass = passwordEncoder.encode(request.getPassword());
         }
-        return sysUserService.lambdaUpdate()
-                .eq(SysUser::getId, request.getId())
-                .set(SysUser::getUsername, request.getUsername())
-                .set(SysUser::getNickName, request.getNickName())
-                .set(ObjectUtil.isNotEmpty(encodePass), SysUser::getPassword, encodePass)
-                .set(SysUser::getPhone, request.getPhone())
-                .set(SysUser::getMail, request.getMail())
-                .set(SysUser::getSex, request.getSex())
-                .update(new SysUser());
+        SysUser po = SysUserConvert.INSTANCE.requestToPo(request);
+        po.setPassword(encodePass);
+        return sysUserService.updateById(po);
     }
 
     @ApiOperation("添加用户")
