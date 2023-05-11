@@ -20,6 +20,11 @@ import java.sql.SQLException;
 @MappedJdbcTypes({JdbcType.INTEGER})
 public class BoolToIntTypeHandler extends BaseTypeHandler<Boolean> {
 
+    /**
+     * 用于 mybatis plus update set mapping 参数指定 typeHandler 为 BoolToIntTypeHandler
+     */
+    public static final String MAPPING = "typeHandler=BoolToIntTypeHandler";
+
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, Boolean parameter, JdbcType jdbcType) throws SQLException {
         if (parameter) {
