@@ -2,7 +2,7 @@
   <div class="menu-management-container">
     <div class="menu-management-filter">
       <el-form ref="menusFilterForm" size="small" inline :model="menusFilterForm.data" :rules="menusFilterForm.rules">
-        <el-form-item label="路由名" prop="menuname">
+        <el-form-item label="路由名" prop="routeName">
           <el-input v-model="menusFilterForm.data.routeName" />
         </el-form-item>
         <el-form-item label="菜单名" prop="nickName">
