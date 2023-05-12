@@ -27,7 +27,7 @@
         <el-form-item>
           <el-button type="primary" @click="listMenus">搜索</el-button>
           <el-button @click="() => this.$refs['menusFilterForm'].resetFields()">重置</el-button>
-          <el-button @click="addMenuForm.showDialog = true">添加菜单</el-button>
+          <el-button type="info" @click="addMenuForm.showDialog = true">添加根菜单</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -53,8 +53,9 @@
           <el-table-column property="createTime" label="创建时间" width="180px" />
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button size="mini" @click="updateMenu(scope.$index, scope.row)">编辑</el-button>
-              <el-button size="mini" type="danger" @click="deleteMenu(scope.$index, scope.row)">删除</el-button>
+              <el-button size="mini" @click="updateMenu(scope.$index, scope.row)"><el-icon class="el-icon-edit" /></el-button>
+              <el-button size="mini" type="danger" @click="deleteMenu(scope.$index, scope.row)"><el-icon class="el-icon-delete" /></el-button>
+              <el-button v-if="!scope.row.leafFlag" size="mini" type="info"><el-icon class="el-icon-plus" /></el-button>
             </template>
           </el-table-column>
           <el-table-column type="expand">
