@@ -40,7 +40,7 @@
           highlight-current-row
           @current-change="userListTableClick"
         >
-          <el-table-column property="id" label="ID" width="180px" />
+          <el-table-column property="id" label="ID" width="170px" />
           <el-table-column property="username" label="用户名" />
           <el-table-column property="nickName" label="昵称" />
           <el-table-column property="enableFlag" label="启用状态" width="100px">
@@ -48,9 +48,9 @@
               <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.$index, scope.row)" />
             </template>
           </el-table-column>
-          <el-table-column property="updateTime" label="更新时间" width="180px" />
+          <el-table-column property="updateTime" label="更新时间" width="150px" />
           <el-table-column property="updateUser" label="更新人" />
-          <el-table-column property="createTime" label="创建时间" width="180px" />
+          <el-table-column property="createTime" label="创建时间" width="150px" />
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button size="mini" @click="updateUser(scope.$index, scope.row)"><el-icon class="el-icon-edit" /></el-button>
