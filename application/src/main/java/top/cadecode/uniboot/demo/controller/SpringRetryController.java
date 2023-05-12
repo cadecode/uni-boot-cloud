@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.controller.demo;
+package top.cadecode.uniboot.demo.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

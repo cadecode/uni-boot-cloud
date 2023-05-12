@@ -43,6 +43,7 @@ uni-boot:
     url: https://github.com/cadecode/uni-boot-admin
     email: cadecode@foxmail.com
     module:
+      demo: top.cadecode.uniboot.demo.controller
       application: top.cadecode.uniboot.controller
   # security 配置
   security:
