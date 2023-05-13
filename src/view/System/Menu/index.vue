@@ -178,7 +178,7 @@
           <el-input v-model="addMenuForm.data.routePath" />
         </el-form-item>
         <el-form-item label="组件路径" prop="componentPath">
-          <el-input v-model="addMenuForm.data.componentPath" />
+          <el-input v-model="addMenuForm.data.componentPath" placeholder="不填写时跟随路由路径，外链时置空" />
         </el-form-item>
         <el-form-item label="是否页面" prop="leafFlag">
           <el-radio-group v-model="addMenuForm.data.leafFlag">
@@ -213,6 +213,7 @@ import {
   updateMenu,
   updateMenuEnable
 } from '@/api/system';
+import {isExternalUrl} from '@/util/common';
 
 export default {
   name: 'MenuManagement',
@@ -262,7 +263,25 @@ export default {
         rule: {
           routeName: [{required: true, message: '请输入路由名', trigger: 'blur'}],
           routePath: [{required: true, message: '请输入路由路径', trigger: 'blur'}],
-          componentPath: [{required: true, message: '请输入组件路径', trigger: 'blur'}],
+          componentPath: [{validator: (rule, value, callback) => {
+            const routePath = this.updateMenuForm.data.routePath;
+            // 外链时置空
+            if (isExternalUrl(routePath)) {
+              this.updateMenuForm.data.componentPath = null;
+              callback();
+              return;
+            }
+            if (this.updateMenuForm.data.componentPath) {
+              callback();
+              return;
+            }
+            if (routePath) {
+              this.updateMenuForm.data.componentPath = routePath;
+              callback();
+              return;
+            }
+            callback(new Error('请输入组件路径或路由路径'));
+          }, trigger: 'blur'}],
           menuName: [{required: true, message: '请输入菜单名', trigger: 'blur'}],
           leafFlag: [{required: true, message: '请选择是否页面', trigger: 'blur'}],
           orderNum: [{required: true, message: '请输入排序', trigger: 'blur'}]
@@ -289,7 +308,25 @@ export default {
           parentId: [{required: true, message: '请输入父级ID', trigger: 'blur'}],
           routeName: [{required: true, message: '请输入路由名', trigger: 'blur'}],
           routePath: [{required: true, message: '请输入路由路径', trigger: 'blur'}],
-          componentPath: [{required: true, message: '请输入组件路径', trigger: 'blur'}],
+          componentPath: [{validator: (rule, value, callback) => {
+            const routePath = this.addMenuForm.data.routePath;
+            // 外链时置空
+            if (isExternalUrl(routePath)) {
+              this.addMenuForm.data.componentPath = null;
+              callback();
+              return;
+            }
+            if (this.addMenuForm.data.componentPath) {
+              callback();
+              return;
+            }
+            if (routePath) {
+              this.addMenuForm.data.componentPath = routePath;
+              callback();
+              return;
+            }
+            callback(new Error('请输入组件路径或路由路径'));
+          }, trigger: 'blur'}],
           menuName: [{required: true, message: '请输入菜单名', trigger: 'blur'}],
           leafFlag: [{required: true, message: '请选择是否页面', trigger: 'blur'}],
           orderNum: [{required: true, message: '请输入排序', trigger: 'blur'}]
