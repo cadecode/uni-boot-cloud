@@ -23,6 +23,7 @@ public class SysMenuRequest {
         private String menuName;
         private List<Long> roleIdList;
         private Boolean enableFlag;
+        private Long parentId;
     }
 
     @Data
