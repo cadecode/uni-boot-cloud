@@ -62,17 +62,6 @@
           <el-table-column property="mail" label="邮箱" width="150px" />
           <el-table-column property="loginIp" label="登录IP" width="150px" />
           <el-table-column property="loginDate" label="登录时间" width="150px" />
-          <!--<el-table-column type="expand">-->
-          <!--  <template slot-scope="scope">-->
-          <!--    <el-descriptions :column="1">-->
-          <!--      <el-descriptions-item label="性别">{{ scope.row.sex }}</el-descriptions-item>-->
-          <!--      <el-descriptions-item label="电话">{{ scope.row.phone }}</el-descriptions-item>-->
-          <!--      <el-descriptions-item label="邮箱">{{ scope.row.mail }}</el-descriptions-item>-->
-          <!--      <el-descriptions-item label="登录IP">{{ scope.row.loginIp }}</el-descriptions-item>-->
-          <!--      <el-descriptions-item label="登录时间">{{ scope.row.loginDate }}</el-descriptions-item>-->
-          <!--    </el-descriptions>-->
-          <!--  </template>-->
-          <!--</el-table-column>-->
         </el-table>
         <el-pagination
           layout="prev, pager, next"
