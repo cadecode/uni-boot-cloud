@@ -11,7 +11,7 @@
         <el-form-item label="路由名" prop="routeName">
           <el-input v-model="menusFilterForm.data.routeName" />
         </el-form-item>
-        <el-form-item label="菜单名" prop="nickName">
+        <el-form-item label="菜单名" prop="menuName">
           <el-input v-model="menusFilterForm.data.menuName" />
         </el-form-item>
         <el-form-item label="角色" prop="roleIdList">
