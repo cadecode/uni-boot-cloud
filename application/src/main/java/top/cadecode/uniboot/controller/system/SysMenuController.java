@@ -21,7 +21,9 @@ import top.cadecode.uniboot.system.service.SysRoleService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static top.cadecode.uniboot.system.request.SysMenuRequest.*;
 
@@ -77,6 +79,19 @@ public class SysMenuController {
     @PostMapping("delete")
     @Transactional(rollbackFor = Exception.class)
     public boolean delete(@RequestBody @NotEmpty List<Long> menuIdList) {
+        List<Long> assumedParentList = new ArrayList<>(menuIdList);
+        while (!assumedParentList.isEmpty()) {
+            List<SysMenu> children = sysMenuService.lambdaQuery()
+                    .select(SysMenu::getId, SysMenu::getLeafFlag).in(SysMenu::getParentId, assumedParentList)
+                    .list();
+            // 加入删除名单
+            menuIdList.addAll(children.stream().map(SysMenu::getId).collect(Collectors.toList()));
+            // 非页面的菜单 id 再次查询
+            assumedParentList = children.stream()
+                    .filter(o -> !o.getLeafFlag())
+                    .map(SysMenu::getId)
+                    .collect(Collectors.toList());
+        }
         // 清理菜单角色绑定关系
         sysRoleService.removeRoleMenuByMenuIds(menuIdList);
         return sysMenuService.removeBatchByIds(menuIdList);
