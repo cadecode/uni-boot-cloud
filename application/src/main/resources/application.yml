@@ -75,6 +75,7 @@ pagehelper:
   params: count=countSql
   auto-dialect: true
   auto-runtime-dialect: true
+  page-size-zero: true
 
 # mybatis plus 配置
 mybatis-plus:
