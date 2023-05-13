@@ -67,7 +67,7 @@
                 </if>
             </where>
         </if>
-        GROUP BY su.id, su.create_time
-        ORDER BY su.create_time DESC
+        GROUP BY su.id, su.username, su.create_time
+        ORDER BY su.username
     </select>
 </mapper>
