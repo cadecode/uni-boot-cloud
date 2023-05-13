@@ -40,16 +40,17 @@
           highlight-current-row
           @current-change="userListTableClick"
         >
-          <el-table-column property="id" label="ID" width="170px" />
-          <el-table-column property="username" label="用户名" />
-          <el-table-column property="nickName" label="昵称" />
+          <el-table-column property="id" label="ID" width="170px" fixed />
+          <el-table-column property="username" label="用户名" width="160px" fixed />
+          <el-table-column property="nickName" label="昵称" width="298px" fixed />
+          <el-table-column property="sex" label="性别" width="60px" />
           <el-table-column property="enableFlag" label="启用" width="60px">
             <template slot-scope="scope">
               <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.$index, scope.row)" />
             </template>
           </el-table-column>
           <el-table-column property="updateTime" label="更新时间" width="150px" />
-          <el-table-column property="updateUser" label="更新人" />
+          <el-table-column property="updateUser" label="更新人" width="160px" />
           <el-table-column property="createTime" label="创建时间" width="150px" />
           <el-table-column label="操作" width="180px">
             <template slot-scope="scope">
@@ -57,17 +58,21 @@
               <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)"><el-icon class="el-icon-delete" /></el-button>
             </template>
           </el-table-column>
-          <el-table-column type="expand">
-            <template slot-scope="scope">
-              <el-descriptions :column="1">
-                <el-descriptions-item label="性别">{{ scope.row.sex }}</el-descriptions-item>
-                <el-descriptions-item label="电话">{{ scope.row.phone }}</el-descriptions-item>
-                <el-descriptions-item label="邮箱">{{ scope.row.mail }}</el-descriptions-item>
-                <el-descriptions-item label="登录IP">{{ scope.row.loginIp }}</el-descriptions-item>
-                <el-descriptions-item label="登录时间">{{ scope.row.loginDate }}</el-descriptions-item>
-              </el-descriptions>
-            </template>
-          </el-table-column>
+          <el-table-column property="phone" label="电话" width="150px" />
+          <el-table-column property="mail" label="邮箱" width="150px" />
+          <el-table-column property="loginIp" label="登录IP" width="150px" />
+          <el-table-column property="loginDate" label="登录时间" width="150px" />
+          <!--<el-table-column type="expand">-->
+          <!--  <template slot-scope="scope">-->
+          <!--    <el-descriptions :column="1">-->
+          <!--      <el-descriptions-item label="性别">{{ scope.row.sex }}</el-descriptions-item>-->
+          <!--      <el-descriptions-item label="电话">{{ scope.row.phone }}</el-descriptions-item>-->
+          <!--      <el-descriptions-item label="邮箱">{{ scope.row.mail }}</el-descriptions-item>-->
+          <!--      <el-descriptions-item label="登录IP">{{ scope.row.loginIp }}</el-descriptions-item>-->
+          <!--      <el-descriptions-item label="登录时间">{{ scope.row.loginDate }}</el-descriptions-item>-->
+          <!--    </el-descriptions>-->
+          <!--  </template>-->
+          <!--</el-table-column>-->
         </el-table>
         <el-pagination
           layout="prev, pager, next"

@@ -56,10 +56,10 @@
           :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
           @current-change="menuListTableClick"
         >
-          <el-table-column property="orderNum" label="NO." width="200px" />
-          <el-table-column property="id" label="ID" width="170px" />
-          <el-table-column property="routeName" label="路由名" />
-          <el-table-column property="menuName" label="菜单名" />
+          <el-table-column property="orderNum" label="NO." width="200px" fixed />
+          <el-table-column property="id" label="ID" width="170px" fixed />
+          <el-table-column property="routeName" label="路由名" width="160px" fixed />
+          <el-table-column property="menuName" label="菜单名" width="160px" fixed />
           <el-table-column property="enableFlag" label="启用" width="60px">
             <template slot-scope="scope">
               <el-switch
@@ -69,7 +69,7 @@
             </template>
           </el-table-column>
           <el-table-column property="updateTime" label="更新时间" width="150px" />
-          <el-table-column property="updateUser" label="更新人" />
+          <el-table-column property="updateUser" label="更新人" width="160px" />
           <el-table-column property="createTime" label="创建时间" width="150px" />
           <el-table-column label="操作" width="180px">
             <template slot-scope="scope">
@@ -89,17 +89,11 @@
               </el-button>
             </template>
           </el-table-column>
-          <el-table-column type="expand">
-            <template slot-scope="scope">
-              <el-descriptions :column="1">
-                <el-descriptions-item label="父级ID">{{ scope.row.parentId }}</el-descriptions-item>
-                <el-descriptions-item label="路由路径">{{ scope.row.routePath }}</el-descriptions-item>
-                <el-descriptions-item label="组件路径">{{ scope.row.componentPath }}</el-descriptions-item>
-                <el-descriptions-item label="是否页面">{{ scope.row.leafFlag ? '是' : '否' }}</el-descriptions-item>
-                <el-descriptions-item label="图标">{{ scope.row.icon }}</el-descriptions-item>
-              </el-descriptions>
-            </template>
-          </el-table-column>
+          <el-table-column property="parentId" label="父级ID" width="170px" />
+          <el-table-column property="routePath" label="路由路径" width="300px" />
+          <el-table-column property="componentPath" label="组件路径" width="300px" />
+          <el-table-column property="leafFlag" label="是否页面" />
+          <el-table-column property="icon" label="图标" width="150px" />
         </el-table>
         <el-pagination
           layout="prev, pager, next"
