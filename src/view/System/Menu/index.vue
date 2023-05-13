@@ -1,7 +1,13 @@
 <template>
   <div class="menu-management-container">
     <div class="menu-management-filter">
-      <el-form ref="menusFilterForm" size="small" inline :model="menusFilterForm.data" :rules="menusFilterForm.rules">
+      <el-form
+        ref="menusFilterForm"
+        size="small"
+        inline
+        :model="menusFilterForm.data"
+        :rules="menusFilterForm.rules"
+      >
         <el-form-item label="路由名" prop="routeName">
           <el-input v-model="menusFilterForm.data.routeName" />
         </el-form-item>
@@ -9,7 +15,13 @@
           <el-input v-model="menusFilterForm.data.menuName" />
         </el-form-item>
         <el-form-item label="角色" prop="roleIdList">
-          <el-select v-model="menusFilterForm.data.roleIdList" collapse-tags multiple filterable placeholder="请选择">
+          <el-select
+            v-model="menusFilterForm.data.roleIdList"
+            collapse-tags
+            multiple
+            filterable
+            placeholder="请选择"
+          >
             <el-option
               v-for="item in roleTree.data"
               :key="item.id"
@@ -18,7 +30,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="启用状态" prop="enableFlag">
+        <el-form-item label="启用" prop="enableFlag">
           <el-radio-group v-model="menusFilterForm.data.enableFlag">
             <el-radio :label="true">是</el-radio>
             <el-radio :label="false">否</el-radio>
@@ -26,8 +38,8 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="listMenus">搜索</el-button>
-          <el-button @click="() => this.$refs['menusFilterForm'].resetFields()">重置</el-button>
-          <el-button type="info" @click="addMenuForm.showDialog = true">添加根菜单</el-button>
+          <el-button @click="() => this.$refs.menusFilterForm.resetFields()">重置</el-button>
+          <el-button type="info" @click="addMenu">添加根菜单</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -38,25 +50,43 @@
           height="calc(100vh - 221px)"
           :data="menuListTable.data"
           highlight-current-row
+          row-key="id"
+          lazy
+          :load="loadMenuChildren"
+          :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
           @current-change="menuListTableClick"
         >
-          <el-table-column property="orderNum" label="NO." width="70px" />
+          <el-table-column property="orderNum" label="NO." width="200px" />
           <el-table-column property="id" label="ID" width="170px" />
           <el-table-column property="routeName" label="路由名" />
           <el-table-column property="menuName" label="菜单名" />
-          <el-table-column property="enableFlag" label="启用状态" width="100px">
+          <el-table-column property="enableFlag" label="启用" width="60px">
             <template slot-scope="scope">
-              <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.$index, scope.row)" />
+              <el-switch
+                v-model="scope.row.enableFlag"
+                @change="flag => updateEnable(flag, scope.$index, scope.row)"
+              />
             </template>
           </el-table-column>
           <el-table-column property="updateTime" label="更新时间" width="150px" />
           <el-table-column property="updateUser" label="更新人" />
           <el-table-column property="createTime" label="创建时间" width="150px" />
-          <el-table-column label="操作">
+          <el-table-column label="操作" width="180px">
             <template slot-scope="scope">
-              <el-button size="mini" @click="updateMenu(scope.$index, scope.row)"><el-icon class="el-icon-edit" /></el-button>
-              <el-button size="mini" type="danger" @click="deleteMenu(scope.$index, scope.row)"><el-icon class="el-icon-delete" /></el-button>
-              <el-button v-if="!scope.row.leafFlag" size="mini" type="info"><el-icon class="el-icon-plus" /></el-button>
+              <el-button size="mini" @click="updateMenu(scope.$index, scope.row)">
+                <el-icon class="el-icon-edit" />
+              </el-button>
+              <el-button size="mini" type="danger" @click="deleteMenu(scope.$index, scope.row)">
+                <el-icon class="el-icon-delete" />
+              </el-button>
+              <el-button
+                v-if="!scope.row.leafFlag"
+                size="mini"
+                type="info"
+                @click="addMenu(scope.$index, scope.row)"
+              >
+                <el-icon class="el-icon-plus" />
+              </el-button>
             </template>
           </el-table-column>
           <el-table-column type="expand">
@@ -65,9 +95,8 @@
                 <el-descriptions-item label="父级ID">{{ scope.row.parentId }}</el-descriptions-item>
                 <el-descriptions-item label="路由路径">{{ scope.row.routePath }}</el-descriptions-item>
                 <el-descriptions-item label="组件路径">{{ scope.row.componentPath }}</el-descriptions-item>
-                <el-descriptions-item label="是否页面">{{ scope.row.leafFlag?'是':'否' }}</el-descriptions-item>
+                <el-descriptions-item label="是否页面">{{ scope.row.leafFlag ? '是' : '否' }}</el-descriptions-item>
                 <el-descriptions-item label="图标">{{ scope.row.icon }}</el-descriptions-item>
-                <el-descriptions-item label="排序">{{ scope.row.orderNum }}</el-descriptions-item>
               </el-descriptions>
             </template>
           </el-table-column>
@@ -128,7 +157,7 @@
           <el-input v-model="updateMenuForm.data.orderNum" />
         </el-form-item>
         <el-form-item>
-          <el-button @click="() => this.$refs['updateMenuForm'].resetFields()">重置</el-button>
+          <el-button @click="() => this.$refs.updateMenuForm.resetFields()">重置</el-button>
           <el-button @click="updateMenuForm.showDialog = false">取消</el-button>
           <el-button type="primary" @click="updateMenuCommit">提交</el-button>
         </el-form-item>
@@ -144,6 +173,9 @@
       >
         <el-form-item label="路由名称" prop="routeName">
           <el-input v-model="addMenuForm.data.routeName" />
+        </el-form-item>
+        <el-form-item v-if="addMenuForm.row" label="父级ID" prop="parentId">
+          <el-input v-model="addMenuForm.data.parentId" />
         </el-form-item>
         <el-form-item label="菜单名称" prop="menuName">
           <el-input v-model="addMenuForm.data.menuName" />
@@ -167,7 +199,7 @@
           <el-input v-model="addMenuForm.data.orderNum" />
         </el-form-item>
         <el-form-item>
-          <el-button @click="() => this.$refs['addMenuForm'].resetFields()">重置</el-button>
+          <el-button @click="() => this.$refs.addMenuForm.resetFields()">重置</el-button>
           <el-button @click="addMenuForm.showDialog = false">取消</el-button>
           <el-button type="primary" @click="addMenuCommit">提交</el-button>
         </el-form-item>
@@ -243,6 +275,10 @@ export default {
         }
       },
       addMenuForm: {
+        // 元数据引用
+        row: null,
+        // 映射 id 和 children tree
+        treeMap: {},
         data: {
           parentId: null,
           routeName: null,
@@ -256,6 +292,7 @@ export default {
         },
         showDialog: false,
         rule: {
+          parentId: [{required: true, message: '请输入父级ID', trigger: 'blur'}],
           routeName: [{required: true, message: '请输入路由名', trigger: 'blur'}],
           routePath: [{required: true, message: '请输入路由路径', trigger: 'blur'}],
           componentPath: [{required: true, message: '请输入组件路径', trigger: 'blur'}],
@@ -274,6 +311,9 @@ export default {
     listMenus() {
       this.pageMenus(1).then(() => {
         this.menuListTable.page.pageNumber = 1;
+        // 重置时清空展开内容
+        this.$refs.menuListTable.layout.store.states.lazyTreeNodeMap = {};
+        this.$refs.menuListTable.layout.store.states.treeData = {};
       });
     },
     pageMenus(currPage) {
@@ -286,6 +326,10 @@ export default {
       // 查询用户列表
       return pageMenuRolesVo(data).then(res => {
         this.menuListTable.data = res.data.records;
+        // 设置 hasChildren 辅助表格树形展示
+        this.menuListTable.data.forEach(o => {
+          o.hasChildren = !o.leafFlag;
+        });
         this.menuListTable.page.total = res.data.total;
       });
     },
@@ -320,35 +364,93 @@ export default {
       });
     },
     updateMenuCommit() {
-      this.$refs['updateMenuForm'].validate((valid) => {
-        if (valid) {
-          updateMenu(this.updateMenuForm.data).then(res => {
-            if (res.data) {
-              this.updateMenuForm.showDialog = false;
-              this.refreshMenu(this.updateMenuForm.row);
-            }
-          });
+      this.$refs.updateMenuForm.validate((valid) => {
+        if (!valid) {
+          return;
+        }
+        updateMenu(this.updateMenuForm.data).then(res => {
+          if (res.data) {
+            this.updateMenuForm.showDialog = false;
+            this.refreshMenu(this.updateMenuForm.row);
+          }
+        });
+      });
+    },
+    addMenu(index, row) {
+      // 清理 parentId 以便添加根菜单
+      this.addMenuForm.data.parentId = null;
+      // 存放当前行的引用，添加根菜单时为 undefined
+      this.addMenuForm.row = row;
+      this.addMenuForm.showDialog = true;
+      this.$nextTick(() => {
+        // 若是添加子菜单，注入当前行的 id 作为新菜单的父级ID
+        if (row) {
+          this.addMenuForm.data.parentId = row.id;
         }
       });
     },
     addMenuCommit() {
-      this.$refs['addMenuForm'].validate((valid) => {
-        if (valid) {
-          addMenu(this.addMenuForm.data).then(res => {
-            if (res.data) {
-              this.addMenuForm.showDialog = false;
-              // 从后端刷新列表
-              this.listMenus();
-            }
-          });
+      this.$refs.addMenuForm.validate((valid) => {
+        if (!valid) {
+          return;
         }
+        addMenu(this.addMenuForm.data).then(res => {
+          if (res.data) {
+            // 若添加的是根菜单
+            if (!this.addMenuForm.row) {
+              this.listMenus();
+              this.addMenuForm.showDialog = false;
+              return;
+            }
+            const treeInfo = this.addMenuForm.treeMap[this.addMenuForm.row.id];
+            if (treeInfo) {
+              const {tree, treeNode, resolve} = treeInfo;
+              // 重新 load 子菜单
+              this.loadMenuChildren(tree, treeNode, resolve);
+            }
+            this.addMenuForm.showDialog = false;
+          }
+        });
       });
     },
     deleteMenu(index, row) {
+      // TO 目前不能删除非页面的菜单
+      if (!row.leafFlag) {
+        this.$message.warning('目前不能删除非页面的菜单');
+        return;
+      }
       deleteMenu([row.id]).then(res => {
         if (res.data) {
-          this.menuListTable.data.splice(index, 1);
+          let findIndex = this.menuListTable.data.findIndex(o => o.id === row.id);
+          if (findIndex !== -1) {
+            this.menuListTable.data.splice(findIndex, 1);
+          } else {
+            // 不在顶级目录中中
+            const store = this.$refs.menuListTable.layout.store;
+            // 根据父级 id 找到子节点列表
+            const treeNode = store.states.lazyTreeNodeMap[row.parentId];
+            findIndex = treeNode.findIndex(o => o.id === row.id);
+            treeNode.splice(findIndex, 1);
+          }
         }
+      });
+    },
+    loadMenuChildren(tree, treeNode, resolve) {
+      // 存储树形关系备用
+      this.addMenuForm.treeMap[tree.id] = {tree, treeNode, resolve};
+      // pageSize 给大值，复用分页接口
+      const data = {
+        ...this.menusFilterForm.data,
+        pageNumber: 0,
+        pageSize: 99999,
+        parentId: tree.id
+      };
+      pageMenuRolesVo(data).then(res => {
+        const records = res.data.records;
+        records.forEach(o => {
+          o.hasChildren = !o.leafFlag;
+        });
+        resolve(records);
       });
     },
     loadRoleTree() {
@@ -364,7 +466,7 @@ export default {
       this.menuListTable.currClick = curr;
       if (curr) {
         this.$nextTick(() => {
-          this.$refs['roleTree'].setCheckedKeys(curr.roles);
+          this.$refs.roleTree.setCheckedKeys(curr.roles);
         });
       }
     },
