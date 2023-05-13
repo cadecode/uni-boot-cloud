@@ -26,7 +26,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="listUsers">搜索</el-button>
-          <el-button @click="() => this.$refs['usersFilterForm'].resetFields()">重置</el-button>
+          <el-button @click="() => this.$refs.usersFilterForm.resetFields()">重置</el-button>
           <el-button type="info" @click="addUserForm.showDialog = true">添加用户</el-button>
         </el-form-item>
       </el-form>
@@ -122,7 +122,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button @click="() => this.$refs['updateUserForm'].resetFields()">重置</el-button>
+          <el-button @click="() => this.$refs.updateUserForm.resetFields()">重置</el-button>
           <el-button @click="updateUserForm.showDialog = false">取消</el-button>
           <el-button type="primary" @click="updateUserCommit">提交</el-button>
         </el-form-item>
@@ -161,7 +161,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button @click="() => this.$refs['addUserForm'].resetFields()">重置</el-button>
+          <el-button @click="() => this.$refs.addUserForm.resetFields()">重置</el-button>
           <el-button @click="addUserForm.showDialog = false">取消</el-button>
           <el-button type="primary" @click="addUserCommit">提交</el-button>
         </el-form-item>
@@ -304,7 +304,7 @@ export default {
       });
     },
     updateUserCommit() {
-      this.$refs['updateUserForm'].validate((valid) => {
+      this.$refs.updateUserForm.validate((valid) => {
         if (valid) {
           updateUser(this.updateUserForm.data).then(res => {
             if (res.data) {
@@ -316,7 +316,7 @@ export default {
       });
     },
     addUserCommit() {
-      this.$refs['addUserForm'].validate((valid) => {
+      this.$refs.addUserForm.validate((valid) => {
         if (valid) {
           addUser(this.addUserForm.data).then(res => {
             if (res.data) {
@@ -348,7 +348,7 @@ export default {
       this.userListTable.currClick = curr;
       if (curr) {
         this.$nextTick(() => {
-          this.$refs['roleTree'].setCheckedKeys(curr.roles);
+          this.$refs.roleTree.setCheckedKeys(curr.roles);
         });
       }
     },

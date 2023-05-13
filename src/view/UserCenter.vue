@@ -62,7 +62,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="modifyInfo">修改</el-button>
-            <el-button @click="() => this.$refs['modifyInfoForm'].resetFields()">重置</el-button>
+            <el-button @click="() => this.$refs.modifyInfoForm.resetFields()">重置</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -79,7 +79,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="modifyPass">修改</el-button>
-            <el-button @click="() => this.$refs['modifyPassForm'].resetFields()">重置</el-button>
+            <el-button @click="() => this.$refs.modifyPassForm.resetFields()">重置</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     modifyInfo() {
-      this.$refs['modifyInfoForm'].validate((valid) => {
+      this.$refs.modifyInfoForm.validate((valid) => {
         if (valid) {
           modifyInfo(this.modifyInfoForm.data).then(res => {
             if (res.data) {
@@ -152,7 +152,7 @@ export default {
       });
     },
     modifyPass() {
-      this.$refs['modifyPassForm'].validate((valid) => {
+      this.$refs.modifyPassForm.validate((valid) => {
         if (valid) {
           modifyPass(this.modifyPassForm.data);
         }
