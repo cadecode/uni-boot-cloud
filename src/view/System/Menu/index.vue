@@ -437,26 +437,34 @@ export default {
       });
     },
     deleteMenu(index, row) {
-      // TO 目前不能删除非页面的菜单
+      const del = () => {
+        deleteMenu([row.id]).then(res => {
+          if (res.data) {
+            let findIndex = this.menuListTable.data.findIndex(o => o.id === row.id);
+            if (findIndex !== -1) {
+              this.menuListTable.data.splice(findIndex, 1);
+            } else {
+              // 不在顶级目录中，需要清理 ElementUI table lazyTreeNodeMap 来删除展开内容
+              // 根据父级 id 找到子节点列表
+              const treeNode = this.$refs.menuListTable.layout.store.states.lazyTreeNodeMap[row.parentId];
+              findIndex = treeNode.findIndex(o => o.id === row.id);
+              treeNode.splice(findIndex, 1);
+            }
+          }
+        });
+      };
+      // 非页面需要删除确认
       if (!row.leafFlag) {
-        this.$message.warning('目前不能删除非页面的菜单');
+        this.$messageBox.confirm('删除菜单会删除其全部子菜单，是否继续？', '删除确认', {
+          type: 'warning',
+          confirmButtonText: '确认',
+          cancelButtonText: '取消'
+        }).then(() => {
+          del();
+        });
         return;
       }
-      deleteMenu([row.id]).then(res => {
-        if (res.data) {
-          let findIndex = this.menuListTable.data.findIndex(o => o.id === row.id);
-          if (findIndex !== -1) {
-            this.menuListTable.data.splice(findIndex, 1);
-          } else {
-            // 不在顶级目录中中
-            const store = this.$refs.menuListTable.layout.store;
-            // 根据父级 id 找到子节点列表
-            const treeNode = store.states.lazyTreeNodeMap[row.parentId];
-            findIndex = treeNode.findIndex(o => o.id === row.id);
-            treeNode.splice(findIndex, 1);
-          }
-        }
-      });
+      del();
     },
     loadMenuChildren(tree, treeNode, resolve) {
       // 存储树形关系备用
