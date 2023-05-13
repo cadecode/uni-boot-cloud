@@ -43,7 +43,6 @@ public class SysMenuRequest {
         private String routeName;
         @NotEmpty
         private String routePath;
-        @NotEmpty
         private String componentPath;
         @NotEmpty
         private String menuName;
@@ -61,7 +60,6 @@ public class SysMenuRequest {
         private String routeName;
         @NotEmpty
         private String routePath;
-        @NotEmpty
         private String componentPath;
         @NotEmpty
         private String menuName;
