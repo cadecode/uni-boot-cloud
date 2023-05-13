@@ -206,7 +206,7 @@ export default {
         page: {
           total: 0,
           pageNumber: 1,
-          pageSize: 10
+          pageSize: 12
         }
       },
       roleTree: {

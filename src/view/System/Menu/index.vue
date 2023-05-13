@@ -233,7 +233,7 @@ export default {
         page: {
           total: 0,
           pageNumber: 1,
-          pageSize: 10
+          pageSize: 12
         }
       },
       roleTree: {
@@ -436,7 +436,7 @@ export default {
       const data = {
         ...this.menusFilterForm.data,
         pageNumber: 0,
-        pageSize: 99999,
+        pageSize: 0,
         parentId: tree.id
       };
       pageMenuRolesVo(data).then(res => {
