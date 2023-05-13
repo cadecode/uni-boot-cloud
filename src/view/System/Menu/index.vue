@@ -138,12 +138,6 @@
         <el-form-item label="组件路径" prop="componentPath">
           <el-input v-model="updateMenuForm.data.componentPath" />
         </el-form-item>
-        <el-form-item label="是否页面" prop="leafFlag">
-          <el-radio-group v-model="updateMenuForm.data.leafFlag">
-            <el-radio :label="true">是</el-radio>
-            <el-radio :label="false">否</el-radio>
-          </el-radio-group>
-        </el-form-item>
         <el-form-item label="图标" prop="icon">
           <el-input v-model="updateMenuForm.data.icon" />
         </el-form-item>
@@ -255,7 +249,6 @@ export default {
           routePath: null,
           componentPath: null,
           menuName: null,
-          leafFlag: null,
           icon: null,
           orderNum: null
         },
@@ -283,7 +276,6 @@ export default {
             callback(new Error('请输入组件路径或路由路径'));
           }, trigger: 'blur'}],
           menuName: [{required: true, message: '请输入菜单名', trigger: 'blur'}],
-          leafFlag: [{required: true, message: '请选择是否页面', trigger: 'blur'}],
           orderNum: [{required: true, message: '请输入排序', trigger: 'blur'}]
         }
       },
