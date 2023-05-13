@@ -62,8 +62,8 @@
                 </if>
             </where>
         </if>
-        GROUP BY sm.id, sm.create_time
-        ORDER BY sm.create_time DESC
+        GROUP BY sm.id, sm.order_num, sm.create_time
+        ORDER BY sm.order_num
     </select>
     <select id="selectRolesVoByMenuIds" resultMap="SysMenuRolesVoMap">
         SELECT sm.*, JSON_ARRAYAGG(sr.code) r_code
