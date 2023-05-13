@@ -46,8 +46,6 @@ public class SysMenuRequest {
         private String componentPath;
         @NotEmpty
         private String menuName;
-        @NotNull
-        private Boolean leafFlag;
         private String icon;
         @NotNull
         private Integer orderNum;
