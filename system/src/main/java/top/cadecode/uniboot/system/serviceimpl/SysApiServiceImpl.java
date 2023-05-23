@@ -3,6 +3,8 @@ package top.cadecode.uniboot.system.serviceimpl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import top.cadecode.uniboot.common.util.RedisUtil;
 import top.cadecode.uniboot.system.bean.po.SysApi;
 import top.cadecode.uniboot.system.bean.vo.SysApiVo.SysApiRolesVo;
 import top.cadecode.uniboot.system.mapper.SysApiMapper;
+import top.cadecode.uniboot.system.request.SysApiRequest.SysApiRolesRequest;
 import top.cadecode.uniboot.system.service.SysApiService;
 
 import java.util.List;
@@ -45,5 +48,21 @@ public class SysApiServiceImpl extends ServiceImpl<SysApiMapper, SysApi> impleme
             RedisUtil.set(CacheKeyPrefix.API_ROLES, voList, 30, TimeUnit.MINUTES);
             return voList;
         }
+    }
+
+    @Override
+    public List<SysApiRolesVo> listRolesVoByApiIds(List<Long> userIds) {
+        return sysApiMapper.selectRolesVoByApiIds(userIds);
+    }
+
+    @Override
+    public List<SysApiRolesVo> listRolesVo(SysApiRolesRequest request) {
+        return sysApiMapper.selectRolesVo(request);
+    }
+
+    @Override
+    public PageInfo<SysApiRolesVo> pageRolesVo(SysApiRolesRequest request) {
+        return PageHelper.startPage(request.getPageNumber(), request.getPageSize())
+                .doSelectPageInfo(() -> listRolesVo(request));
     }
 }
