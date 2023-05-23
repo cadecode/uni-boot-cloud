@@ -171,3 +171,85 @@ export function removeRoleMenu(data) {
   });
 }
 
+export function pageApiRolesVo(data) {
+  return request({
+    url: '/system/api/page_roles_vo',
+    method: 'post',
+    data
+  });
+}
+
+export function updateApiEnable(data) {
+  return request({
+    url: '/system/api/update_enable',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '更新启用状态'
+  });
+}
+
+export function updateApi(data) {
+  return request({
+    url: '/system/api/update',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '更新API'
+  });
+}
+
+export function addApi(data) {
+  return request({
+    url: '/system/api/add',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '添加API'
+  });
+}
+
+export function deleteApi(data) {
+  return request({
+    url: '/system/api/delete',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '删除API'
+  });
+}
+
+export function listApiRolesVoByApiIds(data) {
+  return request({
+    url: '/system/api/list_roles_vo_by_api_ids',
+    method: 'post',
+    data
+  });
+}
+
+export function addRoleApi(data) {
+  return request({
+    url: '/system/role/add_api_mapping',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '添加API角色绑定'
+  });
+}
+
+export function removeRoleApi(data) {
+  return request({
+    url: '/system/role/remove_api_mapping',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '删除API角色绑定'
+  });
+}
+
