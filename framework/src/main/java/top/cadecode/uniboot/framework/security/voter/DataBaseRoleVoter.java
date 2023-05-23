@@ -13,6 +13,7 @@ import top.cadecode.uniboot.system.bean.vo.SysApiVo.SysApiRolesVo;
 import top.cadecode.uniboot.system.service.SysApiService;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,13 +45,18 @@ public class DataBaseRoleVoter extends RoleVoter {
         // 获取用户角色
         SysUserDto.SysUserDetailsDto sysUserDetailsDto = TokenAuthHolder.getUserDetails(authentication);
         List<String> roles = sysUserDetailsDto.getRoles();
-        // 获取与 url 相同的配置，不存在与 url 相同配置则使用 ant 风格匹配
+        // 获取与 url 相同的配置，不存在与 url 相同配置则使用 spring mvc ant 风格匹配
         SysApiRolesVo sysApiRolesVo = sysApiRolesVos.stream()
-                .filter(api -> api.getUrl().equals(requestUrl))
+                .filter(api -> requestUrl.equals(api.getUrl()))
                 .findFirst()
-                .orElseGet(() -> sysApiRolesVos.stream()
-                        .filter(api -> antPathMatcher.match(api.getUrl(), requestUrl))
-                        .findFirst().orElse(null));
+                .orElseGet(() -> {
+                    // 按 spring mvc 路径优先级找到优先级最高的配置
+                    Comparator<String> comparator = antPathMatcher.getPatternComparator(requestUrl);
+                    return sysApiRolesVos.stream()
+                            .filter(api -> antPathMatcher.match(api.getUrl(), requestUrl))
+                            .min((o1, o2) -> comparator.compare(o1.getUrl(), o2.getUrl()))
+                            .orElse(null);
+                });
         // 数据库没有配置就弃权
         if (Objects.isNull(sysApiRolesVo)) {
             return ACCESS_ABSTAIN;
