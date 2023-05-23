@@ -27,9 +27,9 @@ import top.cadecode.uniboot.system.service.SysRoleService;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static top.cadecode.uniboot.system.request.SysApiRequest.*;
@@ -95,7 +95,7 @@ public class SysApiController {
 
     @ApiOperation("获取全部接口及 swagger 注解")
     @PostMapping("list_swagger_vo")
-    public Set<SysApiSwaggerVo> listSwaggerVo() {
+    public List<SysApiSwaggerVo> listSwaggerVo() {
         Map<RequestMappingInfo, HandlerMethod> methodMap = handlerMapping.getHandlerMethods();
         return methodMap.entrySet()
                 .stream()
@@ -113,6 +113,7 @@ public class SysApiController {
                     return SysApiSwaggerVo.builder().url(url).description(description).build();
                 })
                 .filter(o -> ObjectUtil.isNotEmpty(o.getUrl()))
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparing(SysApiSwaggerVo::getUrl))
+                .collect(Collectors.toList());
     }
 }
