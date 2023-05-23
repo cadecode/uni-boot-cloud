@@ -253,3 +253,11 @@ export function removeRoleApi(data) {
   });
 }
 
+export function listApiSwaggerVo(data) {
+  return request({
+    url: '/system/api/list_swagger_vo',
+    method: 'post',
+    data
+  });
+}
+

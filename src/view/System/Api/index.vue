@@ -39,8 +39,12 @@
           <el-table-column property="createTime" label="创建时间" width="150px" />
           <el-table-column label="操作" width="180px">
             <template slot-scope="scope">
-              <el-button size="mini" @click="updateApi(scope.$index, scope.row)"><el-icon class="el-icon-edit" /></el-button>
-              <el-button size="mini" type="danger" @click="deleteApi(scope.$index, scope.row)"><el-icon class="el-icon-delete" /></el-button>
+              <el-button size="mini" @click="updateApi(scope.$index, scope.row)">
+                <el-icon class="el-icon-edit" />
+              </el-button>
+              <el-button size="mini" type="danger" @click="deleteApi(scope.$index, scope.row)">
+                <el-icon class="el-icon-delete" />
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -97,7 +101,7 @@
         :rules="addApiForm.rule"
       >
         <el-form-item label="接口路径" prop="url">
-          <el-input v-model="addApiForm.data.url" />
+          <el-autocomplete v-model="addApiForm.data.url" :fetch-suggestions="listUrlSuggest" @select="handleUrlSelect" />
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input v-model="addApiForm.data.description" />
@@ -117,6 +121,7 @@ import {
   addRoleApi,
   deleteApi,
   listApiRolesVoByApiIds,
+  listApiSwaggerVo,
   listRole,
   pageApiRolesVo,
   removeRoleApi,
@@ -171,6 +176,7 @@ export default {
           description: null
         },
         showDialog: false,
+        urlSuggestList: null,
         rule: {
           url: [{required: true, message: '请输入接口路径', trigger: 'blur'}],
           description: [{required: true, message: '请输入描述', trigger: 'blur'}]
@@ -288,6 +294,21 @@ export default {
           this.apiListTable.currClick.roles.splice(index, 1);
         }
       });
+    },
+    listUrlSuggest(queryString, cb) {
+      if (this.addApiForm.urlSuggestList) {
+        cb(this.addApiForm.urlSuggestList.filter(o => o.url.includes(queryString)));
+        return;
+      }
+      listApiSwaggerVo().then(res => {
+        res.data.forEach(o => { o.value = o.description ? `${o.url} | ${o.description}` : o.url; });
+        this.addApiForm.urlSuggestList = res.data;
+        cb(res.data);
+      });
+    },
+    handleUrlSelect(item) {
+      this.addApiForm.data.url = item.url;
+      this.addApiForm.data.description = item.description;
     }
   }
 };
@@ -334,6 +355,10 @@ export default {
       font-size: 14px;
       text-align: center;
     }
+  }
+
+  ::v-deep .el-autocomplete .el-input {
+    width: 436px !important;
   }
 }
 </style>
