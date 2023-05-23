@@ -1,5 +1,6 @@
 package top.cadecode.uniboot.controller.system;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,17 +12,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import top.cadecode.uniboot.common.annotation.ApiFormat;
 import top.cadecode.uniboot.common.response.PageResult;
 import top.cadecode.uniboot.system.bean.po.SysApi;
 import top.cadecode.uniboot.system.bean.vo.SysApiVo.SysApiRolesVo;
+import top.cadecode.uniboot.system.bean.vo.SysApiVo.SysApiSwaggerVo;
 import top.cadecode.uniboot.system.convert.SysApiConvert;
 import top.cadecode.uniboot.system.service.SysApiService;
 import top.cadecode.uniboot.system.service.SysRoleService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static top.cadecode.uniboot.system.request.SysApiRequest.*;
 
@@ -42,6 +51,11 @@ public class SysApiController {
 
     private final SysApiService sysApiService;
     private final SysRoleService sysRoleService;
+
+    /**
+     * 获取全部接口的处理器 mapping
+     */
+    private final RequestMappingHandlerMapping handlerMapping;
 
     @ApiOperation("查询API列表（带角色）")
     @PostMapping("page_roles_vo")
@@ -79,4 +93,26 @@ public class SysApiController {
         return sysApiService.listRolesVoByApiIds(apiIdList);
     }
 
+    @ApiOperation("获取全部接口及 swagger 注解")
+    @PostMapping("list_swagger_vo")
+    public Set<SysApiSwaggerVo> listSwaggerVo() {
+        Map<RequestMappingInfo, HandlerMethod> methodMap = handlerMapping.getHandlerMethods();
+        return methodMap.entrySet()
+                .stream()
+                .map(e -> {
+                    ArrayList<String> urlList = new ArrayList<>(e.getKey().getPatternsCondition().getPatterns());
+                    String url = null;
+                    if (ObjectUtil.isNotEmpty(urlList)) {
+                        url = urlList.get(0);
+                    }
+                    ApiOperation operation = e.getValue().getMethod().getAnnotation(ApiOperation.class);
+                    String description = null;
+                    if (ObjectUtil.isNotNull(operation)) {
+                        description = operation.value();
+                    }
+                    return SysApiSwaggerVo.builder().url(url).description(description).build();
+                })
+                .filter(o -> ObjectUtil.isNotEmpty(o.getUrl()))
+                .collect(Collectors.toSet());
+    }
 }

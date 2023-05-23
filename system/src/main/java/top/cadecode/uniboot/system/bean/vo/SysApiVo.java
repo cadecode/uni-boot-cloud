@@ -1,6 +1,9 @@
 package top.cadecode.uniboot.system.bean.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
@@ -29,5 +32,16 @@ public class SysApiVo {
         private String updateUser;
 
         private List<String> roles;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class SysApiSwaggerVo {
+
+        private String url;
+
+        private String description;
     }
 }
