@@ -1,5 +1,6 @@
 package top.cadecode.uniboot.framework.security.voter;
 
+import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.vote.RoleVoter;
@@ -60,6 +61,11 @@ public class DataBaseRoleVoter extends RoleVoter {
         // 数据库没有配置就弃权
         if (Objects.isNull(sysApiRolesVo)) {
             return ACCESS_ABSTAIN;
+        }
+        // 如果该 api 配置没有关联角色，则通过
+        // stream().noneMatch 表示没有符合条件的
+        if (sysApiRolesVo.getRoles().stream().noneMatch(ObjectUtil::isNotNull)) {
+            return ACCESS_GRANTED;
         }
         // 取用户 token 内角色和数据库查询出角色的交集
         roles.retainAll(sysApiRolesVo.getRoles());
