@@ -488,9 +488,6 @@ export default {
       // 查询role列表
       listRole().then(res => {
         this.roleTree.data = res.data;
-        this.roleTree.data.forEach(o => {
-          o.isLeaf = true;
-        });
       });
     },
     menuListTableClick(curr, old) {
