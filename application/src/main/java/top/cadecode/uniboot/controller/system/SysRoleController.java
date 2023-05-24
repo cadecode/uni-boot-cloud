@@ -1,21 +1,28 @@
 package top.cadecode.uniboot.controller.system;
 
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.cadecode.uniboot.common.annotation.ApiFormat;
+import top.cadecode.uniboot.common.response.PageResult;
 import top.cadecode.uniboot.system.bean.po.SysRole;
 import top.cadecode.uniboot.system.bean.vo.SysRoleVo.SysRoleListVo;
+import top.cadecode.uniboot.system.bean.vo.SysRoleVo.SysRoleUnionVo;
 import top.cadecode.uniboot.system.convert.SysRoleConvert;
+import top.cadecode.uniboot.system.request.SysRoleRequest;
 import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleMappingRequest;
+import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleUnionRequest;
 import top.cadecode.uniboot.system.service.SysRoleService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
@@ -77,5 +84,43 @@ public class SysRoleController {
     @PostMapping("remove_api_mapping")
     public boolean removeApiMapping(@RequestBody @NotEmpty List<SysRoleMappingRequest> request) {
         return sysRoleService.removeRoleApi(request) > 0;
+    }
+
+    @ApiOperation("查询角色列表（带菜单、api）")
+    @PostMapping("page_union_vo")
+    public PageResult<SysRoleUnionVo> pageUnionVo(@RequestBody @Valid SysRoleUnionRequest request) {
+        PageInfo<SysRoleUnionVo> page = sysRoleService.pageUnionVo(request);
+        return new PageResult<>((int) page.getTotal(), page.getList());
+    }
+
+    @ApiOperation("查询角色列表（带菜单、api）byRoleIds")
+    @PostMapping("list_union_vo_by_role_ids")
+    public List<SysRoleUnionVo> listUnionVoByRoleIds(@RequestBody @NotEmpty List<Long> roleIds) {
+        return sysRoleService.listUnionVoByRoleIds(roleIds);
+    }
+
+    @ApiOperation("更新角色")
+    @PostMapping("update")
+    public boolean update(@RequestBody @Valid SysRoleRequest.SysRoleUpdateRequest request) {
+        SysRole po = SysRoleConvert.INSTANCE.requestToPo(request);
+        return sysRoleService.updateById(po);
+    }
+
+    @ApiOperation("添加角色")
+    @PostMapping("add")
+    public boolean add(@RequestBody @Valid SysRoleRequest.SysRoleAddRequest request) {
+        SysRole sysRole = SysRoleConvert.INSTANCE.requestToPo(request);
+        return sysRoleService.save(sysRole);
+    }
+
+    @ApiOperation("删除角色（多选）")
+    @PostMapping("delete")
+    @Transactional(rollbackFor = Exception.class)
+    public boolean delete(@RequestBody @NotEmpty List<Long> roleIdList) {
+        // 清理角色绑定关系
+        sysRoleService.removeRoleApiByRoleIds(roleIdList);
+        sysRoleService.removeRoleMenuByRoleIds(roleIdList);
+        sysRoleService.removeRoleUserByRoleIds(roleIdList);
+        return sysRoleService.removeBatchByIds(roleIdList);
     }
 }
