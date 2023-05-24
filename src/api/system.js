@@ -1,5 +1,5 @@
 import request from '@/util/request';
-
+// user
 export function pageUserRolesVo(data) {
   return request({
     url: '/system/user/page_roles_vo',
@@ -88,7 +88,7 @@ export function removeRoleUser(data) {
     messagePrefix: '删除用户角色绑定'
   });
 }
-
+// menu
 export function pageMenuRolesVo(data) {
   return request({
     url: '/system/menu/page_roles_vo',
@@ -170,7 +170,7 @@ export function removeRoleMenu(data) {
     messagePrefix: '删除菜单角色绑定'
   });
 }
-
+// api
 export function pageApiRolesVo(data) {
   return request({
     url: '/system/api/page_roles_vo',
@@ -260,4 +260,52 @@ export function listApiSwaggerVo(data) {
     data
   });
 }
+// role
+export function updateRole(data) {
+  return request({
+    url: '/system/role/update',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '更新角色'
+  });
+}
 
+export function addRole(data) {
+  return request({
+    url: '/system/role/add',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '添加角色'
+  });
+}
+
+export function deleteRole(data) {
+  return request({
+    url: '/system/role/delete',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '删除角色'
+  });
+}
+
+export function pageRoleUnionVo(data) {
+  return request({
+    url: '/system/role/page_union_vo',
+    method: 'post',
+    data
+  });
+}
+
+export function listRoleUnionVoByRoleIds(data) {
+  return request({
+    url: '/system/role/list_union_vo_by_role_ids',
+    method: 'post',
+    data
+  });
+}
