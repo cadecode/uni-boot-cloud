@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.cadecode.uniboot.system.mapper.SysRoleMapper">
+    <resultMap id="SysRoleUnionVoMap" type="top.cadecode.uniboot.system.bean.vo.SysRoleVo$SysRoleUnionVo">
+        <result column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="m_id" property="menus" typeHandler="ObjToStrTypeHandler"/>
+        <result column="a_id" property="apis" typeHandler="ObjToStrTypeHandler"/>
+    </resultMap>
     <select id="selectByUserIds" resultType="top.cadecode.uniboot.system.bean.po.SysRole">
         SELECT *
         FROM sys_role_user ru
@@ -36,6 +47,45 @@
             </foreach>
             )
         </if>
+    </select>
+    <select id="selectRolesVo" resultMap="SysRoleUnionVoMap">
+        SELECT sr.*, JSON_ARRAYAGG(sm.id) m_id, JSON_ARRAYAGG(sa.id) a_id
+        FROM sys_role sr
+        LEFT JOIN sys_role_menu srm ON srm.role_id = sr.id
+        LEFT JOIN sys_role_api sra ON sra.role_id = sr.id
+        LEFT JOIN sys_menu sm ON srm.menu_id = sm.id
+        LEFT JOIN sys_api sa ON sra.api_id = sa.id
+        <if test="request != null">
+            <where>
+                <if test="request.code != null and request.code.length > 0">
+                    <bind name="bindCode" value="'%' + request.code + '%'"/>
+                    sr.code like #{bindCode}
+                </if>
+                <if test="request.name != null and request.name.length > 0">
+                    <bind name="bindName" value="'%' + request.name + '%'"/>
+                    AND sr.name like #{bindName}
+                </if>
+            </where>
+        </if>
+        GROUP BY sr.id, sr.code
+        ORDER BY sr.code
+    </select>
+    <select id="selectRolesVoByRoleIds" resultMap="SysRoleUnionVoMap">
+        SELECT sr.*, JSON_ARRAYAGG(sm.id) m_id, JSON_ARRAYAGG(sa.id) a_id
+        FROM sys_role sr
+        LEFT JOIN sys_role_menu srm ON srm.role_id = sr.id
+        LEFT JOIN sys_role_api sra ON sra.role_id = sr.id
+        LEFT JOIN sys_menu sm ON srm.menu_id = sm.id
+        LEFT JOIN sys_api sa ON sra.api_id = sa.id
+        <if test="roleIds != null and roleIds.size > 0">
+            WHERE sr.id IN (
+            <foreach collection="roleIds" item="roleId" separator=",">
+                #{roleId}
+            </foreach>
+            )
+        </if>
+        GROUP BY sr.id, sr.code
+        ORDER BY sr.code
     </select>
     <delete id="deleteRoleUserByUserIds">
         DELETE FROM sys_role_user ru

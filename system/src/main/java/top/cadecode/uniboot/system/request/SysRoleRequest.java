@@ -1,7 +1,9 @@
 package top.cadecode.uniboot.system.request;
 
 import lombok.Data;
+import top.cadecode.uniboot.common.response.PageParams;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -18,5 +20,30 @@ public class SysRoleRequest {
         private Long id;
         @NotNull
         private Long roleId;
+    }
+
+    @Data
+    public static class SysRoleUnionRequest extends PageParams {
+        private String code;
+        private String name;
+    }
+
+    @Data
+    public static class SysRoleUpdateRequest {
+        @NotNull
+        private Long id;
+        private String code;
+        private String name;
+        private String description;
+    }
+
+    @Data
+    public static class SysRoleAddRequest {
+        @NotEmpty
+        private String code;
+        @NotEmpty
+        private String name;
+        @NotEmpty
+        private String description;
     }
 }

@@ -1,11 +1,15 @@
 package top.cadecode.uniboot.system.serviceimpl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.cadecode.uniboot.system.bean.po.SysRole;
+import top.cadecode.uniboot.system.bean.vo.SysRoleVo.SysRoleUnionVo;
 import top.cadecode.uniboot.system.mapper.SysRoleMapper;
 import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleMappingRequest;
+import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleUnionRequest;
 import top.cadecode.uniboot.system.service.SysRoleService;
 
 import java.util.List;
@@ -95,5 +99,21 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public int addRoleApi(List<SysRoleMappingRequest> list) {
         return sysRoleMapper.insertRoleApi(list);
+    }
+
+    @Override
+    public List<SysRoleUnionVo> listUnionVo(SysRoleUnionRequest request) {
+        return sysRoleMapper.selectRolesVo(request);
+    }
+
+    @Override
+    public PageInfo<SysRoleUnionVo> pageUnionVo(SysRoleUnionRequest request) {
+        return PageHelper.startPage(request.getPageNumber(), request.getPageSize())
+                .doSelectPageInfo(() -> listUnionVo(request));
+    }
+
+    @Override
+    public List<SysRoleUnionVo> listUnionVoByRoleIds(List<Long> roleIds) {
+        return sysRoleMapper.selectRolesVoByRoleIds(roleIds);
     }
 }

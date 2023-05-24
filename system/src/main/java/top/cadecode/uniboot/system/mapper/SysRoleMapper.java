@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import top.cadecode.uniboot.system.bean.po.SysRole;
+import top.cadecode.uniboot.system.bean.vo.SysRoleVo.SysRoleUnionVo;
 import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleMappingRequest;
+import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleUnionRequest;
 
 import java.util.List;
 
@@ -46,5 +48,9 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
     int insertRoleMenu(List<SysRoleMappingRequest> list);
 
     int insertRoleApi(List<SysRoleMappingRequest> list);
-    
+
+    List<SysRoleUnionVo> selectRolesVo(@Param("request") SysRoleUnionRequest request);
+
+    List<SysRoleUnionVo> selectRolesVoByRoleIds(@Param("roleIds") List<Long> roleIds);
+
 }

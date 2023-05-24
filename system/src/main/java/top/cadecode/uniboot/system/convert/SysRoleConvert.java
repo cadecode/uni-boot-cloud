@@ -4,6 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import top.cadecode.uniboot.system.bean.po.SysRole;
 import top.cadecode.uniboot.system.bean.vo.SysRoleVo.SysRoleListVo;
+import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleAddRequest;
+import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleUpdateRequest;
 
 import java.util.List;
 
@@ -22,4 +24,7 @@ public interface SysRoleConvert {
 
     List<SysRoleListVo> poToListVo(List<SysRole> po);
 
+    SysRole requestToPo(SysRoleUpdateRequest request);
+
+    SysRole requestToPo(SysRoleAddRequest request);
 }

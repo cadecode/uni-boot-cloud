@@ -1,8 +1,11 @@
 package top.cadecode.uniboot.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.github.pagehelper.PageInfo;
 import top.cadecode.uniboot.system.bean.po.SysRole;
+import top.cadecode.uniboot.system.bean.vo.SysRoleVo.SysRoleUnionVo;
 import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleMappingRequest;
+import top.cadecode.uniboot.system.request.SysRoleRequest.SysRoleUnionRequest;
 
 import java.util.List;
 
@@ -43,4 +46,10 @@ public interface SysRoleService extends IService<SysRole> {
     int addRoleMenu(List<SysRoleMappingRequest> list);
 
     int addRoleApi(List<SysRoleMappingRequest> list);
+
+    List<SysRoleUnionVo> listUnionVo(SysRoleUnionRequest request);
+
+    PageInfo<SysRoleUnionVo> pageUnionVo(SysRoleUnionRequest request);
+
+    List<SysRoleUnionVo> listUnionVoByRoleIds(List<Long> roleIds);
 }
