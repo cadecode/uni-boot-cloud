@@ -61,6 +61,7 @@
           node-key="id"
           show-checkbox
           lazy
+          check-strictly
           @check="menuCheck"
         />
         <span v-else class="no-curr-text">请先点击表格选择一行数据</span>
@@ -321,19 +322,17 @@ export default {
     menuCheck(obj, state) {
       const checked = state.checkedNodes.includes(obj);
       if (checked) {
-        addRoleMenu([{id: this.roleListTable.currClick.id, roleId: obj.id}]).then(res => {
+        addRoleMenu([{roleId: this.roleListTable.currClick.id, id: obj.id}]).then(res => {
           if (res.data) {
             // 添加到对象中
-            this.roleListTable.currClick.roles.push(obj.code);
+            this.roleListTable.currClick.menus.push(obj.id);
           }
         });
         return;
       }
-      removeRoleMenu([{id: this.roleListTable.currClick.id, roleId: obj.id}]).then(res => {
+      removeRoleMenu([{roleId: this.roleListTable.currClick.id, id: obj.id}]).then(res => {
         if (res.data) {
-          // 删除该角色
-          const index = this.roleListTable.currClick.roles.indexOf(obj.code);
-          this.roleListTable.currClick.roles.splice(index, 1);
+          this.roleListTable.currClick.menus = this.roleListTable.currClick.menus.filter(o => o !== obj.id);
         }
       });
     },
@@ -343,16 +342,14 @@ export default {
         addRoleApi([{roleId: this.roleListTable.currClick.id, id: obj.id}]).then(res => {
           if (res.data) {
             // 添加到对象中
-            this.roleListTable.currClick.roles.push(obj.code);
+            this.roleListTable.currClick.apis.push(obj.id);
           }
         });
         return;
       }
       removeRoleApi([{roleId: this.roleListTable.currClick.id, id: obj.id}]).then(res => {
         if (res.data) {
-          // 删除该角色
-          const index = this.roleListTable.currClick.roles.indexOf(obj.code);
-          this.roleListTable.currClick.roles.splice(index, 1);
+          this.roleListTable.currClick.apis = this.roleListTable.currClick.apis.filter(o => o !== obj.id);
         }
       });
     }
