@@ -113,6 +113,7 @@ public class SysApiController {
                     return SysApiSwaggerVo.builder().url(url).description(description).build();
                 })
                 .filter(o -> ObjectUtil.isNotEmpty(o.getUrl()))
+                .distinct()
                 .sorted(Comparator.comparing(SysApiSwaggerVo::getUrl))
                 .collect(Collectors.toList());
     }
