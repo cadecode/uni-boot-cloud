@@ -45,14 +45,14 @@ public class SysMenuController {
     private final SysMenuService sysMenuService;
     private final SysRoleService sysRoleService;
 
-    @ApiOperation("查询用户列表（带角色）")
+    @ApiOperation("查询菜单列表（带角色）")
     @PostMapping("page_roles_vo")
     public PageResult<SysMenuRolesVo> pageRolesVo(@RequestBody @Valid SysMenuRolesRequest request) {
         PageInfo<SysMenuRolesVo> rolesVoPage = sysMenuService.pageRolesVo(request);
         return new PageResult<>((int) rolesVoPage.getTotal(), rolesVoPage.getList());
     }
 
-    @ApiOperation("更新用户启用状态")
+    @ApiOperation("更新菜单启用状态")
     @PostMapping("update_enable")
     public boolean updateEnable(@RequestBody @Valid SysMenuUpdateEnableRequest request) {
         return sysMenuService.updateById(SysMenu.builder()
@@ -61,21 +61,21 @@ public class SysMenuController {
                 .build());
     }
 
-    @ApiOperation("更新用户")
+    @ApiOperation("更新菜单")
     @PostMapping("update")
     public boolean update(@RequestBody @Valid SysMenuUpdateRequest request) {
         SysMenu sysMenu = SysMenuConvert.INSTANCE.requestToPo(request);
         return sysMenuService.updateById(sysMenu);
     }
 
-    @ApiOperation("添加用户")
+    @ApiOperation("添加菜单")
     @PostMapping("add")
     public boolean add(@RequestBody @Valid SysMenuAddRequest request) {
         SysMenu sysMenu = SysMenuConvert.INSTANCE.requestToPo(request);
         return sysMenuService.save(sysMenu);
     }
 
-    @ApiOperation("删除用户（多选）")
+    @ApiOperation("删除菜单（多选）")
     @PostMapping("delete")
     @Transactional(rollbackFor = Exception.class)
     public boolean delete(@RequestBody @NotEmpty List<Long> menuIdList) {
@@ -97,7 +97,7 @@ public class SysMenuController {
         return sysMenuService.removeBatchByIds(menuIdList);
     }
 
-    @ApiOperation("获取用户（带角色）byMenuIds")
+    @ApiOperation("获取菜单（带角色）byMenuIds")
     @PostMapping("list_roles_vo_by_menu_ids")
     public List<SysMenuRolesVo> listRolesVoByMenuIds(@RequestBody @NotEmpty List<Long> menuIdList) {
         return sysMenuService.listRolesVoByMenuIds(menuIdList);
