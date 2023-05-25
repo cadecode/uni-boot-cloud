@@ -373,7 +373,8 @@ export default {
           }
           // 没修改成功则刷回原值
           row.enableFlag = !flag;
-        });
+        })
+        .catch(() => { row.enableFlag = !flag; });
     },
     updateMenu(index, row) {
       this.updateMenuForm.showDialog = true;
