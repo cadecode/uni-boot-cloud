@@ -68,7 +68,7 @@
           show-checkbox
           @check="roleCheck"
         />
-        <span v-else class="no-curr-text">请先点击表格选择一行数据</span>
+        <el-empty v-else description="请先点击表格选择一行数据" />
       </el-tab-pane>
     </el-tabs>
     <el-dialog title="更新API" :visible.sync="updateApiForm.showDialog" width="30%">
@@ -341,16 +341,6 @@ export default {
 
     ::v-deep .el-tree-node__expand-icon {
       display: none;
-    }
-
-    .no-curr-text {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      color: #909399;
-      font-size: 14px;
-      text-align: center;
     }
   }
 
