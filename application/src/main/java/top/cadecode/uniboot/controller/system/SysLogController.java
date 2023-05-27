@@ -47,7 +47,8 @@ public class SysLogController {
                 .setEntity(SysLog.builder()
                         .exceptional(request.getExceptional())
                         .build())
-                .eq(ObjectUtil.isNotEmpty(request.getCreateTime()), SysLog::getCreateTime, request.getCreateTime())
+                .ge(ObjectUtil.isNotEmpty(request.getStartTime()), SysLog::getCreateTime, request.getStartTime())
+                .le(ObjectUtil.isNotEmpty(request.getEndTime()), SysLog::getCreateTime, request.getEndTime())
                 .in(ObjectUtil.isNotEmpty(request.getLogTypeList()), SysLog::getLogType, request.getLogTypeList())
                 .likeRight(ObjectUtil.isNotEmpty(request.getAccessUser()), SysLog::getAccessUser, request.getAccessUser())
                 .like(ObjectUtil.isNotEmpty(request.getUrl()), SysLog::getUrl, request.getUrl())
@@ -57,7 +58,7 @@ public class SysLogController {
         return new PageResult<>((int) page.getTotal(), voList);
     }
 
-    @ApiOperation("查询列表")
+    @ApiOperation("删除")
     @PostMapping("delete")
     public boolean delete(@RequestBody @NotEmpty List<Long> idList) {
         return logService.removeBatchByIds(idList);
