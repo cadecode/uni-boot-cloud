@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -143,12 +144,20 @@ public class ApiLoggerAspect {
             paramsJson = ExceptionUtil.stacktraceToString(e);
             log.warn("API log [{}]: request params to json fail", apiLogger.type().getType(), e);
         }
+        // 获取描述
+        String description = apiLogger.description();
+        if (ObjectUtil.isEmpty(description)) {
+            ApiOperation apiOperation = ((MethodSignature) point.getSignature()).getMethod().getAnnotation(ApiOperation.class);
+            if (ObjectUtil.isNotNull(apiOperation)) {
+                description = apiOperation.value();
+            }
+        }
         return SysLogInfoDto.builder()
                 .logType(apiLogger.type())
                 .classMethod(point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName())
                 .exceptional(exceptional)
                 .accessUser(TokenAuthHolder.getUsername())
-                .description(apiLogger.description())
+                .description(description)
                 .url(request.getRequestURL().toString())
                 .threadId(Long.toString(Thread.currentThread().getId()))
                 .threadName(Thread.currentThread().getName())
