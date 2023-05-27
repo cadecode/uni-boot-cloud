@@ -92,7 +92,7 @@
           <el-table-column property="parentId" label="父级ID" width="170px" />
           <el-table-column property="routePath" label="路由路径" width="300px" />
           <el-table-column property="componentPath" label="组件路径" width="300px" />
-          <el-table-column property="leafFlag" label="是否页面" />
+          <el-table-column property="leafFlag" label="是否页面" :formatter="(row, col, cell) => cell?'是':'否'" />
           <el-table-column property="icon" label="图标" width="150px" />
         </el-table>
         <el-pagination
