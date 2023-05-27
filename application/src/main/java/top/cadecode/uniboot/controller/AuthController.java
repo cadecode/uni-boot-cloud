@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.cadecode.uniboot.common.annotation.ApiFormat;
+import top.cadecode.uniboot.common.annotation.ApiLogger;
+import top.cadecode.uniboot.common.enums.LogTypeEnum;
 import top.cadecode.uniboot.common.response.ApiResult;
 import top.cadecode.uniboot.common.util.JacksonUtil;
 import top.cadecode.uniboot.framework.config.SecurityConfig;
@@ -38,6 +40,7 @@ public class AuthController {
     /**
      * 复用Security login接口，方便swagger展示
      */
+    @ApiLogger(type = LogTypeEnum.AUTH, enableSave = true, description = "用户登录")
     @ApiOperation("登录")
     @PostMapping("login")
     public ApiResult<?> login(HttpServletRequest request, HttpServletResponse response,
@@ -54,9 +57,10 @@ public class AuthController {
     /**
      * 复用Security logout接口，方便swagger展示
      */
+    @ApiLogger(type = LogTypeEnum.AUTH, enableSave = true, description = "用户注销")
     @ApiOperation("注销")
     @PostMapping("logout")
-    public ApiResult<?> login(HttpServletRequest request, HttpServletResponse response) {
+    public ApiResult<?> logout(HttpServletRequest request, HttpServletResponse response) {
         String replacedURL = request.getRequestURL().toString().replace("/auth/logout", SecurityConfig.LOGOUT_URL);
         HttpResponse loginRes = HttpUtil.createPost(replacedURL)
                 .header(tokenAuthHolder.getHeader(), request.getHeader(tokenAuthHolder.getHeader()))
