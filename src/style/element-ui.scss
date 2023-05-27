@@ -47,3 +47,8 @@
 .el-range-separator {
   box-sizing: content-box;
 }
+
+// 解决表格固定列，左右滑动滚动条被遮盖
+.el-table__body-wrapper {
+  z-index: 2;
+}
