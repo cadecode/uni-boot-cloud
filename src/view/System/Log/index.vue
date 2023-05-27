@@ -2,6 +2,15 @@
   <div class="log-management-container">
     <div class="log-management-filter">
       <el-form ref="logsFilterForm" size="small" inline :model="logsFilterForm.data" :rules="logsFilterForm.rules">
+        <el-form-item label="日期" prop="createTimeRange">
+          <el-date-picker
+            v-model="logsFilterForm.data.createTimeRange"
+            type="datetimerange"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="yyyy-MM-dd HH:mm:ss"
+          />
+        </el-form-item>
         <el-form-item label="日志类型" prop="logTypeList">
           <el-select v-model="logsFilterForm.data.logTypeList" collapse-tags multiple filterable placeholder="请选择">
             <el-option
@@ -40,7 +49,7 @@
           @current-change="logListTableClick"
         >
           <el-table-column property="id" label="ID" width="170px" fixed />
-          <el-table-column property="logType" label="日志类型" width="80px" fixed />
+          <el-table-column property="logType" label="日志类型" width="120px" fixed />
           <el-table-column property="url" label="URL" width="400px" fixed show-overflow-tooltip />
           <el-table-column
             property="exceptional"
@@ -107,7 +116,7 @@ export default {
     return {
       logsFilterForm: {
         data: {
-          createTime: null,
+          createTimeRange: [],
           logTypeList: null,
           url: null,
           accessUser: null,
@@ -167,6 +176,8 @@ export default {
       // 分页插件回调传递当前页号
       const data = {
         ...this.logsFilterForm.data,
+        startTime: this.logsFilterForm.data.createTimeRange[0],
+        endTime: this.logsFilterForm.data.createTimeRange[1],
         pageNumber: currPage,
         pageSize: this.logListTable.page.pageSize
       };
