@@ -18,7 +18,8 @@ public class SysLogRequest {
     @Data
     public static class SysLogPageRequest extends PageParams {
 
-        private Date createTime;
+        private Date startTime;
+        private Date endTime;
         private List<LogTypeEnum> logTypeList;
         private String url;
         private String accessUser;
