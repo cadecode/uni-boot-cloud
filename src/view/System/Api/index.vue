@@ -33,7 +33,7 @@
         >
           <el-table-column property="id" label="ID" width="170px" fixed />
           <el-table-column property="url" label="接口路径" width="280px" fixed />
-          <el-table-column property="description" label="描述" width="298px" fixed />
+          <el-table-column property="description" label="描述" width="298px" fixed show-overflow-tooltip />
           <el-table-column property="updateTime" label="更新时间" width="150px" />
           <el-table-column property="updateUser" label="更新人" width="160px" />
           <el-table-column property="createTime" label="创建时间" width="150px" />

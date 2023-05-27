@@ -58,8 +58,8 @@
               <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)"><el-icon class="el-icon-delete" /></el-button>
             </template>
           </el-table-column>
-          <el-table-column property="phone" label="电话" width="150px" />
-          <el-table-column property="mail" label="邮箱" width="150px" />
+          <el-table-column property="phone" label="电话" width="150px" show-overflow-tooltip />
+          <el-table-column property="mail" label="邮箱" width="150px" show-overflow-tooltip />
           <el-table-column property="loginIp" label="登录IP" width="150px" />
           <el-table-column property="loginDate" label="登录时间" width="150px" />
         </el-table>

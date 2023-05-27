@@ -40,7 +40,7 @@
               </el-button>
             </template>
           </el-table-column>
-          <el-table-column property="description" label="描述" width="300px" />
+          <el-table-column property="description" label="描述" width="300px" show-overflow-tooltip />
         </el-table>
         <el-pagination
           layout="prev, pager, next"
