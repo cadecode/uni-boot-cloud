@@ -179,17 +179,6 @@ export function pageApiRolesVo(data) {
   });
 }
 
-export function updateApiEnable(data) {
-  return request({
-    url: '/system/api/update_enable',
-    method: 'post',
-    data
-  }, {
-    messageFn: res => res.data,
-    messagePrefix: '更新启用状态'
-  });
-}
-
 export function updateApi(data) {
   return request({
     url: '/system/api/update',
@@ -307,5 +296,24 @@ export function listRoleUnionVoByRoleIds(data) {
     url: '/system/role/list_union_vo_by_role_ids',
     method: 'post',
     data
+  });
+}
+
+export function pageLog(data) {
+  return request({
+    url: '/system/log/page',
+    method: 'post',
+    data
+  });
+}
+
+export function deleteLog(data) {
+  return request({
+    url: '/system/log/delete',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '删除日志'
   });
 }
