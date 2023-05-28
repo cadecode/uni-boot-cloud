@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
+import com.dtp.core.thread.DtpExecutor;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -45,6 +47,8 @@ import java.util.Map;
 @Aspect
 @Component
 public class ApiLoggerAspect {
+
+    private final DtpExecutor asyncExecutor;
 
     private final SysLogService logService;
 
@@ -121,7 +125,16 @@ public class ApiLoggerAspect {
                 }
             }
             SysLogInfoDto logInfo = generateLogInfo(point, apiLogger, exceptional, attributes.getRequest(), resultStr, timeCost);
-            logAndSave(apiLogger, logInfo);
+            // 打印日志
+            log.info("API log [{}]: {}", apiLogger.type().getType(), JacksonUtil.toJson(logInfo));
+            // 持久化 异步
+            asyncExecutor.execute(() -> {
+                try {
+                    save(apiLogger, logInfo);
+                } catch (Exception e) {
+                    log.warn("API log [{}]: save async fail", apiLogger.type().getType(), e);
+                }
+            });
         } catch (Exception e) {
             log.warn("API log [{}]: handle logger fail", apiLogger.type().getType(), e);
         }
@@ -206,10 +219,8 @@ public class ApiLoggerAspect {
     /**
      * 持久化日志
      */
-    private void logAndSave(ApiLogger apiLogger, SysLogInfoDto logInfo) {
-        // 打印日志
-        log.info("API log [{}]: {}", apiLogger.type().getType(), JacksonUtil.toJson(logInfo));
-        // 持久化
+    @Async
+    public void save(ApiLogger apiLogger, SysLogInfoDto logInfo) {
         if (!apiLogger.enableSave()) {
             return;
         }
