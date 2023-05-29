@@ -75,7 +75,17 @@ div:focus {
   }
 }
 
-// main-container global css
+// 页面组件根元素样式
 .app-container {
-  padding: 20px;
+  padding: 10px 20px;
 }
+
+// 固定大小在可视区域内
+.app-container-fixed {
+  padding: 10px 20px;
+  // AppNavbar 50px
+  height: calc(100vh - 50px);
+  overflow: hidden;
+}
+
+
