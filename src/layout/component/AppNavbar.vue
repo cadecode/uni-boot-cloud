@@ -1,9 +1,7 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
-    <breadcrumb class="breadcrumb-container" />
-
+    <app-hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <app-breadcrumb class="breadcrumb-container" />
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
@@ -27,16 +25,16 @@
     </div>
   </div>
 </template>
-
 <script>
 import {mapGetters} from 'vuex';
-import Breadcrumb from '@/component/Breadcrumb/index.vue';
-import Hamburger from '@/component/Hamburger/index.vue';
+import AppHamburger from '@/layout/component/AppHamburger.vue';
+import AppBreadcrumb from '@/layout/component/AppBreadcrumb.vue';
 
 export default {
+  name: 'AppNavbar',
   components: {
-    Breadcrumb,
-    Hamburger
+    AppBreadcrumb,
+    AppHamburger
   },
   computed: {
     ...mapGetters([

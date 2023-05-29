@@ -12,14 +12,13 @@
     </transition>
   </div>
 </template>
-
 <script>
 import settings from '@/settings';
 
 const {title, sidebarLogoSrc} = settings;
 
 export default {
-  name: 'SidebarLogo',
+  name: 'AppSidebarLogo',
   props: {
     collapse: {
       type: Boolean,
@@ -34,7 +33,6 @@ export default {
   }
 };
 </script>
-
 <style lang="scss" scoped>
 .sidebarLogoFade-enter-active {
   transition: opacity 1.5s;

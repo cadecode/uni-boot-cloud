@@ -1,30 +1,29 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
+    <app-sidebar class="sidebar-container" />
     <div class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
+        <app-navbar />
       </div>
       <app-main />
     </div>
   </div>
 </template>
-
 <script>
 import AppMain from '@/layout/component/AppMain.vue';
-import Navbar from '@/layout/component/Navbar.vue';
-import Sidebar from '@/layout/component/Sidebar';
-import ResizeMixin from '@/layout/mixin/ResizeHandler';
+import AppNavbar from '@/layout/component/AppNavbar.vue';
+import AppSidebar from '@/layout/component/AppSidebar/index.vue';
+import ResizeHandler from '@/layout/mixin/ResizeHandler';
 
 export default {
   name: 'Layout',
   components: {
-    Navbar,
-    Sidebar,
+    AppNavbar,
+    AppSidebar,
     AppMain
   },
-  mixins: [ResizeMixin],
+  mixins: [ResizeHandler],
   computed: {
     sidebar() {
       return this.$store.state.app.sidebar;

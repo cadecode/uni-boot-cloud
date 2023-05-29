@@ -10,7 +10,7 @@
 import {isExternalUrl} from '@/util/common';
 
 export default {
-  name: 'SvgIcon',
+  name: 'BaseSvgIcon',
   props: {
     iconClass: {
       type: String,

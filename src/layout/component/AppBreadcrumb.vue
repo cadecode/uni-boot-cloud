@@ -1,7 +1,7 @@
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
-      <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
+      <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
         <span v-if="item.meta.noRedirect || index === levelList.length - 1" class="no-redirect">{{
           item.meta.title
         }}</span>
@@ -10,11 +10,11 @@
     </transition-group>
   </el-breadcrumb>
 </template>
-
 <script>
 import pathToRegexp from 'path-to-regexp';
 
 export default {
+  name: 'AppBreadcrumb',
   data() {
     return {
       levelList: null

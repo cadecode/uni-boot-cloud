@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'MenuItem',
+  name: 'AppSidebarItem',
   functional: true,
   props: {
     icon: {
@@ -25,7 +25,7 @@ export default {
       if (icon.includes('el-icon')) {
         vNodes.push(<i class={[icon, 'sub-el-icon']}/>);
       } else {
-        vNodes.push(<svg-icon icon-class={icon}/>);
+        vNodes.push(<base-svg-icon icon-class={icon}/>);
       }
     }
     // 使用slot插入el-menu-item

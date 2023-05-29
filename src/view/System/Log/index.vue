@@ -111,7 +111,7 @@
 import {deleteLog, pageLog} from '@/api/system';
 
 export default {
-  name: 'LogManagement',
+  name: 'VLogManagement',
   data() {
     return {
       logsFilterForm: {

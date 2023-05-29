@@ -20,7 +20,7 @@
 <script>
 
 export default {
-  name: 'Page404',
+  name: 'VPage404',
   computed: {
     message() {
       return '未找到页面资源，请联系站点管理员';

@@ -1,22 +1,22 @@
 <template>
   <div v-if="!item.hidden">
     <template v-if="hasOneShowingChild(item.children, item)">
-      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
+      <app-sidebar-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item
+          <app-sidebar-item
             :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
             :title="onlyOneChild.meta.title"
             :is-external="isExternalUrl(onlyOneChild.path)"
           />
         </el-menu-item>
-      </app-link>
+      </app-sidebar-link>
     </template>
 
     <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
+        <app-sidebar-item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
       </template>
-      <sidebar-item
+      <app-sidebar-menu
         v-for="child in item.children"
         :key="child.path"
         :is-nest="true"
@@ -31,13 +31,13 @@
 <script>
 import path from 'path';
 import {isExternalUrl} from '@/util/common';
-import Item from './Item.vue';
-import AppLink from './Link.vue';
 import FixIOSBug from '@/layout/mixin/FixIOSBug';
+import AppSidebarLink from '@/layout/component/AppSidebar/AppSidebarLink.vue';
+import AppSidebarItem from '@/layout/component/AppSidebar/AppSidebarItem.vue';
 
 export default {
-  name: 'SidebarItem',
-  components: {Item, AppLink},
+  name: 'AppSidebarMenu',
+  components: {AppSidebarItem, AppSidebarLink},
   mixins: [FixIOSBug],
   props: {
     item: {

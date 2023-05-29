@@ -1,6 +1,6 @@
 <template>
   <div :class="{'has-logo':showLogo}">
-    <logo v-if="showLogo" :collapse="isCollapse" />
+    <app-sidebar-logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
@@ -12,20 +12,20 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <app-sidebar-menu v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
   </div>
 </template>
-
 <script>
-import {mapGetters} from 'vuex';
-import Logo from './Logo.vue';
-import SidebarItem from './SidebarItem.vue';
 import variables from '@/style/variables.scss';
+import {mapGetters} from 'vuex';
+import AppSidebarMenu from '@/layout/component/AppSidebar/AppSidebarMenu.vue';
+import AppSidebarLogo from '@/layout/component/AppSidebar/AppSidebaeLogo.vue';
 
 export default {
-  components: {SidebarItem, Logo},
+  name: 'AppSidebar',
+  components: {AppSidebarLogo, AppSidebarMenu},
   computed: {
     ...mapGetters([
       'routes',

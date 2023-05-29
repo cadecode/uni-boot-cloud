@@ -9,7 +9,7 @@
                 {{ generateIconCode(item) }}
               </div>
               <div class="icon-item">
-                <svg-icon :icon-class="item" class-name="disabled" />
+                <base-svg-icon :icon-class="item" class-name="disabled" />
                 <span>{{ item }}</span>
               </div>
             </el-tooltip>
@@ -41,7 +41,7 @@ import svgIcons from './svg-icons';
 import elementIcons from './element-icons';
 
 export default {
-  name: 'Icons',
+  name: 'VIcon',
   data() {
     return {
       svgIcons,
@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     generateIconCode(symbol) {
-      return `<svg-icon icon-class="${symbol}" />`;
+      return `<base-svg-icon icon-class="${symbol}" />`;
     },
     generateElementIconCode(symbol) {
       return `<i class="el-icon-${symbol}" />`;

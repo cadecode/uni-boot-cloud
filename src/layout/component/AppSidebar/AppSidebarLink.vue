@@ -8,6 +8,7 @@
 import {isExternalUrl} from '@/util/common';
 
 export default {
+  name: 'AppSidebarLink',
   props: {
     to: {
       type: String,

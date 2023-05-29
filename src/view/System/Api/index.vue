@@ -129,7 +129,7 @@ import {
 } from '@/api/system';
 
 export default {
-  name: 'ApiManagement',
+  name: 'VApiManagement',
   data() {
     return {
       apisFilterForm: {

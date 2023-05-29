@@ -15,7 +15,7 @@
 
       <el-form-item prop="username">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          <base-svg-icon icon-class="user" />
         </span>
         <el-input
           ref="username"
@@ -30,7 +30,7 @@
 
       <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="password" />
+          <base-svg-icon icon-class="password" />
         </span>
         <el-input
           :key="passwordType"
@@ -44,7 +44,7 @@
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          <base-svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
 
@@ -67,7 +67,7 @@
 import {title} from '@/settings';
 
 export default {
-  name: 'Login',
+  name: 'VLogin',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (value.length < 1) {

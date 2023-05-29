@@ -177,7 +177,7 @@ import {
 } from '@/api/system';
 
 export default {
-  name: 'UserManagement',
+  name: 'VUserManagement',
   data() {
     return {
       usersFilterForm: {

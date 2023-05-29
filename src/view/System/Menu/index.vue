@@ -210,7 +210,7 @@ import {
 import {isExternalUrl} from '@/util/common';
 
 export default {
-  name: 'MenuManagement',
+  name: 'VMenuManagement',
   data() {
     return {
       menusFilterForm: {
