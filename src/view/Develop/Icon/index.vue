@@ -1,5 +1,5 @@
 <template>
-  <div class="icons-container">
+  <div class="app-container icon-container">
     <el-tabs type="border-card">
       <el-tab-pane label="Icons">
         <div class="grid">
@@ -63,9 +63,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.icons-container {
-  margin: 10px 20px 0;
-  overflow: hidden;
+.icon-container {
 
   .grid {
     position: relative;

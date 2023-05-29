@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-management-container">
+  <div class="app-container-fixed  menu-management-container">
     <div class="menu-management-filter">
       <el-form
         ref="menusFilterForm"
@@ -524,9 +524,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .menu-management-container {
-  height: calc(100vh - 60px);
-  margin: 10px 20px 0;
-  overflow: hidden;
 
   .menu-management-filter {
     height: 51px;

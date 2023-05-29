@@ -1,5 +1,5 @@
 <template>
-  <div class="user-management-container">
+  <div class="app-container-fixed user-management-container">
     <div class="user-management-filter">
       <el-form ref="usersFilterForm" size="small" inline :model="usersFilterForm.data" :rules="usersFilterForm.rules">
         <el-form-item label="用户名" prop="username">
@@ -369,9 +369,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .user-management-container {
-  height: calc(100vh - 60px);
-  margin: 10px 20px 0;
-  overflow: hidden;
 
   .user-management-filter {
     height: 51px;

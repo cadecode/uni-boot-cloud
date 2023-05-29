@@ -1,5 +1,5 @@
 <template>
-  <div class="api-management-container">
+  <div class="app-container-fixed api-management-container">
     <div class="api-management-filter">
       <el-form ref="apisFilterForm" size="small" inline :model="apisFilterForm.data" :rules="apisFilterForm.rules">
         <el-form-item label="接口路径" prop="url">
@@ -312,9 +312,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .api-management-container {
-  height: calc(100vh - 60px);
-  margin: 10px 20px 0;
-  overflow: hidden;
 
   .api-management-filter {
     height: 51px;

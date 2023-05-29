@@ -1,5 +1,5 @@
 <template>
-  <div class="log-management-container">
+  <div class="app-container-fixed log-management-container">
     <div class="log-management-filter">
       <el-form ref="logsFilterForm" size="small" inline :model="logsFilterForm.data" :rules="logsFilterForm.rules">
         <el-form-item label="日期" prop="createTimeRange">
@@ -202,9 +202,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .log-management-container {
-  height: calc(100vh - 60px);
-  margin: 10px 20px 0;
-  overflow: hidden;
 
   .log-management-filter {
     height: 51px;

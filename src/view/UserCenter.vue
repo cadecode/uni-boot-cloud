@@ -1,5 +1,5 @@
 <template>
-  <div class="user-center-container">
+  <div class="app-container-fixed user-center-container">
     <el-tabs type="border-card" class="user-center-info">
       <el-tab-pane label="个人资料">
         <el-descriptions :column="1" border>
@@ -164,9 +164,6 @@ export default {
 
 <style lang="scss" scoped>
 .user-center-container {
-  height: calc(100vh - 60px);
-  margin: 10px 20px 0;
-  overflow: hidden;
 
   .user-center-info {
     display: inline-block;

@@ -1,5 +1,5 @@
 <template>
-  <div class="role-management-container">
+  <div class="app-container-fixed  role-management-container">
     <div class="role-management-filter">
       <el-form ref="rolesFilterForm" size="small" inline :model="rolesFilterForm.data" :rules="rolesFilterForm.rules">
         <el-form-item label="角色代码" prop="code">
@@ -358,9 +358,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .role-management-container {
-  height: calc(100vh - 60px);
-  margin: 10px 20px 0;
-  overflow: hidden;
 
   .role-management-filter {
     height: 51px;
