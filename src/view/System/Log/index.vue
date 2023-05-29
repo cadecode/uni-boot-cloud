@@ -51,12 +51,12 @@
           <el-table-column property="id" label="ID" width="170px" fixed />
           <el-table-column property="logType" label="日志类型" width="120px" fixed />
           <el-table-column property="url" label="URL" width="400px" fixed show-overflow-tooltip />
-          <el-table-column
-            property="exceptional"
-            label="异常状态"
-            width="80px"
-            :formatter="(row, col, cell) => cell?'异常':'正常'"
-          />
+          <el-table-column property="exceptional" label="异常状态" width="80px">
+            <template slot-scope="scope">
+              <el-tag v-if="!scope.exceptional" type="success">正常</el-tag>
+              <el-tag v-else type="danger">异常</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column property="accessUser" label="访问用户" width="160px" />
           <el-table-column property="createTime" label="访问时间" width="150px" />
           <el-table-column label="操作" width="180px">
