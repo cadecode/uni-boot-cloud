@@ -45,6 +45,7 @@
         <sba.version>2.6.11</sba.version>
         <ttl.version>2.12.2</ttl.version>
         <dynamic-tp.version>1.1.0</dynamic-tp.version>
+        <easyexcel.version>3.1.1</easyexcel.version>
     </properties>
 
     <dependencies>
@@ -169,6 +170,12 @@
                 <groupId>cn.dynamictp</groupId>
                 <artifactId>dynamic-tp-spring-boot-starter-extension-notify-email</artifactId>
                 <version>${dynamic-tp.version}</version>
+            </dependency>
+            <!--excel-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
