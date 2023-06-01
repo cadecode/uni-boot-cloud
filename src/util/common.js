@@ -7,8 +7,8 @@ const title = settings.title || 'Vue Admin Template';
 
 /**
  * 从settings获取页面标题
- * @param pageTitle
- * @returns {string}
+ * @param {string} pageTitle
+ * @returns {string} 标题
  */
 function getPageTitle(pageTitle) {
   if (pageTitle) {
@@ -19,8 +19,8 @@ function getPageTitle(pageTitle) {
 
 /**
  * url查询参数转对象
- * @param {string} url
- * @returns {Object}
+ * @param {string} url 链接
+ * @returns {Object} 查询参数所转的对象
  */
 function queryToObject(url) {
   const search = decodeURIComponent(url.split('?')[1]).replace(/\+/g, ' ');
@@ -42,7 +42,7 @@ function queryToObject(url) {
 /**
  * 对象转url查询参数
  * @param obj 支持 {a:1, b:[2,3,4]} 格式的对象，不支持嵌套对象
- * @return {string}
+ * @return {string} 对象属性转查询参数
  */
 function objectToQuery(obj) {
   return Object.keys(obj).reduce((p, n) => {
@@ -57,9 +57,9 @@ function objectToQuery(obj) {
 
 /**
  * 转换时间到字符串
- * @param {(Object|string|number)} time
- * @param {string} cFormat
- * @returns {string | null}
+ * @param {(Object|string|number)} time Date 对象 | 时间字符串 |时间戳
+ * @param {string} cFormat 格式
+ * @returns {string | null} 时间字符串
  */
 function parseTime(time, cFormat) {
   if (arguments.length === 0 || !time) {
@@ -106,9 +106,9 @@ function parseTime(time, cFormat) {
 
 /**
  * 格式化时间为描述
- * @param {number} time
- * @param {string} option
- * @returns {string}
+ * @param {number} time 时间戳
+ * @param {string} option parseTime 用到的时间格式 cFormat
+ * @returns {string} 时间描述
  */
 function formatTime(time, option) {
   if (('' + time).length === 10) {
@@ -141,6 +141,8 @@ function formatTime(time, option) {
 
 /**
  * 是否是外部链接
+ * @param {string} path 链接
+ * @return {boolean} 是否是外部链接
  */
 function isExternalUrl(path) {
   return /^(https?:|mailto:|tel:)/.test(path);
@@ -151,10 +153,10 @@ function isExternalUrl(path) {
  * 核心是有计时器就清除，并开启新计时器
  * 立即执行的逻辑是执行后开启一个定时器保持不可执行状态
  *
- * @param fn 目标函数
- * @param delay 延迟时间
- * @param triggerNow 是否立即执行
- * @return {(function(): void)|*}
+ * @param {function} fn 目标函数
+ * @param {number} delay 延迟时间
+ * @param {boolean} triggerNow 是否立即执行
+ * @return {function()} 增强后的函数
  */
 function debounce(fn, delay, triggerNow) {
   let timer = 0;
@@ -188,9 +190,9 @@ function debounce(fn, delay, triggerNow) {
  * 节流函数：高频触发时，按指定间隔执行
  * 核心是有计时器就 return
  *
- * @param fn 目标函数
- * @param interval 时间间隔
- * @return {(function(): void)|*}
+ * @param {function} fn 目标函数
+ * @param {number} interval 时间间隔
+ * @return {function()} 增强后的函数
  */
 function throttle(fn, interval) {
   let timer = 0;

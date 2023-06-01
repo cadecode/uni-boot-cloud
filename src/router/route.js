@@ -42,15 +42,20 @@ const homeRoute = {path: '/', hidden: true};
 const notFoundRoute = {path: '*', redirect: '/404', hidden: true};
 
 /**
+ * @typedef {Object} Menu
+ * @property {number} parentId 父级菜单id
+ * @property {boolean} leafFlag 是否是页面
+ * @property {string} routePath 路由路径
+ * @property {string} routeName 路由名称
+ * @property {string} componentPath 组件路径
+ * @property {string} menuName 菜单名称
+ * @property {string} icon 图标
+ */
+
+/**
  * 后端menu转为路由
- * @param menu
- * @param menu.parentId 父级菜单id
- * @param menu.leafFlag 是否是页面
- * @param menu.routePath 路由路径
- * @param menu.routeName 路由名称
- * @param menu.componentPath 组件路径
- * @param menu.menuName 菜单名称
- * @param menu.icon 图标
+ * @param {Menu} menu
+ * @return {Object} {route, currRote}
  */
 function menuToRoute(menu) {
   // 顶级且是页面
@@ -97,6 +102,8 @@ function menuToRoute(menu) {
 
 /**
  * 使用require加载组件，失败时弹出提示
+ * @param {string} path 组件路径
+ * @return {function} 加载组件的方法
  */
 function requireComponent(path) {
   return (resolve) => {
@@ -112,6 +119,8 @@ function requireComponent(path) {
 /**
  * 转换后端menu列表为routes
  * 后端menu结构：{id,parentId,routeName,routePath,componentPath,menuName,leafFlag,icon}
+ * @param {Array<Menu>} menuList
+ * @return {Array} 路由数组
  */
 function convertAsyncRoutes(menuList) {
   const routes = [];

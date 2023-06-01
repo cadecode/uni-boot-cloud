@@ -9,6 +9,11 @@ function clipboardError() {
   Message.error('复制失败');
 }
 
+/**
+ * 处理剪切板事件
+ * @param {string} text 文件
+ * @param {Event} event 事件对象
+ */
 export default function handleClipboard(text, event) {
   const clipboard = new Clipboard(event.target, {
     text: () => text

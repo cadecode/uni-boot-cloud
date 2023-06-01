@@ -6,6 +6,7 @@ import {getToken} from '@/util/cookie';
 
 /**
  * 设置router的全局路由守卫
+ * @param {VueRouter} router 路由对象
  */
 function setGuard(router) {
   router.beforeEach(async(to, from, next) => {

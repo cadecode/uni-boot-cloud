@@ -38,7 +38,8 @@ service.interceptors.request.use(
 
 /**
  * 响应拦截器
- * uni-boot-admin 响应格式 {status, data, error:{code, message, path, moreInfo}}
+ * uni-boot-admin 响应格式：
+ *  {status, data, error:{code, message, path, moreInfo}}
  */
 service.interceptors.response.use(
   async(response) => {
@@ -60,7 +61,23 @@ service.interceptors.response.use(
 );
 
 /**
- * 从响应中检查后端error信息
+ * @typedef {Object} ApiError
+ * @property {string} code 错误码
+ * @property {string} message 信息
+ * @property {string} path 请求路径
+ * @property {string} moreInfo 更多信息
+ */
+
+/**
+ * @typedef {Object} ApiResult
+ * @property {number} status 状态码
+ * @property {Object} data 数据
+ * @property {ApiError} error 错误
+ */
+
+/**
+ * 从响应中检查后端 error 信息
+ * @param {AxiosResponse<ApiResult>>} response 响应对象
  */
 function checkResError(response) {
   const res = response.data;
@@ -91,6 +108,7 @@ function checkResError(response) {
 
 /**
  * 从响应中检查后端token信息，每次写入新token
+ * @param {AxiosResponse<ApiResult>>} response 响应对象
  */
 function checkResToken(response) {
   if (response.headers && response.headers[tokenKey]) {
@@ -99,11 +117,15 @@ function checkResToken(response) {
 }
 
 /**
+ * @typedef {Object} RequestCustomConfig 请求自定义配置
+ * @property {function} messageFn res => res.data.flag，根据flag决定是否弹出提示
+ * @property {string} messagePrefix 提示内容的前缀
+ */
+
+/**
  * 发送请求
- * @param config axios配置
- * @param customConfig 自定义配置
- * @param customConfig.messageFn res => res.data.flag，根据flag决定是否弹出提示
- * @param customConfig.messagePrefix 提示内容的前缀
+ * @param {Object} config axios配置
+ * @param {RequestCustomConfig} customConfig 自定义配置
  */
 function request(config, customConfig) {
   return service(config).then(res => {
@@ -129,6 +151,8 @@ function request(config, customConfig) {
 /**
  * 查询字符串式的请求，a=1&b=2
  * axios自动设置x-www-form-urlencoded
+ * @param {Object} config axios配置
+ * @param {RequestCustomConfig} customConfig 自定义配置
  */
 function requestQuery(config, customConfig) {
   config.data = objectToQuery((config.data));
@@ -138,6 +162,8 @@ function requestQuery(config, customConfig) {
 /**
  * FormData式请求，new FormData()
  * axios自动设置x-www-form-urlencoded
+ * @param {Object} config axios配置
+ * @param {RequestCustomConfig} customConfig 自定义配置
  */
 function requestFormData(config, customConfig) {
   config.data = Object.keys(config.data).reduce((p, n) => {
