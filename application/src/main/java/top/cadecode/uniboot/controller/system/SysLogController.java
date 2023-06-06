@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.cadecode.uniboot.common.annotation.ApiFormat;
+import top.cadecode.uniboot.common.mybatis.handler.BoolToIntTypeHandler;
 import top.cadecode.uniboot.common.response.PageResult;
 import top.cadecode.uniboot.system.bean.po.SysLog;
 import top.cadecode.uniboot.system.bean.vo.SysLogVo.SysLogPageVo;
@@ -44,14 +45,12 @@ public class SysLogController {
     @PostMapping("page")
     public PageResult<SysLogPageVo> page(@RequestBody @Valid SysLogPageRequest request) {
         Page<SysLog> page = logService.lambdaQuery()
-                .setEntity(SysLog.builder()
-                        .exceptional(request.getExceptional())
-                        .build())
                 .ge(ObjectUtil.isNotEmpty(request.getStartTime()), SysLog::getCreateTime, request.getStartTime())
                 .le(ObjectUtil.isNotEmpty(request.getEndTime()), SysLog::getCreateTime, request.getEndTime())
                 .in(ObjectUtil.isNotEmpty(request.getLogTypeList()), SysLog::getLogType, request.getLogTypeList())
                 .likeRight(ObjectUtil.isNotEmpty(request.getAccessUser()), SysLog::getAccessUser, request.getAccessUser())
                 .like(ObjectUtil.isNotEmpty(request.getUrl()), SysLog::getUrl, request.getUrl())
+                .eq(ObjectUtil.isNotNull(request.getExceptional()), SysLog::getExceptional, BoolToIntTypeHandler.mapping(request.getExceptional()))
                 .orderByDesc(SysLog::getCreateTime)
                 .page(new Page<>(request.getPageNumber(), request.getPageSize()));
         List<SysLogPageVo> voList = SysLogConvert.INSTANCE.poToVo(page.getRecords());
