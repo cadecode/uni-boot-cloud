@@ -23,9 +23,13 @@ import java.util.List;
 public class ObjToStrTypeHandler extends BaseTypeHandler<Object> {
 
     /**
-     * 用于 mybatis plus update set mapping 参数指定 typeHandler 为 ObjToStrTypeHandler
+     * 用于 mybatis plus update set mapping 参数指定 typeHandler
      */
     public static final String MAPPING = "typeHandler=ObjToStrTypeHandler";
+
+    public static String mapping(Object o) {
+        return JacksonUtil.toJson(o);
+    }
 
     private final Class<?> type;
 
