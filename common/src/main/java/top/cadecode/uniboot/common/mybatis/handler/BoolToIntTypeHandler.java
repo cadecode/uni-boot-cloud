@@ -1,5 +1,6 @@
 package top.cadecode.uniboot.common.mybatis.handler;
 
+import cn.hutool.core.util.ObjectUtil;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -21,9 +22,13 @@ import java.sql.SQLException;
 public class BoolToIntTypeHandler extends BaseTypeHandler<Boolean> {
 
     /**
-     * 用于 mybatis plus update set mapping 参数指定 typeHandler 为 BoolToIntTypeHandler
+     * 用于 mybatis plus update set mapping 参数指定 typeHandler
      */
     public static final String MAPPING = "typeHandler=BoolToIntTypeHandler";
+
+    public static Integer mapping(Boolean o) {
+        return ObjectUtil.isNull(o) ? null : (o ? 1 : 0);
+    }
 
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, Boolean parameter, JdbcType jdbcType) throws SQLException {
