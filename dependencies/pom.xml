@@ -2,21 +2,172 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>top.cadecode</groupId>
-        <artifactId>uni-boot-admin</artifactId>
+        <artifactId>uni-boot-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
     <packaging>pom</packaging>
     <artifactId>uni-boot-dependencies</artifactId>
     <description>全局依赖版本管理</description>
 
+    <modules>
+        <module>../common</module>
+        <module>../framework</module>
+        <module>../application</module>
+        <module>../business</module>
+    </modules>
+
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-boot.version>2.5.4</spring-boot.version>
+        <lombok.version>1.18.24</lombok.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <hutool.vsersion>5.8.0</hutool.vsersion>
+        <guava.vsersion>31.0.1-jre</guava.vsersion>
+        <vavr.vsersion>1.0.0-alpha-4</vavr.vsersion>
+        <knife4j.version>2.0.9</knife4j.version>
+        <mybatis.version>2.2.0</mybatis.version>
+        <pagehelper.version>1.4.0</pagehelper.version>
+        <mybatis-plus.version>3.5.1</mybatis-plus.version>
+        <p6spy.version>3.8.1</p6spy.version>
+        <jasypt.version>2.1.1</jasypt.version>
+        <druid.version>1.2.15</druid.version>
+        <dynamic-ds.version>3.6.0</dynamic-ds.version>
+        <sba.version>2.6.11</sba.version>
+        <ttl.version>2.12.2</ttl.version>
+        <dynamic-tp.version>1.1.0</dynamic-tp.version>
+        <easyexcel.version>3.1.1</easyexcel.version>
     </properties>
 
+    <dependencies>
+        <!--lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!--mapstruct-->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <!--hutool-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.vsersion}</version>
+        </dependency>
+        <!--guava-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.vsersion}</version>
+        </dependency>
+        <!--vavr-->
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${vavr.vsersion}</version>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--SpringBoot 依赖-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--swagger-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <!--jasypt-->
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>${jasypt.version}</version>
+            </dependency>
+            <!--mybatis-->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <!--pagehelper-->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+            <!--mybatis plus-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!--p6spy-->
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${p6spy.version}</version>
+            </dependency>
+            <!--druid-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!--多数据源-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic-ds.version}</version>
+            </dependency>
+            <!--SpringBootAdmin-->
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${sba.version}</version>
+            </dependency>
+            <!--ttl ThreadLocal-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${ttl.version}</version>
+            </dependency>
+            <!--dynamicTp-->
+            <dependency>
+                <groupId>cn.dynamictp</groupId>
+                <artifactId>dynamic-tp-spring-boot-starter-common</artifactId>
+                <version>${dynamic-tp.version}</version>
+            </dependency>
+            <!--dynamicTp 邮件通知-->
+            <dependency>
+                <groupId>cn.dynamictp</groupId>
+                <artifactId>dynamic-tp-spring-boot-starter-extension-notify-email</artifactId>
+                <version>${dynamic-tp.version}</version>
+            </dependency>
+            <!--excel-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
