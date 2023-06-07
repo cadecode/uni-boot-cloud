@@ -2,19 +2,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <!--配置父项目-->
     <parent>
-        <artifactId>uni-boot-admin</artifactId>
+        <artifactId>uni-boot-dependencies</artifactId>
         <groupId>top.cadecode</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../dependencies/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>uni-boot-framework</artifactId>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
+    <description>系统框架模块</description>
 
     <dependencies>
         <!--common 模块-->
