@@ -9,7 +9,15 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+
+    <packaging>pom</packaging>
     <artifactId>uni-boot-common</artifactId>
+    <description></description>
+
+    <modules>
+        <module>core</module>
+        <module>plugin</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

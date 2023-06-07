@@ -13,25 +13,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.cadecode.uniboot.common.annotation.ApiFormat;
-import top.cadecode.uniboot.common.exception.UniException;
-import top.cadecode.uniboot.common.response.PageResult;
+import top.cadecode.uniboot.common.core.annotation.ApiFormat;
+import top.cadecode.uniboot.common.core.exception.UniException;
+import top.cadecode.uniboot.common.core.response.PageResult;
+import top.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsDto;
+import top.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserInfoDto;
+import top.cadecode.uniboot.framework.bean.po.SysUser;
+import top.cadecode.uniboot.framework.bean.vo.SysMenuVo.SysMenuTreeVo;
+import top.cadecode.uniboot.framework.bean.vo.SysUserVo.SysUserRolesVo;
+import top.cadecode.uniboot.framework.convert.SysUserConvert;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
-import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
-import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserInfoDto;
-import top.cadecode.uniboot.system.bean.po.SysUser;
-import top.cadecode.uniboot.system.bean.vo.SysMenuVo.SysMenuTreeVo;
-import top.cadecode.uniboot.system.bean.vo.SysUserVo.SysUserRolesVo;
-import top.cadecode.uniboot.system.convert.SysUserConvert;
-import top.cadecode.uniboot.system.service.SysMenuService;
-import top.cadecode.uniboot.system.service.SysRoleService;
-import top.cadecode.uniboot.system.service.SysUserService;
+import top.cadecode.uniboot.framework.service.SysMenuService;
+import top.cadecode.uniboot.framework.service.SysRoleService;
+import top.cadecode.uniboot.framework.service.SysUserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
-import static top.cadecode.uniboot.system.request.SysUserRequest.*;
+import static top.cadecode.uniboot.framework.request.SysUserRequest.*;
 
 /**
  * 用户管理API

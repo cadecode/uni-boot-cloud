@@ -23,7 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import top.cadecode.uniboot.common.enums.AuthModelEnum;
+import top.cadecode.uniboot.common.core.enums.AuthModelEnum;
 import top.cadecode.uniboot.framework.security.LoginSuccessHandler;
 import top.cadecode.uniboot.framework.security.TokenAuthFilter;
 import top.cadecode.uniboot.framework.security.handler.LoginFailureHandler;

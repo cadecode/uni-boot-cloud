@@ -8,10 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
+import top.cadecode.uniboot.framework.bean.dto.SysUserDto;
+import top.cadecode.uniboot.framework.bean.vo.SysApiVo.SysApiRolesVo;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
-import top.cadecode.uniboot.system.bean.dto.SysUserDto;
-import top.cadecode.uniboot.system.bean.vo.SysApiVo.SysApiRolesVo;
-import top.cadecode.uniboot.system.service.SysApiService;
+import top.cadecode.uniboot.framework.service.SysApiService;
 
 import java.util.Collection;
 import java.util.Comparator;

@@ -22,13 +22,13 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
-import top.cadecode.uniboot.common.annotation.ApiLogger;
-import top.cadecode.uniboot.common.util.JacksonUtil;
+import top.cadecode.uniboot.common.core.annotation.ApiLogger;
+import top.cadecode.uniboot.common.core.util.JacksonUtil;
+import top.cadecode.uniboot.framework.bean.dto.SysLogDto.SysLogInfoDto;
+import top.cadecode.uniboot.framework.bean.po.SysLog;
+import top.cadecode.uniboot.framework.convert.SysLogConvert;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
-import top.cadecode.uniboot.system.bean.dto.SysLogDto.SysLogInfoDto;
-import top.cadecode.uniboot.system.bean.po.SysLog;
-import top.cadecode.uniboot.system.convert.SysLogConvert;
-import top.cadecode.uniboot.system.service.SysLogService;
+import top.cadecode.uniboot.framework.service.SysLogService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,8 +52,8 @@ public class ApiLoggerAspect {
 
     private final SysLogService logService;
 
-    @Pointcut("@within(top.cadecode.uniboot.common.annotation.ApiLogger) " +
-            "|| @annotation(top.cadecode.uniboot.common.annotation.ApiLogger)")
+    @Pointcut("@within(top.cadecode.uniboot.common.core.annotation.ApiLogger) " +
+            "|| @annotation(top.cadecode.uniboot.common.core.annotation.ApiLogger)")
     public void pointCut() {
 
     }

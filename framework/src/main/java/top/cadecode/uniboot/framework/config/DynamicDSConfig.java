@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import top.cadecode.uniboot.common.datasource.DynamicDS;
-import top.cadecode.uniboot.common.datasource.DynamicDSHolder;
+import top.cadecode.uniboot.common.core.datasource.DynamicDS;
+import top.cadecode.uniboot.common.core.datasource.DynamicDSHolder;
 
 import java.util.Map;
 import java.util.Map.Entry;

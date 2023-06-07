@@ -9,8 +9,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.annotation.DynamicDS;
-import top.cadecode.uniboot.common.datasource.DynamicDSHolder;
+import top.cadecode.uniboot.common.core.annotation.DynamicDS;
+import top.cadecode.uniboot.common.core.datasource.DynamicDSHolder;
 
 /**
  * 动态数据源切换 AOP 类
@@ -24,8 +24,8 @@ import top.cadecode.uniboot.common.datasource.DynamicDSHolder;
 @Order(-1)
 public class DynamicDSAspect {
 
-    @Pointcut("@within(top.cadecode.uniboot.common.annotation.DynamicDS) " +
-            "|| @annotation(top.cadecode.uniboot.common.annotation.DynamicDS)")
+    @Pointcut("@within(top.cadecode.uniboot.common.core.annotation.DynamicDS) " +
+            "|| @annotation(top.cadecode.uniboot.common.core.annotation.DynamicDS)")
     public void pointCut() {
 
     }
