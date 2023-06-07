@@ -10,9 +10,9 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import top.cadecode.uniboot.common.enums.error.FrameErrorEnum;
-import top.cadecode.uniboot.common.exception.UniErrorCode;
-import top.cadecode.uniboot.common.response.ApiResult;
+import top.cadecode.uniboot.common.core.enums.error.FrameErrorEnum;
+import top.cadecode.uniboot.common.core.exception.UniErrorCode;
+import top.cadecode.uniboot.common.core.response.ApiResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;

@@ -3,7 +3,7 @@ package top.cadecode.uniboot.framework.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import top.cadecode.uniboot.common.convertor.EnumConvertorFactory;
+import top.cadecode.uniboot.common.core.convertor.EnumConvertorFactory;
 
 /**
  * Spring MVC 配置

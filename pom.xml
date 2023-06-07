@@ -18,10 +18,11 @@
     <description>基于 SpringBoot 多模块开发的通用后台管理系统骨架</description>
     <!--子模块-->
     <modules>
+        <module>dependencies</module>
         <module>common</module>
         <module>framework</module>
-        <module>system</module>
         <module>application</module>
+        <module>business</module>
     </modules>
 
     <!--依赖版本-->
@@ -92,17 +93,12 @@
             <!--子模块-->
             <dependency>
                 <groupId>top.cadecode</groupId>
-                <artifactId>uni-boot-common</artifactId>
+                <artifactId>uni-boot-common-core</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <dependency>
                 <groupId>top.cadecode</groupId>
                 <artifactId>uni-boot-framework</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>top.cadecode</groupId>
-                <artifactId>uni-boot-system</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <!--swagger-->

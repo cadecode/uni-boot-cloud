@@ -8,9 +8,9 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import top.cadecode.uniboot.common.annotation.ApiFormat;
-import top.cadecode.uniboot.common.response.ApiResult;
-import top.cadecode.uniboot.common.util.JacksonUtil;
+import top.cadecode.uniboot.common.core.annotation.ApiFormat;
+import top.cadecode.uniboot.common.core.response.ApiResult;
+import top.cadecode.uniboot.common.core.util.JacksonUtil;
 
 import java.util.Objects;
 

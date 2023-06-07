@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import top.cadecode.uniboot.common.annotation.ApiFormat;
-import top.cadecode.uniboot.common.annotation.ApiLogger;
-import top.cadecode.uniboot.common.enums.LogTypeEnum;
-import top.cadecode.uniboot.common.response.ApiResult;
-import top.cadecode.uniboot.common.util.JacksonUtil;
+import top.cadecode.uniboot.common.core.annotation.ApiFormat;
+import top.cadecode.uniboot.common.core.annotation.ApiLogger;
+import top.cadecode.uniboot.common.core.enums.LogTypeEnum;
+import top.cadecode.uniboot.common.core.response.ApiResult;
+import top.cadecode.uniboot.common.core.util.JacksonUtil;
 import top.cadecode.uniboot.framework.config.SecurityConfig;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 

@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import top.cadecode.uniboot.common.annotation.ApiFormat;
-import top.cadecode.uniboot.common.response.PageResult;
-import top.cadecode.uniboot.system.bean.po.SysApi;
-import top.cadecode.uniboot.system.bean.vo.SysApiVo.SysApiRolesVo;
-import top.cadecode.uniboot.system.bean.vo.SysApiVo.SysApiSwaggerVo;
-import top.cadecode.uniboot.system.convert.SysApiConvert;
-import top.cadecode.uniboot.system.service.SysApiService;
-import top.cadecode.uniboot.system.service.SysRoleService;
+import top.cadecode.uniboot.common.core.annotation.ApiFormat;
+import top.cadecode.uniboot.common.core.response.PageResult;
+import top.cadecode.uniboot.framework.bean.po.SysApi;
+import top.cadecode.uniboot.framework.bean.vo.SysApiVo.SysApiRolesVo;
+import top.cadecode.uniboot.framework.bean.vo.SysApiVo.SysApiSwaggerVo;
+import top.cadecode.uniboot.framework.convert.SysApiConvert;
+import top.cadecode.uniboot.framework.service.SysApiService;
+import top.cadecode.uniboot.framework.service.SysRoleService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static top.cadecode.uniboot.system.request.SysApiRequest.*;
+import static top.cadecode.uniboot.framework.request.SysApiRequest.*;
 
 /**
  * API 管理

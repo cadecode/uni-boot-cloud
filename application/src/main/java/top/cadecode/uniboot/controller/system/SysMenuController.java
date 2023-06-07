@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.cadecode.uniboot.common.annotation.ApiFormat;
-import top.cadecode.uniboot.common.response.PageResult;
-import top.cadecode.uniboot.system.bean.po.SysMenu;
-import top.cadecode.uniboot.system.bean.vo.SysMenuVo.SysMenuRolesVo;
-import top.cadecode.uniboot.system.convert.SysMenuConvert;
-import top.cadecode.uniboot.system.service.SysMenuService;
-import top.cadecode.uniboot.system.service.SysRoleService;
+import top.cadecode.uniboot.common.core.annotation.ApiFormat;
+import top.cadecode.uniboot.common.core.response.PageResult;
+import top.cadecode.uniboot.framework.bean.po.SysMenu;
+import top.cadecode.uniboot.framework.bean.vo.SysMenuVo.SysMenuRolesVo;
+import top.cadecode.uniboot.framework.convert.SysMenuConvert;
+import top.cadecode.uniboot.framework.service.SysMenuService;
+import top.cadecode.uniboot.framework.service.SysRoleService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static top.cadecode.uniboot.system.request.SysMenuRequest.*;
+import static top.cadecode.uniboot.framework.request.SysMenuRequest.*;
 
 /**
  * 菜单管理API

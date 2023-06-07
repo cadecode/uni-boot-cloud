@@ -9,8 +9,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.system.bean.dto.SysUserDto;
-import top.cadecode.uniboot.system.bean.dto.SysUserDto.SysUserDetailsDto;
+import top.cadecode.uniboot.framework.bean.dto.SysUserDto;
+import top.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsDto;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
