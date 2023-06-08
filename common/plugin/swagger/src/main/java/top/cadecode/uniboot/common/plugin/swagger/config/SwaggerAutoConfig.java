@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
-import top.cadecode.uniboot.common.plugin.swagger.util.SwaggerRegister;
+import top.cadecode.uniboot.common.plugin.swagger.util.SwaggerRegisterKit;
 
 /**
  * Swagger WebMvc 配置
@@ -22,13 +22,13 @@ import top.cadecode.uniboot.common.plugin.swagger.util.SwaggerRegister;
 @EnableSwagger2WebMvc
 @EnableKnife4j
 @Configuration
-@Import(SwaggerRegister.class)
+@Import(SwaggerRegisterKit.class)
 @EnableConfigurationProperties(SwaggerProperties.class)
 @ConditionalOnProperty(name = "uni-boot.config.swagger-on", havingValue = "true")
 public class SwaggerAutoConfig implements WebMvcConfigurer, InitializingBean {
 
     private final SwaggerProperties swaggerProperties;
-    private final SwaggerRegister swaggerRegister;
+    private final SwaggerRegisterKit swaggerRegisterKit;
 
     /**
      * 添加静态资源，映射 Swagger 网页文件
@@ -41,6 +41,6 @@ public class SwaggerAutoConfig implements WebMvcConfigurer, InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        swaggerRegister.registerModule(swaggerProperties);
+        swaggerRegisterKit.registerModule(swaggerProperties);
     }
 }

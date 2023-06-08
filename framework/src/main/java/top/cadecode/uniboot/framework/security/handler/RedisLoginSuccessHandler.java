@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import top.cadecode.uniboot.common.core.web.response.ApiResult;
-import top.cadecode.uniboot.common.plugin.cache.util.CacheKeyGenerator;
+import top.cadecode.uniboot.common.plugin.cache.util.KeyGeneUtil;
 import top.cadecode.uniboot.common.plugin.cache.util.RedisUtil;
 import top.cadecode.uniboot.framework.bean.dto.SysUserDto;
 import top.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsDto;
@@ -53,7 +53,7 @@ public class RedisLoginSuccessHandler extends LoginSuccessHandler {
         // token 放在请求头
         response.addHeader(tokenAuthHolder.getHeader(), uuidToken);
         // 生成存放登录信息的 redis key
-        String loginUserKey = CacheKeyGenerator.key(KeyPrefix.LOGIN_USER, uuidToken);
+        String loginUserKey = KeyGeneUtil.key(KeyPrefix.LOGIN_USER, uuidToken);
         RedisUtil.set(loginUserKey, sysUserDetailsDto, tokenAuthHolder.getExpiration(), TimeUnit.SECONDS);
         return ApiResult.ok(sysUserDetailsDto).path(SecurityConfig.LOGOUT_URL);
     }

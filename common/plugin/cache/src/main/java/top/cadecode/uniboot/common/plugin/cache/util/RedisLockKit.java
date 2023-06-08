@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 @RequiredArgsConstructor
-public class RedisLock {
+public class RedisLockKit {
 
     private final StringRedisTemplate redisTemplate;
 
