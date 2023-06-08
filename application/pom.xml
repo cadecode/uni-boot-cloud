@@ -38,24 +38,14 @@
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
         </dependency>
-        <!--SBA-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-client</artifactId>
-        </dependency>
         <!--子模块-->
-        <!--framework 模块-->
         <dependency>
             <groupId>top.cadecode</groupId>
             <artifactId>uni-boot-framework</artifactId>
         </dependency>
         <dependency>
             <groupId>top.cadecode</groupId>
-            <artifactId>uni-boot-business</artifactId>
+            <artifactId>uni-boot-common-plugin-actuator</artifactId>
         </dependency>
     </dependencies>
 
