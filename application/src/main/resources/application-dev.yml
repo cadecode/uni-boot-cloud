@@ -44,8 +44,8 @@ uni-boot:
     email: cadecode@foxmail.com
     version: ${uni-boot.config.version}
     module:
-      demo: top.cadecode.uniboot.demo.controller
       application: top.cadecode.uniboot.controller
+      sample: top.cadecode.uniboot.business.sample.controller
   # security 配置
   security:
     auth-model: redis
