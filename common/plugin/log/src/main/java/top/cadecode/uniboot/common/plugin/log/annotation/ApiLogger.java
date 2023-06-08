@@ -1,6 +1,7 @@
-package top.cadecode.uniboot.common.core.annotation;
+package top.cadecode.uniboot.common.plugin.log.annotation;
 
-import top.cadecode.uniboot.common.core.enums.LogTypeEnum;
+
+import top.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
 
 import java.lang.annotation.*;
 
