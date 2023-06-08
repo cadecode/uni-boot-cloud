@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.mybatis.handler;
+package top.cadecode.uniboot.common.plugin.mybatis.converter;
 
 import cn.hutool.core.util.ObjectUtil;
 import org.apache.ibatis.type.BaseTypeHandler;

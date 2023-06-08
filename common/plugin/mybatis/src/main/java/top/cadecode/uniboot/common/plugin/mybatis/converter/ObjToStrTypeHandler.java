@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.mybatis.handler;
+package top.cadecode.uniboot.common.plugin.mybatis.converter;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * java 对象和 db varchar 转换，即 json 转换
+ * 注意：最好不要设置 mybatis type-handler-packages，通过在 xml 中直接指定来使用，方可动态注入 type
  *
  * @author Cade Li
  * @since 2023/5/10

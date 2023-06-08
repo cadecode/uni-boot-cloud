@@ -16,13 +16,13 @@ import static java.util.stream.Collectors.toMap;
  * @author Cade Li
  * @date 2022/6/14
  */
-public class EnumConvertorFactory implements ConverterFactory<String, EnumConvertor> {
+public class ParamEnumConvertorFactory implements ConverterFactory<String, ParamEnumConvertor> {
 
     private static final Map<Class<?>, Converter<String, ?>> CONVERTER_MAP = new ConcurrentHashMap<>();
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends EnumConvertor> Converter<String, T> getConverter(Class<T> targetType) {
+    public <T extends ParamEnumConvertor> Converter<String, T> getConverter(Class<T> targetType) {
         Converter<String, ?> stringConverter = CONVERTER_MAP.get(targetType);
         if (Objects.isNull(stringConverter)) {
             stringConverter = new StringEnumConvertor<>(targetType);
@@ -34,13 +34,13 @@ public class EnumConvertorFactory implements ConverterFactory<String, EnumConver
     /**
      * 字符串转枚举转换器
      */
-    public static class StringEnumConvertor<T extends EnumConvertor> implements Converter<String, T> {
+    public static class StringEnumConvertor<T extends ParamEnumConvertor> implements Converter<String, T> {
 
         private final Map<String, T> enumMap;
 
         public StringEnumConvertor(Class<T> targetType) {
             enumMap = Arrays.stream(targetType.getEnumConstants())
-                    .collect(toMap(EnumConvertor::convertBy, o -> o, (p, n) -> n));
+                    .collect(toMap(ParamEnumConvertor::convertBy, o -> o, (p, n) -> n));
         }
 
         @Override

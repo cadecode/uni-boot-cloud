@@ -1,8 +1,7 @@
-package top.cadecode.uniboot.common.core.mybatis;
+package top.cadecode.uniboot.common.plugin.mybatis.converter;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
-import top.cadecode.uniboot.common.core.convertor.EnumConvertor;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -16,7 +15,8 @@ import static java.util.stream.Collectors.toMap;
 
 /**
  * MyBatis 枚举类解析器，需要配置成默认枚举解析器使用，
- * 枚举类实现 EnumConvertor 接口可自定义持久化属性，没有实现 EnumConvertor 的普通枚举将使用 ordinal 进行持久化
+ * 枚举类实现 EnumDbConvertor 接口可自定义持久化属性，没有实现 EnumDbConvertor 的普通枚举将使用 ordinal 进行持久化
+ * 使用 mybatis.configuration.default-enum-type-handler 来配置
  *
  * @author Cade Li
  * @date 2022/6/16
@@ -37,9 +37,9 @@ public class DefaultEnumTypeHandler<E extends Enum<?>> extends BaseTypeHandler<E
             throw new IllegalArgumentException(type.getSimpleName() + " is not an enum type");
         }
         enumMap = Arrays.stream(enums).collect(toMap(o -> {
-            // 实现 EnumConvertor 的枚举根据 persistBy 持久化
-            if (o instanceof EnumConvertor) {
-                return ((EnumConvertor) o).persistBy();
+            // 实现 EnumDbConvertor 的枚举根据 persistBy 持久化
+            if (o instanceof EnumDbConvertor) {
+                return ((EnumDbConvertor) o).persistBy();
             }
             return o.ordinal();
         }, o -> o, (p, n) -> p));
@@ -100,8 +100,8 @@ public class DefaultEnumTypeHandler<E extends Enum<?>> extends BaseTypeHandler<E
      * 从 enum 元素中获取 value
      */
     private Integer valueFromEnum(E e) {
-        if (e instanceof EnumConvertor) {
-            return ((EnumConvertor) e).persistBy();
+        if (e instanceof EnumDbConvertor) {
+            return ((EnumDbConvertor) e).persistBy();
         }
         return e.ordinal();
     }
