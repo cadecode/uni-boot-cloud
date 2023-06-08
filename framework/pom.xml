@@ -29,5 +29,9 @@
             <groupId>top.cadecode</groupId>
             <artifactId>uni-boot-common-plugin-mybatis</artifactId>
         </dependency>
+        <dependency>
+            <groupId>top.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-datasource</artifactId>
+        </dependency>
     </dependencies>
 </project>

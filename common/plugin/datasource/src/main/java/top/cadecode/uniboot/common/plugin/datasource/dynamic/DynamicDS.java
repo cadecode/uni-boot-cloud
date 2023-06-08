@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.datasource;
+package top.cadecode.uniboot.common.plugin.datasource.dynamic;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
