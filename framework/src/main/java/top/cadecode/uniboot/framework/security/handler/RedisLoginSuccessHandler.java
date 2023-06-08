@@ -12,8 +12,8 @@ import top.cadecode.uniboot.framework.config.SecurityConfig;
 import top.cadecode.uniboot.framework.consts.KeyPrefix;
 import top.cadecode.uniboot.framework.enums.AuthModelEnum;
 import top.cadecode.uniboot.framework.security.LoginSuccessHandler;
-import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 import top.cadecode.uniboot.framework.service.SysUserService;
+import top.cadecode.uniboot.framework.util.SecurityUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,14 +29,8 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnProperty(name = "uni-boot.security.auth-model", havingValue = "redis")
 public class RedisLoginSuccessHandler extends LoginSuccessHandler {
 
-    /**
-     * Token 处理器
-     */
-    private final TokenAuthHolder tokenAuthHolder;
-
-    public RedisLoginSuccessHandler(TokenAuthHolder tokenAuthHolder, SysUserService sysUserService) {
+    public RedisLoginSuccessHandler(SysUserService sysUserService) {
         super(sysUserService);
-        this.tokenAuthHolder = tokenAuthHolder;
     }
 
     @Override
@@ -49,13 +43,12 @@ public class RedisLoginSuccessHandler extends LoginSuccessHandler {
         // 从认证信息中获取用户对象
         SysUserDetailsDto sysUserDetailsDto = (SysUserDetailsDto) authentication.getPrincipal();
         // 生成 uuid token
-        String uuidToken = tokenAuthHolder.generateUUID();
+        String uuidToken = SecurityUtil.generateUUID();
         // token 放在请求头
-        response.addHeader(tokenAuthHolder.getHeader(), uuidToken);
+        response.addHeader(SecurityUtil.getHeader(), uuidToken);
         // 生成存放登录信息的 redis key
         String loginUserKey = KeyGeneUtil.key(KeyPrefix.LOGIN_USER, uuidToken);
-        RedisUtil.set(loginUserKey, sysUserDetailsDto, tokenAuthHolder.getExpiration(), TimeUnit.SECONDS);
+        RedisUtil.set(loginUserKey, sysUserDetailsDto, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
         return ApiResult.ok(sysUserDetailsDto).path(SecurityConfig.LOGOUT_URL);
     }
-
 }

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import top.cadecode.uniboot.framework.bean.dto.SysUserDto;
 import top.cadecode.uniboot.framework.bean.vo.SysApiVo.SysApiRolesVo;
-import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 import top.cadecode.uniboot.framework.service.SysApiService;
+import top.cadecode.uniboot.framework.util.SecurityUtil;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -35,7 +35,7 @@ public class DataBaseRoleVoter extends RoleVoter {
 
     @Override
     public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
-        if (!TokenAuthHolder.isAuthenticated(authentication)) {
+        if (!SecurityUtil.isAuthenticated(authentication)) {
             return ACCESS_ABSTAIN;
         }
         // 获取请求 url
@@ -44,7 +44,7 @@ public class DataBaseRoleVoter extends RoleVoter {
         // 获取 api role 的关系列表
         List<SysApiRolesVo> sysApiRolesVos = sysApiService.listRolesVo();
         // 获取用户角色
-        SysUserDto.SysUserDetailsDto sysUserDetailsDto = TokenAuthHolder.getUserDetails(authentication);
+        SysUserDto.SysUserDetailsDto sysUserDetailsDto = SecurityUtil.getUserDetails(authentication);
         List<String> roles = sysUserDetailsDto.getRoles();
         // 获取与 url 相同的配置，不存在与 url 相同配置则使用 spring mvc ant 风格匹配
         SysApiRolesVo sysApiRolesVo = sysApiRolesVos.stream()

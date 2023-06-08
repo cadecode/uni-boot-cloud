@@ -19,8 +19,8 @@ import top.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandler;
 import top.cadecode.uniboot.framework.bean.dto.SysLogDto.SysLogInfoDto;
 import top.cadecode.uniboot.framework.bean.po.SysLog;
 import top.cadecode.uniboot.framework.convert.SysLogConvert;
-import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 import top.cadecode.uniboot.framework.service.SysLogService;
+import top.cadecode.uniboot.framework.util.SecurityUtil;
 
 /**
  * Api Log 处理器实现
@@ -63,7 +63,7 @@ public class ApiLogHandler extends AbstractApiLogHandler {
                 .logType(apiLogger.type())
                 .classMethod(point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName())
                 .exceptional(baseLogInfo.getExceptional())
-                .accessUser(TokenAuthHolder.getUsername())
+                .accessUser(SecurityUtil.getUsername())
                 .description(description)
                 .url(baseLogInfo.getRequest().getRequestURL().toString())
                 .threadId(Long.toString(Thread.currentThread().getId()))
