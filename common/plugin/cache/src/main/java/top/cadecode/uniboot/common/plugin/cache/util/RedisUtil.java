@@ -1,10 +1,11 @@
-package top.cadecode.uniboot.common.core.util;
+package top.cadecode.uniboot.common.plugin.cache.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import top.cadecode.uniboot.common.core.util.JacksonUtil;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;

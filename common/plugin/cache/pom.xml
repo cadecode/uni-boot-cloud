@@ -11,4 +11,31 @@
 
     <artifactId>uni-boot-common-plugin-cache</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>top.cadecode</groupId>
+            <artifactId>uni-boot-common-core</artifactId>
+        </dependency>
+        <!--SpringBoot Cache-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <!--RedisTemplate-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!--commons-pool2（RedisTemplate 依赖）-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <!--caffeine-->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

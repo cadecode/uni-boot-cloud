@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.framework.config;
+package top.cadecode.uniboot.common.plugin.cache.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;

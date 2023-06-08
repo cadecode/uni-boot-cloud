@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.datasource;
+package top.cadecode.uniboot.common.plugin.cache.util;
 
 /**
  * Redis key 命名生成器
@@ -21,6 +21,10 @@ public class CacheKeyGenerator {
             prefixBuilder.append(":").append(str);
         }
         return prefixBuilder.toString();
+    }
+
+    public static String lockKey(String... extra) {
+        return key("lock", extra);
     }
 
 }
