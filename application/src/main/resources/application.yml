@@ -80,7 +80,7 @@ pagehelper:
 # mybatis plus 配置
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
-  type-aliases-package: top.cadecode.**.bean,top.cadecode.**.mybatis.handler
+  type-aliases-package: top.cadecode.**.bean,top.cadecode.**.mybatis.converter
   type-enums-package: top.cadecode.**.enums
   configuration:
     map-underscore-to-camel-case: true

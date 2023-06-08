@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import top.cadecode.uniboot.common.core.mybatis.handler.BoolToIntTypeHandler;
+import top.cadecode.uniboot.common.plugin.mybatis.converter.BoolToIntTypeHandler;
 
 import java.util.Date;
 
