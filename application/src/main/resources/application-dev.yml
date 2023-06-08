@@ -42,6 +42,7 @@ uni-boot:
     name: Cade Li
     url: https://github.com/cadecode/uni-boot-admin
     email: cadecode@foxmail.com
+    version: ${uni-boot.config.version}
     module:
       demo: top.cadecode.uniboot.demo.controller
       application: top.cadecode.uniboot.controller
