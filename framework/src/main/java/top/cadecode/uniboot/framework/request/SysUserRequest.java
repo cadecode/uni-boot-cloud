@@ -2,7 +2,7 @@ package top.cadecode.uniboot.framework.request;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import top.cadecode.uniboot.common.core.response.PageParams;
+import top.cadecode.uniboot.common.core.web.response.PageParams;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

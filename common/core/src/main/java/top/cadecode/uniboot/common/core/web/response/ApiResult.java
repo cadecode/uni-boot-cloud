@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.response;
+package top.cadecode.uniboot.common.core.web.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

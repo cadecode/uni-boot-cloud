@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.controller;
+package top.cadecode.uniboot.framework.controller;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.extra.servlet.ServletUtil;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import top.cadecode.uniboot.common.core.annotation.ApiFormat;
-import top.cadecode.uniboot.common.core.enums.error.FrameErrorEnum;
 import top.cadecode.uniboot.common.core.exception.UniException;
 import top.cadecode.uniboot.common.core.util.AssertUtil;
+import top.cadecode.uniboot.framework.annotation.ApiFormat;
+import top.cadecode.uniboot.framework.enums.FrameErrorEnum;
 import top.cadecode.uniboot.framework.manager.FileUploadManager;
 
 import javax.servlet.http.HttpServletRequest;

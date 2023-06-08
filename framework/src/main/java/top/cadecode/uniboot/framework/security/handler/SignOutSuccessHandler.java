@@ -8,13 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.core.consts.CacheKeyPrefix;
-import top.cadecode.uniboot.common.core.enums.error.AuthErrorEnum;
-import top.cadecode.uniboot.common.core.response.ApiResult;
 import top.cadecode.uniboot.common.core.util.JacksonUtil;
+import top.cadecode.uniboot.common.core.web.response.ApiResult;
 import top.cadecode.uniboot.common.plugin.cache.util.CacheKeyGenerator;
 import top.cadecode.uniboot.common.plugin.cache.util.RedisUtil;
 import top.cadecode.uniboot.framework.config.SecurityConfig;
+import top.cadecode.uniboot.framework.consts.KeyPrefix;
+import top.cadecode.uniboot.framework.enums.AuthErrorEnum;
 import top.cadecode.uniboot.framework.security.TokenAuthFilter;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 import top.cadecode.uniboot.framework.security.filter.RedisTokenAuthFilter;
@@ -41,7 +41,7 @@ public class SignOutSuccessHandler implements LogoutSuccessHandler {
         // 删除保存登录信息的 redis key
         String uuidToken = request.getHeader(tokenAuthHolder.getHeader());
         if (StrUtil.isNotEmpty(uuidToken) && tokenAuthFilter instanceof RedisTokenAuthFilter) {
-            String loginUserKey = CacheKeyGenerator.key(CacheKeyPrefix.LOGIN_USER, uuidToken);
+            String loginUserKey = CacheKeyGenerator.key(KeyPrefix.LOGIN_USER, uuidToken);
             RedisUtil.del(loginUserKey);
         }
         // 写入响应

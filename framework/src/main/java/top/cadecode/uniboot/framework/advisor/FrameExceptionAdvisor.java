@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.framework.exception;
+package top.cadecode.uniboot.framework.advisor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
@@ -10,9 +10,9 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import top.cadecode.uniboot.common.core.enums.error.FrameErrorEnum;
 import top.cadecode.uniboot.common.core.exception.UniErrorCode;
-import top.cadecode.uniboot.common.core.response.ApiResult;
+import top.cadecode.uniboot.common.core.web.response.ApiResult;
+import top.cadecode.uniboot.framework.enums.FrameErrorEnum;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;

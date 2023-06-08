@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.enums;
+package top.cadecode.uniboot.framework.enums;
 
 /**
  * Token 校验模式枚举

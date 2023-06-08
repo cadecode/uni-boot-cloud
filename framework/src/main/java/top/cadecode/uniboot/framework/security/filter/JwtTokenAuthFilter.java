@@ -5,9 +5,9 @@ import cn.hutool.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.core.enums.AuthModelEnum;
-import top.cadecode.uniboot.common.core.enums.error.AuthErrorEnum;
 import top.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsDto;
+import top.cadecode.uniboot.framework.enums.AuthErrorEnum;
+import top.cadecode.uniboot.framework.enums.AuthModelEnum;
 import top.cadecode.uniboot.framework.security.TokenAuthFilter;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 

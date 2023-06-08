@@ -1,8 +1,8 @@
-package top.cadecode.uniboot.common.core.enums.error;
+package top.cadecode.uniboot.framework.enums;
 
 import lombok.Getter;
 import top.cadecode.uniboot.common.core.exception.UniErrorCode;
-import top.cadecode.uniboot.common.core.response.ApiStatus;
+import top.cadecode.uniboot.common.core.web.response.ApiStatus;
 
 /**
  * 框架异常枚举

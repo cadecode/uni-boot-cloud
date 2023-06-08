@@ -6,12 +6,12 @@ import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import top.cadecode.uniboot.common.core.enums.AuthModelEnum;
-import top.cadecode.uniboot.common.core.response.ApiResult;
 import top.cadecode.uniboot.common.core.util.JacksonUtil;
+import top.cadecode.uniboot.common.core.web.response.ApiResult;
 import top.cadecode.uniboot.framework.bean.dto.SysUserDto;
 import top.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsDto;
 import top.cadecode.uniboot.framework.bean.po.SysUser;
+import top.cadecode.uniboot.framework.enums.AuthModelEnum;
 import top.cadecode.uniboot.framework.service.SysUserService;
 
 import javax.servlet.http.HttpServletRequest;

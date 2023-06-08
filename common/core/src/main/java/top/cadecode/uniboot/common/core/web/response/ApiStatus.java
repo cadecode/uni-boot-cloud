@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.response;
+package top.cadecode.uniboot.common.core.web.response;
 
 /**
  * Http 状态码
