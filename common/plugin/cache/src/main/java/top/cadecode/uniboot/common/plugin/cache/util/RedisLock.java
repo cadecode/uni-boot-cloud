@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.util;
+package top.cadecode.uniboot.common.plugin.cache.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

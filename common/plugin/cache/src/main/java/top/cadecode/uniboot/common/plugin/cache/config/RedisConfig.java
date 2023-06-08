@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.framework.config;
+package top.cadecode.uniboot.common.plugin.cache.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

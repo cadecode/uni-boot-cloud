@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import top.cadecode.uniboot.common.core.consts.CacheKeyPrefix;
-import top.cadecode.uniboot.common.core.util.RedisUtil;
+import top.cadecode.uniboot.common.plugin.cache.util.RedisUtil;
 import top.cadecode.uniboot.framework.bean.po.SysApi;
 import top.cadecode.uniboot.framework.bean.vo.SysApiVo.SysApiRolesVo;
 import top.cadecode.uniboot.framework.mapper.SysApiMapper;
