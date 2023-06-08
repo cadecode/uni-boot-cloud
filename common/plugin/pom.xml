@@ -22,12 +22,4 @@
         <module>swagger</module>
     </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>net.dreamlu</groupId>
-            <artifactId>mica-auto</artifactId>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
 </project>
