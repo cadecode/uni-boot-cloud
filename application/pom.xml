@@ -14,6 +14,14 @@
     <description>启动器模块</description>
 
     <dependencies>
+        <dependency>
+            <groupId>top.cadecode</groupId>
+            <artifactId>uni-boot-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-actuator</artifactId>
+        </dependency>
         <!--SpringBoot tomcat-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -37,15 +45,6 @@
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
-        </dependency>
-        <!--子模块-->
-        <dependency>
-            <groupId>top.cadecode</groupId>
-            <artifactId>uni-boot-framework</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>top.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-actuator</artifactId>
         </dependency>
     </dependencies>
 

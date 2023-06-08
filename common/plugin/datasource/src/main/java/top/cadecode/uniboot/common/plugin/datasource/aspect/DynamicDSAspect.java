@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.framework.aspect;
+package top.cadecode.uniboot.common.plugin.datasource.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -9,8 +9,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.core.annotation.DynamicDS;
-import top.cadecode.uniboot.common.core.datasource.DynamicDSHolder;
+import top.cadecode.uniboot.common.plugin.datasource.annotation.DynamicDS;
+import top.cadecode.uniboot.common.plugin.datasource.dynamic.DynamicDSHolder;
 
 /**
  * 动态数据源切换 AOP 类
@@ -24,8 +24,8 @@ import top.cadecode.uniboot.common.core.datasource.DynamicDSHolder;
 @Order(-1)
 public class DynamicDSAspect {
 
-    @Pointcut("@within(top.cadecode.uniboot.common.core.annotation.DynamicDS) " +
-            "|| @annotation(top.cadecode.uniboot.common.core.annotation.DynamicDS)")
+    @Pointcut("@within(top.cadecode.uniboot.common.plugin.datasource.annotation.DynamicDS) " +
+            "|| @annotation(top.cadecode.uniboot.common.plugin.datasource.annotation.DynamicDS)")
     public void pointCut() {
 
     }

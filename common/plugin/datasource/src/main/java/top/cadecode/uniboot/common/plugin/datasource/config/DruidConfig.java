@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.framework.config;
+package top.cadecode.uniboot.common.plugin.datasource.config;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.alibaba.druid.spring.boot.autoconfigure.properties.DruidStatProperties;
