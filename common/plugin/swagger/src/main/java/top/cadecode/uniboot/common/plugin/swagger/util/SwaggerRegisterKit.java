@@ -24,7 +24,7 @@ import top.cadecode.uniboot.common.plugin.swagger.config.SwaggerProperties;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class SwaggerRegister implements ApplicationContextAware {
+public class SwaggerRegisterKit implements ApplicationContextAware {
 
     private ConfigurableApplicationContext applicationContext;
 

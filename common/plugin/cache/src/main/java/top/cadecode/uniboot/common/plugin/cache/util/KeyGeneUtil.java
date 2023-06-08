@@ -6,7 +6,7 @@ package top.cadecode.uniboot.common.plugin.cache.util;
  * @author Cade Li
  * @date 2022/5/29
  */
-public class CacheKeyGenerator {
+public class KeyGeneUtil {
 
     /**
      * 生成 ： 分割的 redis key
