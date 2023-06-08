@@ -53,6 +53,10 @@
             <groupId>top.cadecode</groupId>
             <artifactId>uni-boot-framework</artifactId>
         </dependency>
+        <dependency>
+            <groupId>top.cadecode</groupId>
+            <artifactId>uni-boot-business</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
