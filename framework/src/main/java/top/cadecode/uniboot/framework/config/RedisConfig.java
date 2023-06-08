@@ -19,8 +19,8 @@ public class RedisConfig {
 
     private final RedisConnectionFactory factory;
 
-    @Bean("redisTemplate")
-    public RedisTemplate<String, ?> redisTemplate() {
+    @Bean
+    public RedisTemplate<String, ?> jsonRedisTemplate() {
         RedisTemplate<String, ?> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         // 设置 k v 的序列化方式
