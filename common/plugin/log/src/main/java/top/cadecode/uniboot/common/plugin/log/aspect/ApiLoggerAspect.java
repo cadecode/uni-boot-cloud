@@ -2,7 +2,6 @@ package top.cadecode.uniboot.common.plugin.log.aspect;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.dtp.core.thread.DtpExecutor;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -30,8 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 public class ApiLoggerAspect {
-
-    private final DtpExecutor asyncExecutor;
 
     private final AbstractApiLogHandler apiLogHandler;
 
@@ -112,14 +109,12 @@ public class ApiLoggerAspect {
             Object logObj = apiLogHandler.generateLog(point, baseLogInfo);
             // 打印日志
             log.info("API log [{}]: {}", apiLogger.type().getType(), JacksonUtil.toJson(logObj));
-            // 持久化 异步
-            asyncExecutor.execute(() -> {
-                try {
-                    apiLogHandler.save(apiLogger, logObj);
-                } catch (Exception e) {
-                    log.warn("API log [{}]: save async fail", apiLogger.type().getType(), e);
-                }
-            });
+            // 持久化
+            try {
+                apiLogHandler.save(apiLogger, logObj);
+            } catch (Exception e) {
+                log.warn("API log [{}]: save async fail", apiLogger.type().getType(), e);
+            }
         } catch (Exception e) {
             log.warn("API log [{}]: handle logger fail", apiLogger.type().getType(), e);
         }
