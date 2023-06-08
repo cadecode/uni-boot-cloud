@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.consts;
+package top.cadecode.uniboot.framework.consts;
 
 /**
  * Redis key 命名前缀
@@ -6,7 +6,7 @@ package top.cadecode.uniboot.common.core.consts;
  * @author Cade Li
  * @date 2022/5/29
  */
-public interface CacheKeyPrefix {
+public interface KeyPrefix {
 
     /**
      * 登录用户信息

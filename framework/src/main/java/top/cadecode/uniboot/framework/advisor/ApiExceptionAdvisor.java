@@ -1,11 +1,11 @@
-package top.cadecode.uniboot.framework.exception;
+package top.cadecode.uniboot.framework.advisor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import top.cadecode.uniboot.common.core.exception.UniErrorCode;
 import top.cadecode.uniboot.common.core.exception.UniException;
-import top.cadecode.uniboot.common.core.response.ApiResult;
+import top.cadecode.uniboot.common.core.web.response.ApiResult;
 
 /**
  * UniException 统一处理器

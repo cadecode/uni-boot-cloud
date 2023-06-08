@@ -8,9 +8,9 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.core.annotation.RateLimit;
-import top.cadecode.uniboot.common.core.enums.error.FrameErrorEnum;
 import top.cadecode.uniboot.common.core.exception.UniException;
+import top.cadecode.uniboot.framework.annotation.RateLimit;
+import top.cadecode.uniboot.framework.enums.FrameErrorEnum;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -27,8 +27,8 @@ public class RateLimitAspect {
 
     private static final ConcurrentHashMap<String, RateLimiter> LIMITER_MAP = new ConcurrentHashMap<>();
 
-    @Pointcut("@within(top.cadecode.uniboot.common.core.annotation.RateLimit) " +
-            "|| @annotation(top.cadecode.uniboot.common.core.annotation.RateLimit)")
+    @Pointcut("@within(top.cadecode.uniboot.framework.annotation.RateLimit) " +
+            "|| @annotation(top.cadecode.uniboot.framework.annotation.RateLimit)")
     public void pointCut() {
 
     }

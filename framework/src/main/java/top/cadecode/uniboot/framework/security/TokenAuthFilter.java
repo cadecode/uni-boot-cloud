@@ -8,10 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
-import top.cadecode.uniboot.common.core.enums.AuthModelEnum;
 import top.cadecode.uniboot.common.core.exception.UniErrorCode;
-import top.cadecode.uniboot.common.core.response.ApiResult;
 import top.cadecode.uniboot.common.core.util.JacksonUtil;
+import top.cadecode.uniboot.common.core.web.response.ApiResult;
+import top.cadecode.uniboot.framework.enums.AuthModelEnum;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

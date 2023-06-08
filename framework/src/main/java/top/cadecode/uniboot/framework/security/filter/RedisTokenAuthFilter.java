@@ -4,13 +4,13 @@ import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.core.consts.CacheKeyPrefix;
-import top.cadecode.uniboot.common.core.enums.AuthModelEnum;
-import top.cadecode.uniboot.common.core.enums.error.AuthErrorEnum;
 import top.cadecode.uniboot.common.plugin.cache.util.CacheKeyGenerator;
 import top.cadecode.uniboot.common.plugin.cache.util.RedisUtil;
 import top.cadecode.uniboot.framework.bean.dto.SysUserDto;
 import top.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsDto;
+import top.cadecode.uniboot.framework.consts.KeyPrefix;
+import top.cadecode.uniboot.framework.enums.AuthErrorEnum;
+import top.cadecode.uniboot.framework.enums.AuthModelEnum;
 import top.cadecode.uniboot.framework.security.TokenAuthFilter;
 import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 
@@ -50,7 +50,7 @@ public class RedisTokenAuthFilter extends TokenAuthFilter {
             return;
         }
         // 查询 redis 中 token
-        String loginUserKey = CacheKeyGenerator.key(CacheKeyPrefix.LOGIN_USER, uuidToken);
+        String loginUserKey = CacheKeyGenerator.key(KeyPrefix.LOGIN_USER, uuidToken);
         SysUserDetailsDto sysUserDetailsDto = RedisUtil.get(loginUserKey, SysUserDto.SysUserDetailsDto.class);
         // redis 中用户不存在
         if (Objects.isNull(sysUserDetailsDto)) {

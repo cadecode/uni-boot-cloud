@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.controller.system;
+package top.cadecode.uniboot.framework.controller;
 
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.cadecode.uniboot.common.core.annotation.ApiFormat;
-import top.cadecode.uniboot.common.core.response.PageResult;
+import top.cadecode.uniboot.common.core.web.response.PageResult;
+import top.cadecode.uniboot.framework.annotation.ApiFormat;
 import top.cadecode.uniboot.framework.bean.po.SysMenu;
 import top.cadecode.uniboot.framework.bean.vo.SysMenuVo.SysMenuRolesVo;
 import top.cadecode.uniboot.framework.convert.SysMenuConvert;

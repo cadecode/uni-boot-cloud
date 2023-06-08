@@ -6,9 +6,9 @@ import cn.hutool.http.ContentType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.core.enums.error.AuthErrorEnum;
-import top.cadecode.uniboot.common.core.response.ApiResult;
 import top.cadecode.uniboot.common.core.util.JacksonUtil;
+import top.cadecode.uniboot.common.core.web.response.ApiResult;
+import top.cadecode.uniboot.framework.enums.AuthErrorEnum;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

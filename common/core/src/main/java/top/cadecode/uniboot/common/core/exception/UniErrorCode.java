@@ -1,6 +1,6 @@
 package top.cadecode.uniboot.common.core.exception;
 
-import top.cadecode.uniboot.common.core.response.ApiStatus;
+import top.cadecode.uniboot.common.core.web.response.ApiStatus;
 
 /**
  * 通用异常错误码接口，使用枚举类继承该类，便于统一管理异常信息

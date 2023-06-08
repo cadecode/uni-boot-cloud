@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.controller.system;
+package top.cadecode.uniboot.framework.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageInfo;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.cadecode.uniboot.common.core.annotation.ApiFormat;
 import top.cadecode.uniboot.common.core.exception.UniException;
-import top.cadecode.uniboot.common.core.response.PageResult;
+import top.cadecode.uniboot.common.core.web.response.PageResult;
+import top.cadecode.uniboot.framework.annotation.ApiFormat;
 import top.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsDto;
 import top.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserInfoDto;
 import top.cadecode.uniboot.framework.bean.po.SysUser;

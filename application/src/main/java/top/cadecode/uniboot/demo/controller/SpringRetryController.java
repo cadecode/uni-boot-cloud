@@ -16,7 +16,7 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.cadecode.uniboot.common.core.annotation.ApiFormat;
+import top.cadecode.uniboot.framework.annotation.ApiFormat;
 
 import java.util.HashMap;
 

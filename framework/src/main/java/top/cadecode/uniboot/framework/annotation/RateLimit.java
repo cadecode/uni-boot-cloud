@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.annotation;
+package top.cadecode.uniboot.framework.annotation;
 
 import org.springframework.core.annotation.AliasFor;
 
