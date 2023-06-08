@@ -15,7 +15,7 @@ import top.cadecode.uniboot.common.core.exception.UniException;
 import top.cadecode.uniboot.common.core.util.AssertUtil;
 import top.cadecode.uniboot.framework.annotation.ApiFormat;
 import top.cadecode.uniboot.framework.enums.FrameErrorEnum;
-import top.cadecode.uniboot.framework.manager.FileUploadManager;
+import top.cadecode.uniboot.framework.util.FileUploadUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,10 +39,10 @@ public class CommonController {
     @PostMapping("common/upload")
     public boolean upload(@RequestPart("file") MultipartFile file) {
         String originalFilename = file.getOriginalFilename();
-        boolean checked = FileUploadManager.checkAllowedExtension(originalFilename);
+        boolean checked = FileUploadUtil.checkAllowedExtension(originalFilename);
         AssertUtil.isFalse(checked, FrameErrorEnum.EXTENSION_NOT_ALLOWED, originalFilename + "不被允许");
-        String renamedFileName = FileUploadManager.renameByUUID(originalFilename);
-        String targetFilePath = FileUploadManager.uploadPath() + renamedFileName;
+        String renamedFileName = FileUploadUtil.renameByUUID(originalFilename);
+        String targetFilePath = FileUploadUtil.uploadPath() + renamedFileName;
         try {
             File targetFile = FileUtil.file(targetFilePath);
             FileUtil.mkParentDirs(targetFile);
@@ -65,22 +65,22 @@ public class CommonController {
     }
 
     @ApiOperation("下载文件")
-    @GetMapping(FileUploadManager.DEFAULT_DOWNLOAD_API)
+    @GetMapping(FileUploadUtil.DEFAULT_DOWNLOAD_API)
     public void download(HttpServletRequest request, HttpServletResponse response, String fileName) throws IOException {
-        boolean checked = FileUploadManager.checkAllowedExtension(fileName);
+        boolean checked = FileUploadUtil.checkAllowedExtension(fileName);
         AssertUtil.isFalse(checked, FrameErrorEnum.EXTENSION_NOT_ALLOWED, fileName + "不被允许");
         // 写文件流
-        String targetFilePath = FileUploadManager.downloadPath() + fileName;
+        String targetFilePath = FileUploadUtil.downloadPath() + fileName;
         boolean exist = FileUtil.exist(targetFilePath);
         AssertUtil.isFalse(exist, FrameErrorEnum.FILE_NOT_FOUND, fileName + "不存在");
         ServletUtil.write(response, new File(targetFilePath));
     }
 
     @ApiOperation("下载临时文件")
-    @GetMapping(FileUploadManager.DEFAULT_DOWNLOAD_TEMP_API)
+    @GetMapping(FileUploadUtil.DEFAULT_DOWNLOAD_TEMP_API)
     public void downloadTemp(HttpServletRequest request, HttpServletResponse response, String fileName) throws IOException {
         download(request, response, fileName);
-        String targetFilePath = FileUploadManager.downloadPath() + fileName;
+        String targetFilePath = FileUploadUtil.downloadPath() + fileName;
         FileUtil.del(targetFilePath);
     }
 

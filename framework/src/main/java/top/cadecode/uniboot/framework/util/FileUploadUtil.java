@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.framework.manager;
+package top.cadecode.uniboot.framework.util;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.file.FileNameUtil;
@@ -21,7 +21,7 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class FileUploadManager implements InitializingBean {
+public class FileUploadUtil implements InitializingBean {
 
     private final UniBootConfig uniBootConfig;
 
