@@ -13,6 +13,7 @@ import top.cadecode.uniboot.common.core.web.response.ApiStatus;
 @Getter
 public enum FrameErrorEnum implements UniErrorCode {
 
+    // web mvc
     VALIDATED_ERROR(1, "参数校验不通过") {
         @Override
         public int getStatus() {
@@ -49,6 +50,8 @@ public enum FrameErrorEnum implements UniErrorCode {
             return ApiStatus.TOO_MANY_REQUESTS;
         }
     },
+
+    // file
     EXTENSION_NOT_ALLOWED(6, "上传或下载文件的类型不被允许"),
     UPLOAD_FILE_FAIL(7, "上传文件失败"),
     FILE_NOT_FOUND(8, "文件未找到"),
