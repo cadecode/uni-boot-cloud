@@ -1,7 +1,7 @@
 package top.cadecode.uniboot.framework.bean.vo;
 
 import lombok.Data;
-import top.cadecode.uniboot.common.core.enums.LogTypeEnum;
+import top.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
 
 import java.util.Date;
 

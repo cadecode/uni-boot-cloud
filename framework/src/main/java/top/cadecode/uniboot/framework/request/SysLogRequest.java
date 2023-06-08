@@ -1,8 +1,8 @@
 package top.cadecode.uniboot.framework.request;
 
 import lombok.Data;
-import top.cadecode.uniboot.common.core.enums.LogTypeEnum;
 import top.cadecode.uniboot.common.core.response.PageParams;
+import top.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
 
 import java.util.Date;
 import java.util.List;

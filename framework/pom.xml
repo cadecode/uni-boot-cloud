@@ -21,5 +21,9 @@
             <groupId>top.cadecode</groupId>
             <artifactId>uni-boot-common-plugin-swagger</artifactId>
         </dependency>
+        <dependency>
+            <groupId>top.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-log</artifactId>
+        </dependency>
     </dependencies>
 </project>

@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.enums;
+package top.cadecode.uniboot.common.plugin.log.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
