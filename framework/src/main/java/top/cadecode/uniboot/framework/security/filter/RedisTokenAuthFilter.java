@@ -12,7 +12,7 @@ import top.cadecode.uniboot.framework.consts.KeyPrefix;
 import top.cadecode.uniboot.framework.enums.AuthErrorEnum;
 import top.cadecode.uniboot.framework.enums.AuthModelEnum;
 import top.cadecode.uniboot.framework.security.TokenAuthFilter;
-import top.cadecode.uniboot.framework.security.TokenAuthHolder;
+import top.cadecode.uniboot.framework.util.SecurityUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -33,8 +33,6 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnProperty(name = "uni-boot.security.auth-model", havingValue = "redis")
 public class RedisTokenAuthFilter extends TokenAuthFilter {
 
-    private final TokenAuthHolder tokenAuthHolder;
-
     @Override
     public AuthModelEnum getAuthModel() {
         return AuthModelEnum.REDIS;
@@ -43,7 +41,7 @@ public class RedisTokenAuthFilter extends TokenAuthFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-        String uuidToken = tokenAuthHolder.getTokenFromRequest(request);
+        String uuidToken = SecurityUtil.getTokenFromRequest(request);
         // token 不存在
         if (StrUtil.isEmpty(uuidToken)) {
             filterChain.doFilter(request, response);
@@ -58,7 +56,7 @@ public class RedisTokenAuthFilter extends TokenAuthFilter {
             return;
         }
         // 用户存在，刷新过期时间
-        RedisUtil.expire(loginUserKey, tokenAuthHolder.getExpiration(), TimeUnit.SECONDS);
+        RedisUtil.expire(loginUserKey, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
         // 设置 AuthenticationToken
         setAuthentication(request, sysUserDetailsDto);
         filterChain.doFilter(request, response);

@@ -61,6 +61,11 @@ public class SecurityConfig {
     private List<String> ignoreUrls;
 
     /**
+     * JWT Token 配置
+     */
+    private TokenConfig token;
+
+    /**
      * 登录路径
      */
     public static final String LOGIN_URL = "/login";
@@ -70,7 +75,6 @@ public class SecurityConfig {
      */
     public static final String USERNAME_PARAMETER = "username";
     public static final String PASSWORD_PARAMETER = "password";
-
 
     /**
      * 注销路径
@@ -173,5 +177,27 @@ public class SecurityConfig {
                 }
             }
         };
+    }
+
+    /**
+     * JWT 配置类
+     */
+    @Data
+    public static class TokenConfig {
+
+        /**
+         * token 请求头字段
+         */
+        private String header;
+
+        /**
+         * token 过期时间，单位秒
+         */
+        private Long expiration;
+
+        /**
+         * 密钥
+         */
+        private String secret;
     }
 }

@@ -16,7 +16,7 @@ import top.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import top.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
 import top.cadecode.uniboot.framework.annotation.ApiFormat;
 import top.cadecode.uniboot.framework.config.SecurityConfig;
-import top.cadecode.uniboot.framework.security.TokenAuthHolder;
+import top.cadecode.uniboot.framework.util.SecurityUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,8 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("auth")
 public class AuthController {
 
-    private final TokenAuthHolder tokenAuthHolder;
-
     /**
      * 复用Security login接口，方便swagger展示
      */
@@ -50,7 +48,7 @@ public class AuthController {
                 .form(SecurityConfig.USERNAME_PARAMETER, username)
                 .form(SecurityConfig.PASSWORD_PARAMETER, password)
                 .execute();
-        response.addHeader(tokenAuthHolder.getHeader(), loginRes.header(tokenAuthHolder.getHeader()));
+        response.addHeader(SecurityUtil.getHeader(), loginRes.header(SecurityUtil.getHeader()));
         return JacksonUtil.toBean(loginRes.body(), ApiResult.class);
     }
 
@@ -63,7 +61,7 @@ public class AuthController {
     public ApiResult<?> logout(HttpServletRequest request, HttpServletResponse response) {
         String replacedURL = request.getRequestURL().toString().replace("/auth/logout", SecurityConfig.LOGOUT_URL);
         HttpResponse loginRes = HttpUtil.createPost(replacedURL)
-                .header(tokenAuthHolder.getHeader(), request.getHeader(tokenAuthHolder.getHeader()))
+                .header(SecurityUtil.getHeader(), request.getHeader(SecurityUtil.getHeader()))
                 .execute();
         return JacksonUtil.toBean(loginRes.body(), ApiResult.class);
     }

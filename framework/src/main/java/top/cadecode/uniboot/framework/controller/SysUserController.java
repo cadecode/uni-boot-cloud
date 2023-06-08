@@ -22,10 +22,10 @@ import top.cadecode.uniboot.framework.bean.po.SysUser;
 import top.cadecode.uniboot.framework.bean.vo.SysMenuVo.SysMenuTreeVo;
 import top.cadecode.uniboot.framework.bean.vo.SysUserVo.SysUserRolesVo;
 import top.cadecode.uniboot.framework.convert.SysUserConvert;
-import top.cadecode.uniboot.framework.security.TokenAuthHolder;
 import top.cadecode.uniboot.framework.service.SysMenuService;
 import top.cadecode.uniboot.framework.service.SysRoleService;
 import top.cadecode.uniboot.framework.service.SysUserService;
+import top.cadecode.uniboot.framework.util.SecurityUtil;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -60,7 +60,7 @@ public class SysUserController {
     @ApiOperation("获取用户信息")
     @PostMapping("get_info")
     public SysUserInfoDto getInfo() {
-        SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
+        SysUserDetailsDto userDetails = SecurityUtil.getUserDetails(null);
         List<SysMenuTreeVo> sysMenuTreeVos = sysMenuService.listTreeVoByRoles(userDetails.getRoles());
         return SysUserInfoDto.builder().menuList(sysMenuTreeVos).build();
     }
@@ -68,7 +68,7 @@ public class SysUserController {
     @ApiOperation("修改用户信息（用户中心）")
     @PostMapping("modify_info")
     public boolean modifyInfo(@RequestBody @Valid SysUserModifyInfoRequest request) {
-        SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
+        SysUserDetailsDto userDetails = SecurityUtil.getUserDetails(null);
         SysUser po = SysUserConvert.INSTANCE.requestToPo(request);
         po.setId(userDetails.getId());
         return sysUserService.updateById(po);
@@ -77,7 +77,7 @@ public class SysUserController {
     @ApiOperation("修改用户密码（用户中心）")
     @PostMapping("modify_pass")
     public boolean modifyPass(@RequestBody @Valid SysUserModifyPassRequest request) {
-        SysUserDetailsDto userDetails = TokenAuthHolder.getUserDetails(null);
+        SysUserDetailsDto userDetails = SecurityUtil.getUserDetails(null);
         SysUser sysUser = sysUserService.lambdaQuery().select(SysUser::getPassword)
                 .eq(SysUser::getId, userDetails.getId()).one();
         if (ObjectUtil.notEqual(request.getNewPass(), request.getConfirmedPass())) {
