@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import top.cadecode.uniboot.common.plugin.cache.exception.RedisLockException;
 
 import java.util.Map;
 import java.util.Objects;
@@ -154,7 +155,7 @@ public class RedisLockKit {
      */
     private boolean checkReentrant(String name) {
         if (Objects.isNull(name)) {
-            throw new RuntimeException("lock name cannot be null");
+            throw new RedisLockException("lock name cannot be null");
         }
         // 判断是否重入
         return Objects.nonNull(contentMap.get(name))
@@ -216,7 +217,7 @@ public class RedisLockKit {
             // 删除锁
             contentMap.remove(name);
             // 抛出异常停止任务
-            throw new RuntimeException("renew lock fail, key is " + name);
+            throw new RedisLockException("renew lock fail, key is " + name);
         }, 15, 15, TimeUnit.SECONDS);
     }
 

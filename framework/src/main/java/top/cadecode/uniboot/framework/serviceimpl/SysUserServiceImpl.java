@@ -7,7 +7,7 @@ import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import top.cadecode.uniboot.common.core.exception.UniException;
+import top.cadecode.uniboot.common.core.exception.ApiException;
 import top.cadecode.uniboot.framework.bean.po.SysUser;
 import top.cadecode.uniboot.framework.bean.vo.SysUserVo.SysUserRolesVo;
 import top.cadecode.uniboot.framework.convert.SysUserConvert;
@@ -37,12 +37,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<SysUserRolesVo> userRolesVoList = sysUserMapper.selectRolesVoByUsername(username);
         // 用户账户不存在
         if (ObjectUtil.isEmpty(userRolesVoList)) {
-            throw UniException.of("该用户不存在");
+            throw ApiException.of("该用户不存在");
         }
         SysUserRolesVo userRolesVo = userRolesVoList.get(0);
         // 用户账号被关闭
         if (!userRolesVo.getEnableFlag()) {
-            throw UniException.of("账号已被关闭");
+            throw ApiException.of("账号已被关闭");
         }
         return SysUserConvert.INSTANCE.voToDetailsDto(userRolesVo);
     }

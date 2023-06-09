@@ -11,8 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.core.enums.CommonErrorEnum;
-import top.cadecode.uniboot.common.core.exception.UniException;
+import top.cadecode.uniboot.common.core.exception.UtilException;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -70,7 +69,7 @@ public class JacksonUtil implements InitializingBean {
             }
             return OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(bean);
         } catch (JsonProcessingException e) {
-            throw UniException.of(CommonErrorEnum.CAST_BEAN_TO_JSON_FAIL, e);
+            throw new UtilException("cast bean to json fail", e);
         }
     }
 
@@ -92,7 +91,7 @@ public class JacksonUtil implements InitializingBean {
         try {
             return OBJECT_MAPPER.readValue(json, clazz);
         } catch (Exception e) {
-            throw UniException.of(CommonErrorEnum.CAST_JSON_TO_BEAN_FAIL, e);
+            throw new UtilException("cast json to bean fail", e);
         }
     }
 
@@ -114,7 +113,7 @@ public class JacksonUtil implements InitializingBean {
         try {
             return OBJECT_MAPPER.readValue(json, typeReference);
         } catch (IOException e) {
-            throw UniException.of(CommonErrorEnum.CAST_JSON_TO_BEAN_FAIL, e);
+            throw new UtilException("cast json to bean fail", e);
         }
     }
 

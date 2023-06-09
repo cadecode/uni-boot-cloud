@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import top.cadecode.uniboot.common.core.exception.UniException;
+import top.cadecode.uniboot.common.core.exception.ApiException;
 import top.cadecode.uniboot.common.core.util.AssertUtil;
 import top.cadecode.uniboot.framework.annotation.ApiFormat;
 import top.cadecode.uniboot.framework.enums.FrameErrorEnum;
@@ -48,7 +48,7 @@ public class CommonController {
             FileUtil.mkParentDirs(targetFile);
             file.transferTo(targetFile);
         } catch (IOException e) {
-            throw UniException.of(FrameErrorEnum.UPLOAD_FILE_FAIL, e, originalFilename + "上传失败");
+            throw ApiException.of(FrameErrorEnum.UPLOAD_FILE_FAIL, e, originalFilename + "上传失败");
         }
         return true;
     }

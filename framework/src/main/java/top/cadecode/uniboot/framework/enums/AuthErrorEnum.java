@@ -1,7 +1,7 @@
 package top.cadecode.uniboot.framework.enums;
 
 import lombok.Getter;
-import top.cadecode.uniboot.common.core.exception.UniErrorCode;
+import top.cadecode.uniboot.common.core.enums.ApiErrorCode;
 import top.cadecode.uniboot.common.core.web.response.ApiStatus;
 
 /**
@@ -11,7 +11,7 @@ import top.cadecode.uniboot.common.core.web.response.ApiStatus;
  * @date 2022/5/8
  */
 @Getter
-public enum AuthErrorEnum implements UniErrorCode {
+public enum AuthErrorEnum implements ApiErrorCode {
 
     TOKEN_NOT_EXIST(0, "未登录") {
         @Override

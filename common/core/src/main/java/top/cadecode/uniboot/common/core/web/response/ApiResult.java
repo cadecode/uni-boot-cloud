@@ -3,7 +3,7 @@ package top.cadecode.uniboot.common.core.web.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.Data;
-import top.cadecode.uniboot.common.core.exception.UniErrorCode;
+import top.cadecode.uniboot.common.core.enums.ApiErrorCode;
 
 import java.util.Objects;
 
@@ -76,7 +76,7 @@ public class ApiResult<T> {
      *
      * @return ApiResult
      */
-    public static ApiResult<Object> error(UniErrorCode code) {
+    public static ApiResult<Object> error(ApiErrorCode code) {
         return ApiResult.of(code, null);
     }
 
@@ -87,7 +87,7 @@ public class ApiResult<T> {
      * @param data 数据
      * @return ApiResult
      */
-    public static <T> ApiResult<T> of(UniErrorCode code, T data) {
+    public static <T> ApiResult<T> of(ApiErrorCode code, T data) {
         ApiResult<T> result = new ApiResult<>();
         result.setData(data);
         if (Objects.nonNull(code)) {

@@ -1,8 +1,8 @@
 package top.cadecode.uniboot.common.core.util;
 
 import cn.hutool.core.util.ObjectUtil;
-import top.cadecode.uniboot.common.core.exception.UniErrorCode;
-import top.cadecode.uniboot.common.core.exception.UniException;
+import top.cadecode.uniboot.common.core.enums.ApiErrorCode;
+import top.cadecode.uniboot.common.core.exception.ApiException;
 
 import java.util.function.Supplier;
 
@@ -27,36 +27,36 @@ public class AssertUtil {
     }
 
     /**
-     * 判断是否为 true，如果是就抛出运行时异常 UniException
+     * 判断是否为 true，如果是就抛出运行时异常 ApiException
      *
      * @param expression 布尔表达式
      * @param moreInfo   异常信息
      */
     public static void isTrue(boolean expression, String moreInfo) {
-        isTrue(expression, () -> UniException.of(moreInfo));
+        isTrue(expression, () -> ApiException.of(moreInfo));
     }
 
     /**
-     * 判断是否为 true，如果是就抛出运行时异常 UniException
+     * 判断是否为 true，如果是就抛出运行时异常 ApiException
      *
      * @param expression 布尔表达式
      * @param errorCode  错误码
      * @param moreInfo   异常信息
      */
-    public static void isTrue(boolean expression, UniErrorCode errorCode, String moreInfo) {
-        isTrue(expression, () -> UniException.of(errorCode, moreInfo));
+    public static void isTrue(boolean expression, ApiErrorCode errorCode, String moreInfo) {
+        isTrue(expression, () -> ApiException.of(errorCode, moreInfo));
     }
 
     /**
-     * 判断是否为 true，如果是就抛出运行时异常 UniException，指定 caused
+     * 判断是否为 true，如果是就抛出运行时异常 ApiException，指定 caused
      *
      * @param expression 布尔表达式
      * @param errorCode  错误码
      * @param throwable  caused 异常
      * @param moreInfo   异常信息
      */
-    public static void isTrue(boolean expression, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(expression, () -> UniException.of(errorCode, throwable, moreInfo));
+    public static void isTrue(boolean expression, ApiErrorCode errorCode, Throwable throwable, String moreInfo) {
+        isTrue(expression, () -> ApiException.of(errorCode, throwable, moreInfo));
     }
 
     /**
@@ -70,36 +70,36 @@ public class AssertUtil {
     }
 
     /**
-     * 判断是否为 false，如果是就抛出运行时异常 UniException
+     * 判断是否为 false，如果是就抛出运行时异常 ApiException
      *
      * @param expression 布尔表达式
      * @param moreInfo   异常信息
      */
     public static void isFalse(boolean expression, String moreInfo) {
-        isTrue(!expression, () -> UniException.of(moreInfo));
+        isTrue(!expression, () -> ApiException.of(moreInfo));
     }
 
     /**
-     * 判断是否为 false，如果是就抛出运行时异常 UniException
+     * 判断是否为 false，如果是就抛出运行时异常 ApiException
      *
      * @param expression 布尔表达式
      * @param errorCode  错误码
      * @param moreInfo   异常信息
      */
-    public static void isFalse(boolean expression, UniErrorCode errorCode, String moreInfo) {
-        isTrue(!expression, () -> UniException.of(errorCode, moreInfo));
+    public static void isFalse(boolean expression, ApiErrorCode errorCode, String moreInfo) {
+        isTrue(!expression, () -> ApiException.of(errorCode, moreInfo));
     }
 
     /**
-     * 判断是否为 false，如果是就抛出运行时异常 UniException，指定 caused
+     * 判断是否为 false，如果是就抛出运行时异常 ApiException，指定 caused
      *
      * @param expression 布尔表达式
      * @param errorCode  错误码
      * @param throwable  caused 异常
      * @param moreInfo   异常信息
      */
-    public static void isFalse(boolean expression, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(!expression, () -> UniException.of(errorCode, throwable, moreInfo));
+    public static void isFalse(boolean expression, ApiErrorCode errorCode, Throwable throwable, String moreInfo) {
+        isTrue(!expression, () -> ApiException.of(errorCode, throwable, moreInfo));
     }
 
     /**
@@ -113,36 +113,36 @@ public class AssertUtil {
     }
 
     /**
-     * 判断是否为 null，如果是就抛出运行时异常 UniException
+     * 判断是否为 null，如果是就抛出运行时异常 ApiException
      *
      * @param o        对象
      * @param moreInfo 异常信息
      */
     public static void isNull(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isNull(o), () -> UniException.of(moreInfo));
+        isTrue(ObjectUtil.isNull(o), () -> ApiException.of(moreInfo));
     }
 
     /**
-     * 判断是否为 null，如果是就抛出运行时异常 UniException
+     * 判断是否为 null，如果是就抛出运行时异常 ApiException
      *
      * @param o         对象
      * @param errorCode 错误码
      * @param moreInfo  异常信息
      */
-    public static void isNull(Object o, UniErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isNull(o), () -> UniException.of(errorCode, moreInfo));
+    public static void isNull(Object o, ApiErrorCode errorCode, String moreInfo) {
+        isTrue(ObjectUtil.isNull(o), () -> ApiException.of(errorCode, moreInfo));
     }
 
     /**
-     * 判断是否为 null，如果是就抛出运行时异常 UniException，指定 caused
+     * 判断是否为 null，如果是就抛出运行时异常 ApiException，指定 caused
      *
      * @param o         布尔表达式
      * @param errorCode 对象
      * @param throwable caused 异常
      * @param moreInfo  异常信息
      */
-    public static void isNull(Object o, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isNull(o), () -> UniException.of(errorCode, throwable, moreInfo));
+    public static void isNull(Object o, ApiErrorCode errorCode, Throwable throwable, String moreInfo) {
+        isTrue(ObjectUtil.isNull(o), () -> ApiException.of(errorCode, throwable, moreInfo));
     }
 
     /**
@@ -156,36 +156,36 @@ public class AssertUtil {
     }
 
     /**
-     * 判断是否不为 null，如果是就抛出运行时异常 UniException
+     * 判断是否不为 null，如果是就抛出运行时异常 ApiException
      *
      * @param o        对象
      * @param moreInfo 异常信息
      */
     public static void isNotNull(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isNotNull(o), () -> UniException.of(moreInfo));
+        isTrue(ObjectUtil.isNotNull(o), () -> ApiException.of(moreInfo));
     }
 
     /**
-     * 判断是否不为 null，如果是就抛出运行时异常 UniException
+     * 判断是否不为 null，如果是就抛出运行时异常 ApiException
      *
      * @param o         对象
      * @param errorCode 错误码
      * @param moreInfo  异常信息
      */
-    public static void isNotNull(Object o, UniErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isNotNull(o), () -> UniException.of(errorCode, moreInfo));
+    public static void isNotNull(Object o, ApiErrorCode errorCode, String moreInfo) {
+        isTrue(ObjectUtil.isNotNull(o), () -> ApiException.of(errorCode, moreInfo));
     }
 
     /**
-     * 判断是否不为 null，如果是就抛出运行时异常 UniException，指定 caused
+     * 判断是否不为 null，如果是就抛出运行时异常 ApiException，指定 caused
      *
      * @param o         布尔表达式
      * @param errorCode 对象
      * @param throwable caused 异常
      * @param moreInfo  异常信息
      */
-    public static void isNotNull(Object o, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isNotNull(o), () -> UniException.of(errorCode, throwable, moreInfo));
+    public static void isNotNull(Object o, ApiErrorCode errorCode, Throwable throwable, String moreInfo) {
+        isTrue(ObjectUtil.isNotNull(o), () -> ApiException.of(errorCode, throwable, moreInfo));
     }
 
     /**
@@ -199,36 +199,36 @@ public class AssertUtil {
     }
 
     /**
-     * 判断是否为空，如果是就抛出运行时异常 UniException
+     * 判断是否为空，如果是就抛出运行时异常 ApiException
      *
      * @param o        对象
      * @param moreInfo 异常信息
      */
     public static void isEmpty(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isEmpty(o), () -> UniException.of(moreInfo));
+        isTrue(ObjectUtil.isEmpty(o), () -> ApiException.of(moreInfo));
     }
 
     /**
-     * 判断是否为空，如果是就抛出运行时异常 UniException
+     * 判断是否为空，如果是就抛出运行时异常 ApiException
      *
      * @param o         对象
      * @param errorCode 错误码
      * @param moreInfo  异常信息
      */
-    public static void isEmpty(Object o, UniErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isEmpty(o), () -> UniException.of(errorCode, moreInfo));
+    public static void isEmpty(Object o, ApiErrorCode errorCode, String moreInfo) {
+        isTrue(ObjectUtil.isEmpty(o), () -> ApiException.of(errorCode, moreInfo));
     }
 
     /**
-     * 判断是否为空，如果是就抛出运行时异常 UniException，指定 caused
+     * 判断是否为空，如果是就抛出运行时异常 ApiException，指定 caused
      *
      * @param o         布尔表达式
      * @param errorCode 对象
      * @param throwable caused 异常
      * @param moreInfo  异常信息
      */
-    public static void isEmpty(Object o, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isEmpty(o), () -> UniException.of(errorCode, throwable, moreInfo));
+    public static void isEmpty(Object o, ApiErrorCode errorCode, Throwable throwable, String moreInfo) {
+        isTrue(ObjectUtil.isEmpty(o), () -> ApiException.of(errorCode, throwable, moreInfo));
     }
 
     /**
@@ -242,36 +242,36 @@ public class AssertUtil {
     }
 
     /**
-     * 判断是否不为空，如果是就抛出运行时异常 UniException
+     * 判断是否不为空，如果是就抛出运行时异常 ApiException
      *
      * @param o        对象
      * @param moreInfo 异常信息
      */
     public static void isNotEmpty(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isNotEmpty(o), () -> UniException.of(moreInfo));
+        isTrue(ObjectUtil.isNotEmpty(o), () -> ApiException.of(moreInfo));
     }
 
     /**
-     * 判断是否不为空，如果是就抛出运行时异常 UniException
+     * 判断是否不为空，如果是就抛出运行时异常 ApiException
      *
      * @param o         对象
      * @param errorCode 错误码
      * @param moreInfo  异常信息
      */
-    public static void isNotEmpty(Object o, UniErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isNotEmpty(o), () -> UniException.of(errorCode, moreInfo));
+    public static void isNotEmpty(Object o, ApiErrorCode errorCode, String moreInfo) {
+        isTrue(ObjectUtil.isNotEmpty(o), () -> ApiException.of(errorCode, moreInfo));
     }
 
     /**
-     * 判断是否不为空，如果是就抛出运行时异常 UniException，指定 caused
+     * 判断是否不为空，如果是就抛出运行时异常 ApiException，指定 caused
      *
      * @param o         布尔表达式
      * @param errorCode 对象
      * @param throwable caused 异常
      * @param moreInfo  异常信息
      */
-    public static void isNotEmpty(Object o, UniErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isNotEmpty(o), () -> UniException.of(errorCode, throwable, moreInfo));
+    public static void isNotEmpty(Object o, ApiErrorCode errorCode, Throwable throwable, String moreInfo) {
+        isTrue(ObjectUtil.isNotEmpty(o), () -> ApiException.of(errorCode, throwable, moreInfo));
     }
 
 }

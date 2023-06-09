@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
-import top.cadecode.uniboot.common.core.exception.UniErrorCode;
+import top.cadecode.uniboot.common.core.enums.ApiErrorCode;
 import top.cadecode.uniboot.common.core.util.JacksonUtil;
 import top.cadecode.uniboot.common.core.web.response.ApiResult;
 import top.cadecode.uniboot.framework.enums.AuthModelEnum;
@@ -51,7 +51,7 @@ public abstract class TokenAuthFilter extends OncePerRequestFilter {
      * @param errorCode  错误信息枚举类
      * @param requestURI 请求路径
      */
-    protected void writeResponse(HttpServletResponse response, UniErrorCode errorCode, String requestURI) {
+    protected void writeResponse(HttpServletResponse response, ApiErrorCode errorCode, String requestURI) {
         ApiResult<Object> result = ApiResult.error(errorCode).path(requestURI);
         response.setStatus(errorCode.getStatus());
         ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));

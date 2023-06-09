@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import top.cadecode.uniboot.common.plugin.datasource.dynamic.DynamicDS;
 import top.cadecode.uniboot.common.plugin.datasource.dynamic.DynamicDSHolder;
+import top.cadecode.uniboot.common.plugin.datasource.exception.DynamicDSException;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -41,7 +42,7 @@ public class DynamicDSConfig {
             dataSourceMap = properties.getDatasource().entrySet().stream()
                     .collect(Collectors.toMap(Entry::getKey, e -> new HikariDataSource(e.getValue())));
         } catch (Exception e) {
-            throw new RuntimeException("Create dynamic datasource fail", e);
+            throw new DynamicDSException("Create dynamic datasource fail", e);
         }
         DynamicDS dynamicDS = new DynamicDS();
         // 添加数据源
@@ -59,11 +60,11 @@ public class DynamicDSConfig {
     private void checkDynamicDSConfig() {
         // 检查是否配置了数据源
         if (Objects.isNull(properties.getDatasource()) || properties.getDatasource().isEmpty()) {
-            throw new RuntimeException("Dynamic datasource config not found");
+            throw new DynamicDSException("Dynamic datasource config not found");
         }
         // 检查是否指定主数据源
         if (Objects.isNull(properties.getMaster()) || !properties.getDatasource().containsKey(properties.getMaster())) {
-            throw new RuntimeException("Not found default datasource config");
+            throw new DynamicDSException("Not found default datasource config");
         }
     }
 }

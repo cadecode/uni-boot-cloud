@@ -7,7 +7,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.core.exception.UniException;
+import top.cadecode.uniboot.common.core.exception.ApiException;
 import top.cadecode.uniboot.common.core.util.JacksonUtil;
 import top.cadecode.uniboot.common.core.web.response.ApiResult;
 import top.cadecode.uniboot.framework.config.SecurityConfig;
@@ -31,8 +31,8 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         ApiResult<Object> result = ApiResult.error(AuthErrorEnum.TOKEN_CREATE_ERROR).path(SecurityConfig.LOGIN_URL);
         response.setStatus(AuthErrorEnum.TOKEN_CREATE_ERROR.getStatus());
         Throwable cause = exception.getCause() == null ? exception : exception.getCause();
-        if (cause instanceof UniException) {
-            result.moreInfo(((UniException) cause).getMoreInfo());
+        if (cause instanceof ApiException) {
+            result.moreInfo(((ApiException) cause).getMoreInfo());
         } else if (cause instanceof BadCredentialsException) {
             result.moreInfo("密码错误");
         }
