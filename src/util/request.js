@@ -81,29 +81,41 @@ service.interceptors.response.use(
  */
 function checkResError(response) {
   const res = response.data;
-  let errorMessage;
-  // 判断有没有返回error
-  if (res && res.error) {
-    // 401未登录，跳转到登录页
-    if (res.status === 401) {
-      errorMessage = res.error.message;
-      // await此结果将抛出错误
-      return MessageBox.confirm(`${errorMessage}, 是否重新登录`, '登录状态失效', {
-        type: 'warning',
-        confirmButtonText: '返回登录页',
-        cancelButtonText: '取消'
-      }).then(async() => {
-        // 清理token并返回登录页
-        await store.dispatch('user/resetToken');
-        router.push(`/login?redirect=${router.currentRoute.fullPath}`);
-        throw new Error(errorMessage);
-      });
-    }
-    errorMessage = 'Error: ' + JSON.stringify(res.error);
-    // 此处res.error可兼容SpringBoot原生接口异常
-    Message.error({message: errorMessage, duration: 5 * 1000});
-    throw new Error(errorMessage);
+  // 判断有没有返回 error
+  if (!res || !res.error) {
+    return;
   }
+  // 401 未登录，跳转到登录页
+  if (res.status === 401) {
+    return confirmReLogin(res);
+  }
+  let errorMessage;
+  if (res.error.message) {
+    errorMessage = res.error.moreInfo ? `${res.error.message}, ${res.error.moreInfo}` : res.error.message;
+  } else {
+    // 此处 res.error 可兼容 SpringBoot 原生接口异常
+    errorMessage = res.error;
+  }
+  Message.error({message: errorMessage, duration: 5 * 1000});
+  throw new Error(JSON.stringify(res.error));
+}
+
+/**
+ * 确认是否重新登录
+ * await 返回结果结果将抛出错误
+ */
+function confirmReLogin(res) {
+  return MessageBox.confirm(`${res.error.message}, 是否重新登录`, '登录状态失效', {
+    type: 'warning',
+    confirmButtonText: '返回登录页',
+    cancelButtonText: '取消'
+  }).then(async() => {
+    // 使用 async 包裹，可等待完成 resetToken
+    // 清理 token 并返回登录页
+    await store.dispatch('user/resetToken');
+    router.push(`/login?redirect=${router.currentRoute.fullPath}`);
+    throw new Error(JSON.stringify(res.error));
+  });
 }
 
 /**
