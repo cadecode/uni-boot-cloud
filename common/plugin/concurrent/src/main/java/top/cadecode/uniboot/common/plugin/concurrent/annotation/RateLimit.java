@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.framework.annotation;
+package top.cadecode.uniboot.common.plugin.concurrent.annotation;
 
 import org.springframework.core.annotation.AliasFor;
 

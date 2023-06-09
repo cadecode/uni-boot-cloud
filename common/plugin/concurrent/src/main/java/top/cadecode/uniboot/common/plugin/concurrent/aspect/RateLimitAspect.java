@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.framework.aspect;
+package top.cadecode.uniboot.common.plugin.concurrent.aspect;
 
 import com.google.common.util.concurrent.RateLimiter;
 import lombok.extern.slf4j.Slf4j;
@@ -8,9 +8,8 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.core.exception.UniException;
-import top.cadecode.uniboot.framework.annotation.RateLimit;
-import top.cadecode.uniboot.framework.enums.FrameErrorEnum;
+import top.cadecode.uniboot.common.plugin.concurrent.annotation.RateLimit;
+import top.cadecode.uniboot.common.plugin.concurrent.exception.RateLimitException;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -27,8 +26,8 @@ public class RateLimitAspect {
 
     private static final ConcurrentHashMap<String, RateLimiter> LIMITER_MAP = new ConcurrentHashMap<>();
 
-    @Pointcut("@within(top.cadecode.uniboot.framework.annotation.RateLimit) " +
-            "|| @annotation(top.cadecode.uniboot.framework.annotation.RateLimit)")
+    @Pointcut("@within(top.cadecode.uniboot.common.plugin.concurrent.annotation.RateLimit) " +
+            "|| @annotation(top.cadecode.uniboot.common.plugin.concurrent.annotation.RateLimit)")
     public void pointCut() {
 
     }
@@ -52,7 +51,7 @@ public class RateLimitAspect {
             if (acquireOk) {
                 return;
             }
-            throw UniException.of(FrameErrorEnum.REQUEST_RATE_LIMITED, "请稍后再尝试访问");
+            throw new RateLimitException();
         }
         rateLimiter.acquire();
     }
