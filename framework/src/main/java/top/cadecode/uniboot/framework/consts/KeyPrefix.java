@@ -11,10 +11,10 @@ public interface KeyPrefix {
     /**
      * 登录用户信息
      */
-    String LOGIN_USER = "login:user";
+    String LOGIN_USER = "frame:loginUser";
 
     /**
      * Api Roles 映射关系
      */
-    String API_ROLES = "api:roles";
+    String API_ROLES = "frame:apiRoles";
 }

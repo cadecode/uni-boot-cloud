@@ -34,14 +34,12 @@ public class SysApiServiceImpl extends ServiceImpl<SysApiMapper, SysApi> impleme
     @Cacheable(cacheNames = KeyPrefix.API_ROLES, cacheManager = "caffeine5s")
     @Override
     public List<SysApiRolesVo> listRolesVo() {
-        List<SysApiRolesVo> sysApiRolesVos = RedisUtil.get(KeyPrefix.API_ROLES, new TypeReference<List<SysApiRolesVo>>() {
-        });
+        List<SysApiRolesVo> sysApiRolesVos = RedisUtil.get(KeyPrefix.API_ROLES, new TypeReference<List<SysApiRolesVo>>() {});
         if (ObjectUtil.isNotNull(sysApiRolesVos)) {
             return sysApiRolesVos;
         }
         synchronized (this) {
-            sysApiRolesVos = RedisUtil.get(KeyPrefix.API_ROLES, new TypeReference<List<SysApiRolesVo>>() {
-            });
+            sysApiRolesVos = RedisUtil.get(KeyPrefix.API_ROLES, new TypeReference<List<SysApiRolesVo>>() {});
             if (ObjectUtil.isNotNull(sysApiRolesVos)) {
                 return sysApiRolesVos;
             }
