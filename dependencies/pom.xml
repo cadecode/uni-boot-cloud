@@ -24,7 +24,7 @@
         <spring-boot.version>2.5.4</spring-boot.version>
         <lombok.version>1.18.24</lombok.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <hutool.vsersion>5.8.0</hutool.vsersion>
+        <hutool.vsersion>5.8.1</hutool.vsersion>
         <guava.vsersion>31.0.1-jre</guava.vsersion>
         <vavr.vsersion>1.0.0-alpha-4</vavr.vsersion>
         <mica-auto.version>2.3.2</mica-auto.version>
@@ -38,7 +38,7 @@
         <dynamic-ds.version>3.6.0</dynamic-ds.version>
         <sba.version>2.6.11</sba.version>
         <ttl.version>2.12.2</ttl.version>
-        <dynamic-tp.version>1.1.0</dynamic-tp.version>
+        <dynamic-tp.version>1.1.3</dynamic-tp.version>
         <easyexcel.version>3.1.1</easyexcel.version>
     </properties>
 
@@ -61,12 +61,6 @@
             <artifactId>mapstruct-processor</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-        <!--hutool-->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>${hutool.vsersion}</version>
-        </dependency>
         <!--guava-->
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -79,15 +73,32 @@
             <artifactId>vavr</artifactId>
             <version>${vavr.vsersion}</version>
         </dependency>
+        <!--hutool-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-extra</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
-            <!--SpringBoot 依赖-->
+            <!--SpringBoot 依赖版本控制-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--hutool 依赖版本控制-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-bom</artifactId>
+                <version>${hutool.vsersion}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -159,13 +170,13 @@
             </dependency>
             <!--dynamicTp-->
             <dependency>
-                <groupId>cn.dynamictp</groupId>
-                <artifactId>dynamic-tp-spring-boot-starter-common</artifactId>
+                <groupId>org.dromara.dynamictp</groupId>
+                <artifactId>dynamic-tp-core</artifactId>
                 <version>${dynamic-tp.version}</version>
             </dependency>
             <!--dynamicTp 邮件通知-->
             <dependency>
-                <groupId>cn.dynamictp</groupId>
+                <groupId>org.dromara.dynamictp</groupId>
                 <artifactId>dynamic-tp-spring-boot-starter-extension-notify-email</artifactId>
                 <version>${dynamic-tp.version}</version>
             </dependency>

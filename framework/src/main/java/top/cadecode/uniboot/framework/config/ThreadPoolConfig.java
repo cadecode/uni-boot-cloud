@@ -1,11 +1,11 @@
 package top.cadecode.uniboot.framework.config;
 
-import com.dtp.core.DtpRegistry;
-import com.dtp.core.spring.EnableDynamicTp;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -14,6 +14,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.concurrent.Executor;
 
+
 /**
  * 线程池设置
  *
@@ -21,11 +22,13 @@ import java.util.concurrent.Executor;
  * @date 2023/3/15
  */
 @Slf4j
-@EnableDynamicTp
+@RequiredArgsConstructor
 @EnableAsync
 @EnableScheduling
 @Configuration
 public class ThreadPoolConfig {
+
+    private final AsyncTaskExecutor asyncExecutor;
 
     /**
      * Spring 定时任务线程池
@@ -50,7 +53,7 @@ public class ThreadPoolConfig {
         return new AsyncConfigurer() {
             @Override
             public Executor getAsyncExecutor() {
-                return DtpRegistry.getDtpExecutor("asyncExecutor");
+                return asyncExecutor;
             }
 
             @Override

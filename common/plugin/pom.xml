@@ -20,6 +20,7 @@
         <module>datasource</module>
         <module>mybatis</module>
         <module>swagger</module>
+        <module>concurrent</module>
     </modules>
 
 </project>
