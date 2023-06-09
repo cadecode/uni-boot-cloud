@@ -1,7 +1,7 @@
 package top.cadecode.uniboot.framework.enums;
 
 import lombok.Getter;
-import top.cadecode.uniboot.common.core.exception.UniErrorCode;
+import top.cadecode.uniboot.common.core.enums.ApiErrorCode;
 import top.cadecode.uniboot.common.core.web.response.ApiStatus;
 
 /**
@@ -11,7 +11,7 @@ import top.cadecode.uniboot.common.core.web.response.ApiStatus;
  * @date 2022/5/30
  */
 @Getter
-public enum FrameErrorEnum implements UniErrorCode {
+public enum FrameErrorEnum implements ApiErrorCode {
 
     // web mvc
     VALIDATED_ERROR(1, "参数校验不通过") {

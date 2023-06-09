@@ -10,7 +10,7 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import top.cadecode.uniboot.common.core.exception.UniErrorCode;
+import top.cadecode.uniboot.common.core.enums.ApiErrorCode;
 import top.cadecode.uniboot.common.core.web.response.ApiResult;
 import top.cadecode.uniboot.common.plugin.concurrent.exception.RateLimitException;
 import top.cadecode.uniboot.framework.enums.FrameErrorEnum;
@@ -57,7 +57,7 @@ public class FrameExceptionAdvisor {
     /**
      * Spring MVC 异常类型和错误枚举的映射
      */
-    private static final Map<Class<?>, UniErrorCode> MVC_EXP_CODE_MAP = new HashMap<Class<?>, UniErrorCode>() {{
+    private static final Map<Class<?>, ApiErrorCode> MVC_EXP_CODE_MAP = new HashMap<Class<?>, ApiErrorCode>() {{
         // 请求参数错误
         put(ServletRequestBindingException.class, FrameErrorEnum.REQ_PARAM_INVALID);
         // 请求体错误
@@ -81,12 +81,12 @@ public class FrameExceptionAdvisor {
         log.error("Spring MVC Exception Handler =>", e);
         String requestURI = request.getRequestURI();
         // 根据异常类型查找 map 中的 code 枚举
-        UniErrorCode errorCode = MVC_EXP_CODE_MAP.entrySet()
+        ApiErrorCode errorCode = MVC_EXP_CODE_MAP.entrySet()
                 .stream()
                 .filter(o -> o.getKey().isAssignableFrom(e.getClass()))
                 .map(Entry::getValue)
                 .findFirst()
-                .orElse(UniErrorCode.UNKNOWN);
+                .orElse(ApiErrorCode.UNKNOWN);
         return ApiResult.error(errorCode).moreInfo(e.getMessage()).path(requestURI);
     }
 }

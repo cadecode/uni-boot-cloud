@@ -12,8 +12,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.ResolvableType;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.core.enums.CommonErrorEnum;
-import top.cadecode.uniboot.common.core.exception.UniException;
+import top.cadecode.uniboot.common.core.exception.UtilException;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
@@ -50,7 +49,7 @@ public class SpringUtil implements BeanFactoryPostProcessor, ApplicationContextA
         } else if (APPLICATION_CONTEXT instanceof ConfigurableApplicationContext) {
             factory = ((ConfigurableApplicationContext) APPLICATION_CONTEXT).getBeanFactory();
         } else {
-            throw UniException.of(CommonErrorEnum.NO_LISTABLE_BEAN_FACTORY, "");
+            throw new UtilException("no listable bean factory");
         }
         return factory;
     }
@@ -156,7 +155,7 @@ public class SpringUtil implements BeanFactoryPostProcessor, ApplicationContextA
             DefaultSingletonBeanRegistry registry = (DefaultSingletonBeanRegistry) factory;
             registry.destroySingleton(beanName);
         } else {
-            throw UniException.of(CommonErrorEnum.CAN_NOT_UNREGISTER_BEAN, "");
+            throw new UtilException("can not unregister bean");
         }
     }
 

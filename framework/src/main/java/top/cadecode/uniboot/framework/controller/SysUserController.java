@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.cadecode.uniboot.common.core.exception.UniException;
+import top.cadecode.uniboot.common.core.exception.ApiException;
 import top.cadecode.uniboot.common.core.web.response.PageResult;
 import top.cadecode.uniboot.framework.annotation.ApiFormat;
 import top.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsDto;
@@ -81,10 +81,10 @@ public class SysUserController {
         SysUser sysUser = sysUserService.lambdaQuery().select(SysUser::getPassword)
                 .eq(SysUser::getId, userDetails.getId()).one();
         if (ObjectUtil.notEqual(request.getNewPass(), request.getConfirmedPass())) {
-            throw UniException.of("新密码和确认密码不一致");
+            throw ApiException.of("新密码和确认密码不一致");
         }
         if (!passwordEncoder.matches(request.getOldPass(), sysUser.getPassword())) {
-            throw UniException.of("原密码错误");
+            throw ApiException.of("原密码错误");
         }
         return sysUserService.lambdaUpdate()
                 .setEntity(SysUser.builder()

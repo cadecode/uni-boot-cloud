@@ -1,4 +1,4 @@
-package top.cadecode.uniboot.common.core.exception;
+package top.cadecode.uniboot.common.core.enums;
 
 import top.cadecode.uniboot.common.core.web.response.ApiStatus;
 
@@ -8,7 +8,7 @@ import top.cadecode.uniboot.common.core.web.response.ApiStatus;
  * @author Cade Li
  * @date 2022/5/8
  */
-public interface UniErrorCode {
+public interface ApiErrorCode {
 
     String DEFAULT_CODE = "UNKNOWN";
     String DEFAULT_MESSAGE = "未知错误";
@@ -28,5 +28,5 @@ public interface UniErrorCode {
     /**
      * 未知异常
      */
-    UniErrorCode UNKNOWN = new UniErrorCode() {};
+    ApiErrorCode UNKNOWN = new ApiErrorCode() {};
 }
