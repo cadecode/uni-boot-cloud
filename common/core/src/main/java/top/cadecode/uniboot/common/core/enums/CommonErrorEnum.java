@@ -12,9 +12,13 @@ import top.cadecode.uniboot.common.core.exception.UniErrorCode;
 @Getter
 public enum CommonErrorEnum implements UniErrorCode {
 
+    // 工具类
     // json
     CAST_BEAN_TO_JSON_FAIL(0, "cast bean to json fail"),
-    CAST_JSON_TO_BEAN_FAIL(0, "cast json to bean fail"),
+    CAST_JSON_TO_BEAN_FAIL(1, "cast json to bean fail"),
+    // spring
+    NO_LISTABLE_BEAN_FACTORY(2, "no ConfigurableListableBeanFactory "),
+    CAN_NOT_UNREGISTER_BEAN(3, "can not unregister bean"),
     ;
 
     private final String code;
