@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import top.cadecode.uniboot.common.core.exception.UniErrorCode;
 import top.cadecode.uniboot.common.core.web.response.ApiResult;
+import top.cadecode.uniboot.common.plugin.concurrent.exception.RateLimitException;
 import top.cadecode.uniboot.framework.enums.FrameErrorEnum;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,15 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class FrameExceptionAdvisor {
+
+    /**
+     * 限流异常
+     */
+    @ExceptionHandler(value = RateLimitException.class)
+    public ApiResult<Object> handleValidationException(RateLimitException e, HttpServletRequest request) {
+        log.error("RateLimit Exception =>", e);
+        return ApiResult.error(FrameErrorEnum.REQUEST_RATE_LIMITED).moreInfo("请稍后再尝试访问").path(request.getRequestURI());
+    }
 
     /**
      * 处理参数校验异常
