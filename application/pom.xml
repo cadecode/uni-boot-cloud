@@ -22,6 +22,10 @@
             <groupId>top.cadecode</groupId>
             <artifactId>uni-boot-common-plugin-actuator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>top.cadecode</groupId>
+            <artifactId>uni-boot-business-sample</artifactId>
+        </dependency>
         <!--SpringBoot tomcat-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
