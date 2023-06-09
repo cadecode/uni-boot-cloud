@@ -13,7 +13,7 @@ const constRoutes = [
   },
   {
     path: '/404',
-    component: () => import('@/view/404'),
+    component: () => import('@/view/Page404.vue'),
     hidden: true
   },
   {
