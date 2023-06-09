@@ -69,7 +69,7 @@
             </dependency>
             <dependency>
                 <groupId>top.cadecode</groupId>
-                <artifactId>uni-boot-business</artifactId>
+                <artifactId>uni-boot-business-sample</artifactId>
                 <version>${uni.version}</version>
             </dependency>
         </dependencies>
