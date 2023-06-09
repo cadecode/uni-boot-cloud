@@ -1,10 +1,10 @@
 package top.cadecode.uniboot.business.sample.controller;
 
-import com.dtp.core.thread.DtpExecutor;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +24,7 @@ import top.cadecode.uniboot.framework.annotation.ApiFormat;
 @RequestMapping("demo/tp")
 public class DynamicTpController {
 
-    private final DtpExecutor asyncExecutor;
+    private final AsyncTaskExecutor asyncExecutor;
 
     @ApiOperation("测试 reject 通知")
     @PostMapping("test_reject")
