@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container-fixed  role-management-container">
+  <div class="app-container  role-management-container">
     <div class="role-management-filter">
       <el-form ref="rolesFilterForm" size="small" inline :model="rolesFilterForm.data" :rules="rolesFilterForm.rules">
         <el-form-item label="角色代码" prop="code">
@@ -15,70 +15,76 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-tabs type="border-card" class="role-management-role">
-      <el-tab-pane label="角色列表">
-        <el-table
-          ref="roleListTable"
-          height="calc(100vh - 221px)"
-          :data="roleListTable.data"
-          highlight-current-row
-          @current-change="roleListTableClick"
-        >
-          <el-table-column property="id" label="ID" width="170px" fixed />
-          <el-table-column property="code" label="角色代码" width="140px" fixed />
-          <el-table-column property="name" label="角色名" width="180px" fixed />
-          <el-table-column property="updateTime" label="更新时间" width="150px" />
-          <el-table-column property="updateUser" label="更新人" width="160px" />
-          <el-table-column property="createTime" label="创建时间" width="150px" />
-          <el-table-column label="操作" width="180px">
-            <template slot-scope="scope">
-              <el-button size="mini" @click="updateRole(scope.$index, scope.row)">
-                <el-icon class="el-icon-edit" />
-              </el-button>
-              <el-button size="mini" type="danger" @click="deleteRole(scope.$index, scope.row)">
-                <el-icon class="el-icon-delete" />
-              </el-button>
-            </template>
-          </el-table-column>
-          <el-table-column property="description" label="描述" width="300px" show-overflow-tooltip />
-        </el-table>
-        <el-pagination
-          layout="prev, pager, next"
-          :page-size="roleListTable.page.pageSize"
-          :total="roleListTable.page.total"
-          :current-page.sync="roleListTable.page.pageNumber"
-          @current-change="pageRoles"
-        />
-      </el-tab-pane>
-    </el-tabs>
-    <el-tabs type="border-card" class="role-management-bind">
-      <el-tab-pane label="菜单绑定" class="role-management-bind-menu">
-        <el-tree
-          v-if="roleListTable.currClick"
-          ref="menuTree"
-          :load="loadMenuTree"
-          :props="menuTree.props"
-          node-key="id"
-          show-checkbox
-          lazy
-          check-strictly
-          @check="menuCheck"
-        />
-        <el-empty v-else description="请先点击表格选择一行数据" />
-      </el-tab-pane>
-      <el-tab-pane label="API绑定" class="role-management-bind-api">
-        <el-tree
-          v-if="roleListTable.currClick"
-          ref="apiTree"
-          :data="apiTree.data"
-          :props="apiTree.props"
-          node-key="id"
-          show-checkbox
-          @check="apiCheck"
-        />
-        <el-empty v-else description="请先点击表格选择一行数据" />
-      </el-tab-pane>
-    </el-tabs>
+    <el-row :gutter="15">
+      <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
+        <el-tabs type="border-card" class="role-management-role">
+          <el-tab-pane label="角色列表">
+            <el-table
+              ref="roleListTable"
+              height="calc(100vh - 221px)"
+              :data="roleListTable.data"
+              highlight-current-row
+              @current-change="roleListTableClick"
+            >
+              <el-table-column property="id" label="ID" width="170px" fixed />
+              <el-table-column property="code" label="角色代码" width="140px" fixed />
+              <el-table-column property="name" label="角色名" width="180px" fixed />
+              <el-table-column property="updateTime" label="更新时间" width="150px" />
+              <el-table-column property="updateUser" label="更新人" width="160px" />
+              <el-table-column property="createTime" label="创建时间" width="150px" />
+              <el-table-column label="操作" width="180px">
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="updateRole(scope.$index, scope.row)">
+                    <el-icon class="el-icon-edit" />
+                  </el-button>
+                  <el-button size="mini" type="danger" @click="deleteRole(scope.$index, scope.row)">
+                    <el-icon class="el-icon-delete" />
+                  </el-button>
+                </template>
+              </el-table-column>
+              <el-table-column property="description" label="描述" width="300px" show-overflow-tooltip />
+            </el-table>
+            <el-pagination
+              layout="prev, pager, next"
+              :page-size="roleListTable.page.pageSize"
+              :total="roleListTable.page.total"
+              :current-page.sync="roleListTable.page.pageNumber"
+              @current-change="pageRoles"
+            />
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="24" :lg="6" :xl="6">
+        <el-tabs type="border-card" class="role-management-bind">
+          <el-tab-pane label="菜单绑定" class="role-management-bind-menu">
+            <el-tree
+              v-if="roleListTable.currClick"
+              ref="menuTree"
+              :load="loadMenuTree"
+              :props="menuTree.props"
+              node-key="id"
+              show-checkbox
+              lazy
+              check-strictly
+              @check="menuCheck"
+            />
+            <el-empty v-else description="请先点击表格选择一行数据" />
+          </el-tab-pane>
+          <el-tab-pane label="API绑定" class="role-management-bind-api">
+            <el-tree
+              v-if="roleListTable.currClick"
+              ref="apiTree"
+              :data="apiTree.data"
+              :props="apiTree.props"
+              node-key="id"
+              show-checkbox
+              @check="apiCheck"
+            />
+            <el-empty v-else description="请先点击表格选择一行数据" />
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
+    </el-row>
     <el-dialog title="更新角色" :visible.sync="updateRoleForm.showDialog" width="30%">
       <el-form
         ref="updateRoleForm"
@@ -360,22 +366,22 @@ export default {
 .role-management-container {
 
   .role-management-filter {
-    height: 51px;
+    min-height: 51px;
     overflow: auto;
   }
 
   .role-management-role {
-    display: inline-block;
     height: calc(100vh - 131px);
-    width: 70%;
-    vertical-align: top;
-    margin-right: 1%;
+  }
+
+  @media only screen and (max-width: 1199px) {
+    .role-management-role {
+      margin-bottom: 20px;
+    }
   }
 
   .role-management-bind {
-    display: inline-block;
     height: calc(100vh - 131px);
-    width: 28%;
 
     .el-tab-pane {
       height: calc(100vh - 200px);

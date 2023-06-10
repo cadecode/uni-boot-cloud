@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container-fixed  menu-management-container">
+  <div class="app-container  menu-management-container">
     <div class="menu-management-filter">
       <el-form
         ref="menusFilterForm"
@@ -43,81 +43,87 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-tabs type="border-card" class="menu-management-menu">
-      <el-tab-pane label="菜单列表">
-        <el-table
-          ref="menuListTable"
-          height="calc(100vh - 221px)"
-          :data="menuListTable.data"
-          highlight-current-row
-          row-key="id"
-          lazy
-          :load="loadMenuChildren"
-          :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-          @current-change="menuListTableClick"
-        >
-          <el-table-column property="orderNum" label="NO." width="200px" fixed />
-          <el-table-column property="id" label="ID" width="170px" fixed />
-          <el-table-column property="routeName" label="路由名" width="160px" fixed />
-          <el-table-column property="menuName" label="菜单名" width="160px" fixed />
-          <el-table-column property="enableFlag" label="启用" width="60px">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.enableFlag"
-                @change="flag => updateEnable(flag, scope.$index, scope.row)"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column property="updateTime" label="更新时间" width="150px" />
-          <el-table-column property="updateUser" label="更新人" width="160px" />
-          <el-table-column property="createTime" label="创建时间" width="150px" />
-          <el-table-column label="操作" width="180px">
-            <template slot-scope="scope">
-              <el-button size="mini" @click="updateMenu(scope.$index, scope.row)">
-                <el-icon class="el-icon-edit" />
-              </el-button>
-              <el-button size="mini" type="danger" @click="deleteMenu(scope.$index, scope.row)">
-                <el-icon class="el-icon-delete" />
-              </el-button>
-              <el-button
-                v-if="!scope.row.leafFlag"
-                size="mini"
-                type="info"
-                @click="addMenu(scope.$index, scope.row)"
-              >
-                <el-icon class="el-icon-plus" />
-              </el-button>
-            </template>
-          </el-table-column>
-          <el-table-column property="parentId" label="父级ID" width="170px" />
-          <el-table-column property="routePath" label="路由路径" width="300px" show-overflow-tooltip />
-          <el-table-column property="componentPath" label="组件路径" width="300px" show-overflow-tooltip />
-          <el-table-column property="leafFlag" label="是否页面" :formatter="(row, col, cell) => cell?'是':'否'" />
-          <el-table-column property="icon" label="图标" width="150px" />
-        </el-table>
-        <el-pagination
-          layout="prev, pager, next"
-          :page-size="menuListTable.page.pageSize"
-          :total="menuListTable.page.total"
-          :current-page.sync="menuListTable.page.pageNumber"
-          @current-change="pageMenus"
-        />
-      </el-tab-pane>
-    </el-tabs>
-    <el-tabs type="border-card" class="menu-management-role">
-      <el-tab-pane label="角色绑定">
-        <el-tree
-          v-if="menuListTable.currClick"
-          ref="roleTree"
-          :data="roleTree.data"
-          :props="roleTree.props"
-          node-key="code"
-          show-checkbox
-          @check="roleCheck"
-        />
-        <el-empty v-else description="请先点击表格选择一行数据" />
-      </el-tab-pane>
-    </el-tabs>
+    <el-row :gutter="15">
+      <el-col :xs="24" :sm="24" :md="24" :lg="21" :xl="21">
+        <el-tabs type="border-card" class="menu-management-menu">
+          <el-tab-pane label="菜单列表">
+            <el-table
+              ref="menuListTable"
+              height="calc(100vh - 221px)"
+              :data="menuListTable.data"
+              highlight-current-row
+              row-key="id"
+              lazy
+              :load="loadMenuChildren"
+              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+              @current-change="menuListTableClick"
+            >
+              <el-table-column property="orderNum" label="NO." width="200px" fixed />
+              <el-table-column property="id" label="ID" width="170px" fixed />
+              <el-table-column property="routeName" label="路由名" width="170px" fixed />
+              <el-table-column property="menuName" label="菜单名" width="170px" fixed />
+              <el-table-column property="enableFlag" label="启用" width="60px">
+                <template slot-scope="scope">
+                  <el-switch
+                    v-model="scope.row.enableFlag"
+                    @change="flag => updateEnable(flag, scope.$index, scope.row)"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column property="updateTime" label="更新时间" width="150px" />
+              <el-table-column property="updateUser" label="更新人" width="160px" />
+              <el-table-column property="createTime" label="创建时间" width="150px" />
+              <el-table-column label="操作" width="180px">
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="updateMenu(scope.$index, scope.row)">
+                    <el-icon class="el-icon-edit" />
+                  </el-button>
+                  <el-button size="mini" type="danger" @click="deleteMenu(scope.$index, scope.row)">
+                    <el-icon class="el-icon-delete" />
+                  </el-button>
+                  <el-button
+                    v-if="!scope.row.leafFlag"
+                    size="mini"
+                    type="info"
+                    @click="addMenu(scope.$index, scope.row)"
+                  >
+                    <el-icon class="el-icon-plus" />
+                  </el-button>
+                </template>
+              </el-table-column>
+              <el-table-column property="parentId" label="父级ID" width="170px" />
+              <el-table-column property="routePath" label="路由路径" width="300px" show-overflow-tooltip />
+              <el-table-column property="componentPath" label="组件路径" width="300px" show-overflow-tooltip />
+              <el-table-column property="leafFlag" label="是否页面" :formatter="(row, col, cell) => cell?'是':'否'" />
+              <el-table-column property="icon" label="图标" width="150px" />
+            </el-table>
+            <el-pagination
+              layout="prev, pager, next"
+              :page-size="menuListTable.page.pageSize"
+              :total="menuListTable.page.total"
+              :current-page.sync="menuListTable.page.pageNumber"
+              @current-change="pageMenus"
+            />
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="24" :lg="3" :xl="3">
+        <el-tabs type="border-card" class="menu-management-role">
+          <el-tab-pane label="角色绑定">
+            <el-tree
+              v-if="menuListTable.currClick"
+              ref="roleTree"
+              :data="roleTree.data"
+              :props="roleTree.props"
+              node-key="code"
+              show-checkbox
+              @check="roleCheck"
+            />
+            <el-empty v-else description="请先点击表格选择一行数据" />
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
+    </el-row>
     <el-dialog title="更新菜单" :visible.sync="updateMenuForm.showDialog" width="30%">
       <el-form
         ref="updateMenuForm"
@@ -256,25 +262,27 @@ export default {
         rule: {
           routeName: [{required: true, message: '请输入路由名', trigger: 'blur'}],
           routePath: [{required: true, message: '请输入路由路径', trigger: 'blur'}],
-          componentPath: [{validator: (rule, value, callback) => {
-            const routePath = this.updateMenuForm.data.routePath;
-            // 外链时置空
-            if (isExternalUrl(routePath)) {
-              this.updateMenuForm.data.componentPath = null;
-              callback();
-              return;
-            }
-            if (this.updateMenuForm.data.componentPath) {
-              callback();
-              return;
-            }
-            if (routePath) {
-              this.updateMenuForm.data.componentPath = routePath;
-              callback();
-              return;
-            }
-            callback(new Error('请输入组件路径或路由路径'));
-          }, trigger: 'blur'}],
+          componentPath: [{
+            validator: (rule, value, callback) => {
+              const routePath = this.updateMenuForm.data.routePath;
+              // 外链时置空
+              if (isExternalUrl(routePath)) {
+                this.updateMenuForm.data.componentPath = null;
+                callback();
+                return;
+              }
+              if (this.updateMenuForm.data.componentPath) {
+                callback();
+                return;
+              }
+              if (routePath) {
+                this.updateMenuForm.data.componentPath = routePath;
+                callback();
+                return;
+              }
+              callback(new Error('请输入组件路径或路由路径'));
+            }, trigger: 'blur'
+          }],
           menuName: [{required: true, message: '请输入菜单名', trigger: 'blur'}],
           orderNum: [{required: true, message: '请输入排序', trigger: 'blur'}]
         }
@@ -300,25 +308,27 @@ export default {
           parentId: [{required: true, message: '请输入父级ID', trigger: 'blur'}],
           routeName: [{required: true, message: '请输入路由名', trigger: 'blur'}],
           routePath: [{required: true, message: '请输入路由路径', trigger: 'blur'}],
-          componentPath: [{validator: (rule, value, callback) => {
-            const routePath = this.addMenuForm.data.routePath;
-            // 外链时置空
-            if (isExternalUrl(routePath)) {
-              this.addMenuForm.data.componentPath = null;
-              callback();
-              return;
-            }
-            if (this.addMenuForm.data.componentPath) {
-              callback();
-              return;
-            }
-            if (routePath) {
-              this.addMenuForm.data.componentPath = routePath;
-              callback();
-              return;
-            }
-            callback(new Error('请输入组件路径或路由路径'));
-          }, trigger: 'blur'}],
+          componentPath: [{
+            validator: (rule, value, callback) => {
+              const routePath = this.addMenuForm.data.routePath;
+              // 外链时置空
+              if (isExternalUrl(routePath)) {
+                this.addMenuForm.data.componentPath = null;
+                callback();
+                return;
+              }
+              if (this.addMenuForm.data.componentPath) {
+                callback();
+                return;
+              }
+              if (routePath) {
+                this.addMenuForm.data.componentPath = routePath;
+                callback();
+                return;
+              }
+              callback(new Error('请输入组件路径或路由路径'));
+            }, trigger: 'blur'
+          }],
           menuName: [{required: true, message: '请输入菜单名', trigger: 'blur'}],
           leafFlag: [{required: true, message: '请选择是否页面', trigger: 'blur'}],
           orderNum: [{required: true, message: '请输入排序', trigger: 'blur'}]
@@ -374,7 +384,9 @@ export default {
           // 没修改成功则刷回原值
           row.enableFlag = !flag;
         })
-        .catch(() => { row.enableFlag = !flag; });
+        .catch(() => {
+          row.enableFlag = !flag;
+        });
     },
     updateMenu(index, row) {
       this.updateMenuForm.showDialog = true;
@@ -526,22 +538,22 @@ export default {
 .menu-management-container {
 
   .menu-management-filter {
-    height: 51px;
+    min-height: 51px;
     overflow: auto;
   }
 
   .menu-management-menu {
-    display: inline-block;
     height: calc(100vh - 131px);
-    width: 85%;
-    vertical-align: top;
-    margin-right: 1%;
+  }
+
+  @media only screen and (max-width: 1199px) {
+    .menu-management-menu {
+      margin-bottom: 20px;
+    }
   }
 
   .menu-management-role {
-    display: inline-block;
     height: calc(100vh - 131px);
-    width: 13%;
 
     .el-tab-pane {
       height: calc(100vh - 200px);

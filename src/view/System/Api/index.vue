@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container-fixed api-management-container">
+  <div class="app-container api-management-container">
     <div class="api-management-filter">
       <el-form ref="apisFilterForm" size="small" inline :model="apisFilterForm.data" :rules="apisFilterForm.rules">
         <el-form-item label="接口路径" prop="url">
@@ -22,55 +22,61 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-tabs type="border-card" class="api-management-api">
-      <el-tab-pane label="API列表">
-        <el-table
-          ref="apiListTable"
-          height="calc(100vh - 221px)"
-          :data="apiListTable.data"
-          highlight-current-row
-          @current-change="apiListTableClick"
-        >
-          <el-table-column property="id" label="ID" width="170px" fixed />
-          <el-table-column property="url" label="接口路径" width="280px" fixed />
-          <el-table-column property="description" label="描述" width="298px" fixed show-overflow-tooltip />
-          <el-table-column property="updateTime" label="更新时间" width="150px" />
-          <el-table-column property="updateUser" label="更新人" width="160px" />
-          <el-table-column property="createTime" label="创建时间" width="150px" />
-          <el-table-column label="操作" width="180px">
-            <template slot-scope="scope">
-              <el-button size="mini" @click="updateApi(scope.$index, scope.row)">
-                <el-icon class="el-icon-edit" />
-              </el-button>
-              <el-button size="mini" type="danger" @click="deleteApi(scope.$index, scope.row)">
-                <el-icon class="el-icon-delete" />
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          layout="prev, pager, next"
-          :page-size="apiListTable.page.pageSize"
-          :total="apiListTable.page.total"
-          :current-page.sync="apiListTable.page.pageNumber"
-          @current-change="pageApis"
-        />
-      </el-tab-pane>
-    </el-tabs>
-    <el-tabs type="border-card" class="api-management-role">
-      <el-tab-pane label="角色绑定">
-        <el-tree
-          v-if="apiListTable.currClick"
-          ref="roleTree"
-          :data="roleTree.data"
-          :props="roleTree.props"
-          node-key="code"
-          show-checkbox
-          @check="roleCheck"
-        />
-        <el-empty v-else description="请先点击表格选择一行数据" />
-      </el-tab-pane>
-    </el-tabs>
+    <el-row :gutter="15">
+      <el-col :xs="24" :sm="24" :md="24" :lg="21" :xl="21">
+        <el-tabs type="border-card" class="api-management-api">
+          <el-tab-pane label="API列表">
+            <el-table
+              ref="apiListTable"
+              height="calc(100vh - 221px)"
+              :data="apiListTable.data"
+              highlight-current-row
+              @current-change="apiListTableClick"
+            >
+              <el-table-column property="id" label="ID" width="170px" />
+              <el-table-column property="url" label="接口路径" width="280px" />
+              <el-table-column property="description" label="描述" width="298px" show-overflow-tooltip />
+              <el-table-column property="updateTime" label="更新时间" width="150px" />
+              <el-table-column property="updateUser" label="更新人" width="160px" />
+              <el-table-column property="createTime" label="创建时间" width="150px" />
+              <el-table-column label="操作" width="180px">
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="updateApi(scope.$index, scope.row)">
+                    <el-icon class="el-icon-edit" />
+                  </el-button>
+                  <el-button size="mini" type="danger" @click="deleteApi(scope.$index, scope.row)">
+                    <el-icon class="el-icon-delete" />
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination
+              layout="prev, pager, next"
+              :page-size="apiListTable.page.pageSize"
+              :total="apiListTable.page.total"
+              :current-page.sync="apiListTable.page.pageNumber"
+              @current-change="pageApis"
+            />
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="24" :lg="3" :xl="3">
+        <el-tabs type="border-card" class="api-management-role">
+          <el-tab-pane label="角色绑定">
+            <el-tree
+              v-if="apiListTable.currClick"
+              ref="roleTree"
+              :data="roleTree.data"
+              :props="roleTree.props"
+              node-key="code"
+              show-checkbox
+              @check="roleCheck"
+            />
+            <el-empty v-else description="请先点击表格选择一行数据" />
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
+    </el-row>
     <el-dialog title="更新API" :visible.sync="updateApiForm.showDialog" width="30%">
       <el-form
         ref="updateApiForm"
@@ -314,22 +320,22 @@ export default {
 .api-management-container {
 
   .api-management-filter {
-    height: 51px;
+    min-height: 51px;
     overflow: auto;
   }
 
   .api-management-api {
-    display: inline-block;
     height: calc(100vh - 131px);
-    width: 85%;
-    vertical-align: top;
-    margin-right: 1%;
+  }
+
+  @media only screen and (max-width: 1199px) {
+    .api-management-api {
+      margin-bottom: 20px;
+    }
   }
 
   .api-management-role {
-    display: inline-block;
     height: calc(100vh - 131px);
-    width: 13%;
 
     .el-tab-pane {
       height: calc(100vh - 200px);

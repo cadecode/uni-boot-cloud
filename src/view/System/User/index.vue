@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container-fixed user-management-container">
+  <div class="app-container user-management-container">
     <div class="user-management-filter">
       <el-form ref="usersFilterForm" size="small" inline :model="usersFilterForm.data" :rules="usersFilterForm.rules">
         <el-form-item label="用户名" prop="username">
@@ -31,61 +31,67 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-tabs type="border-card" class="user-management-user">
-      <el-tab-pane label="用户列表">
-        <el-table
-          ref="userListTable"
-          height="calc(100vh - 221px)"
-          :data="userListTable.data"
-          highlight-current-row
-          @current-change="userListTableClick"
-        >
-          <el-table-column property="id" label="ID" width="170px" fixed />
-          <el-table-column property="username" label="用户名" width="160px" fixed />
-          <el-table-column property="nickName" label="昵称" width="298px" fixed />
-          <el-table-column property="sex" label="性别" width="60px" />
-          <el-table-column property="enableFlag" label="启用" width="60px">
-            <template slot-scope="scope">
-              <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.$index, scope.row)" />
-            </template>
-          </el-table-column>
-          <el-table-column property="updateTime" label="更新时间" width="150px" />
-          <el-table-column property="updateUser" label="更新人" width="160px" />
-          <el-table-column property="createTime" label="创建时间" width="150px" />
-          <el-table-column label="操作" width="180px">
-            <template slot-scope="scope">
-              <el-button size="mini" @click="updateUser(scope.$index, scope.row)"><el-icon class="el-icon-edit" /></el-button>
-              <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)"><el-icon class="el-icon-delete" /></el-button>
-            </template>
-          </el-table-column>
-          <el-table-column property="phone" label="电话" width="150px" show-overflow-tooltip />
-          <el-table-column property="mail" label="邮箱" width="150px" show-overflow-tooltip />
-          <el-table-column property="loginIp" label="登录IP" width="150px" />
-          <el-table-column property="loginDate" label="登录时间" width="150px" />
-        </el-table>
-        <el-pagination
-          layout="prev, pager, next"
-          :page-size="userListTable.page.pageSize"
-          :total="userListTable.page.total"
-          :current-page.sync="userListTable.page.pageNumber"
-          @current-change="pageUsers"
-        />
-      </el-tab-pane>
-    </el-tabs>
-    <el-tabs type="border-card" class="user-management-role">
-      <el-tab-pane label="角色绑定">
-        <el-tree
-          v-if="userListTable.currClick"
-          ref="roleTree"
-          :data="roleTree.data"
-          :props="roleTree.props"
-          node-key="code"
-          show-checkbox
-          @check="roleCheck"
-        />
-        <el-empty v-else description="请先点击表格选择一行数据" />
-      </el-tab-pane>
-    </el-tabs>
+    <el-row :gutter="15">
+      <el-col :xs="24" :sm="24" :md="24" :lg="21" :xl="21">
+        <el-tabs type="border-card" class="user-management-user">
+          <el-tab-pane label="用户列表">
+            <el-table
+              ref="userListTable"
+              height="calc(100vh - 221px)"
+              :data="userListTable.data"
+              highlight-current-row
+              @current-change="userListTableClick"
+            >
+              <el-table-column property="id" label="ID" width="170px" fixed />
+              <el-table-column property="username" label="用户名" width="160px" fixed />
+              <el-table-column property="nickName" label="昵称" width="300px" fixed />
+              <el-table-column property="sex" label="性别" width="60px" />
+              <el-table-column property="enableFlag" label="启用" width="60px">
+                <template slot-scope="scope">
+                  <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.$index, scope.row)" />
+                </template>
+              </el-table-column>
+              <el-table-column property="updateTime" label="更新时间" width="150px" />
+              <el-table-column property="updateUser" label="更新人" width="160px" />
+              <el-table-column property="createTime" label="创建时间" width="150px" />
+              <el-table-column label="操作" width="180px">
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="updateUser(scope.$index, scope.row)"><el-icon class="el-icon-edit" /></el-button>
+                  <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)"><el-icon class="el-icon-delete" /></el-button>
+                </template>
+              </el-table-column>
+              <el-table-column property="phone" label="电话" width="150px" show-overflow-tooltip />
+              <el-table-column property="mail" label="邮箱" width="150px" show-overflow-tooltip />
+              <el-table-column property="loginIp" label="登录IP" width="150px" />
+              <el-table-column property="loginDate" label="登录时间" width="150px" />
+            </el-table>
+            <el-pagination
+              layout="prev, pager, next"
+              :page-size="userListTable.page.pageSize"
+              :total="userListTable.page.total"
+              :current-page.sync="userListTable.page.pageNumber"
+              @current-change="pageUsers"
+            />
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="24" :lg="3" :xl="3">
+        <el-tabs type="border-card" class="user-management-role">
+          <el-tab-pane label="角色绑定">
+            <el-tree
+              v-if="userListTable.currClick"
+              ref="roleTree"
+              :data="roleTree.data"
+              :props="roleTree.props"
+              node-key="code"
+              show-checkbox
+              @check="roleCheck"
+            />
+            <el-empty v-else description="请先点击表格选择一行数据" />
+          </el-tab-pane>
+        </el-tabs>
+      </el-col>
+    </el-row>
     <el-dialog title="更新用户" :visible.sync="updateUserForm.showDialog" width="30%">
       <el-form
         ref="updateUserForm"
@@ -371,22 +377,22 @@ export default {
 .user-management-container {
 
   .user-management-filter {
-    height: 51px;
+    min-height: 51px;
     overflow: auto;
   }
 
   .user-management-user {
-    display: inline-block;
     height: calc(100vh - 131px);
-    width: 85%;
-    vertical-align: top;
-    margin-right: 1%;
+  }
+
+  @media only screen and (max-width: 1199px) {
+    .user-management-user {
+      margin-bottom: 20px;
+    }
   }
 
   .user-management-role {
-    display: inline-block;
     height: calc(100vh - 131px);
-    width: 13%;
 
     .el-tab-pane {
       height: calc(100vh - 200px);
