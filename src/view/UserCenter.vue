@@ -17,7 +17,9 @@
           </el-descriptions-item>
           <el-descriptions-item>
             <span slot="label"><i class="el-icon-s-custom" />角色</span>
-            {{ userInfo.roles.toString() }}
+            <el-tag v-for="o in userInfo.roles" :key="o" type="small" style="margin-right: 2px">
+              {{ o }}
+            </el-tag>
           </el-descriptions-item>
           <el-descriptions-item>
             <span slot="label"><i class="el-icon-female" />性别</span>
