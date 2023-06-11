@@ -148,7 +148,7 @@
           <el-input v-model="updateMenuForm.data.icon" />
         </el-form-item>
         <el-form-item label="排序" prop="orderNum">
-          <el-input v-model="updateMenuForm.data.orderNum" />
+          <el-input v-model="updateMenuForm.data.orderNum" type="number" />
         </el-form-item>
         <el-form-item>
           <el-button @click="() => this.$refs.updateMenuForm.resetFields()">重置</el-button>
@@ -190,7 +190,7 @@
           <el-input v-model="addMenuForm.data.icon" />
         </el-form-item>
         <el-form-item label="排序" prop="orderNum">
-          <el-input v-model="addMenuForm.data.orderNum" />
+          <el-input v-model="addMenuForm.data.orderNum" type="number" />
         </el-form-item>
         <el-form-item>
           <el-button @click="() => this.$refs.addMenuForm.resetFields()">重置</el-button>
