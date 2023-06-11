@@ -151,3 +151,26 @@ CREATE TABLE IF NOT EXISTS sys_log
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
     COMMENT '系统日志表';
+-- ----------------------------
+-- 系统字典表
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS sys_dict
+(
+    id           BIGINT UNSIGNED,
+    name         VARCHAR(500)  NOT NULL COMMENT '字典名称',
+    type         VARCHAR(500)  NOT NULL COMMENT '字典类型',
+    label        VARCHAR(500)  NULL COMMENT '字典标签',
+    value        TEXT          NULL COMMENT '字典值',
+    description  VARCHAR(1000) NULL COMMENT '描述',
+    order_num    INT           NULL COMMENT '排序',
+    default_flag TINYINT       NOT NULL COMMENT '是否默认值',
+
+    create_time  DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time  DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    update_user  VARCHAR(100)  NULL,
+    PRIMARY KEY (id),
+    INDEX idx_name (name),
+    INDEX idx_type (type)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+    COMMENT '系统字典表';
