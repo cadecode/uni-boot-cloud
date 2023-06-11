@@ -300,7 +300,7 @@ export default {
     },
     listUrlSuggest(queryString, cb) {
       if (this.addApiForm.urlSuggestList) {
-        cb(this.addApiForm.urlSuggestList.filter(o => o.url.includes(queryString)));
+        cb(this.addApiForm.urlSuggestList.filter(o => o.value.includes(queryString)));
         return;
       }
       listApiSwaggerVo().then(res => {
