@@ -7,7 +7,6 @@ import store from '@/store';
 import router from '@/router';
 import {getToken} from '@/util/cookie';
 import settings from '@/settings';
-import {objectToQuery} from '@/util/common';
 
 const {tokenKey} = settings;
 
@@ -161,19 +160,8 @@ function request(config, customConfig) {
 }
 
 /**
- * 查询字符串式的请求，a=1&b=2
- * axios自动设置x-www-form-urlencoded
- * @param {Object} config axios配置
- * @param {RequestCustomConfig} customConfig 自定义配置
- */
-function requestQuery(config, customConfig) {
-  config.data = objectToQuery((config.data));
-  return request(config, customConfig);
-}
-
-/**
  * FormData式请求，new FormData()
- * axios自动设置x-www-form-urlencoded
+ * axios自动设置 multipart/form-data
  * @param {Object} config axios配置
  * @param {RequestCustomConfig} customConfig 自定义配置
  */
@@ -187,6 +175,5 @@ function requestFormData(config, customConfig) {
 
 export {
   request as default,
-  requestFormData,
-  requestQuery
+  requestFormData
 };
