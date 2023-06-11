@@ -1,4 +1,4 @@
-import request from '@/util/request';
+import request, {requestQuery} from '@/util/request';
 // user
 export function pageUserRolesVo(data) {
   return request({
@@ -315,5 +315,71 @@ export function deleteLog(data) {
   }, {
     messageFn: res => res.data,
     messagePrefix: '删除日志'
+  });
+}
+
+export function pageDict(data) {
+  return request({
+    url: '/system/dict/page',
+    method: 'post',
+    data
+  });
+}
+
+export function deleteDict(data) {
+  return request({
+    url: '/system/dict/delete',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '删除日志'
+  });
+}
+
+export function updateDict(data) {
+  return request({
+    url: '/system/dict/update',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '更新字典'
+  });
+}
+
+export function addDict(data) {
+  return request({
+    url: '/system/dict/add',
+    method: 'post',
+    data
+  }, {
+    messageFn: res => res.data,
+    messagePrefix: '添加字典'
+  });
+}
+
+export function listDictByType(type) {
+  return request({
+    url: '/system/dict/list_by_type',
+    method: 'get',
+    params: {
+      type
+    }
+  });
+}
+
+export function listDictByIds(data) {
+  return request({
+    url: '/system/dict/list_by_ids',
+    method: 'post',
+    data
+  });
+}
+
+export function listDictType() {
+  return request({
+    url: '/system/dict/list_type',
+    method: 'post'
   });
 }
