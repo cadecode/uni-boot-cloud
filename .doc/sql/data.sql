@@ -132,3 +132,46 @@ INSERT INTO sys_role_api (role_id, api_id)
 VALUES (2, 1);
 INSERT INTO sys_role_api (role_id, api_id)
 VALUES (3, 1);
+-- ----------------------------
+-- 插入字典
+-- ----------------------------
+INSERT INTO sys_dict (id, name, type, label, value, description, order_num, default_flag, create_time, update_time,
+                      update_user)
+VALUES (1667915699808002049, '日志类型', 'logType', '查询', 'Query', '日志类型-查询', 0, 0, '2023-06-11 23:24:26',
+        '2023-06-12 00:11:57', 'admin');
+INSERT INTO sys_dict (id, name, type, label, value, description, order_num, default_flag, create_time, update_time,
+                      update_user)
+VALUES (1667915811166773250, '日志类型', 'logType', '删除', 'Remove', '日志类型-删除', 1, 0, '2023-06-11 23:24:52',
+        '2023-06-12 00:12:01', 'admin');
+INSERT INTO sys_dict (id, name, type, label, value, description, order_num, default_flag, create_time, update_time,
+                      update_user)
+VALUES (1667915876962820097, '日志类型', 'logType', '更新', 'Update', '日志类型-更新', 2, 0, '2023-06-11 23:25:08',
+        '2023-06-12 00:12:05', 'admin');
+INSERT INTO sys_dict (id, name, type, label, value, description, order_num, default_flag, create_time, update_time,
+                      update_user)
+VALUES (1667915965307445249, '日志类型', 'logType', '添加', 'Add', '日志类型-添加', 3, 0, '2023-06-11 23:25:29',
+        '2023-06-12 00:12:09', 'admin');
+INSERT INTO sys_dict (id, name, type, label, value, description, order_num, default_flag, create_time, update_time,
+                      update_user)
+VALUES (1667916031808135169, '日志类型', 'logType', '鉴权', 'Auth', '日志类型-鉴权', 4, 0, '2023-06-11 23:25:45',
+        '2023-06-12 00:12:15', 'admin');
+INSERT INTO sys_dict (id, name, type, label, value, description, order_num, default_flag, create_time, update_time,
+                      update_user)
+VALUES (1667916084467621889, '日志类型', 'logType', '导入', 'Import', '日志类型-导入', 5, 0, '2023-06-11 23:25:58',
+        '2023-06-12 00:12:19', 'admin');
+INSERT INTO sys_dict (id, name, type, label, value, description, order_num, default_flag, create_time, update_time,
+                      update_user)
+VALUES (1667916134056878081, '日志类型', 'logType', '导出', 'Export', '日志类型-导出', 6, 0, '2023-06-11 23:26:09',
+        '2023-06-12 00:12:30', 'admin');
+INSERT INTO sys_dict (id, name, type, label, value, description, order_num, default_flag, create_time, update_time,
+                      update_user)
+VALUES (1667916204034646018, '日志类型', 'logType', '上传', 'Upload', '日志类型-上传', 7, 0, '2023-06-11 23:26:26',
+        '2023-06-12 00:12:35', 'admin');
+INSERT INTO sys_dict (id, name, type, label, value, description, order_num, default_flag, create_time, update_time,
+                      update_user)
+VALUES (1667916260599029762, '日志类型', 'logType', '下载', 'Download', '日志类型-下载', 8, 0, '2023-06-11 23:26:40',
+        '2023-06-12 00:12:40', 'admin');
+INSERT INTO sys_dict (id, name, type, label, value, description, order_num, default_flag, create_time, update_time,
+                      update_user)
+VALUES (1667916298465206274, '日志类型', 'logType', '其他', 'Other', '日志类型-其他', 9, 0, '2023-06-11 23:26:49',
+        '2023-06-12 00:52:14', 'admin');
