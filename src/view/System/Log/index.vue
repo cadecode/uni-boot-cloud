@@ -15,9 +15,9 @@
           <el-select v-model="logsFilterForm.data.logTypeList" collapse-tags multiple filterable placeholder="请选择">
             <el-option
               v-for="item in logsFilterForm.option.logType"
-              :key="item"
-              :label="item"
-              :value="item"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             />
           </el-select>
         </el-form-item>
@@ -108,7 +108,7 @@
   </div>
 </template>
 <script>
-import {deleteLog, pageLog} from '@/api/system';
+import {deleteLog, listDictByType, pageLog} from '@/api/system';
 
 export default {
   name: 'VLogManagement',
@@ -124,7 +124,7 @@ export default {
         },
         rules: {},
         option: {
-          logType: ['Query', 'Remove', 'Update', 'Add', 'Auth', 'Import', 'Export', 'Upload', 'Download', 'Other']
+          logType: []
         }
       },
       logListTable: {
@@ -164,9 +164,15 @@ export default {
     }
   },
   created() {
+    this.listLogType();
     this.listLogs();
   },
   methods: {
+    listLogType() {
+      listDictByType('logType').then(res => {
+        this.logsFilterForm.option.logType = res.data;
+      });
+    },
     listLogs() {
       this.pageLogs(1).then(() => {
         this.logListTable.page.pageNumber = 1;
