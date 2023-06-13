@@ -27,14 +27,19 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class CacheConfig {
 
+    // cache manager name
+    public static final String CCM_5S = "caffeineCacheManager5s";
+    public static final String RCM_5M = "redisCacheManager5m";
+    public static final String RCM_30M = "redisCacheManager30m";
+
     /**
      * Caffeine 本地缓存
      * 过期时间 5 s
      *
      * @return CaffeineCacheManager 实例
      */
-    @Bean
-    public CacheManager caffeine5s() {
+    @Bean(name = CacheConfig.CCM_5S)
+    public CacheManager caffeineCacheManager5s() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
         // 过期时间设置为 5 s
         caffeineCacheManager.setCaffeine(Caffeine.newBuilder()
@@ -49,8 +54,8 @@ public class CacheConfig {
      *
      * @return RedisCacheManager 实例
      */
-    @Bean
-    public CacheManager redis5m(RedisTemplate<String, ?> jsonRedisTemplate) {
+    @Bean(name = CacheConfig.RCM_5M)
+    public CacheManager redisCacheManager5m(RedisTemplate<String, ?> jsonRedisTemplate) {
         return geneRedisCacheManager(jsonRedisTemplate, 5);
     }
 
@@ -61,8 +66,8 @@ public class CacheConfig {
      * @return RedisCacheManager 实例
      */
     @Primary
-    @Bean
-    public CacheManager redis30m(RedisTemplate<String, ?> jsonRedisTemplate) {
+    @Bean(name = CacheConfig.RCM_30M)
+    public CacheManager redisCacheManager30m(RedisTemplate<String, ?> jsonRedisTemplate) {
         return geneRedisCacheManager(jsonRedisTemplate, 30);
     }
 
