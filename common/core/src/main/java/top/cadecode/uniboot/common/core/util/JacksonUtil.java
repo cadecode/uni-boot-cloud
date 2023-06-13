@@ -27,7 +27,7 @@ import java.util.Objects;
 @Component
 public class JacksonUtil implements InitializingBean {
 
-    public static ObjectMapper OBJECT_MAPPER;
+    private static ObjectMapper OBJECT_MAPPER;
 
     private ObjectMapper objectMapper;
 
@@ -37,6 +37,10 @@ public class JacksonUtil implements InitializingBean {
     @Autowired(required = false)
     public void setObjectMapper(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
+    }
+
+    public static ObjectMapper getMapper() {
+        return OBJECT_MAPPER;
     }
 
     /**
