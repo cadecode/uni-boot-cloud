@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import top.cadecode.uniboot.framework.annotation.ApiFormat;
 import top.cadecode.uniboot.framework.bean.po.SysApi;
 import top.cadecode.uniboot.framework.bean.vo.SysApiVo.SysApiRolesVo;
 import top.cadecode.uniboot.framework.bean.vo.SysApiVo.SysApiSwaggerVo;
+import top.cadecode.uniboot.framework.consts.KeyPrefix;
 import top.cadecode.uniboot.framework.convert.SysApiConvert;
 import top.cadecode.uniboot.framework.service.SysApiService;
 import top.cadecode.uniboot.framework.service.SysRoleService;
@@ -64,6 +66,7 @@ public class SysApiController {
         return new PageResult<>((int) rolesVoPage.getTotal(), rolesVoPage.getList());
     }
 
+    @CacheEvict(cacheNames = KeyPrefix.API_ROLES, key = "'all'")
     @ApiOperation("更新API")
     @PostMapping("update")
     public boolean update(@RequestBody @Valid SysApiUpdateRequest request) {
@@ -71,6 +74,7 @@ public class SysApiController {
         return sysApiService.updateById(po);
     }
 
+    @CacheEvict(cacheNames = KeyPrefix.API_ROLES, key = "'all'")
     @ApiOperation("添加API")
     @PostMapping("add")
     public boolean add(@RequestBody @Valid SysApiAddRequest request) {
