@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import top.cadecode.uniboot.framework.annotation.ApiFormat;
 import top.cadecode.uniboot.framework.bean.po.SysRole;
 import top.cadecode.uniboot.framework.bean.vo.SysRoleVo.SysRoleListVo;
 import top.cadecode.uniboot.framework.bean.vo.SysRoleVo.SysRoleUnionVo;
+import top.cadecode.uniboot.framework.consts.KeyPrefix;
 import top.cadecode.uniboot.framework.convert.SysRoleConvert;
 import top.cadecode.uniboot.framework.request.SysRoleRequest;
 import top.cadecode.uniboot.framework.request.SysRoleRequest.SysRoleMappingRequest;
@@ -99,6 +101,7 @@ public class SysRoleController {
         return sysRoleService.listUnionVoByRoleIds(roleIds);
     }
 
+    @CacheEvict(cacheNames = KeyPrefix.API_ROLES, key = "'all'")
     @ApiOperation("更新角色")
     @PostMapping("update")
     public boolean update(@RequestBody @Valid SysRoleRequest.SysRoleUpdateRequest request) {
@@ -106,6 +109,7 @@ public class SysRoleController {
         return sysRoleService.updateById(po);
     }
 
+    @CacheEvict(cacheNames = KeyPrefix.API_ROLES, key = "'all'")
     @ApiOperation("添加角色")
     @PostMapping("add")
     public boolean add(@RequestBody @Valid SysRoleRequest.SysRoleAddRequest request) {
