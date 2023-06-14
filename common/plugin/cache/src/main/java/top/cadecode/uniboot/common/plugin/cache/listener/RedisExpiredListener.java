@@ -5,10 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.Message;
-import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.PatternTopic;
+import org.springframework.data.redis.listener.Topic;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -22,13 +23,16 @@ import java.util.Optional;
 @Slf4j
 @Component
 @ConditionalOnBean(RedisExpiredHandler.class)
-public class RedisExpiredListener extends KeyExpirationEventMessageListener {
+public class RedisExpiredListener extends RedisMessageListener {
+
+    @Override
+    public List<Topic> topics() {
+        return Collections.singletonList(new PatternTopic("__keyevent@*__:expired"));
+    }
 
     private final List<RedisExpiredHandler> expiredHandlers;
 
-    public RedisExpiredListener(RedisMessageListenerContainer listenerContainer,
-                                List<RedisExpiredHandler> expiredHandlers) {
-        super(listenerContainer);
+    public RedisExpiredListener(List<RedisExpiredHandler> expiredHandlers) {
         this.expiredHandlers = expiredHandlers;
     }
 

@@ -13,6 +13,9 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import top.cadecode.uniboot.common.plugin.cache.listener.RedisMessageListener;
+
+import java.util.List;
 
 /**
  * Redis 配置类
@@ -24,10 +27,15 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 @Configuration
 public class RedisConfig {
 
+    /**
+     * 监听器自动注册
+     */
     @Bean
-    RedisMessageListenerContainer container(RedisConnectionFactory factory) {
+    RedisMessageListenerContainer container(RedisConnectionFactory factory, List<RedisMessageListener> listeners) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(factory);
+        // 注册监听器
+        listeners.forEach(o -> container.addMessageListener(o, o.topics()));
         return container;
     }
 
