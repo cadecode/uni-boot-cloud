@@ -55,8 +55,8 @@ public class CacheConfig {
      * @return RedisCacheManager 实例
      */
     @Bean(name = CacheConfig.RCM_5M)
-    public CacheManager redisCacheManager5m(RedisTemplate<String, ?> jsonRedisTemplate) {
-        return geneRedisCacheManager(jsonRedisTemplate, 5);
+    public CacheManager redisCacheManager5m(RedisTemplate<String, Object> redisTemplate) {
+        return geneRedisCacheManager(redisTemplate, 5);
     }
 
     /**
@@ -67,16 +67,16 @@ public class CacheConfig {
      */
     @Primary
     @Bean(name = CacheConfig.RCM_30M)
-    public CacheManager redisCacheManager30m(RedisTemplate<String, ?> jsonRedisTemplate) {
-        return geneRedisCacheManager(jsonRedisTemplate, 30);
+    public CacheManager redisCacheManager30m(RedisTemplate<String, Object> redisTemplate) {
+        return geneRedisCacheManager(redisTemplate, 30);
     }
 
-    private static RedisCacheManager geneRedisCacheManager(RedisTemplate<String, ?> jsonRedisTemplate, long minutes) {
+    private static RedisCacheManager geneRedisCacheManager(RedisTemplate<String, Object> redisTemplate, long minutes) {
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .serializeKeysWith(SerializationPair.fromSerializer(jsonRedisTemplate.getStringSerializer()))
-                .serializeValuesWith(SerializationPair.fromSerializer(jsonRedisTemplate.getValueSerializer()))
+                .serializeKeysWith(SerializationPair.fromSerializer(redisTemplate.getStringSerializer()))
+                .serializeValuesWith(SerializationPair.fromSerializer(redisTemplate.getValueSerializer()))
                 .entryTtl(Duration.ofMinutes(minutes));
-        return RedisCacheManager.builder(jsonRedisTemplate.getConnectionFactory())
+        return RedisCacheManager.builder(redisTemplate.getConnectionFactory())
                 .cacheDefaults(cacheConfiguration)
                 .transactionAware()
                 .build();
