@@ -3,9 +3,8 @@ package top.cadecode.uniboot.common.plugin.cache.util;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import top.cadecode.uniboot.common.core.util.JacksonUtil;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -19,80 +18,85 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class RedisUtil implements InitializingBean {
 
-    public static StringRedisTemplate TEMPLATE;
+    private static RedisTemplate<String, Object> TEMPLATE;
 
-    private StringRedisTemplate stringRedisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
+
+    public static RedisTemplate<String, Object> getTemplate() {
+        return TEMPLATE;
+    }
 
     /**
      * 自动注入 stringRedisTemplate
      */
     @Autowired(required = false)
-    public void setStringRedisTemplate(StringRedisTemplate stringRedisTemplate) {
-        this.stringRedisTemplate = stringRedisTemplate;
+    public void setStringRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
     }
 
     /**
-     * 获取 value
+     * 获取 value，String 类型
      */
+    public static String get(String key) {
+        return get(key, String.class);
+    }
+
+    /**
+     * 获取 value，指定类型
+     */
+    @SuppressWarnings("unchecked")
     public static <T> T get(String key, Class<T> clazz) {
-        String json = TEMPLATE.opsForValue().get(key);
-        return JacksonUtil.toBean(json, clazz);
+        return (T) TEMPLATE.opsForValue().get(key);
     }
 
     /**
-     * 获取 value
+     * 获取 value，指定类型
      */
+    @SuppressWarnings("unchecked")
     public static <T> T get(String key, TypeReference<T> typeReference) {
-        String json = TEMPLATE.opsForValue().get(key);
-        return JacksonUtil.toBean(json, typeReference);
+        return (T) TEMPLATE.opsForValue().get(key);
     }
 
     /**
      * 添加 key
      */
     public static void set(String key, Object o) {
-        String json = JacksonUtil.toJson(o);
-        TEMPLATE.opsForValue().set(key, json);
+        TEMPLATE.opsForValue().set(key, o);
     }
 
     /**
      * 添加 key，如果不存在
      */
     public static Boolean setIfAbsent(String key, Object o) {
-        String json = JacksonUtil.toJson(o);
-        return TEMPLATE.opsForValue().setIfAbsent(key, json);
+        return TEMPLATE.opsForValue().setIfAbsent(key, o);
     }
 
     /**
      * 添加 key，如果不存在
      */
     public static Boolean setIfPresent(String key, Object o) {
-        String json = JacksonUtil.toJson(o);
-        return TEMPLATE.opsForValue().setIfPresent(key, json);
+        return TEMPLATE.opsForValue().setIfPresent(key, o);
     }
 
     /**
      * 添加 key 并设置有效期
      */
     public static void set(String key, Object o, long timeout, TimeUnit timeUnit) {
-        String json = JacksonUtil.toJson(o);
-        TEMPLATE.opsForValue().set(key, json, timeout, timeUnit);
+        TEMPLATE.opsForValue().set(key, o, timeout, timeUnit);
     }
 
     /**
      * 添加 key 并设置有效期，如果不存在
      */
     public static Boolean setIfAbsent(String key, Object o, long timeout, TimeUnit timeUnit) {
-        String json = JacksonUtil.toJson(o);
-        return TEMPLATE.opsForValue().setIfAbsent(key, json, timeout, timeUnit);
+        return TEMPLATE.opsForValue().setIfAbsent(key, o, timeout, timeUnit);
     }
 
     /**
      * 添加 key 并设置有效期，如果不存在
      */
     public static Boolean setIfPresent(String key, Object o, long timeout, TimeUnit timeUnit) {
-        String json = JacksonUtil.toJson(o);
-        return TEMPLATE.opsForValue().setIfPresent(key, json, timeout, timeUnit);
+        return TEMPLATE.opsForValue().setIfPresent(key, o, timeout, timeUnit);
     }
 
     /**
@@ -118,7 +122,7 @@ public class RedisUtil implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        TEMPLATE = stringRedisTemplate;
+        TEMPLATE = redisTemplate;
         if (Objects.isNull(TEMPLATE)) {
             throw new IllegalArgumentException("Bean stringRedisTemplate not found");
         }
