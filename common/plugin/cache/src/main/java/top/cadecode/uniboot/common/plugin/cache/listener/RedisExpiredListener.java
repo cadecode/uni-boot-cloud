@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Redis key 过期监听器
@@ -25,31 +26,43 @@ import java.util.Optional;
 @ConditionalOnBean(RedisExpiredHandler.class)
 public class RedisExpiredListener extends RedisMessageListener {
 
-    @Override
-    public List<Topic> topics() {
-        return Collections.singletonList(new PatternTopic("__keyevent@*__:expired"));
-    }
-
     private final List<RedisExpiredHandler> expiredHandlers;
+
+    /**
+     * 处理器按 key 缓存
+     */
+    private final ConcurrentHashMap<String, RedisExpiredHandler> HANDLER_MAP = new ConcurrentHashMap<>();
+
 
     public RedisExpiredListener(List<RedisExpiredHandler> expiredHandlers) {
         this.expiredHandlers = expiredHandlers;
     }
 
+    @Override
+    public List<Topic> topics() {
+        return Collections.singletonList(new PatternTopic("__keyevent@*__:expired"));
+    }
+
     public void onMessage(Message message, byte[] pattern) {
         String key = new String(message.getBody());
-        // 根据 order 注解和 checkKey 方法，获取第一个合适的处理器
-        Optional<RedisExpiredHandler> handlerOpt = expiredHandlers.stream()
-                .filter(o -> o.checkKey(key))
-                .sorted(Comparator.comparing(o -> {
-                    Order order = o.getClass().getAnnotation(Order.class);
-                    return ObjectUtil.defaultIfNull(order, order::value, 0);
-                }).reversed())
-                .findAny();
-        if (!handlerOpt.isPresent()) {
-            return;
+        RedisExpiredHandler handler;
+        if (HANDLER_MAP.containsKey(key)) {
+            handler = HANDLER_MAP.get(key);
+        } else {
+            // 根据 order 注解和 checkKey 方法，获取第一个合适的处理器
+            Optional<RedisExpiredHandler> handlerOpt = expiredHandlers.stream()
+                    .filter(o -> o.checkKey(key))
+                    .sorted(Comparator.comparing(o -> {
+                        Order order = o.getClass().getAnnotation(Order.class);
+                        return ObjectUtil.defaultIfNull(order, order::value, 0);
+                    }).reversed())
+                    .findAny();
+            if (!handlerOpt.isPresent()) {
+                return;
+            }
+            handler = handlerOpt.get();
+            HANDLER_MAP.put(key, handler);
         }
-        RedisExpiredHandler handler = handlerOpt.get();
         log.info("Redis expired listener find key {}, handler {}", key, handler.getClass().getName());
         try {
             handler.handle(key);
