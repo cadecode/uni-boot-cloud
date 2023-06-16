@@ -27,10 +27,10 @@ public class RedisUtil implements InitializingBean {
     }
 
     /**
-     * 自动注入 stringRedisTemplate
+     * 自动注入 redisTemplate
      */
     @Autowired(required = false)
-    public void setStringRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
+    public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
