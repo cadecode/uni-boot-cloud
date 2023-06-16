@@ -124,7 +124,7 @@ public class RedisUtil implements InitializingBean {
     public void afterPropertiesSet() {
         TEMPLATE = redisTemplate;
         if (Objects.isNull(TEMPLATE)) {
-            throw new IllegalArgumentException("Bean stringRedisTemplate not found");
+            throw new IllegalArgumentException("Bean redisTemplate not found");
         }
     }
 }
