@@ -13,8 +13,10 @@ public interface KeyPrefix {
      */
     String LOGIN_USER = "frame:loginUser";
 
+    // 缓存
+
     /**
      * Api Roles 映射关系
      */
-    String API_ROLES = "frame:apiRoles";
+    String API_ROLES = "frame:cache:apiRoles";
 }
