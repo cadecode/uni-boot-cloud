@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -118,6 +119,13 @@ public class RedisUtil implements InitializingBean {
      */
     public static Boolean expire(String key, long timeout, TimeUnit timeUnit) {
         return TEMPLATE.expire(key, timeout, timeUnit);
+    }
+
+    /**
+     * keys
+     */
+    public static Set<String> keys(String key) {
+        return TEMPLATE.keys(key);
     }
 
     @Override
