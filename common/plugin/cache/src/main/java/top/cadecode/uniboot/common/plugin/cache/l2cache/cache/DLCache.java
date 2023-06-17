@@ -8,6 +8,7 @@ import org.springframework.cache.support.AbstractValueAdaptingCache;
 import org.springframework.data.redis.core.RedisTemplate;
 import top.cadecode.uniboot.common.plugin.cache.exception.DLCacheException;
 import top.cadecode.uniboot.common.plugin.cache.l2cache.DLCacheProperties;
+import top.cadecode.uniboot.common.plugin.cache.l2cache.sync.DLCacheRefreshListener;
 import top.cadecode.uniboot.common.plugin.cache.l2cache.sync.DLCacheRefreshMsg;
 
 import java.util.Set;
@@ -57,7 +58,8 @@ public class DLCache extends AbstractValueAdaptingCache {
     protected Object lookup(Object key) {
         String redisKey = getRedisKey(key);
         Object val;
-        val = caffeineCache.getIfPresent(key);
+        // 去除 toStoreValue 的包装
+        val = fromStoreValue(caffeineCache.getIfPresent(key));
         if (ObjectUtil.isNotNull(val)) {
             log.debug("DLCache local get cache, key:{}, value:{}", key, val);
             return val;
@@ -105,7 +107,7 @@ public class DLCache extends AbstractValueAdaptingCache {
             return;
         }
         putRemote(key, value);
-        sync(key);
+        sendSyncMsg(key);
         putLocal(key, value);
     }
 
@@ -133,7 +135,7 @@ public class DLCache extends AbstractValueAdaptingCache {
             setOkFlag = redisTemplate.opsForValue().setIfAbsent(redisKey, value);
         }
         if (ObjectUtil.equal(setOkFlag, true)) {
-            sync(key);
+            sendSyncMsg(key);
             putLocal(key, value);
         }
         return toValueWrapper(oldVal);
@@ -144,7 +146,7 @@ public class DLCache extends AbstractValueAdaptingCache {
     public void evict(Object key) {
         // 先清理 redis 再清理 caffeine
         redisTemplate.delete(getRedisKey(key));
-        sync(key);
+        sendSyncMsg(key);
         clearLocal(key);
     }
 
@@ -155,17 +157,21 @@ public class DLCache extends AbstractValueAdaptingCache {
         if (ObjectUtil.isNotEmpty(keys)) {
             keys.forEach(redisTemplate::delete);
         }
-        sync(null);
+        sendSyncMsg(null);
         clearLocal(null);
     }
 
-    private void sync(Object key) {
+    private void sendSyncMsg(Object key) {
         String syncTopic = cacheProperties.getRemote().getSyncTopic();
-        redisTemplate.convertAndSend(syncTopic, new DLCacheRefreshMsg(name, key));
+        DLCacheRefreshMsg refreshMsg = new DLCacheRefreshMsg(name, key);
+        // 加入 SELF_MSG_MAP 防止重复处理
+        DLCacheRefreshListener.SELF_MSG_MAP.add(refreshMsg);
+        redisTemplate.convertAndSend(syncTopic, refreshMsg);
     }
 
     private void putLocal(Object key, Object value) {
-        caffeineCache.put(key.toString(), value);
+        // toStoreValue 包装 null 值
+        caffeineCache.put(key.toString(), toStoreValue(value));
     }
 
     private void putRemote(Object key, Object value) {
@@ -179,7 +185,7 @@ public class DLCache extends AbstractValueAdaptingCache {
     /**
      * 获取 redis 完整 key
      */
-    public String getRedisKey(Object key) {
+    private String getRedisKey(Object key) {
         // 双冒号，与 spring cache 默认一致
         return this.name.concat("::").concat(key.toString());
     }
