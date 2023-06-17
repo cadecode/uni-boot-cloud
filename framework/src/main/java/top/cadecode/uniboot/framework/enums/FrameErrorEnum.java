@@ -55,6 +55,9 @@ public enum FrameErrorEnum implements ApiErrorCode {
     EXTENSION_NOT_ALLOWED(6, "上传或下载文件的类型不被允许"),
     UPLOAD_FILE_FAIL(7, "上传文件失败"),
     FILE_NOT_FOUND(8, "文件未找到"),
+
+    // 特殊处理接口返回 null 的情况
+    RES_BODY_NULL(9, "响应体为空"),
     ;
 
     private final String code;
