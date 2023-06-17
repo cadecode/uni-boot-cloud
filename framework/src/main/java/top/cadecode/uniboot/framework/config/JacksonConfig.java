@@ -17,6 +17,8 @@ public class JacksonConfig {
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jacksonObjectMapperCustomization() {
         return jacksonObjectMapperBuilder -> {
+            // 关闭空对象序列化失败，如 new Object()
+            jacksonObjectMapperBuilder.failOnEmptyBeans(false);
             jacksonObjectMapperBuilder.serializerByType(Long.class, ToStringSerializer.instance);
             jacksonObjectMapperBuilder.serializerByType(Long.TYPE, ToStringSerializer.instance);
         };
