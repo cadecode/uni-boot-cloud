@@ -18,4 +18,11 @@
         <module>sample</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>top.cadecode</groupId>
+            <artifactId>uni-boot-framework</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>
