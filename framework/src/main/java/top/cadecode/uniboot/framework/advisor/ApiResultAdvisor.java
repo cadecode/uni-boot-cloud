@@ -1,5 +1,6 @@
 package top.cadecode.uniboot.framework.advisor;
 
+import cn.hutool.core.util.ObjectUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -8,9 +9,11 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+import top.cadecode.uniboot.common.core.exception.ApiException;
 import top.cadecode.uniboot.common.core.util.JacksonUtil;
 import top.cadecode.uniboot.common.core.web.response.ApiResult;
 import top.cadecode.uniboot.framework.annotation.ApiFormat;
+import top.cadecode.uniboot.framework.enums.FrameErrorEnum;
 
 import java.util.Objects;
 
@@ -76,6 +79,10 @@ public class ApiResultAdvisor implements ResponseBodyAdvice<Object> {
             response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
             // String 类型的 Body 需要返回 String 类型，否则报转换错误
             return JacksonUtil.toJson(ApiResult.ok(body));
+        }
+        // 对接口返回 null 特殊处理
+        if (ObjectUtil.isNull(body)) {
+            throw ApiException.of(FrameErrorEnum.RES_BODY_NULL, "");
         }
         return ApiResult.ok(body);
     }
