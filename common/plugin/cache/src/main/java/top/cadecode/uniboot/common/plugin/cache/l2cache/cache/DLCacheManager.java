@@ -43,15 +43,17 @@ public class DLCacheManager implements CacheManager {
     private DLCache buildCache(String name) {
         Caffeine<Object, Object> caffeine = Caffeine.newBuilder();
         // 设置过期时间 expireAfterWrite
-        long expiration;
+        long expiration = 0;
         // 获取针对 cache name 设置的过期时间
         Map<String, Long> cacheExpirationMap = cacheProperties.getCacheExpirationMap();
         if (ObjectUtil.isNotEmpty(cacheExpirationMap) && cacheExpirationMap.get(name) > 0) {
             expiration = cacheExpirationMap.get(name);
-        } else {
+        } else if (cacheProperties.getDefaultExpiration() > 0) {
             expiration = cacheProperties.getDefaultExpiration();
         }
-        caffeine.expireAfterWrite(expiration, TimeUnit.MILLISECONDS);
+        if (expiration > 0) {
+            caffeine.expireAfterWrite(expiration, TimeUnit.MILLISECONDS);
+        }
         // 设置参数
         LocalConfig localConfig = cacheProperties.getLocal();
         if (ObjectUtil.isNotNull(localConfig.getInitialCapacity()) && localConfig.getInitialCapacity() > 0) {
