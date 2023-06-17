@@ -3,7 +3,7 @@ package top.cadecode.uniboot.common.plugin.cache.util;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import top.cadecode.uniboot.common.plugin.cache.exception.RedisLockException;
 
@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class RedisLockKit {
 
-    private final StringRedisTemplate redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     private final Map<String, LockContent> contentMap = new ConcurrentHashMap<>();
 
@@ -39,7 +39,7 @@ public class RedisLockKit {
         lock(name, "");
     }
 
-    public void lock(String name, String value) {
+    public void lock(String name, Object value) {
         if (checkReentrant(name)) {
             storeLock(name, null, true);
             return;
@@ -62,7 +62,7 @@ public class RedisLockKit {
         return tryLock(name, "");
     }
 
-    public boolean tryLock(String name, String value) {
+    public boolean tryLock(String name, Object value) {
         if (checkReentrant(name)) {
             storeLock(name, null, true);
             return true;
@@ -82,7 +82,7 @@ public class RedisLockKit {
         return tryLock(name, "", timeout, timeUnit);
     }
 
-    public boolean tryLock(String name, String value, long timeout, TimeUnit timeUnit) {
+    public boolean tryLock(String name, Object value, long timeout, TimeUnit timeUnit) {
         if (checkReentrant(name)) {
             storeLock(name, null, true);
             return true;
@@ -190,7 +190,7 @@ public class RedisLockKit {
      * @param name 锁名称
      * @return 是否设置成功
      */
-    private boolean tryLock0(String name, String value) {
+    private boolean tryLock0(String name, Object value) {
         Boolean success = redisTemplate.opsForValue().setIfAbsent(name, value, 30, TimeUnit.SECONDS);
         if (Objects.equals(success, false)) {
             return false;
@@ -207,7 +207,7 @@ public class RedisLockKit {
      * @param name 锁名称
      * @return ScheduledFuture
      */
-    private ScheduledFuture<?> renewLock(String name, String value) {
+    private ScheduledFuture<?> renewLock(String name, Object value) {
         // 有效期设置为 30s，每 15 秒重置
         return executor.scheduleAtFixedRate(() -> {
             Boolean success = redisTemplate.opsForValue().setIfPresent(name, value, 30, TimeUnit.SECONDS);
