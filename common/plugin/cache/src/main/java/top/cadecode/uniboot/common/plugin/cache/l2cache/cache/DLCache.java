@@ -2,6 +2,7 @@ package top.cadecode.uniboot.common.plugin.cache.l2cache.cache;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.github.benmanes.caffeine.cache.Cache;
+import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.support.AbstractValueAdaptingCache;
@@ -58,8 +59,9 @@ public class DLCache extends AbstractValueAdaptingCache {
     protected Object lookup(Object key) {
         String redisKey = getRedisKey(key);
         Object val;
-        // 去除 toStoreValue 的包装
-        val = fromStoreValue(caffeineCache.getIfPresent(key));
+        val = caffeineCache.getIfPresent(key);
+        // val 是 toStoreValue 包装过的值，为 null 则 key 不存在
+        // 因为存储的 null 值被包装成了 DLCacheNullVal.INSTANCE
         if (ObjectUtil.isNotNull(val)) {
             log.debug("DLCache local get cache, key:{}, value:{}", key, val);
             return val;
@@ -101,11 +103,6 @@ public class DLCache extends AbstractValueAdaptingCache {
 
     @Override
     public void put(Object key, Object value) {
-        // val 不能为空，但传了空，就清理该 key
-        if (!cacheProperties.isAllowNullValues() && ObjectUtil.isNull(value)) {
-            evict(key);
-            return;
-        }
         putRemote(key, value);
         sendSyncMsg(key);
         putLocal(key, value);
@@ -119,15 +116,6 @@ public class DLCache extends AbstractValueAdaptingCache {
         if (ObjectUtil.isNotNull(oldVal)) {
             return toValueWrapper(oldVal);
         }
-        // 若允许值为空，且 key 存在，但值为空
-        if (cacheProperties.isAllowNullValues() && ObjectUtil.equal(redisTemplate.hasKey(redisKey), true)) {
-            return toValueWrapper(oldVal);
-        }
-        // val 不能为空，但传了空，就清理该 key
-        if (!cacheProperties.isAllowNullValues() && ObjectUtil.isNull(value)) {
-            evict(key);
-            return toValueWrapper(oldVal);
-        }
         Boolean setOkFlag;
         if (expiration > 0) {
             setOkFlag = redisTemplate.opsForValue().setIfAbsent(redisKey, value, expiration, TimeUnit.MILLISECONDS);
@@ -139,13 +127,12 @@ public class DLCache extends AbstractValueAdaptingCache {
             putLocal(key, value);
         }
         return toValueWrapper(oldVal);
-
     }
 
     @Override
     public void evict(Object key) {
         // 先清理 redis 再清理 caffeine
-        redisTemplate.delete(getRedisKey(key));
+        clearRemote(key);
         sendSyncMsg(key);
         clearLocal(key);
     }
@@ -153,10 +140,7 @@ public class DLCache extends AbstractValueAdaptingCache {
     @Override
     public void clear() {
         // 先清理 redis 再清理 caffeine
-        Set<String> keys = redisTemplate.keys(getRedisKey("*"));
-        if (ObjectUtil.isNotEmpty(keys)) {
-            keys.forEach(redisTemplate::delete);
-        }
+        clearRemote(null);
         sendSyncMsg(null);
         clearLocal(null);
     }
@@ -164,7 +148,7 @@ public class DLCache extends AbstractValueAdaptingCache {
     private void sendSyncMsg(Object key) {
         String syncTopic = cacheProperties.getRemote().getSyncTopic();
         DLCacheRefreshMsg refreshMsg = new DLCacheRefreshMsg(name, key);
-        // 加入 SELF_MSG_MAP 防止重复处理
+        // 加入 SELF_MSG_MAP 防止自身节点重复处理
         DLCacheRefreshListener.SELF_MSG_MAP.add(refreshMsg);
         redisTemplate.convertAndSend(syncTopic, refreshMsg);
     }
@@ -176,10 +160,63 @@ public class DLCache extends AbstractValueAdaptingCache {
 
     private void putRemote(Object key, Object value) {
         if (expiration > 0) {
-            redisTemplate.opsForValue().set(getRedisKey(key), value, expiration, TimeUnit.MILLISECONDS);
+            // toStoreValue 包装 null 值
+            redisTemplate.opsForValue().set(getRedisKey(key), toStoreValue(value), expiration, TimeUnit.MILLISECONDS);
             return;
         }
-        redisTemplate.opsForValue().set(getRedisKey(key), value);
+        redisTemplate.opsForValue().set(getRedisKey(key), toStoreValue(value));
+    }
+
+    public void clearRemote(Object key) {
+        if (ObjectUtil.isNull(key)) {
+            Set<String> keys = redisTemplate.keys(getRedisKey("*"));
+            if (ObjectUtil.isNotEmpty(keys)) {
+                keys.forEach(redisTemplate::delete);
+            }
+            return;
+        }
+        redisTemplate.delete(getRedisKey(key));
+    }
+
+    public void clearLocal(Object key) {
+        if (ObjectUtil.isNull(key)) {
+            caffeineCache.invalidateAll();
+            return;
+        }
+        caffeineCache.invalidate(key);
+    }
+
+    /**
+     * 检查是否允许缓存 null
+     *
+     * @param value 缓存值
+     * @return 不为空则 true，为空但允许则 false，否则异常
+     */
+    private boolean checkValNotNull(Object value) {
+        if (ObjectUtil.isNotNull(value)) {
+            return true;
+        }
+        if (isAllowNullValues() && ObjectUtil.isNull(value)) {
+            return false;
+        }
+        // val 不能为空，但传了空
+        throw new DLCacheException("Check null val is not allowed");
+    }
+
+    @Override
+    protected Object fromStoreValue(Object storeValue) {
+        if (isAllowNullValues() && DLCacheNullVal.INSTANCE.equals(storeValue)) {
+            return null;
+        }
+        return storeValue;
+    }
+
+    @Override
+    protected Object toStoreValue(Object userValue) {
+        if (!checkValNotNull(userValue)) {
+            return DLCacheNullVal.INSTANCE;
+        }
+        return userValue;
     }
 
     /**
@@ -190,11 +227,12 @@ public class DLCache extends AbstractValueAdaptingCache {
         return this.name.concat("::").concat(key.toString());
     }
 
-    public void clearLocal(Object key) {
-        if (ObjectUtil.isNull(key)) {
-            caffeineCache.invalidateAll();
-        } else {
-            caffeineCache.invalidate(key);
-        }
+    /**
+     * 在缓存时代替 null 值，以区分是 key 不存在还是 val 为 null
+     */
+    @Data
+    public static class DLCacheNullVal {
+        public static final DLCacheNullVal INSTANCE = new DLCacheNullVal();
+        private String desc = "nullVal";
     }
 }
