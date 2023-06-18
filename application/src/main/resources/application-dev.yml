@@ -33,7 +33,7 @@ knife4j:
 uni-boot:
   config:
     name: UniBootAdmin
-    version: 0.0.1
+    version: 1.0.0
     swagger-on: true
     dynamic-ds-on: false
     file-base-path: D:/uniboot/file/temp/
