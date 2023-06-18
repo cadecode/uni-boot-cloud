@@ -54,8 +54,9 @@ public class DLCacheProperties {
 
         /**
          * 最大缓存个数，为 0 表示默认
+         * 默认最多 5 万条
          */
-        private long maximumSize;
+        private long maximumSize = 10000L;
     }
 
     @Data
