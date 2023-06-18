@@ -28,7 +28,7 @@ public class RedisLockKit {
     private final Map<String, LockContent> contentMap = new ConcurrentHashMap<>();
 
     // 定时续期任务线程池，合理设置大小
-    private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(10);
+    private static final ScheduledThreadPoolExecutor RENEW_EXECUTOR = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
 
     /**
      * 阻塞式的获取锁
@@ -209,7 +209,7 @@ public class RedisLockKit {
      */
     private ScheduledFuture<?> renewLock(String name, Object value) {
         // 有效期设置为 30s，每 15 秒重置
-        return executor.scheduleAtFixedRate(() -> {
+        return RENEW_EXECUTOR.scheduleAtFixedRate(() -> {
             Boolean success = redisTemplate.opsForValue().setIfPresent(name, value, 30, TimeUnit.SECONDS);
             if (Objects.equals(success, true)) {
                 return;
