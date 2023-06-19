@@ -127,20 +127,19 @@
 
 <table>
     <tr>
-        <td><img src=".docs/readme_image/sample_home.png"/></td>
-        <td><img src=".docs/readme_image/sample_user_center.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_home.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_user_center.png"/></td>
     </tr>
     <tr>
-        <td><img src=".docs/readme_image/sample_user_management.png"/></td>
-        <td><img src=".docs/readme_image/sample_menu_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_user_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_menu_management.png"/></td>
     </tr>
     <tr>
-        <td><img src=".docs/readme_image/sample_role_management.png"/></td>
-        <td><img src=".docs/readme_image/sample_api_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_role_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_api_management.png"/></td>
     </tr>
     <tr>
-        <td><img src=".docs/readme_image/sample_log_management.png"/></td>
-        <td><img src=".docs/readme_image/sample_dict_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_log_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_dict_management.png"/></td>
     </tr>
 </table>
-
