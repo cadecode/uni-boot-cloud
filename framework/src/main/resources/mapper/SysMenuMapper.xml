@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="top.cadecode.uniboot.framework.mapper.SysMenuMapper">
-    <resultMap id="SysMenuRolesVoMap" type="top.cadecode.uniboot.framework.bean.vo.SysMenuVo$SysMenuRolesVo">
+<mapper namespace="com.github.cadecode.uniboot.framework.mapper.SysMenuMapper">
+    <resultMap id="SysMenuRolesVoMap" type="com.github.cadecode.uniboot.framework.bean.vo.SysMenuVo$SysMenuRolesVo">
         <result column="id" property="id"/>
         <result column="parent_id" property="parentId"/>
         <result column="route_name" property="routeName"/>
@@ -17,7 +17,7 @@
         <result column="update_user" property="updateUser"/>
         <result column="r_code" property="roles" typeHandler="ObjToStrTypeHandler"/>
     </resultMap>
-    <select id="selectByRoles" resultType="top.cadecode.uniboot.framework.bean.po.SysMenu">
+    <select id="selectByRoles" resultType="com.github.cadecode.uniboot.framework.bean.po.SysMenu">
         SELECT DISTINCT sm.*
         FROM sys_menu sm LEFT JOIN sys_role_menu srm ON sm.id = srm.menu_id
         LEFT JOIN sys_role sr ON srm.role_id = sr.id

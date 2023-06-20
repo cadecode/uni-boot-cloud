@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>top.cadecode</groupId>
+    <groupId>com.github.cadecode</groupId>
     <artifactId>uni-boot-parent</artifactId>
     <version>1.0.0</version>
 
@@ -28,52 +28,52 @@
         <dependencies>
             <!--维护子模块-->
             <dependency>
-                <groupId>top.cadecode</groupId>
+                <groupId>com.github.cadecode</groupId>
                 <artifactId>uni-boot-common-core</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.cadecode</groupId>
+                <groupId>com.github.cadecode</groupId>
                 <artifactId>uni-boot-common-plugin-cache</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.cadecode</groupId>
+                <groupId>com.github.cadecode</groupId>
                 <artifactId>uni-boot-common-plugin-actuator</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.cadecode</groupId>
+                <groupId>com.github.cadecode</groupId>
                 <artifactId>uni-boot-common-plugin-datasource</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.cadecode</groupId>
+                <groupId>com.github.cadecode</groupId>
                 <artifactId>uni-boot-common-plugin-log</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.cadecode</groupId>
+                <groupId>com.github.cadecode</groupId>
                 <artifactId>uni-boot-common-plugin-mybatis</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.cadecode</groupId>
+                <groupId>com.github.cadecode</groupId>
                 <artifactId>uni-boot-common-plugin-swagger</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.cadecode</groupId>
+                <groupId>com.github.cadecode</groupId>
                 <artifactId>uni-boot-common-plugin-concurrent</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.cadecode</groupId>
+                <groupId>com.github.cadecode</groupId>
                 <artifactId>uni-boot-framework</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <dependency>
-                <groupId>top.cadecode</groupId>
+                <groupId>com.github.cadecode</groupId>
                 <artifactId>uni-boot-business-sample</artifactId>
                 <version>${uni.version}</version>
             </dependency>

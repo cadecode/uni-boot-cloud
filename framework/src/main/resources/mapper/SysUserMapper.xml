@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="top.cadecode.uniboot.framework.mapper.SysUserMapper">
-    <resultMap id="SysUserRolesVoMap" type="top.cadecode.uniboot.framework.bean.vo.SysUserVo$SysUserRolesVo">
+<mapper namespace="com.github.cadecode.uniboot.framework.mapper.SysUserMapper">
+    <resultMap id="SysUserRolesVoMap" type="com.github.cadecode.uniboot.framework.bean.vo.SysUserVo$SysUserRolesVo">
         <result column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="nick_name" property="nickName"/>
