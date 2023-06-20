@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="top.cadecode.uniboot.framework.mapper.SysApiMapper">
-    <resultMap id="SysApiRolesVoMap" type="top.cadecode.uniboot.framework.bean.vo.SysApiVo$SysApiRolesVo">
+<mapper namespace="com.github.cadecode.uniboot.framework.mapper.SysApiMapper">
+    <resultMap id="SysApiRolesVoMap" type="com.github.cadecode.uniboot.framework.bean.vo.SysApiVo$SysApiRolesVo">
         <result column="id" property="id"/>
         <result column="url" property="url"/>
         <result column="description" property="description"/>

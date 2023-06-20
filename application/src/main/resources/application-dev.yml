@@ -45,8 +45,8 @@ uni-boot:
     email: cadecode@foxmail.com
     version: ${uni-boot.config.version}
     module:
-      framework: top.cadecode.uniboot.framework.controller
-      sample: top.cadecode.uniboot.business.sample.controller
+      framework: com.github.cadecode.uniboot.framework.controller
+      sample: com.github.cadecode.uniboot.business.sample.controller
   security:
     auth-model: redis
     token:
