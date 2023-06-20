@@ -24,7 +24,7 @@ INSERT INTO sys_role (id, code, name, description)
 -- ----------------------------
 INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
                      enable_flag)
-    VALUE (1, null, 'Home', '/home', '/Home', '首页', 1, 0, 1);
+    VALUE (1, null, 'Home', '/home/demo_home', '/Home/DemoHome', '首页', 1, 0, 1);
 
 INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
                      enable_flag)
@@ -41,23 +41,28 @@ INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu
 INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
                      enable_flag)
     VALUE (6, 2, 'Api', '/system/api', '/System/Api', 'API管理', 1, 104, 1);
+INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
+                     enable_flag)
+    VALUE (7, 2, 'Log', '/system/log', '/System/Log', '日志管理', 1, 105, 1);
+INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
+                     enable_flag)
+    VALUE (8, 2, 'Dict', '/system/dict', '/System/Dict', '字典管理', 1, 106, 1);
 
 INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
                      enable_flag)
-    VALUE (7, null, 'Develop', '/develop', null, '开发管理', 0, 2, 1);
+    VALUE (9, null, 'Develop', '/develop', null, '开发管理', 0, 2, 1);
 INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
                      enable_flag)
-    VALUE (8, 7, 'Icon', '/develop/icon', '/Develop/Icon', '图标', 1, 201, 1);
+    VALUE (10, 9, 'Icon', '/develop/icon', '/Develop/Icon', '图标', 1, 201, 1);
 INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
                      enable_flag)
-    VALUE (9, 7, 'Swagger', 'http://localhost:8080/doc.html', null, 'Swagger', 1, 202, 1);
+    VALUE (11, 9, 'Echarts', '/develop/echarts', '/Develop/Echarts', 'Echarts 示例', 1, 202, 1);
 INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
                      enable_flag)
-    VALUE (10, 7, 'Cache', '/develop/cache', '/Develop/Cache', '缓存管理', 1, 203, 1);
+    VALUE (12, 9, 'Swagger', 'http://localhost:8000/doc.html', null, 'Swagger', 1, 203, 1);
 INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
                      enable_flag)
-    VALUE (11, 7, 'ServerInfo', '/develop/server_info', '/Develop/ServerInfo', '服务器信息', 1,
-           204, 1);
+    VALUE (13, 9, 'Druid', 'http://localhost:8000/druid', null, 'Druid', 1, 204, 1);
 
 INSERT INTO sys_menu(id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, order_num,
                      enable_flag)
@@ -102,6 +107,10 @@ VALUES (1, 10);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 11);
 INSERT INTO sys_role_menu (role_id, menu_id)
+VALUES (1, 12);
+INSERT INTO sys_role_menu (role_id, menu_id)
+VALUES (1, 13);
+INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 100);
 
 INSERT INTO sys_role_menu (role_id, menu_id)
@@ -116,6 +125,10 @@ INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (2, 5);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (2, 6);
+INSERT INTO sys_role_menu (role_id, menu_id)
+VALUES (2, 7);
+INSERT INTO sys_role_menu (role_id, menu_id)
+VALUES (2, 8);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (2, 100);
 
