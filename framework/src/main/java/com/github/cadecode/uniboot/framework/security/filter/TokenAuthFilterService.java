@@ -1,33 +1,30 @@
-package com.github.cadecode.uniboot.framework.security;
+package com.github.cadecode.uniboot.framework.security.filter;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
 import com.github.cadecode.uniboot.common.core.enums.ApiErrorCode;
+import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyService;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
-import com.github.cadecode.uniboot.framework.enums.AuthModelEnum;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
- * Token 校验过滤器抽象，继承 OncePerRequestFilter
+ * Token 校验过滤服务
  *
  * @author Cade Li
- * @date 2022/5/28
+ * @since 2023/6/25
  */
-public abstract class TokenAuthFilter extends OncePerRequestFilter {
-
-    /**
-     * 返回当前模式，用于策略模式
-     */
-    public abstract AuthModelEnum getAuthModel();
+public abstract class TokenAuthFilterService implements StrategyService {
 
     /**
      * 设置认证信息
@@ -56,4 +53,6 @@ public abstract class TokenAuthFilter extends OncePerRequestFilter {
         response.setStatus(errorCode.getStatus());
         ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
+
+    public abstract void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException;
 }
