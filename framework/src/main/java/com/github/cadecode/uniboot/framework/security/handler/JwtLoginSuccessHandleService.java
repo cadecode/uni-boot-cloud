@@ -1,15 +1,13 @@
 package com.github.cadecode.uniboot.framework.security.handler;
 
+import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
 import com.github.cadecode.uniboot.common.core.util.TokenUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
 import com.github.cadecode.uniboot.framework.bean.dto.SysUserDto;
 import com.github.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.config.SecurityConfig;
 import com.github.cadecode.uniboot.framework.enums.AuthModelEnum;
-import com.github.cadecode.uniboot.framework.security.LoginSuccessHandler;
-import com.github.cadecode.uniboot.framework.service.SysUserService;
 import com.github.cadecode.uniboot.framework.util.SecurityUtil;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -23,17 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2021/12/11
  */
 @Component
-@ConditionalOnProperty(name = "uni-boot.security.auth-model", havingValue = "jwt")
-public class JwtLoginSuccessHandler extends LoginSuccessHandler {
-
-    public JwtLoginSuccessHandler(SysUserService sysUserService) {
-        super(sysUserService);
-    }
-
-    @Override
-    public AuthModelEnum getAuthModel() {
-        return AuthModelEnum.JWT;
-    }
+public class JwtLoginSuccessHandleService extends LoginSuccessHandleService {
 
     @Override
     public ApiResult<SysUserDetailsDto> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
@@ -47,4 +35,8 @@ public class JwtLoginSuccessHandler extends LoginSuccessHandler {
         return ApiResult.ok(sysUserDetailsDto).path(SecurityConfig.LOGOUT_URL);
     }
 
+    @Override
+    public boolean supports(StrategyContext delimiter) {
+        return delimiter.getStrategyType() == AuthModelEnum.JWT;
+    }
 }

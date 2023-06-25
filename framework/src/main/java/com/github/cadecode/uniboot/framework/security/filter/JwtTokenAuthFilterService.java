@@ -2,14 +2,13 @@ package com.github.cadecode.uniboot.framework.security.filter;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
+import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
 import com.github.cadecode.uniboot.common.core.util.TokenUtil;
 import com.github.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.enums.AuthErrorEnum;
 import com.github.cadecode.uniboot.framework.enums.AuthModelEnum;
-import com.github.cadecode.uniboot.framework.security.TokenAuthFilter;
 import com.github.cadecode.uniboot.framework.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
@@ -26,16 +25,10 @@ import java.io.IOException;
  */
 @RequiredArgsConstructor
 @Component
-@ConditionalOnProperty(name = "uni-boot.security.auth-model", havingValue = "jwt")
-public class JwtTokenAuthFilter extends TokenAuthFilter {
+public class JwtTokenAuthFilterService extends TokenAuthFilterService {
 
     @Override
-    public AuthModelEnum getAuthModel() {
-        return AuthModelEnum.JWT;
-    }
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    public void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         String jwtToken = SecurityUtil.getTokenFromRequest(request);
         // token 不存在
@@ -72,5 +65,10 @@ public class JwtTokenAuthFilter extends TokenAuthFilter {
             response.addHeader(SecurityUtil.getHeader(), newJwtToken);
         }
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    public boolean supports(StrategyContext delimiter) {
+        return delimiter.getStrategyType() == AuthModelEnum.JWT;
     }
 }

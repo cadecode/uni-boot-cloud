@@ -1,5 +1,6 @@
 package com.github.cadecode.uniboot.framework.security.handler;
 
+import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
 import com.github.cadecode.uniboot.common.plugin.cache.util.KeyGeneUtil;
 import com.github.cadecode.uniboot.common.plugin.cache.util.RedisUtil;
@@ -8,10 +9,7 @@ import com.github.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsD
 import com.github.cadecode.uniboot.framework.config.SecurityConfig;
 import com.github.cadecode.uniboot.framework.consts.KeyPrefix;
 import com.github.cadecode.uniboot.framework.enums.AuthModelEnum;
-import com.github.cadecode.uniboot.framework.security.LoginSuccessHandler;
-import com.github.cadecode.uniboot.framework.service.SysUserService;
 import com.github.cadecode.uniboot.framework.util.SecurityUtil;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -26,17 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2021/12/11
  */
 @Component
-@ConditionalOnProperty(name = "uni-boot.security.auth-model", havingValue = "redis")
-public class RedisLoginSuccessHandler extends LoginSuccessHandler {
-
-    public RedisLoginSuccessHandler(SysUserService sysUserService) {
-        super(sysUserService);
-    }
-
-    @Override
-    public AuthModelEnum getAuthModel() {
-        return AuthModelEnum.REDIS;
-    }
+public class RedisLoginSuccessHandleService extends LoginSuccessHandleService {
 
     @Override
     public ApiResult<SysUserDto.SysUserDetailsDto> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
@@ -50,5 +38,10 @@ public class RedisLoginSuccessHandler extends LoginSuccessHandler {
         String loginUserKey = KeyGeneUtil.key(KeyPrefix.LOGIN_USER, uuidToken);
         RedisUtil.set(loginUserKey, sysUserDetailsDto, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
         return ApiResult.ok(sysUserDetailsDto).path(SecurityConfig.LOGOUT_URL);
+    }
+
+    @Override
+    public boolean supports(StrategyContext delimiter) {
+        return delimiter.getStrategyType() == AuthModelEnum.REDIS;
     }
 }
