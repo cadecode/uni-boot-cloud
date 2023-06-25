@@ -3,7 +3,7 @@ package com.github.cadecode.uniboot.framework.util;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.framework.bean.dto.SysUserDto.SysUserDetailsDto;
-import com.github.cadecode.uniboot.framework.config.SecurityConfig;
+import com.github.cadecode.uniboot.framework.config.SecurityConfig.SecurityProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.core.Authentication;
@@ -25,22 +25,22 @@ import java.util.Optional;
 @Component
 public class SecurityUtil implements InitializingBean {
 
-    private static SecurityConfig SECURITY_CONFIG;
+    private static SecurityProperties PROPERTIES;
 
-    private final SecurityConfig securityConfig;
+    private final SecurityProperties properties;
 
     // 从 SecurityConfig 获取 token 配置
 
     public static String getHeader() {
-        return SECURITY_CONFIG.getToken().getHeader();
+        return PROPERTIES.getToken().getHeader();
     }
 
     public static Long getExpiration() {
-        return SECURITY_CONFIG.getToken().getExpiration();
+        return PROPERTIES.getToken().getExpiration();
     }
 
     public static String getSecret() {
-        return SECURITY_CONFIG.getToken().getSecret();
+        return PROPERTIES.getToken().getSecret();
     }
 
     /**
@@ -114,6 +114,6 @@ public class SecurityUtil implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        SECURITY_CONFIG = securityConfig;
+        PROPERTIES = properties;
     }
 }
