@@ -2,6 +2,7 @@ package com.github.cadecode.uniboot.framework.config;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
+import com.github.cadecode.uniboot.framework.config.SecurityConfig.SecurityProperties;
 import com.github.cadecode.uniboot.framework.enums.AuthModelEnum;
 import com.github.cadecode.uniboot.framework.security.LoginSuccessHandler;
 import com.github.cadecode.uniboot.framework.security.TokenAuthFilter;
@@ -14,6 +15,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -46,24 +48,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableConfigurationProperties(SecurityProperties.class)
 @Configuration
-@ConfigurationProperties("uni-boot.security")
 public class SecurityConfig {
-
-    /**
-     * 鉴权模式
-     */
-    private AuthModelEnum authModel;
-
-    /**
-     * 忽略鉴权的 url
-     */
-    private List<String> ignoreUrls;
-
-    /**
-     * JWT Token 配置
-     */
-    private TokenConfig token;
 
     /**
      * 登录路径
@@ -80,6 +67,11 @@ public class SecurityConfig {
      * 注销路径
      */
     public static final String LOGOUT_URL = "/logout";
+
+    /**
+     * 配置项
+     */
+    private final SecurityProperties properties;
 
     /**
      * 注入各种处理器
@@ -159,7 +151,7 @@ public class SecurityConfig {
                         .failureHandler(loginFailureHandler);
                 // 配置 Token 校验过滤器
                 http.addFilterBefore(tokenAuthFilter, UsernamePasswordAuthenticationFilter.class);
-                log.info("Config Security over，AuthModel:{}", authModel);
+                log.info("Config Security over，AuthModel:{}", properties.getAuthModel());
             }
 
             @Override
@@ -171,12 +163,37 @@ public class SecurityConfig {
                 // 放行其他框架
                 ignoring.antMatchers("/error", "/druid/**", "/actuator/**");
                 // 设置忽略的路径
+                List<String> ignoreUrls = properties.getIgnoreUrls();
                 if (CollUtil.isNotEmpty(ignoreUrls)) {
                     log.info("Config Security ignore urls:{}", ignoreUrls);
                     ignoring.antMatchers(ArrayUtil.toArray(ignoreUrls, String.class));
                 }
             }
         };
+    }
+
+    /**
+     * Security 配置
+     */
+    @Data
+    @ConfigurationProperties("uni-boot.security")
+    public static class SecurityProperties {
+
+        /**
+         * 鉴权模式
+         */
+        private AuthModelEnum authModel;
+
+        /**
+         * 忽略鉴权的 url
+         */
+        private List<String> ignoreUrls;
+
+        /**
+         * JWT Token 配置
+         */
+        private TokenConfig token;
+
     }
 
     /**
