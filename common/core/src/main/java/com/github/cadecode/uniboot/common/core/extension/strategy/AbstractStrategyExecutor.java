@@ -1,8 +1,6 @@
 package com.github.cadecode.uniboot.common.core.extension.strategy;
 
-import com.github.cadecode.uniboot.common.core.extension.ExtContext;
-
-import java.util.Optional;
+import java.util.List;
 
 /**
  * 策略执行器抽象类
@@ -12,5 +10,5 @@ import java.util.Optional;
  */
 public abstract class AbstractStrategyExecutor implements StrategyExecutor {
 
-    public abstract <S> Optional<S> selectService(Class<S> clazz, ExtContext context);
+    public abstract <S> List<S> selectServices(Class<S> clazz, StrategyContext context);
 }

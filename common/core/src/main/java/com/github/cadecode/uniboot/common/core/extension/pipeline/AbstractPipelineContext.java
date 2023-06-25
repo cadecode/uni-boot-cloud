@@ -1,0 +1,24 @@
+package com.github.cadecode.uniboot.common.core.extension.pipeline;
+
+import com.github.cadecode.uniboot.common.core.enums.ExtTypeCode;
+import com.github.cadecode.uniboot.common.core.extension.pipeline.selector.FilterSelector;
+import lombok.Getter;
+
+/**
+ * pipeline 上下文抽象类
+ *
+ * @author Cade Li
+ * @since 2023/6/25
+ */
+@Getter
+public abstract class AbstractPipelineContext implements PipelineContext {
+
+    private final ExtTypeCode extTypeCode;
+    private final FilterSelector filterSelector;
+
+    public AbstractPipelineContext(ExtTypeCode extTypeCode, FilterSelector filterSelector) {
+        this.extTypeCode = extTypeCode;
+        this.filterSelector = filterSelector;
+    }
+
+}
