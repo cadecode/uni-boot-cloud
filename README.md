@@ -85,7 +85,7 @@
    business                    # 业务模块
    business/sample             # 业务模块示例，包含用于模拟测试的 Controller、Service 等，可丢弃
    common                      # 通用模块
-   common/core                 # 通用核心模块，包含公共注解、常量、异常、工具类、Bean 等
+   common/core                 # 通用核心模块，包含公共注解、常量、异常、工具类、抽象模板等
    common/plugin               # 通用插件模块，用于抽离各种组件、第三方库
    common/plugin/actuator      # 系统资源监控模块，集成 SpringBoot Admin
    common/plugin/cache         # 缓存模块，集成 caffeine、Redis、二级缓存
