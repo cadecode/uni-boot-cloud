@@ -1,6 +1,5 @@
 package com.github.cadecode.uniboot.common.core.extension.strategy;
 
-import com.github.cadecode.uniboot.common.core.extension.ExtContext;
 import org.springframework.plugin.core.Plugin;
 
 /**
@@ -9,6 +8,6 @@ import org.springframework.plugin.core.Plugin;
  * @author Cade Li
  * @since 2023/6/23
  */
-public interface StrategyService extends Plugin<ExtContext> {
+public interface StrategyService extends Plugin<StrategyContext> {
 
 }

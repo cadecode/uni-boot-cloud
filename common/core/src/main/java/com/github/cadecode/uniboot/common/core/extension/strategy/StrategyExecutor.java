@@ -1,7 +1,6 @@
 package com.github.cadecode.uniboot.common.core.extension.strategy;
 
-import com.github.cadecode.uniboot.common.core.extension.ExtContext;
-
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -13,7 +12,12 @@ import java.util.function.Function;
  */
 public interface StrategyExecutor {
 
-    <S extends StrategyService> void execute(Class<S> clazz, ExtContext context, Consumer<S> consumer);
+    <S extends StrategyService> void execute(Class<S> clazz, StrategyContext context, Consumer<S> consumer);
 
-    <R, S extends StrategyService> R execute(Class<S> clazz, ExtContext context, Function<S, R> function);
+    <S extends StrategyService> void executeAll(Class<S> clazz, StrategyContext context, Consumer<S> consumer);
+
+    <R, S extends StrategyService> R execute(Class<S> clazz, StrategyContext context, Function<S, R> function);
+
+    <S extends StrategyService> List<Object> executeAll(Class<S> clazz, StrategyContext context, Function<S, Object> function);
+
 }
