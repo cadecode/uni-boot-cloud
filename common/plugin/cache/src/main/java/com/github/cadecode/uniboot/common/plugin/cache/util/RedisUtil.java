@@ -36,10 +36,10 @@ public class RedisUtil implements InitializingBean {
     }
 
     /**
-     * 获取 value，String 类型
+     * 获取 value，Object 类型
      */
-    public static String get(String key) {
-        return get(key, String.class);
+    public static Object get(String key) {
+        return TEMPLATE.opsForValue().get(key);
     }
 
     /**
