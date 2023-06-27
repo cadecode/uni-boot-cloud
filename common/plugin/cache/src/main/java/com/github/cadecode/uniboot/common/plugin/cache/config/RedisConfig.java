@@ -13,7 +13,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.util.List;
 
@@ -45,14 +44,13 @@ public class RedisConfig {
      */
     @Primary
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory, Jackson2ObjectMapperBuilder builder) {
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory, ObjectMapper objectMapper) {
         // 创建 ObjectMapper，并复用 Spring 项目配置
-        ObjectMapper objectMapper = new ObjectMapper();
-        builder.configure(objectMapper);
+        ObjectMapper newObjectMapper = objectMapper.copy();
         // 启用序列化类型
-        objectMapper.activateDefaultTyping(objectMapper.getPolymorphicTypeValidator(), DefaultTyping.NON_FINAL, As.PROPERTY);
+        newObjectMapper.activateDefaultTyping(newObjectMapper.getPolymorphicTypeValidator(), DefaultTyping.NON_FINAL, As.PROPERTY);
         // 创建 Redis Jackson 序列化器
-        GenericJackson2JsonRedisSerializer jsonRedisSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
+        GenericJackson2JsonRedisSerializer jsonRedisSerializer = new GenericJackson2JsonRedisSerializer(newObjectMapper);
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         // 设置 k v 的序列化方式
