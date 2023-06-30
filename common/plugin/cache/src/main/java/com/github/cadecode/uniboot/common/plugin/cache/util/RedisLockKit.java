@@ -1,5 +1,6 @@
 package com.github.cadecode.uniboot.common.plugin.cache.util;
 
+import cn.hutool.core.thread.ThreadUtil;
 import com.github.cadecode.uniboot.common.plugin.cache.exception.RedisLockException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +29,8 @@ public class RedisLockKit {
     private final Map<String, LockContent> contentMap = new ConcurrentHashMap<>();
 
     // 定时续期任务线程池，合理设置大小
-    private static final ScheduledThreadPoolExecutor RENEW_EXECUTOR = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
+    private static final ScheduledThreadPoolExecutor RENEW_EXECUTOR = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
+            ThreadUtil.newNamedThreadFactory("lockRenewExecutor-", true));
 
     /**
      * 阻塞式的获取锁
