@@ -1,7 +1,6 @@
 package com.github.cadecode.uniboot.framework.controller;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.common.plugin.mybatis.converter.BoolToIntTypeHandler;
 import com.github.cadecode.uniboot.framework.annotation.ApiFormat;
@@ -10,6 +9,8 @@ import com.github.cadecode.uniboot.framework.bean.vo.SysLogVo.SysLogPageVo;
 import com.github.cadecode.uniboot.framework.convert.SysLogConvert;
 import com.github.cadecode.uniboot.framework.request.SysLogRequest.SysLogPageRequest;
 import com.github.cadecode.uniboot.framework.service.SysLogService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -44,17 +45,18 @@ public class SysLogController {
     @ApiOperation("查询列表")
     @PostMapping("page")
     public PageResult<SysLogPageVo> page(@RequestBody @Valid SysLogPageRequest request) {
-        Page<SysLog> page = logService.lambdaQuery()
-                .ge(ObjectUtil.isNotEmpty(request.getStartTime()), SysLog::getCreateTime, request.getStartTime())
-                .le(ObjectUtil.isNotEmpty(request.getEndTime()), SysLog::getCreateTime, request.getEndTime())
-                .in(ObjectUtil.isNotEmpty(request.getLogTypeList()), SysLog::getLogType, request.getLogTypeList())
-                .likeRight(ObjectUtil.isNotEmpty(request.getAccessUser()), SysLog::getAccessUser, request.getAccessUser())
-                .like(ObjectUtil.isNotEmpty(request.getUrl()), SysLog::getUrl, request.getUrl())
-                .eq(ObjectUtil.isNotNull(request.getExceptional()), SysLog::getExceptional, BoolToIntTypeHandler.mapping(request.getExceptional()))
-                .orderByDesc(SysLog::getCreateTime)
-                .page(new Page<>(request.getPageNumber(), request.getPageSize()));
-        List<SysLogPageVo> voList = SysLogConvert.INSTANCE.poToVo(page.getRecords());
-        return new PageResult<>((int) page.getTotal(), voList);
+        PageInfo<SysLog> pageInfo = PageHelper.startPage(request.getPageNumber(), request.getPageSize())
+                .doSelectPageInfo(() -> logService.lambdaQuery()
+                        .ge(ObjectUtil.isNotEmpty(request.getStartTime()), SysLog::getCreateTime, request.getStartTime())
+                        .le(ObjectUtil.isNotEmpty(request.getEndTime()), SysLog::getCreateTime, request.getEndTime())
+                        .in(ObjectUtil.isNotEmpty(request.getLogTypeList()), SysLog::getLogType, request.getLogTypeList())
+                        .likeRight(ObjectUtil.isNotEmpty(request.getAccessUser()), SysLog::getAccessUser, request.getAccessUser())
+                        .like(ObjectUtil.isNotEmpty(request.getUrl()), SysLog::getUrl, request.getUrl())
+                        .eq(ObjectUtil.isNotNull(request.getExceptional()), SysLog::getExceptional, BoolToIntTypeHandler.mapping(request.getExceptional()))
+                        .orderByDesc(SysLog::getCreateTime)
+                        .list());
+        List<SysLogPageVo> voList = SysLogConvert.INSTANCE.poToVo(pageInfo.getList());
+        return new PageResult<>((int) pageInfo.getTotal(), voList);
     }
 
     @ApiOperation("删除")
