@@ -95,7 +95,7 @@
    common/plugin/mybatis       # mybatis 模块，集成 MybatisPlus、PageHelper
    common/plugin/swagger       # swagger 模块，集成 knife4j，动态配置 swagger 的 module
    dependencies                # 依赖管理模块，作为父模块，管理全局依赖版本
-   framework                   # 系统功能模块，提供基础功能支持，如用户/菜单/角色/字典等管理功能等
+   framework                   # 系统功能模块，提供相关框架配置、基础功能支持，如用户/菜单/角色/字典等管理功能等
    ```
 
 ## 演示截图
