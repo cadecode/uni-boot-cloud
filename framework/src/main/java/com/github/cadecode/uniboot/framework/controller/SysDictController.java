@@ -1,7 +1,6 @@
 package com.github.cadecode.uniboot.framework.controller;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.bean.po.SysDict;
@@ -13,6 +12,8 @@ import com.github.cadecode.uniboot.framework.request.SysDictRequest.SysDictAddRe
 import com.github.cadecode.uniboot.framework.request.SysDictRequest.SysDictPageRequest;
 import com.github.cadecode.uniboot.framework.request.SysDictRequest.SysDictUpdateRequest;
 import com.github.cadecode.uniboot.framework.service.SysDictService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -46,13 +47,14 @@ public class SysDictController {
     @ApiOperation("查询列表")
     @PostMapping("page")
     public PageResult<SysDictPageVo> page(@RequestBody @Valid SysDictPageRequest request) {
-        Page<SysDict> page = sysDictService.lambdaQuery()
-                .likeRight(ObjectUtil.isNotEmpty(request.getName()), SysDict::getName, request.getName())
-                .likeRight(ObjectUtil.isNotEmpty(request.getType()), SysDict::getType, request.getType())
-                .orderByDesc(SysDict::getCreateTime)
-                .page(new Page<>(request.getPageNumber(), request.getPageSize()));
-        List<SysDictPageVo> voList = SysDictConvert.INSTANCE.poToPageVo(page.getRecords());
-        return new PageResult<>((int) page.getTotal(), voList);
+        PageInfo<SysDict> pageInfo = PageHelper.startPage(request.getPageNumber(), request.getPageSize())
+                .doSelectPageInfo(() -> sysDictService.lambdaQuery()
+                        .likeRight(ObjectUtil.isNotEmpty(request.getName()), SysDict::getName, request.getName())
+                        .likeRight(ObjectUtil.isNotEmpty(request.getType()), SysDict::getType, request.getType())
+                        .orderByDesc(SysDict::getCreateTime)
+                        .list());
+        List<SysDictPageVo> voList = SysDictConvert.INSTANCE.poToPageVo(pageInfo.getList());
+        return new PageResult<>((int) pageInfo.getTotal(), voList);
     }
 
     @ApiOperation("添加")
