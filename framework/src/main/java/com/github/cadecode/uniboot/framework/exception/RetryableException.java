@@ -14,7 +14,30 @@ public class RetryableException extends RuntimeException {
     /**
      * 用于传递重试中的状态信息
      */
-    private final Object state;
+    private Object state;
+
+    public RetryableException() {
+    }
+
+    public RetryableException(String message) {
+        super(message);
+    }
+
+    public RetryableException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public RetryableException(Throwable cause) {
+        super(cause);
+    }
+
+    public RetryableException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public RetryableException(Object state) {
+        this.state = state;
+    }
 
     public RetryableException(String message, Object state) {
         super(message);
