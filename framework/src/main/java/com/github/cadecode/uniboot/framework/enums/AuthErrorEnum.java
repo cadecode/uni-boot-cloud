@@ -13,37 +13,37 @@ import lombok.Getter;
 @Getter
 public enum AuthErrorEnum implements ApiErrorCode {
 
-    TOKEN_NOT_EXIST(0, "未登录") {
+    TOKEN_NOT_EXIST(1000, "未登录") {
         @Override
         public int getStatus() {
             return ApiStatus.NO_AUTHENTICATION;
         }
     },
-    TOKEN_ERROR(1, "Token 错误") {
+    TOKEN_ERROR(1001, "Token 错误") {
         @Override
         public int getStatus() {
             return ApiStatus.NO_AUTHENTICATION;
         }
     },
-    TOKEN_EXPIRED(2, "Token 已过期") {
+    TOKEN_EXPIRED(1002, "Token 已过期") {
         @Override
         public int getStatus() {
             return ApiStatus.NO_AUTHENTICATION;
         }
     },
-    TOKEN_NO_AUTHORITY(3, "权限不足") {
+    TOKEN_NO_AUTHORITY(1003, "权限不足") {
         @Override
         public int getStatus() {
             return ApiStatus.NO_AUTHORITY;
         }
     },
-    TOKEN_CREATE_ERROR(4, "登录失败") {
+    TOKEN_CREATE_ERROR(1004, "登录失败") {
         @Override
         public int getStatus() {
             return ApiStatus.OK;
         }
     },
-    TOKEN_LOGOUT(5, "用户主动注销") {
+    TOKEN_LOGOUT(1005, "用户主动注销") {
         @Override
         public int getStatus() {
             return ApiStatus.NO_AUTHENTICATION;
