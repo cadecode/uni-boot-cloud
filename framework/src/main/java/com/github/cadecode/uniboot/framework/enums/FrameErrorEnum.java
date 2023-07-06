@@ -14,50 +14,50 @@ import lombok.Getter;
 public enum FrameErrorEnum implements ApiErrorCode {
 
     // web mvc
-    VALIDATED_ERROR(1, "参数校验不通过") {
+    VALIDATED_ERROR(1000, "参数校验不通过") {
         @Override
         public int getStatus() {
             return ApiStatus.BAD_REQUEST;
         }
     },
-    REQ_PARAM_INVALID(2, "请求参数无效") {
+    REQ_PARAM_INVALID(1001, "请求参数无效") {
         @Override
         public int getStatus() {
             return ApiStatus.BAD_REQUEST;
         }
     },
-    REQ_BODY_INVALID(3, "请求体无效") {
+    REQ_BODY_INVALID(1002, "请求体无效") {
         @Override
         public int getStatus() {
             return ApiStatus.BAD_REQUEST;
         }
     },
-    MEDIA_TYPE_NO_SUPPORT(4, "MediaType 不被支持") {
+    MEDIA_TYPE_NO_SUPPORT(1003, "MediaType 不被支持") {
         @Override
         public int getStatus() {
             return ApiStatus.BAD_REQUEST;
         }
     },
-    PARAM_TYPE_CONVERT_ERROR(4, "参数类型转换错误") {
+    PARAM_TYPE_CONVERT_ERROR(1004, "参数类型转换错误") {
         @Override
         public int getStatus() {
             return ApiStatus.BAD_REQUEST;
         }
     },
-    REQUEST_RATE_LIMITED(5, "请求已被限流") {
+    REQUEST_RATE_LIMITED(1005, "请求已被限流") {
         @Override
         public int getStatus() {
             return ApiStatus.TOO_MANY_REQUESTS;
         }
     },
+    // 特殊处理接口返回 null 的情况
+    RES_BODY_NULL(1009, "响应体为空"),
 
     // file
-    EXTENSION_NOT_ALLOWED(6, "上传或下载文件的类型不被允许"),
-    UPLOAD_FILE_FAIL(7, "上传文件失败"),
-    FILE_NOT_FOUND(8, "文件未找到"),
+    EXTENSION_NOT_ALLOWED(2001, "上传或下载文件的类型不被允许"),
+    UPLOAD_FILE_FAIL(2002, "上传文件失败"),
+    FILE_NOT_FOUND(2003, "文件未找到"),
 
-    // 特殊处理接口返回 null 的情况
-    RES_BODY_NULL(9, "响应体为空"),
     ;
 
     private final String code;
