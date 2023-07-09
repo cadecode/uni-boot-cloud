@@ -1,9 +1,14 @@
+server:
+  shutdown: graceful
+
 # spring config
 spring:
   profiles:
     active: @profileActive@
   application:
     name: uni-boot-admin
+  lifecycle:
+    timeout-per-shutdown-phase: 60s
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
@@ -65,7 +70,7 @@ spring:
           rejectedHandlerType: CallerRunsPolicy
           keepAliveTime: 50
           waitForTasksToCompleteOnShutdown: true
-          awaitTerminationSeconds: 5
+          awaitTerminationSeconds: 300
           notifyEnabled: false
 
 # pagehelper
