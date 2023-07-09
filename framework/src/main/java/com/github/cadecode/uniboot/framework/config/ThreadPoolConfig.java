@@ -2,10 +2,10 @@ package com.github.cadecode.uniboot.framework.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.dynamictp.core.thread.DtpExecutor;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -28,7 +28,7 @@ import java.util.concurrent.Executor;
 @Configuration
 public class ThreadPoolConfig {
 
-    private final AsyncTaskExecutor asyncExecutor;
+    private final DtpExecutor asyncExecutor;
 
     /**
      * Spring 定时任务线程池
@@ -36,10 +36,13 @@ public class ThreadPoolConfig {
     @Bean(name = "taskScheduler", destroyMethod = "shutdown")
     public ThreadPoolTaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-        scheduler.setPoolSize(6);
+        scheduler.setPoolSize(Runtime.getRuntime().availableProcessors());
         scheduler.setThreadNamePrefix("taskScheduler-");
         scheduler.setWaitForTasksToCompleteOnShutdown(true);
-        scheduler.setAwaitTerminationSeconds(5);
+        scheduler.setAwaitTerminationSeconds(300);
+        scheduler.setErrorHandler(throwable -> {
+            log.error("Scheduled task execute fail,", throwable);
+        });
         return scheduler;
     }
 
