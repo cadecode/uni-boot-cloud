@@ -9,7 +9,10 @@ import org.dromara.dynamictp.core.support.ExecutorWrapper;
 import org.dromara.dynamictp.core.thread.DtpExecutor;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.Lifecycle;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.context.annotation.Bean;
@@ -94,17 +97,25 @@ public class ThreadPoolConfig {
     }
 
     /**
-     * DynamicTp DtpLifCycle 后置处理，优雅关闭
+     * BeanDefinitionRegistryPostProcessor
+     * 覆盖 DynamicTp DtpLifCycle getPhase，定制关闭顺序，实现优雅停机
      */
     @Bean
-    public BeanPostProcessor executorLifecyclePostProcess() {
-        return new BeanPostProcessor() {
+    public BeanDefinitionRegistryPostProcessor executorLifecycleRegistryPostProcessor() {
+        return new BeanDefinitionRegistryPostProcessor() {
             @Override
-            public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-                if (bean instanceof DtpLifecycle) {
-                    return new ExecutorLifeCycle();
-                }
-                return bean;
+            public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+                // 删除 DynamicTp bean dtpLifecycle
+                registry.removeBeanDefinition("dtpLifecycle");
+                // 注册自定义的 Lifecycle
+                GenericBeanDefinition definition = new GenericBeanDefinition();
+                definition.setBeanClass(ExecutorLifeCycle.class);
+                registry.registerBeanDefinition("dtpLifecycle", definition);
+            }
+
+            @Override
+            public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+
             }
         };
     }
