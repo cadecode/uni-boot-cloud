@@ -15,15 +15,15 @@ public class KeyGeneUtil {
      * @param extra  其他字符串
      * @return redis key
      */
-    public static String key(String prefix, String... extra) {
+    public static String key(String prefix, Object... extra) {
         StringBuilder prefixBuilder = new StringBuilder(prefix);
-        for (String str : extra) {
-            prefixBuilder.append(":").append(str);
+        for (Object obj : extra) {
+            prefixBuilder.append(":").append(obj);
         }
         return prefixBuilder.toString();
     }
 
-    public static String lockKey(String... extra) {
+    public static String lockKey(Object... extra) {
         return key("lock", extra);
     }
 
