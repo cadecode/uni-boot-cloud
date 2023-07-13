@@ -54,7 +54,7 @@ public class RedisExpiredListener extends RedisMessageListener {
                     .filter(o -> o.checkKey(key))
                     .sorted(Comparator.comparing(o -> {
                         Order order = o.getClass().getAnnotation(Order.class);
-                        return ObjectUtil.defaultIfNull(order, () -> order.value(), 0);
+                        return ObjectUtil.defaultIfNull(order, Order::value, 0);
                     }).reversed())
                     .findAny();
             if (!handlerOpt.isPresent()) {
