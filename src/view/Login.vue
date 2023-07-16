@@ -47,12 +47,14 @@
       <el-button
         :loading="loading"
         type="primary"
-        style="width:100%;margin-bottom:30px;"
+        style="width:100%;margin-bottom:20px;"
         @click.native.prevent="handleLogin"
       >
         登录
       </el-button>
-      <div class="tips" />
+      <div class="tips">
+        <el-checkbox v-model="loginForm.rememberPassword">记住密码</el-checkbox>
+      </div>
     </el-form>
   </div>
 </template>
@@ -80,8 +82,9 @@ export default {
     return {
       title,
       loginForm: {
-        username: 'admin',
-        password: '12345'
+        username: '',
+        password: '',
+        rememberPassword: false
       },
       loginRules: {
         username: [{required: true, trigger: 'blur', validator: validateUsername}],
@@ -100,6 +103,9 @@ export default {
       immediate: true
     }
   },
+  created() {
+    this.rememberPass('load');
+  },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
@@ -116,9 +122,10 @@ export default {
         if (valid) {
           this.loading = true;
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            // 登录成功后跳转到redirect或者/
+            // 登录成功后跳转到 redirect 或者 /
             this.$router.push({path: this.redirect || '/'});
             this.loading = false;
+            this.rememberPass('set');
           }).catch(() => {
             this.loading = false;
           });
@@ -126,6 +133,27 @@ export default {
           return false;
         }
       });
+    },
+    rememberPass(type) {
+      switch (type) {
+        case 'load': {
+          // 获取记住密码
+          const loginForm = window.localStorage.getItem('loginForm');
+          if (loginForm) {
+            this.loginForm = {...JSON.parse(loginForm)};
+          }
+          break;
+        }
+        case 'set': {
+          // 记住密码
+          if (this.loginForm.rememberPassword) {
+            window.localStorage.setItem('loginForm', JSON.stringify(this.loginForm));
+          } else {
+            window.localStorage.removeItem('loginForm');
+          }
+          break;
+        }
+      }
     }
   }
 };
@@ -152,7 +180,8 @@ $cursor: #fff;
   }
 
   .tips {
-    margin-bottom: 10px;
+    float: right;
+    margin-right: 10px;
     font-size: 14px;
     color: $light_gray;
   }
