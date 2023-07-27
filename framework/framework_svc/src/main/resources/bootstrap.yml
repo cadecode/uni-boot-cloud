@@ -1,0 +1,24 @@
+logging:
+  file:
+    path: /log/uni_boot_admin/framework
+
+spring:
+  application:
+    name: uni-boot-framework
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      username: nacos
+      password: nacos
+      discovery:
+        enabled: true
+        namespace: uni_dev
+        group: DEFAULT_GROUP
+      config:
+        enabled: true
+        namespace: uni_dev
+        group: DEFAULT_GROUP
+        file-extension: yml
+        shared-configs:
+          - shared-config.${spring.cloud.nacos.config.file-extension}
+          - shared-config-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
