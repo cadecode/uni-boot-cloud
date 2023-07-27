@@ -21,6 +21,8 @@
 
     <properties>
         <spring-boot.version>2.5.4</spring-boot.version>
+        <spring-cloud.version>2020.0.5</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
         <lombok.version>1.18.24</lombok.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <hutool.vsersion>5.8.12</hutool.vsersion>
@@ -91,6 +93,22 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--SpringCloud 依赖版本控制-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--SpringCloudAlibaba 依赖版本控制-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -172,6 +190,11 @@
             <dependency>
                 <groupId>org.dromara.dynamictp</groupId>
                 <artifactId>dynamic-tp-core</artifactId>
+                <version>${dynamic-tp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dromara.dynamictp</groupId>
+                <artifactId>dynamic-tp-spring-cloud-starter-nacos</artifactId>
                 <version>${dynamic-tp.version}</version>
             </dependency>
             <!--dynamicTp 邮件通知-->
