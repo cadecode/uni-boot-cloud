@@ -8,23 +8,25 @@
 
     <!--配置参数常量-->
     <!--级别：trace<debug<info<warn<error 增加，通常仅需要 debug/info/error-->
-    <property name="level" value="DEBUG" />
+    <property name="level" value="DEBUG"/>
 
     <!--文件保留时间-->
-    <property name="history" value="30" />
+    <property name="history" value="30"/>
 
-    <!--文件存放位置-->
+    <!--文件存放位置，直接指定-->
     <!--<property name="filePath" value="./logs" />-->
 
     <!--文件存放位置-->
-    <!--从 SpringBoot 配置文件中获取（注意文件名需要为 logback-spring.xml）-->
-    <springProperty scope="context" name="filePath" source="logging.file.path" />
+    <!--从 SpringBoot 配置文件中获取（注意文件名需要为 logback-spring.xml）
+        SpringBoot 默认将 logging 路径配置加入环境变量 LOG_PATH
+    -->
+    <property name="filePath" value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}"/>
 
     <!--输出格式-->
     <property name="consolePattern"
-              value="%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%-15thread]) %highlight(%-5level) %cyan(%-50logger{50}) : %msg%n" />
+              value="%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%-15thread]) %highlight(%-5level) %cyan(%-50logger{50}) : %msg%n"/>
     <!--不带色彩的格式用以输出到文件-->
-    <property name="filePattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %-5level %-50logger{50} : %msg%n" />
+    <property name="filePattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %-5level %-50logger{50} : %msg%n"/>
 
     <!--控制台输出日志-->
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
@@ -105,28 +107,28 @@
         additivity 指定是否将 root 的 appender 加入到 logger 中，默认为 true
     -->
     <logger name="com.github.cadecode" level="${level}" additivity="true">
-        <appender-ref ref="infoAppender" />
-        <appender-ref ref="debugAppender" />
+        <appender-ref ref="infoAppender"/>
+        <appender-ref ref="debugAppender"/>
     </logger>
 
     <!-- SpringFramework 日志-->
-    <logger name="org.springframework" level="WARN" />
+    <logger name="org.springframework" level="WARN"/>
 
     <!-- mybatis 日志 -->
     <!-- mybatis 打印 sql
          SpringBoot 中只要配置 dao 或 mapper 包即可打印 sql
 		 普通 SSM 项目可能需要以下配置
 	-->
-    <logger name="org.apache.ibatis" level="DEBUG" />
-    <logger name="java.sql" level="DEBUG" />
+    <logger name="org.apache.ibatis" level="DEBUG"/>
+    <logger name="java.sql" level="DEBUG"/>
 
     <!--根 logger
         没有定义 logger 的包，使用此 logger
     -->
     <root level="INFO">
-        <appender-ref ref="consoleAppender" />
-        <appender-ref ref="debugAppender" />
-        <appender-ref ref="infoAppender" />
-        <appender-ref ref="errorAppender" />
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="debugAppender"/>
+        <appender-ref ref="infoAppender"/>
+        <appender-ref ref="errorAppender"/>
     </root>
 </configuration>
