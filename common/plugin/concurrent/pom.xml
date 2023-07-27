@@ -24,7 +24,7 @@
         <!--dynamicTp-->
         <dependency>
             <groupId>org.dromara.dynamictp</groupId>
-            <artifactId>dynamic-tp-core</artifactId>
+            <artifactId>dynamic-tp-spring-cloud-starter-nacos</artifactId>
         </dependency>
         <!--dynamicTp 邮件通知-->
         <dependency>
