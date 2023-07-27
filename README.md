@@ -59,7 +59,7 @@
    ```sh
    ├── application
    ├── business
-   │   ├── sample
+   │   ├── example
    ├── common
    │   ├── core
    │   ├── plugin
@@ -84,7 +84,7 @@
    ```sh
    application                 # 项目启动入口，包含项目配置文件
    business                    # 业务模块
-   business/sample             # 业务模块示例，包含用于模拟测试的 Controller、Service 等，可丢弃
+   business/example             # 业务模块示例，包含用于模拟测试的 Controller、Service 等，可丢弃
    common                      # 通用模块
    common/core                 # 通用核心模块，包含公共注解、常量、异常、工具类、抽象模板等
    common/plugin               # 通用插件模块，用于抽离各种组件、第三方库

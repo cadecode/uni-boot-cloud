@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--configuration
+    scan 是否定时扫描配置文件变化
+    scanPeriod 定时间隔
+    debug 是否开启日志系统内部 debug
+-->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <!--配置参数常量-->
+    <!--级别：trace<debug<info<warn<error 增加，通常仅需要 debug/info/error-->
+    <property name="level" value="DEBUG" />
+
+    <!--文件保留时间-->
+    <property name="history" value="30" />
+
+    <!--文件存放位置-->
+    <!--<property name="filePath" value="./logs" />-->
+
+    <!--文件存放位置-->
+    <!--从 SpringBoot 配置文件中获取（注意文件名需要为 logback-spring.xml）-->
+    <springProperty scope="context" name="filePath" source="logging.file.path" />
+
+    <!--输出格式-->
+    <property name="consolePattern"
+              value="%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%-15thread]) %highlight(%-5level) %cyan(%-50logger{50}) : %msg%n" />
+    <!--不带色彩的格式用以输出到文件-->
+    <property name="filePattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %-5level %-50logger{50} : %msg%n" />
+
+    <!--控制台输出日志-->
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <!--格式-->
+        <encoder>
+            <pattern>${consolePattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--debug 文件日志-->
+    <appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--正在记录的日志文件位置-->
+        <file>${filePath}/debug.now.log</file>
+        <!--日志记录器的滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--按日期命名, %i 表示索引-->
+            <fileNamePattern>${filePath}/debug/debug.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!--保留 30 天-->
+            <maxHistory>${history}</maxHistory>
+            <!--文件大小超过 10MB，则输出的新文件，索引增加-->
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <!--格式-->
+        <encoder>
+            <pattern>${filePattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!--只记录 debug-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--info 文件日志-->
+    <appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${filePath}/info.now.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${filePath}/info/info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>${history}</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${filePattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--error 文件日志-->
+    <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${filePath}/error.now.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${filePath}/error/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>${history}</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${filePattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--定义 logger
+        name 指定要输出日志的包
+        level 指定等级
+        additivity 指定是否将 root 的 appender 加入到 logger 中，默认为 true
+    -->
+    <logger name="com.github.cadecode" level="${level}" additivity="true">
+        <appender-ref ref="infoAppender" />
+        <appender-ref ref="debugAppender" />
+    </logger>
+
+    <!-- SpringFramework 日志-->
+    <logger name="org.springframework" level="WARN" />
+
+    <!-- mybatis 日志 -->
+    <!-- mybatis 打印 sql
+         SpringBoot 中只要配置 dao 或 mapper 包即可打印 sql
+		 普通 SSM 项目可能需要以下配置
+	-->
+    <logger name="org.apache.ibatis" level="DEBUG" />
+    <logger name="java.sql" level="DEBUG" />
+
+    <!--根 logger
+        没有定义 logger 的包，使用此 logger
+    -->
+    <root level="INFO">
+        <appender-ref ref="consoleAppender" />
+        <appender-ref ref="debugAppender" />
+        <appender-ref ref="infoAppender" />
+        <appender-ref ref="errorAppender" />
+    </root>
+</configuration>

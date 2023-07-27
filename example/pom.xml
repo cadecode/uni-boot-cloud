@@ -11,11 +11,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <packaging>pom</packaging>
-    <artifactId>uni-boot-framework</artifactId>
-    <description>系统框架模块</description>
+    <artifactId>uni-boot-example</artifactId>
+    <description>微服务样例模块</description>
 
     <modules>
-        <module>framework_api</module>
-        <module>framework_svc</module>
+        <module>example_api</module>
+        <module>example_svc</module>
     </modules>
+
 </project>

@@ -1,0 +1,56 @@
+server:
+  port: 8010
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    password: ENC(jIiKGruIMgDkKx5wj2gJRCROqPutkTvZ)
+    database: 0
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    dynamic:
+      primary: master
+      datasource:
+        master:
+          url: jdbc:p6spy:mysql://localhost:3306/demo?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: ENC(donQ3DazAc4/6B+NFSRdxw==)
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+        slave1:
+          url: jdbc:p6spy:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: ENC(donQ3DazAc4/6B+NFSRdxw==)
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+
+# 关闭 swagger 认证
+knife4j:
+  basic:
+    enable: false
+
+# uni-boot 配置
+uni-boot:
+  config:
+    name: ${spring.application.name}
+    version: 1.0.0
+    swagger-on: true
+    dynamic-ds-on: false
+    file-base-path: D:/uniboot/file/temp/
+  swagger:
+    title: Swagger 在线文档
+    description: uni-boot-admin 在线文档 by swagger2
+    name: Cade Li
+    url: https://github.com/cadecode/uni-boot-admin
+    email: cadecode@foxmail.com
+    version: ${uni-boot.config.version}
+    module:
+      all: com.github.cadecode.uniboot.framework
+  security:
+    auth-model: redis
+    token:
+      header: token
+      expiration: 86400
+      secret: 12345678123456781234567812345678
+    ignore-urls: /auth/login,/demo/**,/common/download**
+  cache:
+    dl:
+      allow-null-values: true
