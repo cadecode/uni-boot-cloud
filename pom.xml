@@ -69,12 +69,12 @@
             </dependency>
             <dependency>
                 <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-framework</artifactId>
+                <artifactId>uni-boot-framework-api</artifactId>
                 <version>${uni.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-business-sample</artifactId>
+                <artifactId>uni-boot-example-api</artifactId>
                 <version>${uni.version}</version>
             </dependency>
         </dependencies>

@@ -1,0 +1,113 @@
+server:
+  shutdown: graceful
+
+# spring config
+spring:
+  profiles:
+    active: @profileActive@
+  application:
+    name: uni-example
+  lifecycle:
+    timeout-per-shutdown-phase: 60s
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:1111
+  # redis 公共配置
+  redis:
+    lettuce:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+        max-wait: -1
+  # 数据源公共配置
+  datasource:
+    druid:
+      initialSize: 5
+      minIdle: 10
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      maxEvictableIdleTimeMillis: 900000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: true
+        allow:
+        url-pattern: /druid/*
+        login-username: dev
+        login-password: dev123
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+  dynamic:
+    tp:
+      collectorTypes: logging
+      logPath: ${logging.file.path}
+      monitorInterval: 10
+      executors:
+        - threadPoolName: asyncExecutor
+          thread-name-prefix: asyncExecutor-
+          corePoolSize: 6
+          maximumPoolSize: 8
+          queueCapacity: 1000
+          queueType: VariableLinkedBlockingQueue
+          rejectedHandlerType: CallerRunsPolicy
+          keepAliveTime: 50
+          waitForTasksToCompleteOnShutdown: true
+          awaitTerminationSeconds: 300
+          notifyEnabled: false
+
+# pagehelper
+pagehelper:
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  auto-dialect: true
+  auto-runtime-dialect: true
+  page-size-zero: true
+
+# mybatis plus 配置
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.github.cadecode.**.bean,com.github.cadecode.**.mybatis.converter
+  type-enums-package: com.github.cadecode.**.enums
+  configuration:
+    map-underscore-to-camel-case: true
+
+# swagger配置
+knife4j:
+  enable: true
+  basic:
+    enable: true
+    username: dev
+    password: dev123
+
+# log config
+logging:
+  file:
+    path: /log/uni_example
+
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
