@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
-import com.github.cadecode.uniboot.framework.api.config.UniBootConfig;
+import com.github.cadecode.uniboot.framework.svc.config.UniFrameworkConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -23,7 +23,7 @@ import java.util.Set;
 @Component
 public class FileUploadUtil implements InitializingBean {
 
-    private final UniBootConfig uniBootConfig;
+    private final UniFrameworkConfig uniFrameworkConfig;
 
     public static final String DEFAULT_FILE_BASE_PATH = "/uniboot/file/temp/";
     public static final String DEFAULT_DOWNLOAD_API = "/common/download";
@@ -74,15 +74,15 @@ public class FileUploadUtil implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        if (StrUtil.isEmpty(uniBootConfig.getFileBasePath())) {
-            uniBootConfig.setFileBasePath(DEFAULT_FILE_BASE_PATH);
+        if (StrUtil.isEmpty(uniFrameworkConfig.getFileBasePath())) {
+            uniFrameworkConfig.setFileBasePath(DEFAULT_FILE_BASE_PATH);
             log.info("Set uniboot config file base path to default {}", DEFAULT_FILE_BASE_PATH);
         }
-        UPLOAD_PATH = uniBootConfig.getFileBasePath() + "upload/";
-        DOWNLOAD_PATH = uniBootConfig.getFileBasePath() + "download/";
+        UPLOAD_PATH = uniFrameworkConfig.getFileBasePath() + "upload/";
+        DOWNLOAD_PATH = uniFrameworkConfig.getFileBasePath() + "download/";
         // 加入额外配置的后缀
-        if (CollUtil.isNotEmpty(uniBootConfig.getAllowedFileExtensions())) {
-            ALLOWED_EXTENSIONS.addAll(uniBootConfig.getAllowedFileExtensions());
+        if (CollUtil.isNotEmpty(uniFrameworkConfig.getAllowedFileExtensions())) {
+            ALLOWED_EXTENSIONS.addAll(uniFrameworkConfig.getAllowedFileExtensions());
         }
     }
 }
