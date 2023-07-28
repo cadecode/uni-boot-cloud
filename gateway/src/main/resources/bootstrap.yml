@@ -1,14 +1,10 @@
 logging:
   file:
-    path: /log/uni_boot_admin/framework
-
-server:
-  servlet:
-    context-path: /framework
+    path: /log/uni_boot_admin/gateway
 
 spring:
   application:
-    name: uni-boot-framework
+    name: uni-boot-gateway
   cloud:
     nacos:
       server-addr: localhost:8848

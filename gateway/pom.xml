@@ -2,14 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
+        <artifactId>uni-boot-dependencies</artifactId>
         <groupId>com.github.cadecode</groupId>
-        <artifactId>uni-boot-framework</artifactId>
         <version>2023.1.0</version>
+        <relativePath>../dependencies/pom.xml</relativePath>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>uni-boot-framework-svc</artifactId>
+    <artifactId>uni-boot-gateway</artifactId>
+    <description>流量网关</description>
 
     <dependencies>
         <!--cloud-->
@@ -24,6 +26,30 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <!--rpc-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <!--gateway-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+        <!--AOP-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <!--配置批注生成器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
         <!--tomcat-->
         <dependency>
@@ -43,16 +69,6 @@
             <artifactId>jasypt-spring-boot-starter</artifactId>
         </dependency>
 
-        <!--http-->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-http</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-framework-api</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.github.cadecode</groupId>
             <artifactId>uni-boot-common-plugin-actuator</artifactId>

@@ -26,6 +26,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
+        <!--Security-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.github.cadecode</groupId>
@@ -54,11 +59,6 @@
         <dependency>
             <groupId>com.github.cadecode</groupId>
             <artifactId>uni-boot-common-plugin-concurrent</artifactId>
-        </dependency>
-        <!--http-->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-http</artifactId>
         </dependency>
     </dependencies>
 </project>
