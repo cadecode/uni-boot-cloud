@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.cadecode.uniboot.framework.api.mapper.SysUserMapper">
+    <resultMap id="SysUserRolesVoMap" type="com.github.cadecode.uniboot.framework.api.bean.vo.SysUserVo$SysUserRolesVo">
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="password" property="password"/>
+        <result column="enable_flag" property="enableFlag" typeHandler="BoolToIntTypeHandler"/>
+        <result column="sex" property="sex"/>
+        <result column="phone" property="phone"/>
+        <result column="mail" property="mail"/>
+        <result column="login_ip" property="loginIp"/>
+        <result column="login_date" property="loginDate"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="r_code" property="roles" typeHandler="ObjToStrTypeHandler"/>
+    </resultMap>
+    <select id="selectRolesVoByUserIds" resultMap="SysUserRolesVoMap">
+        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code
+        FROM sys_user su
+        LEFT JOIN sys_role_user sru ON sru.user_id = su.id
+        LEFT JOIN sys_role sr ON sru.role_id = sr.id
+        <if test="userIds != null and userIds.size > 0">
+            WHERE su.id IN (
+            <foreach collection="userIds" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+        </if>
+        GROUP BY su.id, su.create_time
+        ORDER BY su.create_time DESC
+    </select>
+    <select id="selectRolesVoByUsername" resultMap="SysUserRolesVoMap">
+        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code
+        FROM sys_user su
+        LEFT JOIN sys_role_user sru ON sru.user_id = su.id
+        LEFT JOIN sys_role sr ON sru.role_id = sr.id
+        WHERE su.username = #{username}
+        GROUP BY su.id
+    </select>
+    <select id="selectRolesVo" resultMap="SysUserRolesVoMap">
+        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code
+        FROM sys_user su
+        LEFT JOIN sys_role_user sru ON sru.user_id = su.id
+        LEFT JOIN sys_role sr ON sru.role_id = sr.id
+        <if test="request != null">
+            <where>
+                <if test="request.username != null and request.username.length > 0">
+                    <bind name="bindUsername" value="'%' + request.username + '%'"/>
+                    su.username like #{bindUsername}
+                </if>
+                <if test="request.nickName != null and request.nickName.length > 0">
+                    <bind name="binNickName" value="'%' + request.nickName + '%'"/>
+                    AND su.nick_name like #{binNickName}
+                </if>
+                <if test="request.enableFlag != null">
+                    AND su.enable_flag = #{request.enableFlag, typeHandler=BoolToIntTypeHandler}
+                </if>
+                <if test="request.roleIdList != null and request.roleIdList.size > 0 ">
+                    AND sr.id in (
+                    <foreach collection="request.roleIdList" item="id" separator=",">
+                        #{id}
+                    </foreach>
+                    )
+                </if>
+            </where>
+        </if>
+        GROUP BY su.id, su.username, su.create_time
+        ORDER BY su.username
+    </select>
+</mapper>
