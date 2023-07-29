@@ -1,12 +1,16 @@
 package com.github.cadecode.uniboot.framework.api.security.filter;
 
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.EscapeUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
 import com.github.cadecode.uniboot.common.core.enums.ApiErrorCode;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyService;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
+import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
+import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,5 +58,19 @@ public abstract class TokenAuthFilterService implements StrategyService {
         ServletUtil.write(response, JacksonUtil.toJson(result), ContentType.JSON.toString(CharsetUtil.CHARSET_UTF_8));
     }
 
-    public abstract void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException;
+    public void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String escapedJson = ServletUtil.getHeader(request, SecurityConst.USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
+        if (ObjectUtil.isNotEmpty(escapedJson)) {
+            SysUserDetailsDto userDetailsDto = JacksonUtil.toBean(EscapeUtil.unescape(escapedJson), SysUserDetailsDto.class);
+            if (ObjectUtil.isNotNull(userDetailsDto)) {
+                setAuthentication(request, userDetailsDto);
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
+        handler(request, response, filterChain);
+    }
+
+    public abstract void handler(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException;
+
 }
