@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 /**
  * Swagger WebMvc 配置
@@ -19,7 +18,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
  * @since 2023/6/8
  */
 @RequiredArgsConstructor
-@EnableSwagger2WebMvc
 @EnableKnife4j
 @Configuration
 @Import(SwaggerRegisterKit.class)

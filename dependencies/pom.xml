@@ -30,7 +30,7 @@
         <guava.vsersion>31.0.1-jre</guava.vsersion>
         <vavr.vsersion>1.0.0-alpha-4</vavr.vsersion>
         <mica-auto.version>2.3.2</mica-auto.version>
-        <knife4j.version>2.0.9</knife4j.version>
+        <knife4j.version>3.0.3</knife4j.version>
         <mybatis.version>2.2.0</mybatis.version>
         <pagehelper.version>1.4.0</pagehelper.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
