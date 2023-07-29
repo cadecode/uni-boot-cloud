@@ -9,7 +9,7 @@ import com.github.cadecode.uniboot.framework.api.consts.KeyPrefix;
 import com.github.cadecode.uniboot.framework.api.convert.SysRoleConvert;
 import com.github.cadecode.uniboot.framework.api.request.SysRoleRequest;
 import com.github.cadecode.uniboot.framework.api.request.SysRoleRequest.SysRoleMappingRequest;
-import com.github.cadecode.uniboot.framework.api.service.SysRoleService;
+import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

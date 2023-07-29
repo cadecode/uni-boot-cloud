@@ -9,8 +9,8 @@ import com.github.cadecode.uniboot.framework.api.bean.vo.SysApiVo.SysApiSwaggerV
 import com.github.cadecode.uniboot.framework.api.consts.KeyPrefix;
 import com.github.cadecode.uniboot.framework.api.convert.SysApiConvert;
 import com.github.cadecode.uniboot.framework.api.request.SysApiRequest;
-import com.github.cadecode.uniboot.framework.api.service.SysApiService;
-import com.github.cadecode.uniboot.framework.api.service.SysRoleService;
+import com.github.cadecode.uniboot.framework.svc.service.SysApiService;
+import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -119,5 +119,14 @@ public class SysApiController {
                 .distinct()
                 .sorted(Comparator.comparing(SysApiSwaggerVo::getUrl))
                 .collect(Collectors.toList());
+    }
+
+
+    // For feign client
+    @ApiFormat(false)
+    @ApiOperation("查询API列表-全部")
+    @PostMapping("list_roles_vo")
+    public List<SysApiRolesVo> listRolesVo() {
+        return sysApiService.listRolesVo();
     }
 }

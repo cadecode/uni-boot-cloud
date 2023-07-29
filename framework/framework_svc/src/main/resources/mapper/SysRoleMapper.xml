@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.cadecode.uniboot.framework.svc.mapper.SysRoleMapper">
+    <resultMap id="SysRoleUnionVoMap" type="com.github.cadecode.uniboot.framework.api.bean.vo.SysRoleVo$SysRoleUnionVo">
+        <result column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="m_id" property="menus" typeHandler="ObjToStrTypeHandler"/>
+        <result column="a_id" property="apis" typeHandler="ObjToStrTypeHandler"/>
+    </resultMap>
+    <select id="selectByUserIds" resultType="com.github.cadecode.uniboot.framework.api.bean.po.SysRole">
+        SELECT *
+        FROM sys_role_user ru
+                 INNER JOIN sys_role r ON ru.role_id = r.id
+        <if test="userIds != null and userIds.size > 0">
+            WHERE ru.user_id IN (
+            <foreach collection="userIds" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+        </if>
+    </select>
+    <select id="selectByMenuIds" resultType="com.github.cadecode.uniboot.framework.api.bean.po.SysRole">
+        SELECT *
+        FROM sys_role_menu rm
+                 INNER JOIN sys_role r ON rm.role_id = r.id
+        <if test="menuIds != null and menuIds.size > 0">
+            WHERE rm.menu_id IN (
+            <foreach collection="menuIds" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+        </if>
+    </select>
+    <select id="selectByApiIds" resultType="com.github.cadecode.uniboot.framework.api.bean.po.SysRole">
+        SELECT *
+        FROM sys_role_api ra
+                 INNER JOIN sys_role r ON ra.role_id = r.id
+        <if test="apiIds != null and apiIds.size > 0">
+            WHERE ra.api_id IN (
+            <foreach collection="apiIds" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+        </if>
+    </select>
+    <select id="selectRolesVo" resultMap="SysRoleUnionVoMap">
+        SELECT sr.*, JSON_ARRAYAGG(sm.id) m_id, JSON_ARRAYAGG(sa.id) a_id
+        FROM sys_role sr
+        LEFT JOIN sys_role_menu srm ON srm.role_id = sr.id
+        LEFT JOIN sys_role_api sra ON sra.role_id = sr.id
+        LEFT JOIN sys_menu sm ON srm.menu_id = sm.id
+        LEFT JOIN sys_api sa ON sra.api_id = sa.id
+        <if test="request != null">
+            <where>
+                <if test="request.code != null and request.code.length > 0">
+                    <bind name="bindCode" value="'%' + request.code + '%'"/>
+                    sr.code like #{bindCode}
+                </if>
+                <if test="request.name != null and request.name.length > 0">
+                    <bind name="bindName" value="'%' + request.name + '%'"/>
+                    AND sr.name like #{bindName}
+                </if>
+            </where>
+        </if>
+        GROUP BY sr.id, sr.code
+        ORDER BY sr.code
+    </select>
+    <select id="selectRolesVoByRoleIds" resultMap="SysRoleUnionVoMap">
+        SELECT sr.*, JSON_ARRAYAGG(sm.id) m_id, JSON_ARRAYAGG(sa.id) a_id
+        FROM sys_role sr
+        LEFT JOIN sys_role_menu srm ON srm.role_id = sr.id
+        LEFT JOIN sys_role_api sra ON sra.role_id = sr.id
+        LEFT JOIN sys_menu sm ON srm.menu_id = sm.id
+        LEFT JOIN sys_api sa ON sra.api_id = sa.id
+        <if test="roleIds != null and roleIds.size > 0">
+            WHERE sr.id IN (
+            <foreach collection="roleIds" item="roleId" separator=",">
+                #{roleId}
+            </foreach>
+            )
+        </if>
+        GROUP BY sr.id, sr.code
+        ORDER BY sr.code
+    </select>
+    <delete id="deleteRoleUserByUserIds">
+        DELETE FROM sys_role_user ru
+        WHERE ru.user_id IN (
+        <foreach collection="userIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteRoleUserByRoleIds">
+        DELETE FROM sys_role_user ru
+        WHERE ru.role_id IN (
+        <foreach collection="roleIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteRoleMenuByMenuIds">
+        DELETE FROM sys_role_menu rm
+        WHERE rm.menu_id IN (
+        <foreach collection="menuIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteRoleMenuByRoleIds">
+        DELETE FROM sys_role_menu rm
+            WHERE rm.role_id IN (
+        <foreach collection="roleIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteRoleApiByApiIds">
+        DELETE FROM sys_role_api ra
+        WHERE ra.api_id IN (
+        <foreach collection="apiIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteRoleApiByRoleIds">
+        DELETE FROM sys_role_api ra
+        WHERE ra.role_id IN (
+        <foreach collection="roleIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteRoleUser">
+        DELETE FROM sys_role_user ru
+        WHERE (ru.user_id, ru.role_id) IN (
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteRoleMenu">
+        DELETE FROM sys_role_menu rm
+        WHERE (rm.menu_id, rm.role_id) IN (
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteRoleApi">
+        DELETE FROM sys_role_api ra
+        WHERE (ra.api_id, ra.role_id) IN (
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+        )
+    </delete>
+    <insert id="insertRoleUser">
+        INSERT INTO sys_role_user (user_id, role_id)
+        VALUES
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+    </insert>
+    <insert id="insertRoleMenu">
+        INSERT INTO sys_role_menu (menu_id, role_id)
+        VALUES
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+    </insert>
+    <insert id="insertRoleApi">
+        INSERT INTO sys_role_api (api_id, role_id)
+        VALUES
+        <foreach collection="list" item="el" separator=",">
+            (#{el.id}, #{el.roleId})
+        </foreach>
+    </insert>
+
+</mapper>

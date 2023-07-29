@@ -1,9 +1,9 @@
 package com.github.cadecode.uniboot.framework.api.security.voter;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto;
+import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysApiVo.SysApiRolesVo;
-import com.github.cadecode.uniboot.framework.api.service.SysApiService;
+import com.github.cadecode.uniboot.framework.api.feign.SysApiClient;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.ConfigAttribute;
@@ -31,7 +31,7 @@ public class DataBaseRoleVoter extends RoleVoter {
     // ant 匹配器
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
-    private final SysApiService sysApiService;
+    private final SysApiClient sysApiClient;
 
     @Override
     public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
@@ -42,9 +42,9 @@ public class DataBaseRoleVoter extends RoleVoter {
         FilterInvocation fi = (FilterInvocation) object;
         String requestUrl = fi.getRequest().getRequestURI();
         // 获取 api role 的关系列表
-        List<SysApiRolesVo> sysApiRolesVos = sysApiService.listRolesVo();
+        List<SysApiRolesVo> sysApiRolesVos = sysApiClient.listRolesVo();
         // 获取用户角色
-        SysUserDto.SysUserDetailsDto sysUserDetailsDto = SecurityUtil.getUserDetails(authentication);
+        SysUserDetailsDto sysUserDetailsDto = SecurityUtil.getUserDetails(authentication);
         List<String> roles = sysUserDetailsDto.getRoles();
         // 获取与 url 相同的配置，不存在与 url 相同配置则使用 spring mvc ant 风格匹配
         SysApiRolesVo sysApiRolesVo = sysApiRolesVos.stream()
