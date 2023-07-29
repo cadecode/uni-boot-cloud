@@ -1,9 +1,15 @@
 package com.github.cadecode.uniboot.framework.svc.controller;
 
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.CharsetUtil;
+import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
 import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
+import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
+import com.github.cadecode.uniboot.framework.svc.config.FrameSecurityConfig;
+import feign.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 认证API
@@ -33,8 +42,14 @@ public class AuthController {
     @ApiLogger(type = LogTypeEnum.AUTH, enableSave = true, description = "用户登录")
     @ApiOperation("登录")
     @PostMapping("login")
-    public ApiResult<?> login(@RequestParam String username, @RequestParam String password) {
-        return authClient.login(username, password);
+    public ApiResult<?> login(HttpServletResponse sResponse, @RequestParam String username, @RequestParam String password) throws IOException {
+        // 从 rpc 调用中获取 header token 设置到响应
+        Response rResponse = authClient.login(username, password);
+        String token = rResponse.headers().get(SecurityUtil.getHeader()).stream().findFirst().get();
+        sResponse.addHeader(SecurityUtil.getHeader(), token);
+        // 获取 rpc 结果
+        String body = IoUtil.read(rResponse.body().asReader(CharsetUtil.CHARSET_UTF_8));
+        return JacksonUtil.toBean(body, ApiResult.class);
     }
 
     @ApiLogger(type = LogTypeEnum.AUTH, enableSave = true, description = "用户注销")
@@ -52,10 +67,10 @@ public class AuthController {
     @FeignClient(contextId = "AuthClient", name = "uni-boot-framework")
     public interface AuthClient {
 
-        @PostMapping("login")
-        ApiResult<?> login(@RequestParam("username") String username, @RequestParam("password") String password);
+        @PostMapping(FrameSecurityConfig.LOGIN_URL)
+        Response login(@RequestParam("username") String username, @RequestParam("password") String password);
 
-        @PostMapping("logout")
+        @PostMapping(FrameSecurityConfig.LOGOUT_URL)
         ApiResult<?> logout();
     }
 }
