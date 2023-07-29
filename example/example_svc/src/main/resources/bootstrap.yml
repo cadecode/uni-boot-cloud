@@ -2,10 +2,6 @@ logging:
   file:
     path: /log/uni_boot_admin/example
 
-server:
-  servlet:
-    context-path: /example
-
 spring:
   application:
     name: uni-boot-example

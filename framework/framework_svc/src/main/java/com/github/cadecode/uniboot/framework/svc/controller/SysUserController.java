@@ -11,10 +11,10 @@ import com.github.cadecode.uniboot.framework.api.bean.vo.SysMenuVo.SysMenuTreeVo
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysUserVo.SysUserRolesVo;
 import com.github.cadecode.uniboot.framework.api.convert.SysUserConvert;
 import com.github.cadecode.uniboot.framework.api.request.SysUserRequest;
-import com.github.cadecode.uniboot.framework.api.service.SysMenuService;
-import com.github.cadecode.uniboot.framework.api.service.SysRoleService;
-import com.github.cadecode.uniboot.framework.api.service.SysUserService;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
+import com.github.cadecode.uniboot.framework.svc.service.SysMenuService;
+import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
+import com.github.cadecode.uniboot.framework.svc.service.SysUserService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

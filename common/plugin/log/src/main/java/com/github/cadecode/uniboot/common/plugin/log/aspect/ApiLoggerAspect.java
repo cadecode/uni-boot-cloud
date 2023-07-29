@@ -101,7 +101,7 @@ public class ApiLoggerAspect {
                     resultStr = JacksonUtil.toJson(result);
                 } catch (Exception e) {
                     resultStr = ExceptionUtil.stacktraceToString(e);
-                    log.warn("API log [{}]: request result to json fail", apiLogger.type().getType(), e);
+                    log.error("API log [{}]: request result to json fail", apiLogger.type().getType(), e);
                 }
             }
             BaseLogInfo baseLogInfo = BaseLogInfo.builder().apiLogger(apiLogger).request(attributes.getRequest())
@@ -113,10 +113,10 @@ public class ApiLoggerAspect {
             try {
                 apiLogHandler.save(apiLogger, logObj);
             } catch (Exception e) {
-                log.warn("API log [{}]: save async fail", apiLogger.type().getType(), e);
+                log.error("API log [{}]: save async fail", apiLogger.type().getType(), e);
             }
         } catch (Exception e) {
-            log.warn("API log [{}]: handle logger fail", apiLogger.type().getType(), e);
+            log.error("API log [{}]: handle logger fail", apiLogger.type().getType(), e);
         }
     }
 

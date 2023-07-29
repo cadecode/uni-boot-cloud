@@ -7,8 +7,8 @@ import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.api.bean.po.SysLog;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysLogVo.SysLogPageVo;
 import com.github.cadecode.uniboot.framework.api.convert.SysLogConvert;
-import com.github.cadecode.uniboot.framework.api.request.SysLogRequest;
-import com.github.cadecode.uniboot.framework.api.service.SysLogService;
+import com.github.cadecode.uniboot.framework.api.request.SysLogRequest.SysLogPageRequest;
+import com.github.cadecode.uniboot.framework.svc.service.SysLogService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -44,7 +44,7 @@ public class SysLogController {
 
     @ApiOperation("查询列表")
     @PostMapping("page")
-    public PageResult<SysLogPageVo> page(@RequestBody @Valid SysLogRequest.SysLogPageRequest request) {
+    public PageResult<SysLogPageVo> page(@RequestBody @Valid SysLogPageRequest request) {
         PageInfo<SysLog> pageInfo = PageHelper.startPage(request.getPageNumber(), request.getPageSize())
                 .doSelectPageInfo(() -> logService.lambdaQuery()
                         .ge(ObjectUtil.isNotEmpty(request.getStartTime()), SysLog::getCreateTime, request.getStartTime())
@@ -65,4 +65,11 @@ public class SysLogController {
         return logService.removeBatchByIds(idList);
     }
 
+    // For feign client
+    @ApiFormat(false)
+    @ApiOperation("添加")
+    @PostMapping("save")
+    public boolean save(@RequestBody @NotEmpty List<SysLog> poList) {
+        return logService.saveBatch(poList);
+    }
 }

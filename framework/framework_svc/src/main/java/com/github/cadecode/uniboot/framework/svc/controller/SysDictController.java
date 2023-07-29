@@ -9,7 +9,7 @@ import com.github.cadecode.uniboot.framework.api.bean.vo.SysDictVo.SysDictPageVo
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysDictVo.SysDictSuggestVo;
 import com.github.cadecode.uniboot.framework.api.convert.SysDictConvert;
 import com.github.cadecode.uniboot.framework.api.request.SysDictRequest;
-import com.github.cadecode.uniboot.framework.api.service.SysDictService;
+import com.github.cadecode.uniboot.framework.svc.service.SysDictService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;

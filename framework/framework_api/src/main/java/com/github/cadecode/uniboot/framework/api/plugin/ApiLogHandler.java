@@ -12,7 +12,7 @@ import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandl
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogInfoDto;
 import com.github.cadecode.uniboot.framework.api.bean.po.SysLog;
 import com.github.cadecode.uniboot.framework.api.convert.SysLogConvert;
-import com.github.cadecode.uniboot.framework.api.service.SysLogService;
+import com.github.cadecode.uniboot.framework.api.feign.SysLogClient;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +21,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
 
 /**
  * Api Log 处理器实现
@@ -33,7 +35,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApiLogHandler extends AbstractApiLogHandler {
 
-    private final SysLogService sysLogService;
+    private final SysLogClient sysLogClient;
 
     /**
      * 构造 LogInfo
@@ -49,7 +51,7 @@ public class ApiLogHandler extends AbstractApiLogHandler {
             paramsJson = JacksonUtil.toJson(getRequestParams(point, apiLogger));
         } catch (Exception e) {
             paramsJson = ExceptionUtil.stacktraceToString(e);
-            log.warn("API log [{}]: request params to json fail", apiLogger.type().getType(), e);
+            log.error("API log [{}]: request params to json fail", apiLogger.type().getType(), e);
         }
         // 获取描述
         String description = apiLogger.description();
@@ -94,6 +96,10 @@ public class ApiLogHandler extends AbstractApiLogHandler {
         if (!apiLogger.saveResult()) {
             po.setResult(null);
         }
-        sysLogService.save(po);
+        try {
+            sysLogClient.save(Collections.singletonList(po));
+        } catch (Exception e) {
+            log.error("API log [{}]: save fail", apiLogger.type().getType(), e);
+        }
     }
 }

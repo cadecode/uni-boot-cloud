@@ -41,7 +41,7 @@ public abstract class AbstractApiLogHandler {
             return Collections.emptyMap();
         }
         if (names.length != args.length) {
-            log.warn("API log [{}]: method [{}] param and the pass value do not match", apiLogger.type().getType(), methodSignature.getName());
+            log.error("API log [{}]: method [{}] param and the pass value do not match", apiLogger.type().getType(), methodSignature.getName());
             return Collections.emptyMap();
         }
         Map<String, Object> map = new HashMap<>();

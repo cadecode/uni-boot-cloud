@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.cadecode.uniboot.framework.svc.mapper.SysMenuMapper">
+    <resultMap id="SysMenuRolesVoMap" type="com.github.cadecode.uniboot.framework.api.bean.vo.SysMenuVo$SysMenuRolesVo">
+        <result column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="route_name" property="routeName"/>
+        <result column="route_path" property="routePath"/>
+        <result column="component_path" property="componentPath"/>
+        <result column="menu_name" property="menuName"/>
+        <result column="leaf_flag" property="leafFlag"/>
+        <result column="icon" property="icon"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="enable_flag" property="enableFlag" typeHandler="BoolToIntTypeHandler"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="r_code" property="roles" typeHandler="ObjToStrTypeHandler"/>
+    </resultMap>
+    <select id="selectByRoles" resultType="com.github.cadecode.uniboot.framework.api.bean.po.SysMenu">
+        SELECT DISTINCT sm.*
+        FROM sys_menu sm LEFT JOIN sys_role_menu srm ON sm.id = srm.menu_id
+        LEFT JOIN sys_role sr ON srm.role_id = sr.id
+        where sm.enable_flag = 1
+        <foreach collection="roleCodes" item="roleCode" separator="," open="and sr.code IN (" close=")">
+            #{roleCode}
+        </foreach>
+        ORDER BY sm.order_num
+    </select>
+    <select id="selectRolesVo" resultMap="SysMenuRolesVoMap">
+        SELECT sm.*, JSON_ARRAYAGG(sr.code) r_code
+        FROM sys_menu sm
+        LEFT JOIN sys_role_menu srm ON srm.menu_id = sm.id
+        LEFT JOIN sys_role sr ON srm.role_id = sr.id
+        <if test="request != null">
+            <where>
+                <choose>
+                    <when test="request.parentId == null">
+                        sm.parent_id is null
+                    </when>
+                    <otherwise>
+                        sm.parent_id = #{request.parentId}
+                    </otherwise>
+                </choose>
+                <if test="request.routeName != null and request.routeName.length > 0">
+                    <bind name="bindRouteName" value="'%' + request.routeName + '%'"/>
+                    AND sm.route_name like #{bindRouteName}
+                </if>
+                <if test="request.menuName != null and request.menuName.length > 0">
+                    <bind name="bindMenuName" value="'%' + request.menuName + '%'"/>
+                    AND sm.menu_name like #{bindMenuName }
+                </if>
+                <if test="request.enableFlag != null">
+                    AND sm.enable_flag = #{request.enableFlag, typeHandler=BoolToIntTypeHandler}
+                </if>
+                <if test="request.roleIdList != null and request.roleIdList.size > 0 ">
+                    AND sr.id in (
+                    <foreach collection="request.roleIdList" item="id" separator=",">
+                        #{id}
+                    </foreach>
+                    )
+                </if>
+            </where>
+        </if>
+        GROUP BY sm.id, sm.order_num, sm.create_time
+        ORDER BY sm.order_num
+    </select>
+    <select id="selectRolesVoByMenuIds" resultMap="SysMenuRolesVoMap">
+        SELECT sm.*, JSON_ARRAYAGG(sr.code) r_code
+        FROM sys_menu sm
+        LEFT JOIN sys_role_menu srm ON srm.menu_id = sm.id
+        LEFT JOIN sys_role sr ON srm.role_id = sr.id
+        <if test="menuIds != null and menuIds.size > 0">
+            WHERE sm.id IN (
+            <foreach collection="menuIds" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+        </if>
+        GROUP BY sm.id, sm.create_time
+        ORDER BY sm.create_time DESC
+    </select>
+</mapper>
