@@ -188,7 +188,7 @@ public class JacksonUtil implements InitializingBean {
     public void afterPropertiesSet() {
         PROJECT_OBJECT_MAPPER = objectMapper;
         if (Objects.isNull(PROJECT_OBJECT_MAPPER)) {
-            log.warn("Bean objectMapper not found, use default config by JacksonUtil");
+            log.debug("Bean objectMapper not found, use default config by JacksonUtil");
             PROJECT_OBJECT_MAPPER = new ObjectMapper();
             // 定义日期格式
             String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
