@@ -28,7 +28,7 @@ import java.io.IOException;
 public class JwtTokenAuthFilterService extends TokenAuthFilterService {
 
     @Override
-    public void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    public void handler(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         String jwtToken = SecurityUtil.getTokenFromRequest(request);
         // token 不存在
