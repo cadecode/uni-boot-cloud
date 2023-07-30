@@ -35,6 +35,7 @@ public class DataBaseRoleVoter extends RoleVoter {
 
     @Override
     public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
+        // 若当前请求没有被认证就弃权
         if (!SecurityUtil.isAuthenticated(authentication)) {
             return ACCESS_ABSTAIN;
         }
