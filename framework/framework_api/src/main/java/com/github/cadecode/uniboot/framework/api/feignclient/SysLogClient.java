@@ -1,4 +1,4 @@
-package com.github.cadecode.uniboot.framework.api.feign;
+package com.github.cadecode.uniboot.framework.api.feignclient;
 
 import com.github.cadecode.uniboot.framework.api.bean.po.SysLog;
 import com.github.cadecode.uniboot.framework.api.consts.SvcName;

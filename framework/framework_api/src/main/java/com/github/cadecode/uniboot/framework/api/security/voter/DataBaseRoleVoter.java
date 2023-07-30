@@ -3,7 +3,7 @@ package com.github.cadecode.uniboot.framework.api.security.voter;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysApiVo.SysApiRolesVo;
-import com.github.cadecode.uniboot.framework.api.feign.SysApiClient;
+import com.github.cadecode.uniboot.framework.api.feignclient.SysApiClient;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.ConfigAttribute;
