@@ -12,7 +12,7 @@ import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandl
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogInfoDto;
 import com.github.cadecode.uniboot.framework.api.bean.po.SysLog;
 import com.github.cadecode.uniboot.framework.api.convert.SysLogConvert;
-import com.github.cadecode.uniboot.framework.api.feign.SysLogClient;
+import com.github.cadecode.uniboot.framework.api.feignclient.SysLogClient;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
