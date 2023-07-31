@@ -7,6 +7,7 @@ import com.github.cadecode.uniboot.common.plugin.cache.util.RedisUtil;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.consts.KeyPrefix;
+import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import com.github.cadecode.uniboot.framework.svc.config.FrameSecurityConfig;
@@ -33,7 +34,7 @@ public class RedisLoginSuccessHandleService extends LoginSuccessHandleService {
         // 生成 uuid token
         String uuidToken = SecurityUtil.generateUUID();
         // token 放在请求头
-        response.addHeader(SecurityUtil.getHeader(), uuidToken);
+        response.addHeader(SecurityConst.HEAD_TOKEN, uuidToken);
         // 生成存放登录信息的 redis key
         String loginUserKey = KeyGeneUtil.key(KeyPrefix.LOGIN_USER, uuidToken);
         RedisUtil.set(loginUserKey, sysUserDetailsDto, SecurityUtil.getExpiration(), TimeUnit.SECONDS);

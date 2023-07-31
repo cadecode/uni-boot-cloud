@@ -42,15 +42,15 @@ public class FeignConfig {
             // 传递用户 token
             String token = SecurityUtil.getTokenFromRequest(sRequest);
             if (StrUtil.isNotEmpty(token)) {
-                requestTemplate.header(SecurityUtil.getHeader(), token);
+                requestTemplate.header(SecurityConst.HEAD_TOKEN, token);
             }
             // 传递用户详细信息
-            String userDetailsJson = ServletUtil.getHeader(sRequest, SecurityConst.USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
+            String userDetailsJson = ServletUtil.getHeader(sRequest, SecurityConst.HEAD_USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
             if (StrUtil.isEmpty(userDetailsJson)) {
                 SysUserDetailsDto userDetailsDto = SecurityUtil.getUserDetails(null);
                 userDetailsJson = JacksonUtil.toJson(userDetailsDto);
             }
-            requestTemplate.header(SecurityConst.USER_DETAILS, EscapeUtil.escape(userDetailsJson));
+            requestTemplate.header(SecurityConst.HEAD_USER_DETAILS, EscapeUtil.escape(userDetailsJson));
             // 配置客户端 IP
             requestTemplate.header("X-Forwarded-For", ServletUtil.getClientIP(sRequest));
         };

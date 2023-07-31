@@ -5,6 +5,7 @@ import cn.hutool.json.JSONObject;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
 import com.github.cadecode.uniboot.common.core.util.TokenUtil;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
+import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthErrorEnum;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
@@ -62,7 +63,7 @@ public class JwtTokenAuthFilterService extends TokenAuthFilterService {
             String newJwtToken = TokenUtil.generateToken(sysUserDetailsDto.getId(), sysUserDetailsDto.getUsername(), sysUserDetailsDto.getRoles(),
                     SecurityUtil.getExpiration(), SecurityUtil.getSecret());
             // token 放在请求头
-            response.addHeader(SecurityUtil.getHeader(), newJwtToken);
+            response.addHeader(SecurityConst.HEAD_TOKEN, newJwtToken);
         }
         filterChain.doFilter(request, response);
     }

@@ -138,11 +138,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static class TokenConfig {
 
         /**
-         * token 请求头字段
-         */
-        private String header;
-
-        /**
          * token 过期时间，单位秒
          */
         private Long expiration;

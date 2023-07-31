@@ -64,7 +64,7 @@ public abstract class TokenAuthFilterService implements StrategyService {
      */
     public void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 从请求头中提取来自其他服务调用传递得用户信息
-        String escapedUserDetailsJson = ServletUtil.getHeader(request, SecurityConst.USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
+        String escapedUserDetailsJson = ServletUtil.getHeader(request, SecurityConst.HEAD_USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
         if (ObjectUtil.isNotEmpty(escapedUserDetailsJson)) {
             SysUserDetailsDto userDetailsDto = JacksonUtil.toBean(EscapeUtil.unescape(escapedUserDetailsJson), SysUserDetailsDto.class);
             if (ObjectUtil.isNotNull(userDetailsDto)) {
