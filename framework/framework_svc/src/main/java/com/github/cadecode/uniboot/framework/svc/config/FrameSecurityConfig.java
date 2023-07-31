@@ -106,7 +106,9 @@ public class FrameSecurityConfig extends SecurityConfig {
     public void configure(WebSecurity web) {
         super.configure(web);
         IgnoredRequestConfigurer ignoring = web.ignoring();
-        // 放行 framework 服务公共接口
-        ignoring.antMatchers("/auth/login", "/system/log/save", "/system/api/list_roles_vo");
+        // 放行登录接口
+        ignoring.antMatchers("/auth/login");
+        // 放行接口权限表查询接口
+        ignoring.antMatchers("/system/api/list_roles_vo");
     }
 }
