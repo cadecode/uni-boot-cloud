@@ -64,7 +64,6 @@ public class CacheConfig {
      *
      * @return RedisCacheManager 实例
      */
-    @Primary
     @Bean(name = CacheConst.RCM_30M)
     public RedisCacheManager redisCacheManager30m(RedisTemplate<String, Object> redisTemplate) {
         return geneRedisCacheManager(redisTemplate, 30);
@@ -81,6 +80,10 @@ public class CacheConfig {
                 .build();
     }
 
+    /**
+     * 二级缓存
+     */
+    @Primary
     @Bean(name = CacheConst.DL)
     public DLCacheManager dlCacheManager(DLCacheProperties cacheProperties, RedisTemplate<String, Object> redisTemplate) {
         return new DLCacheManager(cacheProperties, redisTemplate);
