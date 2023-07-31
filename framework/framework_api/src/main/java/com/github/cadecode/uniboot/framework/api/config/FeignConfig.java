@@ -30,7 +30,12 @@ public class FeignConfig {
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
             // 获取请求对象
-            HttpServletRequest sRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            // 非请求接口内的调用
+            if (ObjectUtil.isNull(requestAttributes)) {
+                return;
+            }
+            HttpServletRequest sRequest = requestAttributes.getRequest();
             if (ObjectUtil.isNull(sRequest)) {
                 return;
             }
