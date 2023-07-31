@@ -63,7 +63,7 @@ public class DLCache extends AbstractValueAdaptingCache {
         // val 是 toStoreValue 包装过的值，为 null 则 key 不存在
         // 因为存储的 null 值被包装成了 DLCacheNullVal.INSTANCE
         if (ObjectUtil.isNotNull(val)) {
-            log.debug("DLCache local get cache, key:{}, value:{}", key, val);
+            log.trace("DLCache local get cache, key:{}, value:{}", key, val);
             return val;
         }
         val = redisTemplate.opsForValue().get(redisKey);
