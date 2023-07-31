@@ -4,6 +4,7 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.config.SecurityConfig.SecurityProperties;
+import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.core.Authentication;
@@ -31,10 +32,6 @@ public class SecurityUtil implements InitializingBean {
 
     // 从 SecurityConfig 获取 token 配置
 
-    public static String getHeader() {
-        return PROPERTIES.getTokenConfig().getHeader();
-    }
-
     public static Long getExpiration() {
         return PROPERTIES.getTokenConfig().getExpiration();
     }
@@ -53,13 +50,13 @@ public class SecurityUtil implements InitializingBean {
         Cookie[] cookies = request.getCookies();
         if (ObjectUtil.isNotEmpty(cookies)) {
             Optional<Cookie> optionalCookie = Arrays.stream(cookies)
-                    .filter(c -> ObjectUtil.equal(c.getName(), getHeader()))
+                    .filter(c -> ObjectUtil.equal(c.getName(), SecurityConst.HEAD_TOKEN))
                     .findAny();
             if (optionalCookie.isPresent()) {
                 return optionalCookie.get().getValue();
             }
         }
-        return request.getHeader(getHeader());
+        return request.getHeader(SecurityConst.HEAD_TOKEN);
     }
 
     /**

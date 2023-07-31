@@ -8,5 +8,7 @@ package com.github.cadecode.uniboot.framework.api.consts;
  */
 public interface SecurityConst {
 
-    String USER_DETAILS = "feign-user-details";
+    String HEAD_TOKEN = "token";
+
+    String HEAD_USER_DETAILS = "inner-user-details";
 }
