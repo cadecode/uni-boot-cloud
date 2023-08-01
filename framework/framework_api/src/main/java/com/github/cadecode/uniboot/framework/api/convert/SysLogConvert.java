@@ -21,5 +21,7 @@ public interface SysLogConvert {
 
     SysLog dtoToPo(SysLogInfoDto dto);
 
+    List<SysLog> dtoToPo(List<SysLogInfoDto> dto);
+
     List<SysLogPageVo> poToVo(List<SysLog> records);
 }
