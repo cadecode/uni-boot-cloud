@@ -42,24 +42,27 @@ public class FeignConfig {
     }
 
     protected void configRequestTemplate(RequestTemplate requestTemplate) {
+        // 设置内部请求来源标识
+        requestTemplate.header(SecurityConst.HEAD_SOURCE, SecurityConst.HEAD_SOURCE_VALUE);
         HttpServletRequest servletRequest = RequestUtil.getRequest();
         if (ObjectUtil.isNull(servletRequest)) {
             return;
         }
+        // 配置客户端 IP
+        requestTemplate.header("X-Forwarded-For", ServletUtil.getClientIP(servletRequest));
         // 传递用户 token
         String token = SecurityUtil.getTokenFromRequest(servletRequest);
         if (StrUtil.isNotEmpty(token)) {
             requestTemplate.header(SecurityConst.HEAD_TOKEN, token);
         }
-        // 传递用户详细信息
+        // 传递用户信息
         String userDetailsJson = ServletUtil.getHeader(servletRequest, SecurityConst.HEAD_USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
+        // 不存在则生成
         if (StrUtil.isEmpty(userDetailsJson)) {
             SysUserDetailsDto userDetailsDto = SecurityUtil.getUserDetails(null);
             userDetailsJson = JacksonUtil.toJson(userDetailsDto);
         }
         requestTemplate.header(SecurityConst.HEAD_USER_DETAILS, EscapeUtil.escape(userDetailsJson));
-        // 配置客户端 IP
-        requestTemplate.header("X-Forwarded-For", ServletUtil.getClientIP(servletRequest));
     }
 
     // 覆盖 feign 配置
