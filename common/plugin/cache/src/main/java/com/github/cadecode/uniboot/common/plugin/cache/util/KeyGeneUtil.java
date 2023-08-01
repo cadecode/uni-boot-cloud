@@ -8,6 +8,8 @@ package com.github.cadecode.uniboot.common.plugin.cache.util;
  */
 public class KeyGeneUtil {
 
+    public static final String SEPARATOR = ":";
+
     /**
      * 生成 ： 分割的 redis key
      *
@@ -18,7 +20,7 @@ public class KeyGeneUtil {
     public static String key(String prefix, Object... extra) {
         StringBuilder prefixBuilder = new StringBuilder(prefix);
         for (Object obj : extra) {
-            prefixBuilder.append(":").append(obj);
+            prefixBuilder.append(SEPARATOR).append(obj);
         }
         return prefixBuilder.toString();
     }

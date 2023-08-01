@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.cadecode.uniboot.common.plugin.cache.consts.CacheConst;
 import com.github.cadecode.uniboot.common.plugin.cache.l2cache.DLCacheProperties;
 import com.github.cadecode.uniboot.common.plugin.cache.l2cache.cache.DLCacheManager;
+import com.github.cadecode.uniboot.common.plugin.cache.util.KeyGeneUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
@@ -17,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -71,10 +73,11 @@ public class CacheConfig {
 
     private static RedisCacheManager geneRedisCacheManager(RedisTemplate<String, Object> redisTemplate, long minutes) {
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
+                .computePrefixWith(o -> o + KeyGeneUtil.SEPARATOR)
                 .serializeKeysWith(SerializationPair.fromSerializer(redisTemplate.getStringSerializer()))
                 .serializeValuesWith(SerializationPair.fromSerializer(redisTemplate.getValueSerializer()))
                 .entryTtl(Duration.ofMinutes(minutes));
-        return RedisCacheManager.builder(redisTemplate.getConnectionFactory())
+        return RedisCacheManager.builder(Objects.requireNonNull(redisTemplate.getConnectionFactory()))
                 .cacheDefaults(cacheConfiguration)
                 .transactionAware()
                 .build();
