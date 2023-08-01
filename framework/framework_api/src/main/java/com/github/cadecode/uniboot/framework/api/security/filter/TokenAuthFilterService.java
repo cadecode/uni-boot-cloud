@@ -63,14 +63,18 @@ public abstract class TokenAuthFilterService implements StrategyService {
      * 由 handler 方法提供处理
      */
     public void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 从请求头中提取来自其他服务调用传递得用户信息
-        String escapedUserDetailsJson = ServletUtil.getHeader(request, SecurityConst.HEAD_USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
-        if (ObjectUtil.isNotEmpty(escapedUserDetailsJson)) {
-            SysUserDetailsDto userDetailsDto = JacksonUtil.toBean(EscapeUtil.unescape(escapedUserDetailsJson), SysUserDetailsDto.class);
-            if (ObjectUtil.isNotNull(userDetailsDto)) {
-                setAuthentication(request, userDetailsDto);
-                filterChain.doFilter(request, response);
-                return;
+        // 根据请求头判断是否是内部请求
+        String source = ServletUtil.getHeader(request, SecurityConst.HEAD_SOURCE, CharsetUtil.CHARSET_UTF_8);
+        if (ObjectUtil.equal(source, SecurityConst.HEAD_SOURCE_VALUE)) {
+            // 从请求头中提取来自其他服务调用传递得用户信息
+            String escapedUserDetailsJson = ServletUtil.getHeader(request, SecurityConst.HEAD_USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
+            if (ObjectUtil.isNotEmpty(escapedUserDetailsJson)) {
+                SysUserDetailsDto userDetailsDto = JacksonUtil.toBean(EscapeUtil.unescape(escapedUserDetailsJson), SysUserDetailsDto.class);
+                if (ObjectUtil.isNotNull(userDetailsDto)) {
+                    setAuthentication(request, userDetailsDto);
+                    filterChain.doFilter(request, response);
+                    return;
+                }
             }
         }
         handler(request, response, filterChain);
