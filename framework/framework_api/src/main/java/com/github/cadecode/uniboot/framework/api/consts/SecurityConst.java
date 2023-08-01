@@ -8,7 +8,24 @@ package com.github.cadecode.uniboot.framework.api.consts;
  */
 public interface SecurityConst {
 
+    /**
+     * token 请求头名称
+     */
     String HEAD_TOKEN = "token";
 
+    /**
+     * 请求来源请求头名称
+     */
+    String HEAD_SOURCE = "from-source";
+
+    /**
+     * 请求来源请求头固定值
+     */
+    String HEAD_SOURCE_VALUE = "inner-rpc";
+
+    /**
+     * 用户信息请求头名称
+     */
     String HEAD_USER_DETAILS = "inner-user-details";
+
 }
