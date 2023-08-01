@@ -6,6 +6,7 @@ import com.github.cadecode.uniboot.common.plugin.cache.exception.DLCacheExceptio
 import com.github.cadecode.uniboot.common.plugin.cache.l2cache.DLCacheProperties;
 import com.github.cadecode.uniboot.common.plugin.cache.l2cache.sync.DLCacheRefreshListener;
 import com.github.cadecode.uniboot.common.plugin.cache.l2cache.sync.DLCacheRefreshMsg;
+import com.github.cadecode.uniboot.common.plugin.cache.util.KeyGeneUtil;
 import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -223,8 +224,7 @@ public class DLCache extends AbstractValueAdaptingCache {
      * 获取 redis 完整 key
      */
     private String getRedisKey(Object key) {
-        // 双冒号，与 spring cache 默认一致
-        return this.name.concat("::").concat(key.toString());
+        return KeyGeneUtil.key(this.name, key.toString());
     }
 
     /**
