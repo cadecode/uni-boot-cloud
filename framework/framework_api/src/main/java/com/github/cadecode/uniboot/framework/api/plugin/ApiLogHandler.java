@@ -10,8 +10,6 @@ import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.aspect.ApiLoggerAspect.BaseLogInfo;
 import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandler;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogInfoDto;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysLog;
-import com.github.cadecode.uniboot.framework.api.convert.SysLogConvert;
 import com.github.cadecode.uniboot.framework.api.feignclient.SysLogClient;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
@@ -89,15 +87,15 @@ public class ApiLogHandler extends AbstractApiLogHandler {
         if (!apiLogger.enableSave()) {
             return;
         }
-        SysLog po = SysLogConvert.INSTANCE.dtoToPo((SysLogInfoDto) o);
+        SysLogInfoDto dto = (SysLogInfoDto) o;
         if (!apiLogger.saveParams()) {
-            po.setRequestParams(null);
+            dto.setRequestParams(null);
         }
         if (!apiLogger.saveResult()) {
-            po.setResult(null);
+            dto.setResult(null);
         }
         try {
-            sysLogClient.save(Collections.singletonList(po));
+            sysLogClient.save(Collections.singletonList(dto));
         } catch (Exception e) {
             log.error("API log [{}]: save fail", apiLogger.type().getType(), e);
         }
