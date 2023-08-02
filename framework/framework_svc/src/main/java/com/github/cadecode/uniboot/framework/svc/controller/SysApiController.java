@@ -3,6 +3,7 @@ package com.github.cadecode.uniboot.framework.svc.controller;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
+import com.github.cadecode.uniboot.framework.api.annotation.ApiInner;
 import com.github.cadecode.uniboot.framework.api.bean.po.SysApi;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysApiVo.SysApiRolesVo;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysApiVo.SysApiSwaggerVo;
@@ -121,8 +122,7 @@ public class SysApiController {
                 .collect(Collectors.toList());
     }
 
-
-    // For feign client
+    @ApiInner(onlyClient = true)
     @ApiFormat(false)
     @ApiOperation("查询API列表-全部")
     @PostMapping("list_roles_vo")

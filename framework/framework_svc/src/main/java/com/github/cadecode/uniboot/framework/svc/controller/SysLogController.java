@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.common.plugin.mybatis.converter.BoolToIntTypeHandler;
 import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
+import com.github.cadecode.uniboot.framework.api.annotation.ApiInner;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogInfoDto;
 import com.github.cadecode.uniboot.framework.api.bean.po.SysLog;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysLogVo.SysLogPageVo;
@@ -66,7 +67,7 @@ public class SysLogController {
         return logService.removeBatchByIds(idList);
     }
 
-    // For feign client
+    @ApiInner(onlyClient = true)
     @ApiFormat(false)
     @ApiOperation("添加")
     @PostMapping("save")
