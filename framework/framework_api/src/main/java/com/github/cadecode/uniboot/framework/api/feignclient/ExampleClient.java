@@ -17,4 +17,9 @@ public interface ExampleClient {
     @PostMapping("example/test_str")
     String testStr(@RequestParam("str") String str);
 
+    @PostMapping("example/test_result")
+    Object testApiResult();
+
+    @PostMapping("example/test_exception")
+    Object testException();
 }
