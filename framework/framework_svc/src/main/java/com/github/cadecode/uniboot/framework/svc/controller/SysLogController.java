@@ -68,7 +68,6 @@ public class SysLogController {
     }
 
     @ApiInner(onlyClient = true)
-    @ApiFormat(false)
     @ApiOperation("添加")
     @PostMapping("save")
     public boolean save(@RequestBody @NotEmpty List<SysLogInfoDto> dtoList) {
