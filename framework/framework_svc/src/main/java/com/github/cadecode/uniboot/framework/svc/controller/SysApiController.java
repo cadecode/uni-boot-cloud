@@ -123,7 +123,6 @@ public class SysApiController {
     }
 
     @ApiInner(onlyClient = true)
-    @ApiFormat(false)
     @ApiOperation("查询API列表-全部")
     @PostMapping("list_roles_vo")
     public List<SysApiRolesVo> listRolesVo() {

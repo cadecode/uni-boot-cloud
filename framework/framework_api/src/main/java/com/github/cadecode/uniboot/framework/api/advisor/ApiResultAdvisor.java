@@ -6,6 +6,7 @@ import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
 import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.api.enums.FrameErrorEnum;
+import com.github.cadecode.uniboot.framework.api.util.RequestUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -59,15 +60,20 @@ public class ApiResultAdvisor implements ResponseBodyAdvice<Object> {
     private Object apiResultFormat(MethodParameter returnType, Object body, ServerHttpResponse response) {
         // 是否需要包装标记
         boolean formatFlag;
-        // 获取方法上的 ApiFormat 注解
-        ApiFormat formatM = returnType.getMethodAnnotation(ApiFormat.class);
-        // 以方法上注解为主
-        if (Objects.nonNull(formatM)) {
-            formatFlag = formatM.value();
+        // 如果是内部调用则不需要包装
+        if (RequestUtil.isInnerRequest(null)) {
+            formatFlag = false;
         } else {
-            // 获取类上的 ApiFormat 注解
-            ApiFormat formatC = returnType.getContainingClass().getAnnotation(ApiFormat.class);
-            formatFlag = Objects.nonNull(formatC) && formatC.value();
+            // 获取方法上的 ApiFormat 注解
+            ApiFormat formatM = returnType.getMethodAnnotation(ApiFormat.class);
+            // 以方法上注解为主
+            if (Objects.nonNull(formatM)) {
+                formatFlag = formatM.value();
+            } else {
+                // 获取类上的 ApiFormat 注解
+                ApiFormat formatC = returnType.getContainingClass().getAnnotation(ApiFormat.class);
+                formatFlag = Objects.nonNull(formatC) && formatC.value();
+            }
         }
         // 不需要包装，直接返回
         if (!formatFlag) {
