@@ -33,4 +33,16 @@ public class RpcExampleController {
         return exampleClient.testStr(str);
     }
 
+    @ApiOperation("返回异常结果")
+    @PostMapping("test_result")
+    public Object testApiResult() {
+        return exampleClient.testApiResult();
+    }
+
+    @ApiOperation("直接抛出异常")
+    @PostMapping("test_exception")
+    public Object testException() {
+        return exampleClient.testException();
+    }
+
 }
