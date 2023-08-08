@@ -20,7 +20,7 @@ export function logout() {
 
 export function getInfo(token) {
   return request({
-    url: '/system/user/get_info',
+    url: '/framework/system/user/get_info',
     method: 'post'
   });
 }

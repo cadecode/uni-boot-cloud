@@ -2,7 +2,7 @@ import request from '@/util/request';
 
 export function modifyInfo(data) {
   return request({
-    url: '/system/user/modify_info',
+    url: '/framework/system/user/modify_info',
     method: 'post',
     data
   }, {
@@ -13,7 +13,7 @@ export function modifyInfo(data) {
 
 export function modifyPass(data) {
   return request({
-    url: '/system/user/modify_pass',
+    url: '/framework/system/user/modify_pass',
     method: 'post',
     data
   }, {

@@ -25,10 +25,10 @@ module.exports = {
   /**
    * 登录url
    */
-  loginUrl: '/auth/login',
+  loginUrl: '/framework/auth/login',
 
   /**
    * 注销url
    */
-  logoutUrl: '/auth/logout'
+  logoutUrl: '/framework/auth/logout'
 };
