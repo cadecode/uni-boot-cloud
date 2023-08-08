@@ -5,16 +5,19 @@ import cn.hutool.core.util.EscapeUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.ServletUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import com.github.cadecode.uniboot.framework.api.feign.FeignClientDecorator;
+import com.github.cadecode.uniboot.framework.api.feign.FeignErrorDecoder;
 import com.github.cadecode.uniboot.framework.api.util.RequestUtil;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import feign.Client;
 import feign.Client.Default;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import feign.codec.ErrorDecoder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.loadbalancer.LoadBalancedRetryFactory;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -82,5 +85,10 @@ public class FeignConfig {
                                    LoadBalancerProperties properties, LoadBalancerClientFactory loadBalancerClientFactory) {
         FeignClientDecorator decorator = new FeignClientDecorator(new Default(null, null));
         return new RetryableFeignBlockingLoadBalancerClient(decorator, loadBalancerClient, loadBalancedRetryFactory, properties, loadBalancerClientFactory);
+    }
+
+    @Bean
+    public ErrorDecoder errorDecoder(ObjectMapper objectMapper) {
+        return new FeignErrorDecoder(objectMapper);
     }
 }
