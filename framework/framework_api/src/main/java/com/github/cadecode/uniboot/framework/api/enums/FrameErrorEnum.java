@@ -58,6 +58,9 @@ public enum FrameErrorEnum implements ApiErrorCode {
     UPLOAD_FILE_FAIL(2002, "上传文件失败"),
     FILE_NOT_FOUND(2003, "文件未找到"),
 
+    // rpc
+    RPC_UNKNOWN_ERROR(3001, "RPC UNKNOWN 异常"),
+    RPC_UNWRAP_FAIL(3002, "RPC UNWRAP 失败"),
     ;
 
     private final String code;
