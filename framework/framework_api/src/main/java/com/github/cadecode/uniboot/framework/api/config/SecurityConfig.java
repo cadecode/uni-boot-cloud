@@ -2,7 +2,11 @@ package com.github.cadecode.uniboot.framework.api.config;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 import com.github.cadecode.uniboot.framework.api.config.SecurityConfig.SecurityProperties;
+import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
 import com.github.cadecode.uniboot.framework.api.security.filter.TokenAuthFilter;
 import com.github.cadecode.uniboot.framework.api.security.handler.NoAuthenticationHandler;
@@ -11,6 +15,7 @@ import com.github.cadecode.uniboot.framework.api.security.voter.DataBaseRoleVote
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -26,7 +31,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -89,6 +100,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Arrays.asList(new WebExpressionVoter(), dataBaseRoleVoter)));
         // 配置 Token 校验过滤器
         http.addFilterBefore(tokenAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        // 配置 trace id 过滤器
+        http.addFilterBefore(new TraceInfoFilter(), TokenAuthFilter.class);
         log.info("Config Security over，AuthModel:{}", properties.getAuthModel());
     }
 
@@ -146,5 +159,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          * 密钥
          */
         private String secret;
+    }
+
+    /**
+     * Filter
+     * trace id to MDC
+     */
+    public static class TraceInfoFilter extends OncePerRequestFilter {
+        @Override
+        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain
+                filterChain)
+                throws ServletException, IOException {
+            String traceId = ServletUtil.getHeader(request, SecurityConst.HEAD_TRACE_ID, CharsetUtil.CHARSET_UTF_8);
+            if (ObjectUtil.isNotEmpty(traceId)) {
+                MDC.put(SecurityConst.HEAD_TRACE_ID, traceId);
+            }
+            filterChain.doFilter(request, response);
+        }
     }
 }
