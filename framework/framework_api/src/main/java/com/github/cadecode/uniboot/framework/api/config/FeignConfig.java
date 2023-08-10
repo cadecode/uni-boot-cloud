@@ -52,7 +52,12 @@ public class FeignConfig {
             return;
         }
         // 配置客户端 IP
-        requestTemplate.header("X-Forwarded-For", ServletUtil.getClientIP(servletRequest));
+        requestTemplate.header(SecurityConst.HEAD_FORWARDED_FOR, ServletUtil.getClientIP(servletRequest));
+        // 传递 trace id
+        String traceId = ServletUtil.getHeader(servletRequest, SecurityConst.HEAD_TRACE_ID, CharsetUtil.CHARSET_UTF_8);
+        if (ObjectUtil.isNotEmpty(traceId)) {
+            requestTemplate.header(SecurityConst.HEAD_TRACE_ID, traceId);
+        }
         // 传递用户 token
         String token = SecurityUtil.getTokenFromRequest(servletRequest);
         if (StrUtil.isNotEmpty(token)) {

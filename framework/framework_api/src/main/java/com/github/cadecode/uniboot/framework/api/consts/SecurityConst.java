@@ -28,4 +28,14 @@ public interface SecurityConst {
      */
     String HEAD_USER_DETAILS = "inner-user-details";
 
+    /**
+     * X-Forwarded-For
+     */
+    String HEAD_FORWARDED_FOR = "X-Forwarded-For";
+
+    /**
+     * trace id
+     */
+    String HEAD_TRACE_ID = "trace-id";
+
 }
