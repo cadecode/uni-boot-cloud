@@ -24,9 +24,9 @@
 
     <!--输出格式-->
     <property name="consolePattern"
-              value="%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%-15thread]) %highlight(%-5level) %cyan(%-50logger{50}) : %msg%n"/>
+              value="%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%-15thread]-%X{trace-id}) %highlight(%-5level) %cyan(%-50logger{50}) : %msg%n"/>
     <!--不带色彩的格式用以输出到文件-->
-    <property name="filePattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread] %-5level %-50logger{50} : %msg%n"/>
+    <property name="filePattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-15thread]-%X{trace-id} %-5level %-50logger{50} : %msg%n"/>
 
     <!--控制台输出日志-->
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
