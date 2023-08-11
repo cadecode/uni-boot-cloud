@@ -1,14 +1,14 @@
 package com.github.cadecode.uniboot.framework.svc.controller;
 
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
-import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysRole;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysRoleVo.SysRoleListVo;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysRoleVo.SysRoleUnionVo;
 import com.github.cadecode.uniboot.framework.api.consts.KeyPrefix;
-import com.github.cadecode.uniboot.framework.api.convert.SysRoleConvert;
-import com.github.cadecode.uniboot.framework.api.request.SysRoleRequest;
-import com.github.cadecode.uniboot.framework.api.request.SysRoleRequest.SysRoleMappingRequest;
+import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysRole;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleListVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionVo;
+import com.github.cadecode.uniboot.framework.svc.convert.SysRoleConvert;
+import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest;
+import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest.SysRoleMappingRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;

@@ -42,7 +42,6 @@
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
         </dependency>
-
         <!--http-->
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -51,7 +50,7 @@
 
         <dependency>
             <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-framework-api</artifactId>
+            <artifactId>uni-boot-framework-base</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.cadecode</groupId>

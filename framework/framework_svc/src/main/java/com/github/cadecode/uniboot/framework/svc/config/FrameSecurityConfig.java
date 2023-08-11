@@ -1,10 +1,10 @@
 package com.github.cadecode.uniboot.framework.svc.config;
 
-import com.github.cadecode.uniboot.framework.api.config.SecurityConfig;
-import com.github.cadecode.uniboot.framework.api.security.filter.TokenAuthFilter;
-import com.github.cadecode.uniboot.framework.api.security.handler.NoAuthenticationHandler;
-import com.github.cadecode.uniboot.framework.api.security.handler.NoAuthorityHandler;
-import com.github.cadecode.uniboot.framework.api.security.voter.DataBaseRoleVoter;
+import com.github.cadecode.uniboot.framework.base.config.SecurityConfig;
+import com.github.cadecode.uniboot.framework.base.security.filter.TokenAuthFilter;
+import com.github.cadecode.uniboot.framework.base.security.handler.NoAuthenticationHandler;
+import com.github.cadecode.uniboot.framework.base.security.handler.NoAuthorityHandler;
+import com.github.cadecode.uniboot.framework.base.security.voter.DataBaseRoleVoter;
 import com.github.cadecode.uniboot.framework.svc.security.LoginFailureHandler;
 import com.github.cadecode.uniboot.framework.svc.security.LoginSuccessHandler;
 import com.github.cadecode.uniboot.framework.svc.security.SignOutSuccessHandler;

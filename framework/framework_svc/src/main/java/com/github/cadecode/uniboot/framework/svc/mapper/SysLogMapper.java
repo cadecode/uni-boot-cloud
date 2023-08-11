@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.framework.svc.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysLog;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysLog;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

@@ -1,10 +1,10 @@
 package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysApi;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysApiVo.SysApiRolesVo;
-import com.github.cadecode.uniboot.framework.api.request.SysApiRequest.SysApiRolesRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysApi;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesVo;
 import com.github.cadecode.uniboot.framework.svc.mapper.SysApiMapper;
+import com.github.cadecode.uniboot.framework.svc.request.SysApiRequest.SysApiRolesRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysApiService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

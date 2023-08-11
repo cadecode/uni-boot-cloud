@@ -50,6 +50,10 @@
         </dependency>
         <dependency>
             <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-framework-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
             <artifactId>uni-boot-example-api</artifactId>
         </dependency>
     </dependencies>

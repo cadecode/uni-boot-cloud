@@ -1,10 +1,10 @@
 package com.github.cadecode.uniboot.framework.svc.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysMenu;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysMenuVo.SysMenuRolesVo;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysMenuVo.SysMenuTreeVo;
-import com.github.cadecode.uniboot.framework.api.request.SysMenuRequest.SysMenuRolesRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeVo;
+import com.github.cadecode.uniboot.framework.svc.request.SysMenuRequest.SysMenuRolesRequest;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

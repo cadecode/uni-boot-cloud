@@ -3,7 +3,7 @@ package com.github.cadecode.uniboot.framework.svc.controller;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
-import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
+import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.svc.config.FrameSecurityConfig;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

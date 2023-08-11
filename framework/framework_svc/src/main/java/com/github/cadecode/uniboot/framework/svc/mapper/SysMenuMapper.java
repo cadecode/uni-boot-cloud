@@ -1,9 +1,9 @@
 package com.github.cadecode.uniboot.framework.svc.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysMenu;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysMenuVo.SysMenuRolesVo;
-import com.github.cadecode.uniboot.framework.api.request.SysMenuRequest.SysMenuRolesRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesVo;
+import com.github.cadecode.uniboot.framework.svc.request.SysMenuRequest.SysMenuRolesRequest;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

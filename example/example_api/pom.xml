@@ -27,10 +27,5 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-framework-api</artifactId>
-        </dependency>
     </dependencies>
 </project>

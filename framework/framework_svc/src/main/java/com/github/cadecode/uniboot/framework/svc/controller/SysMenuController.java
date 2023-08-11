@@ -1,11 +1,11 @@
 package com.github.cadecode.uniboot.framework.svc.controller;
 
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
-import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysMenu;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysMenuVo.SysMenuRolesVo;
-import com.github.cadecode.uniboot.framework.api.convert.SysMenuConvert;
-import com.github.cadecode.uniboot.framework.api.request.SysMenuRequest;
+import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesVo;
+import com.github.cadecode.uniboot.framework.svc.convert.SysMenuConvert;
+import com.github.cadecode.uniboot.framework.svc.request.SysMenuRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysMenuService;
 import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
 import com.github.pagehelper.PageInfo;
