@@ -1,10 +1,12 @@
 # uni-boot-admin
 
-> 基于 SpringBoot 多模块开发的通用后台管理系统骨架，集成 SpringSecurity、Druid、MyBatisPlus、多数据源、二级缓存、DynamicTP 等常用组件
+> 基于 SpringCloud 的通用后台管理系统骨架，引入 Nacos、OpenFeign、Gateway 等微服务核心组件
+>
+> 基于 SpringBoot 生态，集成 SpringSecurity、Druid、MyBatisPlus、多数据源、二级缓存、DynamicTP 等常用组件
 
 ## 项目简介
 
-1. 本项目是一套通用后台管理系统骨架，后端基于 SpringBoot 生态，集成常用组件，方便扩展使用
+1. 本项目是一套通用后台管理系统骨架，后端基于 SpringCloud 生态，集成常用组件，方便扩展使用
 
 2. 本项目采用前后端分离结构，以下是配套前端项目
 
@@ -14,7 +16,9 @@
 
    JDK 版本：8
 
-   Spring 版本：SpringBoot 2.5.4
+   SpringBoot 版本：SpringBoot 2.5.4
+
+   SpringCloud 版本：SpringCloud 2020.0.5、SpringCloudAlibaba 2021.1
 
    数据库版本：MySQL8
 
@@ -27,6 +31,8 @@
    开源免费（Apache-2.0 协议）
 
    较好的编码风格
+
+   基于 SpringCloud、SpringCloudAlibaba 提供微服务生态支持
 
    基于 SpringSecurity 实现认证授权，支持 API 级的角色访问控制，可动态配置 API 权限、菜单权限
 
