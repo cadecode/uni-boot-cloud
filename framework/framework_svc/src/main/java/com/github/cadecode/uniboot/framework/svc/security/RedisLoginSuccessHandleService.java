@@ -4,11 +4,10 @@ import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContex
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
 import com.github.cadecode.uniboot.common.plugin.cache.util.KeyGeneUtil;
 import com.github.cadecode.uniboot.common.plugin.cache.util.RedisUtil;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.consts.KeyPrefix;
 import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import com.github.cadecode.uniboot.framework.svc.config.FrameSecurityConfig;
 import org.springframework.security.core.Authentication;
@@ -28,17 +27,17 @@ import java.util.concurrent.TimeUnit;
 public class RedisLoginSuccessHandleService extends LoginSuccessHandleService {
 
     @Override
-    public ApiResult<SysUserDto.SysUserDetailsDto> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    public ApiResult<SysUserDetails> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         // 从认证信息中获取用户对象
-        SysUserDetailsDto sysUserDetailsDto = (SysUserDetailsDto) authentication.getPrincipal();
+        SysUserDetails sysUserDetails = (SysUserDetails) authentication.getPrincipal();
         // 生成 uuid token
         String uuidToken = SecurityUtil.generateUUID();
         // token 放在请求头
         response.addHeader(SecurityConst.HEAD_TOKEN, uuidToken);
         // 生成存放登录信息的 redis key
         String loginUserKey = KeyGeneUtil.key(KeyPrefix.LOGIN_USER, uuidToken);
-        RedisUtil.set(loginUserKey, sysUserDetailsDto, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
-        return ApiResult.ok(sysUserDetailsDto).path(FrameSecurityConfig.LOGOUT_URL);
+        RedisUtil.set(loginUserKey, sysUserDetails, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
+        return ApiResult.ok(sysUserDetails).path(FrameSecurityConfig.LOGOUT_URL);
     }
 
     @Override

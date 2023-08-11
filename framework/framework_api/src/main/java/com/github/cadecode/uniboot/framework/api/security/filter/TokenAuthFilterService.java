@@ -8,7 +8,7 @@ import com.github.cadecode.uniboot.common.core.enums.ApiErrorCode;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyService;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.api.util.RequestUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,7 +63,7 @@ public abstract class TokenAuthFilterService implements StrategyService {
      */
     public void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (RequestUtil.isInnerRequest(request)) {
-            SysUserDetailsDto userDetailsDto = RequestUtil.getInnerUserDetails(request);
+            SysUserDetails userDetailsDto = RequestUtil.getInnerUserDetails(request);
             if (ObjectUtil.isNotNull(userDetailsDto)) {
                 setAuthentication(request, userDetailsDto);
                 filterChain.doFilter(request, response);

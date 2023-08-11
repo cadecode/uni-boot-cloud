@@ -21,7 +21,7 @@ public class SysLogDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class SysLogInfoDto {
+    public static class SysLogSaveDto {
 
         private LogTypeEnum logType;
 

@@ -4,10 +4,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
 import com.github.cadecode.uniboot.common.core.util.TokenUtil;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthErrorEnum;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -49,9 +49,9 @@ public class JwtTokenAuthFilterService extends TokenAuthFilterService {
         }
         // 获取 jwt 内容
         JSONObject payload = TokenUtil.getPayload(jwtToken);
-        SysUserDetailsDto sysUserDetailsDto = payload.toBean(SysUserDetailsDto.class);
+        SysUserDetails sysUserDetails = payload.toBean(SysUserDetails.class);
         // 设置 AuthenticationToken
-        setAuthentication(request, sysUserDetailsDto);
+        setAuthentication(request, sysUserDetails);
         // 判断是否需要刷新 token
         // 获取过期时间，单位秒
         long expiresAt = Long.parseLong(String.valueOf(payload.get("exp")));
@@ -60,7 +60,7 @@ public class JwtTokenAuthFilterService extends TokenAuthFilterService {
         // 如果当时时间距离过期时间不到配置的 expiration 一半，就下发新的 token
         if (expiresAt - System.currentTimeMillis() / 1000 < halfExpiration) {
             // 生成 jwt token
-            String newJwtToken = TokenUtil.generateToken(sysUserDetailsDto.getId(), sysUserDetailsDto.getUsername(), sysUserDetailsDto.getRoles(),
+            String newJwtToken = TokenUtil.generateToken(sysUserDetails.getId(), sysUserDetails.getUsername(), sysUserDetails.getRoles(),
                     SecurityUtil.getExpiration(), SecurityUtil.getSecret());
             // token 放在请求头
             response.addHeader(SecurityConst.HEAD_TOKEN, newJwtToken);

@@ -4,11 +4,10 @@ import cn.hutool.core.util.StrUtil;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
 import com.github.cadecode.uniboot.common.plugin.cache.util.KeyGeneUtil;
 import com.github.cadecode.uniboot.common.plugin.cache.util.RedisUtil;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.consts.KeyPrefix;
 import com.github.cadecode.uniboot.framework.api.enums.AuthErrorEnum;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -42,16 +41,16 @@ public class RedisTokenAuthFilterService extends TokenAuthFilterService {
         }
         // 查询 redis 中 token
         String loginUserKey = KeyGeneUtil.key(KeyPrefix.LOGIN_USER, uuidToken);
-        SysUserDetailsDto sysUserDetailsDto = RedisUtil.get(loginUserKey, SysUserDto.SysUserDetailsDto.class);
+        SysUserDetails sysUserDetails = RedisUtil.get(loginUserKey, SysUserDetails.class);
         // redis 中用户不存在
-        if (Objects.isNull(sysUserDetailsDto)) {
+        if (Objects.isNull(sysUserDetails)) {
             writeResponse(response, AuthErrorEnum.TOKEN_EXPIRED, requestURI);
             return;
         }
         // 用户存在，刷新过期时间
         RedisUtil.expire(loginUserKey, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
         // 设置 AuthenticationToken
-        setAuthentication(request, sysUserDetailsDto);
+        setAuthentication(request, sysUserDetails);
         filterChain.doFilter(request, response);
     }
 

@@ -7,10 +7,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import com.github.cadecode.uniboot.framework.api.feign.FeignClientDecorator;
 import com.github.cadecode.uniboot.framework.api.feign.FeignErrorDecoder;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.api.util.RequestUtil;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import feign.Client;
@@ -67,7 +67,7 @@ public class FeignConfig {
         String userDetailsJson = ServletUtil.getHeader(servletRequest, SecurityConst.HEAD_USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
         // 不存在则生成
         if (StrUtil.isEmpty(userDetailsJson)) {
-            SysUserDetailsDto userDetailsDto = SecurityUtil.getUserDetails(null);
+            SysUserDetails userDetailsDto = SecurityUtil.getUserDetails(null);
             userDetailsJson = JacksonUtil.toJson(userDetailsDto);
         }
         requestTemplate.header(SecurityConst.HEAD_USER_DETAILS, EscapeUtil.escape(userDetailsJson));

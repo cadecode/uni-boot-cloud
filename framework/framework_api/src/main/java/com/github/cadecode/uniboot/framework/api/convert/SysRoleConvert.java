@@ -5,6 +5,7 @@ import com.github.cadecode.uniboot.framework.api.bean.vo.SysRoleVo.SysRoleListVo
 import com.github.cadecode.uniboot.framework.api.request.SysRoleRequest.SysRoleAddRequest;
 import com.github.cadecode.uniboot.framework.api.request.SysRoleRequest.SysRoleUpdateRequest;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -24,7 +25,14 @@ public interface SysRoleConvert {
 
     List<SysRoleListVo> poToListVo(List<SysRole> po);
 
+    @Mapping(target = "updateUser", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
     SysRole requestToPo(SysRoleUpdateRequest request);
 
+    @Mapping(target = "updateUser", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
     SysRole requestToPo(SysRoleAddRequest request);
 }

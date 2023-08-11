@@ -9,7 +9,7 @@ import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.aspect.ApiLoggerAspect.BaseLogInfo;
 import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandler;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogInfoDto;
+import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogSaveDto;
 import com.github.cadecode.uniboot.framework.api.feignclient.SysLogClient;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
@@ -38,7 +38,7 @@ public class ApiLogHandler extends AbstractApiLogHandler {
     /**
      * 构造 LogInfo
      */
-    public SysLogInfoDto generateLog(ProceedingJoinPoint point, BaseLogInfo baseLogInfo) {
+    public SysLogSaveDto generateLog(ProceedingJoinPoint point, BaseLogInfo baseLogInfo) {
         ApiLogger apiLogger = baseLogInfo.getApiLogger();
         // 解析 user-agent，生成日志信息
         String userAgentStr = baseLogInfo.getRequest().getHeader("User-Agent");
@@ -59,7 +59,7 @@ public class ApiLogHandler extends AbstractApiLogHandler {
                 description = apiOperation.value();
             }
         }
-        return SysLogInfoDto.builder()
+        return SysLogSaveDto.builder()
                 .logType(apiLogger.type())
                 .classMethod(point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName())
                 .exceptional(baseLogInfo.getExceptional())
@@ -87,7 +87,7 @@ public class ApiLogHandler extends AbstractApiLogHandler {
         if (!apiLogger.enableSave()) {
             return;
         }
-        SysLogInfoDto dto = (SysLogInfoDto) o;
+        SysLogSaveDto dto = (SysLogSaveDto) o;
         if (!apiLogger.saveParams()) {
             dto.setRequestParams(null);
         }

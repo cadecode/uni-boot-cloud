@@ -3,6 +3,7 @@ package com.github.cadecode.uniboot.framework.api.request;
 import com.github.cadecode.uniboot.common.core.web.response.PageParams;
 import com.github.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class SysLogRequest {
 
     @Data
+    @EqualsAndHashCode(callSuper = true)
     public static class SysLogPageRequest extends PageParams {
 
         private Date startTime;
@@ -25,5 +27,41 @@ public class SysLogRequest {
         private String accessUser;
         private Boolean exceptional;
 
+    }
+
+    @Data
+    public static class SysLogSaveRequest {
+
+        private LogTypeEnum logType;
+
+        private String url;
+
+        private Boolean exceptional;
+
+        private String accessUser;
+
+        private String description;
+
+        private String classMethod;
+
+        private String threadId;
+
+        private String threadName;
+
+        private String ip;
+
+        private String httpMethod;
+
+        private String requestParams;
+
+        private String result;
+
+        private Long timeCost;
+
+        private String os;
+
+        private String browser;
+
+        private String userAgent;
     }
 }

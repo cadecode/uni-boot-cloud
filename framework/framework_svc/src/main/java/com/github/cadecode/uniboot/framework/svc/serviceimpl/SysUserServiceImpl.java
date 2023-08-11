@@ -44,7 +44,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (!userRolesVo.getEnableFlag()) {
             throw ApiException.of("账号已被关闭");
         }
-        return SysUserConvert.INSTANCE.voToDetailsDto(userRolesVo);
+        return SysUserConvert.INSTANCE.voToSysUserDetails(userRolesVo);
     }
 
     @Override
