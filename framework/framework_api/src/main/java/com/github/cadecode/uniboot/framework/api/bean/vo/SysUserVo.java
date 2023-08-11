@@ -1,7 +1,11 @@
 package com.github.cadecode.uniboot.framework.api.bean.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.github.cadecode.uniboot.framework.api.bean.vo.SysMenuVo.SysMenuTreeVo;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
@@ -45,5 +49,14 @@ public class SysUserVo {
         private String updateUser;
 
         private List<String> roles;
+    }
+
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class SysUserInfoVo {
+        private List<SysMenuTreeVo> menuList;
     }
 }

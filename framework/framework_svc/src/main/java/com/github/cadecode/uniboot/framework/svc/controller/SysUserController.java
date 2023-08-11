@@ -5,9 +5,9 @@ import com.github.cadecode.uniboot.common.core.exception.ApiException;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserInfoDto;
 import com.github.cadecode.uniboot.framework.api.bean.po.SysUser;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysMenuVo.SysMenuTreeVo;
+import com.github.cadecode.uniboot.framework.api.bean.vo.SysUserVo.SysUserInfoVo;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysUserVo.SysUserRolesVo;
 import com.github.cadecode.uniboot.framework.api.convert.SysUserConvert;
 import com.github.cadecode.uniboot.framework.api.request.SysUserRequest;
@@ -58,10 +58,10 @@ public class SysUserController {
      */
     @ApiOperation("获取用户信息")
     @PostMapping("get_info")
-    public SysUserInfoDto getInfo() {
+    public SysUserInfoVo getInfo() {
         SysUserDetailsDto userDetails = SecurityUtil.getUserDetails(null);
         List<SysMenuTreeVo> sysMenuTreeVos = sysMenuService.listTreeVoByRoles(userDetails.getRoles());
-        return SysUserInfoDto.builder().menuList(sysMenuTreeVos).build();
+        return SysUserInfoVo.builder().menuList(sysMenuTreeVos).build();
     }
 
     @ApiOperation("修改用户信息（用户中心）")
