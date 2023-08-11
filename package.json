@@ -1,6 +1,6 @@
 {
   "name": "uni-boot-admin-vue",
-  "version": "2023.1.0",
+  "version": "2023.1.1",
   "description": "The frontend by vue of uni-boot-admin, based on vue-admin-template@4.4.0",
   "author": "Cade <cadecode@foxmail.com>",
   "scripts": {
