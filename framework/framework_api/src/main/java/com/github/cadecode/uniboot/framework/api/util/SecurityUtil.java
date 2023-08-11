@@ -2,9 +2,9 @@ package com.github.cadecode.uniboot.framework.api.util;
 
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.config.SecurityConfig.SecurityProperties;
 import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.core.Authentication;
@@ -79,21 +79,21 @@ public class SecurityUtil implements InitializingBean {
         if (ObjectUtil.isNull(authentication)) {
             authentication = SecurityContextHolder.getContext().getAuthentication();
         }
-        return authentication != null && authentication.getPrincipal() instanceof SysUserDetailsDto;
+        return authentication != null && authentication.getPrincipal() instanceof SysUserDetails;
     }
 
     /**
-     * SpringSecurity 相关，取出 UserDetails SysUserDetailsDto
+     * SpringSecurity 相关，取出 UserDetails SysUserDetails
      *
      * @param authentication Security认证信息
-     * @return SysUserDetailsDto
+     * @return SysUserDetails
      */
-    public static SysUserDetailsDto getUserDetails(Authentication authentication) {
+    public static SysUserDetails getUserDetails(Authentication authentication) {
         if (ObjectUtil.isNull(authentication)) {
             authentication = SecurityContextHolder.getContext().getAuthentication();
         }
-        if (authentication != null && authentication.getPrincipal() instanceof SysUserDetailsDto) {
-            return (SysUserDetailsDto) authentication.getPrincipal();
+        if (authentication != null && authentication.getPrincipal() instanceof SysUserDetails) {
+            return (SysUserDetails) authentication.getPrincipal();
         }
         return null;
     }
@@ -102,9 +102,9 @@ public class SecurityUtil implements InitializingBean {
      * SpringSecurity 相关，取出用户名
      */
     public static String getUsername() {
-        SysUserDetailsDto userDetails = getUserDetails(null);
+        SysUserDetails userDetails = getUserDetails(null);
         return Optional.ofNullable(userDetails)
-                .map(SysUserDetailsDto::getUsername)
+                .map(SysUserDetails::getUsername)
                 .map(java.lang.String::valueOf)
                 .orElse(null);
     }

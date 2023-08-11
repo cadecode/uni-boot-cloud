@@ -5,11 +5,11 @@ import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.common.plugin.mybatis.converter.BoolToIntTypeHandler;
 import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.api.annotation.ApiInner;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogInfoDto;
 import com.github.cadecode.uniboot.framework.api.bean.po.SysLog;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysLogVo.SysLogPageVo;
 import com.github.cadecode.uniboot.framework.api.convert.SysLogConvert;
 import com.github.cadecode.uniboot.framework.api.request.SysLogRequest.SysLogPageRequest;
+import com.github.cadecode.uniboot.framework.api.request.SysLogRequest.SysLogSaveRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysLogService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -70,8 +70,8 @@ public class SysLogController {
     @ApiInner(onlyClient = true)
     @ApiOperation("添加")
     @PostMapping("save")
-    public boolean save(@RequestBody @NotEmpty List<SysLogInfoDto> dtoList) {
-        List<SysLog> poList = SysLogConvert.INSTANCE.dtoToPo(dtoList);
+    public boolean save(@RequestBody @NotEmpty List<SysLogSaveRequest> requestList) {
+        List<SysLog> poList = SysLogConvert.INSTANCE.requestToPo(requestList);
         return logService.saveBatch(poList);
     }
 }

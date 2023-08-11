@@ -2,7 +2,7 @@ package com.github.cadecode.uniboot.framework.svc.security;
 
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyService;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +16,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class LoginSuccessHandleService implements StrategyService {
 
-    public abstract ApiResult<SysUserDetailsDto> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication);
+    public abstract ApiResult<SysUserDetails> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication);
 
 }

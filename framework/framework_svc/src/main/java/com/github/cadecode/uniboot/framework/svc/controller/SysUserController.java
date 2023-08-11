@@ -4,13 +4,13 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.common.core.exception.ApiException;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.bean.po.SysUser;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysMenuVo.SysMenuTreeVo;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysUserVo.SysUserInfoVo;
 import com.github.cadecode.uniboot.framework.api.bean.vo.SysUserVo.SysUserRolesVo;
 import com.github.cadecode.uniboot.framework.api.convert.SysUserConvert;
 import com.github.cadecode.uniboot.framework.api.request.SysUserRequest;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import com.github.cadecode.uniboot.framework.svc.service.SysMenuService;
 import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
@@ -59,7 +59,7 @@ public class SysUserController {
     @ApiOperation("获取用户信息")
     @PostMapping("get_info")
     public SysUserInfoVo getInfo() {
-        SysUserDetailsDto userDetails = SecurityUtil.getUserDetails(null);
+        SysUserDetails userDetails = SecurityUtil.getUserDetails(null);
         List<SysMenuTreeVo> sysMenuTreeVos = sysMenuService.listTreeVoByRoles(userDetails.getRoles());
         return SysUserInfoVo.builder().menuList(sysMenuTreeVos).build();
     }
@@ -67,7 +67,7 @@ public class SysUserController {
     @ApiOperation("修改用户信息（用户中心）")
     @PostMapping("modify_info")
     public boolean modifyInfo(@RequestBody @Valid SysUserRequest.SysUserModifyInfoRequest request) {
-        SysUserDetailsDto userDetails = SecurityUtil.getUserDetails(null);
+        SysUserDetails userDetails = SecurityUtil.getUserDetails(null);
         SysUser po = SysUserConvert.INSTANCE.requestToPo(request);
         po.setId(userDetails.getId());
         return sysUserService.updateById(po);
@@ -76,7 +76,7 @@ public class SysUserController {
     @ApiOperation("修改用户密码（用户中心）")
     @PostMapping("modify_pass")
     public boolean modifyPass(@RequestBody @Valid SysUserRequest.SysUserModifyPassRequest request) {
-        SysUserDetailsDto userDetails = SecurityUtil.getUserDetails(null);
+        SysUserDetails userDetails = SecurityUtil.getUserDetails(null);
         SysUser sysUser = sysUserService.lambdaQuery().select(SysUser::getPassword)
                 .eq(SysUser::getId, userDetails.getId()).one();
         if (ObjectUtil.notEqual(request.getNewPass(), request.getConfirmedPass())) {

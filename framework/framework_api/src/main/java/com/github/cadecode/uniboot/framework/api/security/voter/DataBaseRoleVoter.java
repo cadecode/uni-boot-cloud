@@ -1,9 +1,9 @@
 package com.github.cadecode.uniboot.framework.api.security.voter;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysApiVo.SysApiRolesVo;
 import com.github.cadecode.uniboot.framework.api.feignclient.SysApiClient;
+import com.github.cadecode.uniboot.framework.api.response.SysApiResponse.SysApiRolesResponse;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.ConfigAttribute;
@@ -43,33 +43,33 @@ public class DataBaseRoleVoter extends RoleVoter {
         FilterInvocation fi = (FilterInvocation) object;
         String requestUrl = fi.getRequest().getRequestURI();
         // 获取 api role 的关系列表
-        List<SysApiRolesVo> sysApiRolesVos = sysApiClient.listRolesVo();
+        List<SysApiRolesResponse> apiRolesResponseList = sysApiClient.listRolesVo();
         // 获取用户角色
-        SysUserDetailsDto sysUserDetailsDto = SecurityUtil.getUserDetails(authentication);
-        List<String> roles = sysUserDetailsDto.getRoles();
+        SysUserDetails sysUserDetails = SecurityUtil.getUserDetails(authentication);
+        List<String> roles = sysUserDetails.getRoles();
         // 获取与 url 相同的配置，不存在与 url 相同配置则使用 spring mvc ant 风格匹配
-        SysApiRolesVo sysApiRolesVo = sysApiRolesVos.stream()
+        SysApiRolesResponse apiRolesResponse = apiRolesResponseList.stream()
                 .filter(api -> requestUrl.equals(api.getUrl()))
                 .findFirst()
                 .orElseGet(() -> {
                     // 按 spring mvc 路径优先级找到优先级最高的配置
                     Comparator<String> comparator = antPathMatcher.getPatternComparator(requestUrl);
-                    return sysApiRolesVos.stream()
+                    return apiRolesResponseList.stream()
                             .filter(api -> antPathMatcher.match(api.getUrl(), requestUrl))
                             .min((o1, o2) -> comparator.compare(o1.getUrl(), o2.getUrl()))
                             .orElse(null);
                 });
         // 数据库没有配置就弃权
-        if (Objects.isNull(sysApiRolesVo)) {
+        if (Objects.isNull(apiRolesResponse)) {
             return ACCESS_ABSTAIN;
         }
         // 如果该 api 配置没有关联角色，则通过
         // stream().noneMatch 表示没有符合条件的
-        if (sysApiRolesVo.getRoles().stream().noneMatch(ObjectUtil::isNotNull)) {
+        if (apiRolesResponse.getRoles().stream().noneMatch(ObjectUtil::isNotNull)) {
             return ACCESS_GRANTED;
         }
         // 取用户 token 内角色和数据库查询出角色的交集
-        roles.retainAll(sysApiRolesVo.getRoles());
+        roles.retainAll(apiRolesResponse.getRoles());
         return roles.size() > 0 ? ACCESS_GRANTED : ACCESS_DENIED;
     }
 }

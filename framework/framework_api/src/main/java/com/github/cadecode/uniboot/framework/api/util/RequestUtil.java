@@ -5,8 +5,8 @@ import cn.hutool.core.util.EscapeUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -60,7 +60,7 @@ public class RequestUtil {
      * @param request 请求对象，为 null 时自动从上下文获取
      * @return 内部请求携带的用户信息
      */
-    public static SysUserDetailsDto getInnerUserDetails(HttpServletRequest request) {
+    public static SysUserDetails getInnerUserDetails(HttpServletRequest request) {
         if (ObjectUtil.isNull(request)) {
             request = getRequest();
         }
@@ -70,7 +70,7 @@ public class RequestUtil {
         // feign 拦截器填充时做了转义处理
         String escapedUserDetailsJson = ServletUtil.getHeader(request, SecurityConst.HEAD_USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
         if (ObjectUtil.isNotEmpty(escapedUserDetailsJson)) {
-            return JacksonUtil.toBean(EscapeUtil.unescape(escapedUserDetailsJson), SysUserDetailsDto.class);
+            return JacksonUtil.toBean(EscapeUtil.unescape(escapedUserDetailsJson), SysUserDetails.class);
         }
         return null;
     }

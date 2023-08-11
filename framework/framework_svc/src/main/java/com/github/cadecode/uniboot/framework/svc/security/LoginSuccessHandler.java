@@ -7,10 +7,9 @@ import cn.hutool.http.ContentType;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyExecutor;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.bean.po.SysUser;
 import com.github.cadecode.uniboot.framework.api.config.SecurityConfig.SecurityProperties;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.svc.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -40,22 +39,22 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     /**
      * 更新登录信息
      *
-     * @param sysUserDetailsDto 系统用户 DTO
+     * @param sysUserDetails 系统用户 DTO
      */
-    public void updateLoginInfo(SysUserDto.SysUserDetailsDto sysUserDetailsDto) {
-        sysUserDetailsDto.setLoginIp(NetUtil.getLocalhost().getHostAddress());
-        sysUserDetailsDto.setLoginDate(new Date());
+    public void updateLoginInfo(SysUserDetails sysUserDetails) {
+        sysUserDetails.setLoginIp(NetUtil.getLocalhost().getHostAddress());
+        sysUserDetails.setLoginDate(new Date());
         // 同步到用户表
         sysUserService.lambdaUpdate()
-                .eq(SysUser::getId, sysUserDetailsDto.getId())
-                .set(SysUser::getLoginIp, sysUserDetailsDto.getLoginIp())
-                .set(SysUser::getLoginDate, sysUserDetailsDto.getLoginDate())
+                .eq(SysUser::getId, sysUserDetails.getId())
+                .set(SysUser::getLoginIp, sysUserDetails.getLoginIp())
+                .set(SysUser::getLoginDate, sysUserDetails.getLoginDate())
                 .update();
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        ApiResult<SysUserDetailsDto> result = strategyExecutor.execute(LoginSuccessHandleService.class, securityProperties::getAuthModel, s -> {
+        ApiResult<SysUserDetails> result = strategyExecutor.execute(LoginSuccessHandleService.class, securityProperties::getAuthModel, s -> {
             return s.getResult(request, response, authentication);
         });
         updateLoginInfo(result.getData());

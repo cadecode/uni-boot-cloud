@@ -7,6 +7,7 @@ import com.github.cadecode.uniboot.framework.api.bean.vo.SysDictVo.SysDictSugges
 import com.github.cadecode.uniboot.framework.api.request.SysDictRequest.SysDictAddRequest;
 import com.github.cadecode.uniboot.framework.api.request.SysDictRequest.SysDictUpdateRequest;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -23,8 +24,15 @@ public interface SysDictConvert {
 
     List<SysDictPageVo> poToPageVo(List<SysDict> records);
 
+    @Mapping(target = "updateUser", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
     SysDict requestToPo(SysDictAddRequest request);
 
+    @Mapping(target = "updateUser", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
     SysDict requestToPo(SysDictUpdateRequest request);
 
     List<SysDictGetByTypeVo> poToGetByTypeVo(List<SysDict> dictList);

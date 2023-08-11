@@ -3,10 +3,9 @@ package com.github.cadecode.uniboot.framework.svc.security;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
 import com.github.cadecode.uniboot.common.core.util.TokenUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserDetailsDto;
 import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
+import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.api.util.SecurityUtil;
 import com.github.cadecode.uniboot.framework.svc.config.FrameSecurityConfig;
 import org.springframework.security.core.Authentication;
@@ -25,15 +24,15 @@ import javax.servlet.http.HttpServletResponse;
 public class JwtLoginSuccessHandleService extends LoginSuccessHandleService {
 
     @Override
-    public ApiResult<SysUserDetailsDto> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    public ApiResult<SysUserDetails> getResult(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         // 从认证信息中获取用户对象
-        SysUserDto.SysUserDetailsDto sysUserDetailsDto = (SysUserDto.SysUserDetailsDto) authentication.getPrincipal();
+        SysUserDetails sysUserDetails = (SysUserDetails) authentication.getPrincipal();
         // 生成 jwt token
-        String jwtToken = TokenUtil.generateToken(sysUserDetailsDto.getId(), sysUserDetailsDto.getUsername(), sysUserDetailsDto.getRoles(),
+        String jwtToken = TokenUtil.generateToken(sysUserDetails.getId(), sysUserDetails.getUsername(), sysUserDetails.getRoles(),
                 SecurityUtil.getExpiration(), SecurityUtil.getSecret());
         // token 放在请求头
         response.addHeader(SecurityConst.HEAD_TOKEN, jwtToken);
-        return ApiResult.ok(sysUserDetailsDto).path(FrameSecurityConfig.LOGOUT_URL);
+        return ApiResult.ok(sysUserDetails).path(FrameSecurityConfig.LOGOUT_URL);
     }
 
     @Override
