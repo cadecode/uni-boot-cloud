@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.framework.svc.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysLog;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysLog;
 
 /**
  * 系统日志服务

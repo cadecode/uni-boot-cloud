@@ -2,7 +2,7 @@ package com.github.cadecode.uniboot.framework.svc.security;
 
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyService;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
-import com.github.cadecode.uniboot.framework.api.security.model.SysUserDetails;
+import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;

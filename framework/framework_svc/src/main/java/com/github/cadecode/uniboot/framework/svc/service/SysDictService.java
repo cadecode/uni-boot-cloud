@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.framework.svc.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysDict;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysDict;
 
 /**
  * 系统字典服务

@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.example.svc.controller;
 
 import com.github.cadecode.uniboot.common.plugin.cache.consts.CacheConst;
-import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
+import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

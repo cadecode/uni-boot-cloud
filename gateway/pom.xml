@@ -76,6 +76,24 @@
 
         <dependency>
             <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-framework-api</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.cadecode</groupId>
+                    <artifactId>uni-boot-common-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.cadecode</groupId>
+                    <artifactId>uni-boot-common-plugin-cache</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.cadecode</groupId>
+                    <artifactId>uni-boot-common-plugin-log</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
             <artifactId>uni-boot-common-plugin-actuator</artifactId>
         </dependency>
     </dependencies>

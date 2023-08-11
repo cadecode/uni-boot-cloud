@@ -2,12 +2,12 @@ package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysMenu;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysMenuVo.SysMenuRolesVo;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysMenuVo.SysMenuTreeVo;
-import com.github.cadecode.uniboot.framework.api.convert.SysMenuConvert;
-import com.github.cadecode.uniboot.framework.api.request.SysMenuRequest.SysMenuRolesRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeVo;
+import com.github.cadecode.uniboot.framework.svc.convert.SysMenuConvert;
 import com.github.cadecode.uniboot.framework.svc.mapper.SysMenuMapper;
+import com.github.cadecode.uniboot.framework.svc.request.SysMenuRequest.SysMenuRolesRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysMenuService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

@@ -16,6 +16,7 @@
 
     <modules>
         <module>framework_api</module>
+        <module>framework_base</module>
         <module>framework_svc</module>
     </modules>
 </project>

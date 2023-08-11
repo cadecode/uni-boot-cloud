@@ -1,9 +1,9 @@
 package com.github.cadecode.uniboot.framework.svc.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysUser;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysUserVo.SysUserRolesVo;
-import com.github.cadecode.uniboot.framework.api.request.SysUserRequest.SysUserRolesRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysUser;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserRolesVo;
+import com.github.cadecode.uniboot.framework.svc.request.SysUserRequest.SysUserRolesRequest;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

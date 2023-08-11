@@ -1,6 +1,7 @@
 package com.github.cadecode.uniboot.gateway.filter;
 
 import cn.hutool.core.lang.UUID;
+import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import org.slf4j.MDC;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -20,18 +21,16 @@ import reactor.core.publisher.Mono;
 @Component
 public class TraceInfoFilter implements GlobalFilter {
 
-    public static final String HEAD_TRACE_ID = "trace-id";
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String traceId = UUID.fastUUID().toString(true);
         ServerHttpRequest request = exchange.getRequest().mutate()
                 .headers(h -> {
-                    MDC.put(HEAD_TRACE_ID, traceId);
-                    h.set(HEAD_TRACE_ID, traceId);
+                    MDC.put(SecurityConst.HEAD_TRACE_ID, traceId);
+                    h.set(SecurityConst.HEAD_TRACE_ID, traceId);
                 })
                 .build();
-        exchange.getResponse().getHeaders().set(HEAD_TRACE_ID, traceId);
+        exchange.getResponse().getHeaders().set(SecurityConst.HEAD_TRACE_ID, traceId);
         return chain.filter(exchange.mutate().request(request).build());
     }
 }

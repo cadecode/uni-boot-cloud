@@ -1,5 +1,6 @@
 package com.github.cadecode.uniboot.gateway.filter;
 
+import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
@@ -18,17 +19,13 @@ import reactor.core.publisher.Mono;
 @Component
 public class RequestHeaderFilter implements GlobalFilter {
 
-    public static final String HEAD_SOURCE = "from-source";
-
-    public static final String HEAD_USER_DETAILS = "inner-user-details";
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 去掉内部调用专用的请求头，防止伪造
         ServerHttpRequest request = exchange.getRequest().mutate()
                 .headers(h -> {
-                    h.remove(HEAD_SOURCE);
-                    h.remove(HEAD_USER_DETAILS);
+                    h.remove(SecurityConst.HEAD_SOURCE);
+                    h.remove(SecurityConst.HEAD_USER_DETAILS);
                 })
                 .build();
         return chain.filter(exchange.mutate().request(request).build());

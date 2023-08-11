@@ -1,10 +1,10 @@
 package com.github.cadecode.uniboot.framework.svc.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysRole;
-import com.github.cadecode.uniboot.framework.api.bean.vo.SysRoleVo.SysRoleUnionVo;
-import com.github.cadecode.uniboot.framework.api.request.SysRoleRequest.SysRoleMappingRequest;
-import com.github.cadecode.uniboot.framework.api.request.SysRoleRequest.SysRoleUnionRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysRole;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionVo;
+import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest.SysRoleMappingRequest;
+import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest.SysRoleUnionRequest;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

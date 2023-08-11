@@ -2,8 +2,8 @@ package com.github.cadecode.uniboot.framework.svc.controller;
 
 import com.github.cadecode.uniboot.common.core.exception.ApiException;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
-import com.github.cadecode.uniboot.framework.api.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.api.enums.FrameErrorEnum;
+import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

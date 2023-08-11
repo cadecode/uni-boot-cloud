@@ -26,11 +26,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
-        <!--Security-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.github.cadecode</groupId>
@@ -38,27 +33,11 @@
         </dependency>
         <dependency>
             <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-swagger</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
             <artifactId>uni-boot-common-plugin-log</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-mybatis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-datasource</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
             <artifactId>uni-boot-common-plugin-cache</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-concurrent</artifactId>
         </dependency>
     </dependencies>
 </project>

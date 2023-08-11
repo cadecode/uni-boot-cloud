@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.cadecode.uniboot.framework.api.bean.po.SysLog;
+import com.github.cadecode.uniboot.framework.svc.bean.po.SysLog;
 import com.github.cadecode.uniboot.framework.svc.mapper.SysLogMapper;
 import com.github.cadecode.uniboot.framework.svc.service.SysLogService;
 import org.springframework.stereotype.Service;
