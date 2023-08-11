@@ -48,7 +48,7 @@ public class FeignErrorDecoder implements ErrorDecoder {
         // 构造 ApiErrorCode
         ApiErrorCode errorCode = getErrorCode(result, error);
         // 构造 moreInfo
-        String moreInfo = getMoreInfo(error);
+        String moreInfo = markMoreInfo(error);
         return ApiException.of(errorCode, moreInfo);
     }
 
@@ -75,9 +75,9 @@ public class FeignErrorDecoder implements ErrorDecoder {
     }
 
     /**
-     * 根据 ErrorMessage 获取 moreInfo 字符串
+     * 获取 moreInfo 字符串，在前面加上 RPC 标记
      */
-    private String getMoreInfo(ErrorMessage error) {
+    private String markMoreInfo(ErrorMessage error) {
         String moreInfo = error.getMoreInfo();
         // 在 moreInfo 前段追加 RPC 标记
         if (!StrUtil.startWith(moreInfo, "[RPC]")) {

@@ -80,15 +80,15 @@
             <exclusions>
                 <exclusion>
                     <groupId>com.github.cadecode</groupId>
-                    <artifactId>uni-boot-common-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.github.cadecode</groupId>
                     <artifactId>uni-boot-common-plugin-cache</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>com.github.cadecode</groupId>
                     <artifactId>uni-boot-common-plugin-log</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

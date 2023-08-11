@@ -58,9 +58,18 @@ public enum FrameErrorEnum implements ApiErrorCode {
     UPLOAD_FILE_FAIL(2002, "上传文件失败"),
     FILE_NOT_FOUND(2003, "文件未找到"),
 
-    // rpc
-    RPC_UNKNOWN_ERROR(3001, "RPC UNKNOWN 异常"),
-    RPC_UNWRAP_FAIL(3002, "RPC UNWRAP 失败"),
+    // cloud
+    RPC_UNKNOWN_ERROR(3001, "[RPC]UNKNOWN 异常"),
+    RPC_UNWRAP_FAIL(3002, "[RPC]UNWRAP 失败"),
+    GW_SVC_NOT_FOUND(3003, "[GW]服务未找到") {
+        @Override
+        public int getStatus() {
+            return ApiStatus.SERVER_UNAVAILABLE;
+        }
+    },
+    GW_RES_STATUS_ERROR(3004, "[GW]响应状态错误"),
+    GW_SVC_INTERNAL_ERROR(3005, "[GW]服务内部错误"),
+
     ;
 
     private final String code;
