@@ -1,5 +1,6 @@
 package com.github.cadecode.uniboot.common.plugin.log.handler;
 
+import cn.hutool.core.collection.CollUtil;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.aspect.ApiLoggerAspect.BaseLogInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Api Log 处理器抽象
@@ -24,6 +26,8 @@ import java.util.Map;
  */
 @Slf4j
 public abstract class AbstractApiLogHandler {
+
+    private static final Set<String> IGNORE_LOG_FIELD_SET = CollUtil.newHashSet("password");
 
     public abstract Object generateLog(ProceedingJoinPoint point, BaseLogInfo baseLogInfo);
 
@@ -46,6 +50,11 @@ public abstract class AbstractApiLogHandler {
         }
         Map<String, Object> map = new HashMap<>();
         for (int i = 0; i < names.length; i++) {
+            // 对敏感字段进行排除
+            if (IGNORE_LOG_FIELD_SET.contains(names[i])) {
+                map.put(names[i], "[IGNORE_LOG_FIELD]");
+                continue;
+            }
             // 排除请求对象和响应
             if (args[i] instanceof HttpServletRequest || args[i] instanceof HttpServletResponse) {
                 continue;
