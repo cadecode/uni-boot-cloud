@@ -81,6 +81,7 @@
           <el-table-column property="os" label="操作系统" width="150px" show-overflow-tooltip />
           <el-table-column property="browser" label="浏览器" width="150px" show-overflow-tooltip />
           <el-table-column property="userAgent" label="user-agent" width="400px" show-overflow-tooltip />
+          <el-table-column property="traceId" label="trace-id" width="280px" show-overflow-tooltip />
         </el-table>
         <el-pagination
           layout="prev, pager, next"
