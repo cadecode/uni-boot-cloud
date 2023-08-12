@@ -139,6 +139,7 @@ CREATE TABLE IF NOT EXISTS sys_log
     os             VARCHAR(200)  NULL COMMENT '操作系统',
     browser        VARCHAR(200)  NULL COMMENT '浏览器',
     user_agent     VARCHAR(500)  NULL COMMENT 'user-agent',
+    trace_id       VARCHAR(100)  NULL COMMENT 'trace-id',
 
     create_time    DATETIME DEFAULT CURRENT_TIMESTAMP,
     update_time    DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
