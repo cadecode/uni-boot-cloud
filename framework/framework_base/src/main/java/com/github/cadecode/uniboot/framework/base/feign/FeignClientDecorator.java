@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.framework.base.feign;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
+import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.base.util.RequestUtil;
 import feign.Client;
 import feign.Request;
@@ -43,9 +43,9 @@ public class FeignClientDecorator implements Client {
             return;
         }
         // 获取 token
-        if (headers.containsKey(SecurityConst.HEAD_TOKEN)) {
-            String token = headers.get(SecurityConst.HEAD_TOKEN).stream().findFirst().get();
-            servletResponse.addHeader(SecurityConst.HEAD_TOKEN, token);
+        if (headers.containsKey(HttpConst.HEAD_TOKEN)) {
+            String token = headers.get(HttpConst.HEAD_TOKEN).stream().findFirst().get();
+            servletResponse.addHeader(HttpConst.HEAD_TOKEN, token);
         }
     }
 }

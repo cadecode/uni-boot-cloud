@@ -2,7 +2,7 @@ package com.github.cadecode.uniboot.framework.base.util;
 
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
-import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
+import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.base.config.SecurityConfig.SecurityProperties;
 import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -50,13 +50,13 @@ public class SecurityUtil implements InitializingBean {
         Cookie[] cookies = request.getCookies();
         if (ObjectUtil.isNotEmpty(cookies)) {
             Optional<Cookie> optionalCookie = Arrays.stream(cookies)
-                    .filter(c -> ObjectUtil.equal(c.getName(), SecurityConst.HEAD_TOKEN))
+                    .filter(c -> ObjectUtil.equal(c.getName(), HttpConst.HEAD_TOKEN))
                     .findAny();
             if (optionalCookie.isPresent()) {
                 return optionalCookie.get().getValue();
             }
         }
-        return request.getHeader(SecurityConst.HEAD_TOKEN);
+        return request.getHeader(HttpConst.HEAD_TOKEN);
     }
 
     /**

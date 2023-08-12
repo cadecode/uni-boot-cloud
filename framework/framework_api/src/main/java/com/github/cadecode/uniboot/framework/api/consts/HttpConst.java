@@ -1,12 +1,12 @@
 package com.github.cadecode.uniboot.framework.api.consts;
 
 /**
- * Security 常量
+ * HTTP 常量
  *
  * @author Cade Li
  * @since 2023/7/29
  */
-public interface SecurityConst {
+public interface HttpConst {
 
     /**
      * token 请求头名称

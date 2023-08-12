@@ -5,7 +5,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
-import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
+import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
 import com.github.cadecode.uniboot.framework.base.config.SecurityConfig.SecurityProperties;
 import com.github.cadecode.uniboot.framework.base.security.filter.TokenAuthFilter;
@@ -170,9 +170,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain
                 filterChain)
                 throws ServletException, IOException {
-            String traceId = ServletUtil.getHeader(request, SecurityConst.HEAD_TRACE_ID, CharsetUtil.CHARSET_UTF_8);
+            String traceId = ServletUtil.getHeader(request, HttpConst.HEAD_TRACE_ID, CharsetUtil.CHARSET_UTF_8);
             if (ObjectUtil.isNotEmpty(traceId)) {
-                MDC.put(SecurityConst.HEAD_TRACE_ID, traceId);
+                MDC.put(HttpConst.HEAD_TRACE_ID, traceId);
             }
             filterChain.doFilter(request, response);
         }
