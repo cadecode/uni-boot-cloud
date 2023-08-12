@@ -3,7 +3,7 @@ package com.github.cadecode.uniboot.framework.svc.security;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
 import com.github.cadecode.uniboot.common.core.util.TokenUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
-import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
+import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
 import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;
@@ -31,7 +31,7 @@ public class JwtLoginSuccessHandleService extends LoginSuccessHandleService {
         String jwtToken = TokenUtil.generateToken(sysUserDetails.getId(), sysUserDetails.getUsername(), sysUserDetails.getRoles(),
                 SecurityUtil.getExpiration(), SecurityUtil.getSecret());
         // token 放在请求头
-        response.addHeader(SecurityConst.HEAD_TOKEN, jwtToken);
+        response.addHeader(HttpConst.HEAD_TOKEN, jwtToken);
         return ApiResult.ok(sysUserDetails).path(FrameSecurityConfig.LOGOUT_URL);
     }
 

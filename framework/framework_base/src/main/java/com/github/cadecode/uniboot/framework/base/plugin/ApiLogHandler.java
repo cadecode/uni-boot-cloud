@@ -11,7 +11,7 @@ import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.aspect.ApiLoggerAspect.BaseLogInfo;
 import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandler;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogSaveDto;
-import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
+import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.api.feignclient.SysLogClient;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
@@ -43,10 +43,10 @@ public class ApiLogHandler extends AbstractApiLogHandler {
     public SysLogSaveDto generateLog(ProceedingJoinPoint point, BaseLogInfo baseLogInfo) {
         ApiLogger apiLogger = baseLogInfo.getApiLogger();
         // 解析 user-agent
-        String userAgentStr = ServletUtil.getHeader(baseLogInfo.getRequest(), SecurityConst.HEAD_USER_AGENT, CharsetUtil.CHARSET_UTF_8);
+        String userAgentStr = ServletUtil.getHeader(baseLogInfo.getRequest(), HttpConst.HEAD_USER_AGENT, CharsetUtil.CHARSET_UTF_8);
         UserAgent userAgent = UserAgentUtil.parse(userAgentStr);
         // 获取 trace-id
-        String traceId = ServletUtil.getHeader(baseLogInfo.getRequest(), SecurityConst.HEAD_TRACE_ID, CharsetUtil.CHARSET_UTF_8);
+        String traceId = ServletUtil.getHeader(baseLogInfo.getRequest(), HttpConst.HEAD_TRACE_ID, CharsetUtil.CHARSET_UTF_8);
         // 解析参数
         String paramsJson;
         try {

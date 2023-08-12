@@ -5,7 +5,7 @@ import cn.hutool.core.util.EscapeUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
-import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
+import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -50,8 +50,8 @@ public class RequestUtil {
         if (ObjectUtil.isNull(request)) {
             return false;
         }
-        String source = ServletUtil.getHeader(request, SecurityConst.HEAD_SOURCE, CharsetUtil.CHARSET_UTF_8);
-        return ObjectUtil.equal(source, SecurityConst.HEAD_SOURCE_VALUE);
+        String source = ServletUtil.getHeader(request, HttpConst.HEAD_SOURCE, CharsetUtil.CHARSET_UTF_8);
+        return ObjectUtil.equal(source, HttpConst.HEAD_SOURCE_VALUE);
     }
 
     /**
@@ -68,7 +68,7 @@ public class RequestUtil {
             return null;
         }
         // feign 拦截器填充时做了转义处理
-        String escapedUserDetailsJson = ServletUtil.getHeader(request, SecurityConst.HEAD_USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
+        String escapedUserDetailsJson = ServletUtil.getHeader(request, HttpConst.HEAD_USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
         if (ObjectUtil.isNotEmpty(escapedUserDetailsJson)) {
             return JacksonUtil.toBean(EscapeUtil.unescape(escapedUserDetailsJson), SysUserDetails.class);
         }

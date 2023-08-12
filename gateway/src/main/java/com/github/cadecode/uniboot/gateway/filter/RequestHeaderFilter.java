@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.gateway.filter;
 
-import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
+import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
@@ -24,8 +24,8 @@ public class RequestHeaderFilter implements GlobalFilter {
         // 去掉内部调用专用的请求头，防止伪造
         ServerHttpRequest request = exchange.getRequest().mutate()
                 .headers(h -> {
-                    h.remove(SecurityConst.HEAD_SOURCE);
-                    h.remove(SecurityConst.HEAD_USER_DETAILS);
+                    h.remove(HttpConst.HEAD_SOURCE);
+                    h.remove(HttpConst.HEAD_USER_DETAILS);
                 })
                 .build();
         return chain.filter(exchange.mutate().request(request).build());
