@@ -50,10 +50,13 @@ public class SysLogVo {
 
         private String userAgent;
 
+        private String traceId;
+
         private Date createTime;
 
         private Date updateTime;
 
         private String updateUser;
+
     }
 }
