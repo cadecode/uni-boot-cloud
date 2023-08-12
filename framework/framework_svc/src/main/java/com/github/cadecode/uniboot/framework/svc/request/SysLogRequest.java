@@ -63,5 +63,8 @@ public class SysLogRequest {
         private String browser;
 
         private String userAgent;
+
+        private String traceId;
+
     }
 }

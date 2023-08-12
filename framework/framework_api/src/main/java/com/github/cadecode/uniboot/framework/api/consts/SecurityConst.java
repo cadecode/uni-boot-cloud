@@ -38,4 +38,9 @@ public interface SecurityConst {
      */
     String HEAD_TRACE_ID = "trace-id";
 
+    /**
+     * User-Agent
+     */
+    String HEAD_USER_AGENT = "User-Agent";
+
 }
