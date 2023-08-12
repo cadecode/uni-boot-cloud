@@ -89,6 +89,8 @@ public class SysLog {
      */
     private String userAgent;
 
+    private String traceId;
+
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 

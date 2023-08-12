@@ -1,6 +1,7 @@
 package com.github.cadecode.uniboot.framework.base.plugin;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.useragent.UserAgent;
@@ -10,6 +11,7 @@ import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.aspect.ApiLoggerAspect.BaseLogInfo;
 import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandler;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogSaveDto;
+import com.github.cadecode.uniboot.framework.api.consts.SecurityConst;
 import com.github.cadecode.uniboot.framework.api.feignclient.SysLogClient;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
@@ -40,9 +42,11 @@ public class ApiLogHandler extends AbstractApiLogHandler {
      */
     public SysLogSaveDto generateLog(ProceedingJoinPoint point, BaseLogInfo baseLogInfo) {
         ApiLogger apiLogger = baseLogInfo.getApiLogger();
-        // 解析 user-agent，生成日志信息
-        String userAgentStr = baseLogInfo.getRequest().getHeader("User-Agent");
+        // 解析 user-agent
+        String userAgentStr = ServletUtil.getHeader(baseLogInfo.getRequest(), SecurityConst.HEAD_USER_AGENT, CharsetUtil.CHARSET_UTF_8);
         UserAgent userAgent = UserAgentUtil.parse(userAgentStr);
+        // 获取 trace-id
+        String traceId = ServletUtil.getHeader(baseLogInfo.getRequest(), SecurityConst.HEAD_TRACE_ID, CharsetUtil.CHARSET_UTF_8);
         // 解析参数
         String paramsJson;
         try {
@@ -76,6 +80,7 @@ public class ApiLogHandler extends AbstractApiLogHandler {
                 .userAgent(userAgentStr)
                 .browser(userAgent.getBrowser().getName())
                 .os(userAgent.getOs().getName())
+                .traceId(traceId)
                 .build();
     }
 

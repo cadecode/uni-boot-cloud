@@ -54,5 +54,7 @@ public class SysLogDto {
         private String browser;
 
         private String userAgent;
+
+        private String traceId;
     }
 }
