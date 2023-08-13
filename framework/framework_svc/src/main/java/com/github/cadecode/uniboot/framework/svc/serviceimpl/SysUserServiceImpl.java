@@ -4,10 +4,10 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.cadecode.uniboot.common.core.exception.ApiException;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysUser;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserRolesVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserRolesReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserRolesResVo;
 import com.github.cadecode.uniboot.framework.svc.convert.SysUserConvert;
 import com.github.cadecode.uniboot.framework.svc.mapper.SysUserMapper;
-import com.github.cadecode.uniboot.framework.svc.request.SysUserRequest.SysUserRolesRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -34,12 +34,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      */
     @Override
     public UserDetails loadUserByUsername(String username) {
-        List<SysUserRolesVo> userRolesVoList = sysUserMapper.selectRolesVoByUsername(username);
+        List<SysUserRolesResVo> userRolesVoList = sysUserMapper.selectRolesVoByUsername(username);
         // 用户账户不存在
         if (ObjectUtil.isEmpty(userRolesVoList)) {
             throw ApiException.of("该用户不存在");
         }
-        SysUserRolesVo userRolesVo = userRolesVoList.get(0);
+        SysUserRolesResVo userRolesVo = userRolesVoList.get(0);
         // 用户账号被关闭
         if (!userRolesVo.getEnableFlag()) {
             throw ApiException.of("账号已被关闭");
@@ -48,18 +48,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public List<SysUserRolesVo> listRolesVoByUserIds(List<Long> userIds) {
+    public List<SysUserRolesResVo> listRolesVoByUserIds(List<Long> userIds) {
         return sysUserMapper.selectRolesVoByUserIds(userIds);
     }
 
     @Override
-    public List<SysUserRolesVo> listRolesVo(SysUserRolesRequest request) {
-        return sysUserMapper.selectRolesVo(request);
+    public List<SysUserRolesResVo> listRolesVo(SysUserRolesReqVo reqVo) {
+        return sysUserMapper.selectRolesVo(reqVo);
     }
 
     @Override
-    public PageInfo<SysUserRolesVo> pageRolesVo(SysUserRolesRequest request) {
-        return PageHelper.startPage(request.getPageNumber(), request.getPageSize())
-                .doSelectPageInfo(() -> listRolesVo(request));
+    public PageInfo<SysUserRolesResVo> pageRolesVo(SysUserRolesReqVo reqVo) {
+        return PageHelper.startPage(reqVo.getPageNumber(), reqVo.getPageSize())
+                .doSelectPageInfo(() -> listRolesVo(reqVo));
     }
 }

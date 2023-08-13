@@ -1,9 +1,9 @@
 package com.github.cadecode.uniboot.framework.svc.convert;
 
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysRole;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleListVo;
-import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest.SysRoleAddRequest;
-import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest.SysRoleUpdateRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleAddReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleListResVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUpdateReqVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -21,18 +21,18 @@ public interface SysRoleConvert {
 
     SysRoleConvert INSTANCE = Mappers.getMapper(SysRoleConvert.class);
 
-    SysRoleListVo poToListVo(SysRole po);
+    SysRoleListResVo poToListResVo(SysRole po);
 
-    List<SysRoleListVo> poToListVo(List<SysRole> po);
+    List<SysRoleListResVo> poToListResVo(List<SysRole> po);
 
     @Mapping(target = "updateUser", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "createTime", ignore = true)
-    SysRole requestToPo(SysRoleUpdateRequest request);
+    SysRole voToPo(SysRoleUpdateReqVo reqVo);
 
     @Mapping(target = "updateUser", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createTime", ignore = true)
-    SysRole requestToPo(SysRoleAddRequest request);
+    SysRole voToPo(SysRoleAddReqVo reqVo);
 }

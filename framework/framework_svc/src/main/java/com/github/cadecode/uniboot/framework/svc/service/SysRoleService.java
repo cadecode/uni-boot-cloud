@@ -2,9 +2,9 @@ package com.github.cadecode.uniboot.framework.svc.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysRole;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionVo;
-import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest.SysRoleMappingRequest;
-import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest.SysRoleUnionRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleMappingReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionResVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -35,21 +35,21 @@ public interface SysRoleService extends IService<SysRole> {
 
     int removeRoleApiByRoleIds(List<Long> roleIds);
 
-    int removeRoleUser(List<SysRoleMappingRequest> list);
+    int removeRoleUser(List<SysRoleMappingReqVo> list);
 
-    int removeRoleMenu(List<SysRoleMappingRequest> list);
+    int removeRoleMenu(List<SysRoleMappingReqVo> list);
 
-    int removeRoleApi(List<SysRoleMappingRequest> list);
+    int removeRoleApi(List<SysRoleMappingReqVo> list);
 
-    int addRoleUser(List<SysRoleMappingRequest> list);
+    int addRoleUser(List<SysRoleMappingReqVo> list);
 
-    int addRoleMenu(List<SysRoleMappingRequest> list);
+    int addRoleMenu(List<SysRoleMappingReqVo> list);
 
-    int addRoleApi(List<SysRoleMappingRequest> list);
+    int addRoleApi(List<SysRoleMappingReqVo> list);
 
-    List<SysRoleUnionVo> listUnionVo(SysRoleUnionRequest request);
+    List<SysRoleUnionResVo> listUnionVo(SysRoleUnionReqVo reqVo);
 
-    PageInfo<SysRoleUnionVo> pageUnionVo(SysRoleUnionRequest request);
+    PageInfo<SysRoleUnionResVo> pageUnionVo(SysRoleUnionReqVo reqVo);
 
-    List<SysRoleUnionVo> listUnionVoByRoleIds(List<Long> roleIds);
+    List<SysRoleUnionResVo> listUnionVoByRoleIds(List<Long> roleIds);
 }

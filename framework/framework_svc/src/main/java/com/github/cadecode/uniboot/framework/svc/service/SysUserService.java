@@ -2,8 +2,8 @@ package com.github.cadecode.uniboot.framework.svc.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysUser;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserRolesVo;
-import com.github.cadecode.uniboot.framework.svc.request.SysUserRequest.SysUserRolesRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserRolesReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserRolesResVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -17,9 +17,9 @@ import java.util.List;
  */
 public interface SysUserService extends IService<SysUser>, UserDetailsService {
 
-    List<SysUserRolesVo> listRolesVoByUserIds(List<Long> userIds);
+    List<SysUserRolesResVo> listRolesVoByUserIds(List<Long> userIds);
 
-    List<SysUserRolesVo> listRolesVo(SysUserRolesRequest request);
+    List<SysUserRolesResVo> listRolesVo(SysUserRolesReqVo reqVo);
 
-    PageInfo<SysUserRolesVo> pageRolesVo(SysUserRolesRequest request);
+    PageInfo<SysUserRolesResVo> pageRolesVo(SysUserRolesReqVo reqVo);
 }

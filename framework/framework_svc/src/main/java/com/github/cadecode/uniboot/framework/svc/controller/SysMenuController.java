@@ -3,9 +3,7 @@ package com.github.cadecode.uniboot.framework.svc.controller;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesVo;
 import com.github.cadecode.uniboot.framework.svc.convert.SysMenuConvert;
-import com.github.cadecode.uniboot.framework.svc.request.SysMenuRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysMenuService;
 import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
 import com.github.pagehelper.PageInfo;
@@ -25,6 +23,8 @@ import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.*;
 
 /**
  * 菜单管理API
@@ -46,31 +46,31 @@ public class SysMenuController {
 
     @ApiOperation("查询菜单列表（带角色）")
     @PostMapping("page_roles_vo")
-    public PageResult<SysMenuRolesVo> pageRolesVo(@RequestBody @Valid SysMenuRequest.SysMenuRolesRequest request) {
-        PageInfo<SysMenuRolesVo> rolesVoPage = sysMenuService.pageRolesVo(request);
+    public PageResult<SysMenuRolesResVo> pageRolesVo(@RequestBody @Valid SysMenuRolesReqVo reqVo) {
+        PageInfo<SysMenuRolesResVo> rolesVoPage = sysMenuService.pageRolesVo(reqVo);
         return new PageResult<>((int) rolesVoPage.getTotal(), rolesVoPage.getList());
     }
 
     @ApiOperation("更新菜单启用状态")
     @PostMapping("update_enable")
-    public boolean updateEnable(@RequestBody @Valid SysMenuRequest.SysMenuUpdateEnableRequest request) {
+    public boolean updateEnable(@RequestBody @Valid SysMenuUpdateEnableReqVo reqVo) {
         return sysMenuService.updateById(SysMenu.builder()
-                .id(request.getId())
-                .enableFlag(request.getEnableFlag())
+                .id(reqVo.getId())
+                .enableFlag(reqVo.getEnableFlag())
                 .build());
     }
 
     @ApiOperation("更新菜单")
     @PostMapping("update")
-    public boolean update(@RequestBody @Valid SysMenuRequest.SysMenuUpdateRequest request) {
-        SysMenu sysMenu = SysMenuConvert.INSTANCE.requestToPo(request);
+    public boolean update(@RequestBody @Valid SysMenuUpdateReqVo reqVo) {
+        SysMenu sysMenu = SysMenuConvert.INSTANCE.voPo(reqVo);
         return sysMenuService.updateById(sysMenu);
     }
 
     @ApiOperation("添加菜单")
     @PostMapping("add")
-    public boolean add(@RequestBody @Valid SysMenuRequest.SysMenuAddRequest request) {
-        SysMenu sysMenu = SysMenuConvert.INSTANCE.requestToPo(request);
+    public boolean add(@RequestBody @Valid SysMenuAddReqVo reqVo) {
+        SysMenu sysMenu = SysMenuConvert.INSTANCE.voPo(reqVo);
         return sysMenuService.save(sysMenu);
     }
 
@@ -98,7 +98,7 @@ public class SysMenuController {
 
     @ApiOperation("获取菜单（带角色）byMenuIds")
     @PostMapping("list_roles_vo_by_menu_ids")
-    public List<SysMenuRolesVo> listRolesVoByMenuIds(@RequestBody @NotEmpty List<Long> menuIdList) {
+    public List<SysMenuRolesResVo> listRolesVoByMenuIds(@RequestBody @NotEmpty List<Long> menuIdList) {
         return sysMenuService.listRolesVoByMenuIds(menuIdList);
     }
 }

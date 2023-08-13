@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.framework.api.feignclient;
 
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogSaveDto;
+import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogSaveReqDto;
 import com.github.cadecode.uniboot.framework.api.consts.SvcNameConst;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +19,6 @@ import java.util.List;
 public interface SysLogClient {
 
     @PostMapping("system/log/save")
-    boolean save(@RequestBody @NotEmpty List<SysLogSaveDto> dtoList);
+    boolean save(@RequestBody @NotEmpty List<SysLogSaveReqDto> dtoList);
 
 }

@@ -6,10 +6,10 @@ import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiInner;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysApi;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiSwaggerVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesResVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiSwaggerResVo;
 import com.github.cadecode.uniboot.framework.svc.convert.SysApiConvert;
-import com.github.cadecode.uniboot.framework.svc.request.SysApiRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysApiService;
 import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
 import com.github.pagehelper.PageInfo;
@@ -36,6 +36,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiAddReqVo;
+import static com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiUpdateReqVo;
+
 /**
  * API 管理
  *
@@ -61,24 +64,24 @@ public class SysApiController {
 
     @ApiOperation("查询API列表（带角色）")
     @PostMapping("page_roles_vo")
-    public PageResult<SysApiRolesVo> pageRolesVo(@RequestBody @Valid SysApiRequest.SysApiRolesRequest request) {
-        PageInfo<SysApiRolesVo> rolesVoPage = sysApiService.pageRolesVo(request);
+    public PageResult<SysApiRolesResVo> pageRolesVo(@RequestBody @Valid SysApiRolesReqVo reqVo) {
+        PageInfo<SysApiRolesResVo> rolesVoPage = sysApiService.pageRolesVo(reqVo);
         return new PageResult<>((int) rolesVoPage.getTotal(), rolesVoPage.getList());
     }
 
     @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @ApiOperation("更新API")
     @PostMapping("update")
-    public boolean update(@RequestBody @Valid SysApiRequest.SysApiUpdateRequest request) {
-        SysApi po = SysApiConvert.INSTANCE.requestToPo(request);
+    public boolean update(@RequestBody @Valid SysApiUpdateReqVo reqVo) {
+        SysApi po = SysApiConvert.INSTANCE.voToPo(reqVo);
         return sysApiService.updateById(po);
     }
 
     @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @ApiOperation("添加API")
     @PostMapping("add")
-    public boolean add(@RequestBody @Valid SysApiRequest.SysApiAddRequest request) {
-        SysApi sysApi = SysApiConvert.INSTANCE.requestToPo(request);
+    public boolean add(@RequestBody @Valid SysApiAddReqVo reqVo) {
+        SysApi sysApi = SysApiConvert.INSTANCE.voToPo(reqVo);
         return sysApiService.save(sysApi);
     }
 
@@ -93,13 +96,13 @@ public class SysApiController {
 
     @ApiOperation("获取API（带角色）byApiIds")
     @PostMapping("list_roles_vo_by_api_ids")
-    public List<SysApiRolesVo> listRolesVoByApiIds(@RequestBody @NotEmpty List<Long> apiIdList) {
+    public List<SysApiRolesResVo> listRolesVoByApiIds(@RequestBody @NotEmpty List<Long> apiIdList) {
         return sysApiService.listRolesVoByApiIds(apiIdList);
     }
 
     @ApiOperation("获取全部接口及 swagger 注解")
     @PostMapping("list_swagger_vo")
-    public List<SysApiSwaggerVo> listSwaggerVo() {
+    public List<SysApiSwaggerResVo> listSwaggerVo() {
         Map<RequestMappingInfo, HandlerMethod> methodMap = handlerMapping.getHandlerMethods();
         return methodMap.entrySet()
                 .stream()
@@ -114,18 +117,18 @@ public class SysApiController {
                     if (ObjectUtil.isNotNull(operation)) {
                         description = operation.value();
                     }
-                    return SysApiSwaggerVo.builder().url(url).description(description).build();
+                    return SysApiSwaggerResVo.builder().url(url).description(description).build();
                 })
                 .filter(o -> ObjectUtil.isNotEmpty(o.getUrl()))
                 .distinct()
-                .sorted(Comparator.comparing(SysApiSwaggerVo::getUrl))
+                .sorted(Comparator.comparing(SysApiSwaggerResVo::getUrl))
                 .collect(Collectors.toList());
     }
 
     @ApiInner(onlyClient = true)
     @ApiOperation("查询API列表-全部")
     @PostMapping("list_roles_vo")
-    public List<SysApiRolesVo> listRolesVo() {
+    public List<SysApiRolesResVo> listRolesVo() {
         return sysApiService.listRolesVo();
     }
 }

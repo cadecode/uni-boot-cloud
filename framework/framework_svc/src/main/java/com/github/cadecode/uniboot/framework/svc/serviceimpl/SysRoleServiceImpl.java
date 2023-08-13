@@ -3,10 +3,10 @@ package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysRole;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleMappingReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionResVo;
 import com.github.cadecode.uniboot.framework.svc.mapper.SysRoleMapper;
-import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest.SysRoleMappingRequest;
-import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest.SysRoleUnionRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -76,50 +76,50 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public int removeRoleUser(List<SysRoleMappingRequest> list) {
+    public int removeRoleUser(List<SysRoleMappingReqVo> list) {
         return sysRoleMapper.deleteRoleUser(list);
     }
 
     @Override
-    public int removeRoleMenu(List<SysRoleMappingRequest> list) {
+    public int removeRoleMenu(List<SysRoleMappingReqVo> list) {
         return sysRoleMapper.deleteRoleMenu(list);
     }
 
     @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @Override
-    public int removeRoleApi(List<SysRoleMappingRequest> list) {
+    public int removeRoleApi(List<SysRoleMappingReqVo> list) {
         return sysRoleMapper.deleteRoleApi(list);
     }
 
     @Override
-    public int addRoleUser(List<SysRoleMappingRequest> list) {
+    public int addRoleUser(List<SysRoleMappingReqVo> list) {
         return sysRoleMapper.insertRoleUser(list);
     }
 
     @Override
-    public int addRoleMenu(List<SysRoleMappingRequest> list) {
+    public int addRoleMenu(List<SysRoleMappingReqVo> list) {
         return sysRoleMapper.insertRoleMenu(list);
     }
 
     @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @Override
-    public int addRoleApi(List<SysRoleMappingRequest> list) {
+    public int addRoleApi(List<SysRoleMappingReqVo> list) {
         return sysRoleMapper.insertRoleApi(list);
     }
 
     @Override
-    public List<SysRoleUnionVo> listUnionVo(SysRoleUnionRequest request) {
-        return sysRoleMapper.selectRolesVo(request);
+    public List<SysRoleUnionResVo> listUnionVo(SysRoleUnionReqVo reqVo) {
+        return sysRoleMapper.selectUnionVo(reqVo);
     }
 
     @Override
-    public PageInfo<SysRoleUnionVo> pageUnionVo(SysRoleUnionRequest request) {
-        return PageHelper.startPage(request.getPageNumber(), request.getPageSize())
-                .doSelectPageInfo(() -> listUnionVo(request));
+    public PageInfo<SysRoleUnionResVo> pageUnionVo(SysRoleUnionReqVo reqVo) {
+        return PageHelper.startPage(reqVo.getPageNumber(), reqVo.getPageSize())
+                .doSelectPageInfo(() -> listUnionVo(reqVo));
     }
 
     @Override
-    public List<SysRoleUnionVo> listUnionVoByRoleIds(List<Long> roleIds) {
-        return sysRoleMapper.selectRolesVoByRoleIds(roleIds);
+    public List<SysRoleUnionResVo> listUnionVoByRoleIds(List<Long> roleIds) {
+        return sysRoleMapper.selectUnionVoByRoleIds(roleIds);
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.github.cadecode.uniboot.framework.svc.mapper.SysUserMapper">
-    <resultMap id="SysUserRolesVoMap" type="com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo$SysUserRolesVo">
+    <resultMap id="SysUserRolesVoMap" type="com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo$SysUserRolesResVo">
         <result column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="nick_name" property="nickName"/>
@@ -45,22 +45,22 @@
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id
-        <if test="request != null">
+        <if test="req != null">
             <where>
-                <if test="request.username != null and request.username.length > 0">
-                    <bind name="bindUsername" value="'%' + request.username + '%'"/>
+                <if test="req.username != null and req.username.length > 0">
+                    <bind name="bindUsername" value="'%' + req.username + '%'"/>
                     su.username like #{bindUsername}
                 </if>
-                <if test="request.nickName != null and request.nickName.length > 0">
-                    <bind name="binNickName" value="'%' + request.nickName + '%'"/>
+                <if test="req.nickName != null and req.nickName.length > 0">
+                    <bind name="binNickName" value="'%' + req.nickName + '%'"/>
                     AND su.nick_name like #{binNickName}
                 </if>
-                <if test="request.enableFlag != null">
-                    AND su.enable_flag = #{request.enableFlag, typeHandler=BoolToIntTypeHandler}
+                <if test="req.enableFlag != null">
+                    AND su.enable_flag = #{req.enableFlag, typeHandler=BoolToIntTypeHandler}
                 </if>
-                <if test="request.roleIdList != null and request.roleIdList.size > 0 ">
+                <if test="req.roleIdList != null and req.roleIdList.size > 0 ">
                     AND sr.id in (
-                    <foreach collection="request.roleIdList" item="id" separator=",">
+                    <foreach collection="req.roleIdList" item="id" separator=",">
                         #{id}
                     </foreach>
                     )

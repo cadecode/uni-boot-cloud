@@ -3,11 +3,11 @@ package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesResVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeResVo;
 import com.github.cadecode.uniboot.framework.svc.convert.SysMenuConvert;
 import com.github.cadecode.uniboot.framework.svc.mapper.SysMenuMapper;
-import com.github.cadecode.uniboot.framework.svc.request.SysMenuRequest.SysMenuRolesRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysMenuService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -36,33 +36,33 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public List<SysMenuTreeVo> listTreeVoByRoles(List<String> roleCodes) {
+    public List<SysMenuTreeResVo> listTreeVoByRoles(List<String> roleCodes) {
         List<SysMenu> sysMenus = listByRoles(roleCodes);
-        List<SysMenuTreeVo> menuTreeVoList = sysMenus.stream()
+        List<SysMenuTreeResVo> menuTreeVoList = sysMenus.stream()
                 .filter(m -> ObjectUtil.equal(m.getEnableFlag(), true))
-                .map(SysMenuConvert.INSTANCE::toTreeVo)
+                .map(SysMenuConvert.INSTANCE::poToTreeResVo)
                 .collect(Collectors.toList());
         return generateMenuTree(menuTreeVoList, null);
     }
 
     @Override
-    public List<SysMenuRolesVo> listRolesVo(SysMenuRolesRequest request) {
-        return sysMenuMapper.selectRolesVo(request);
+    public List<SysMenuRolesResVo> listRolesVo(SysMenuRolesReqVo reqVo) {
+        return sysMenuMapper.selectRolesVo(reqVo);
     }
 
     @Override
-    public PageInfo<SysMenuRolesVo> pageRolesVo(SysMenuRolesRequest request) {
-        return PageHelper.startPage(request.getPageNumber(), request.getPageSize())
-                .doSelectPageInfo(() -> listRolesVo(request));
+    public PageInfo<SysMenuRolesResVo> pageRolesVo(SysMenuRolesReqVo reqVo) {
+        return PageHelper.startPage(reqVo.getPageNumber(), reqVo.getPageSize())
+                .doSelectPageInfo(() -> listRolesVo(reqVo));
     }
 
     @Override
-    public List<SysMenuRolesVo> listRolesVoByMenuIds(List<Long> menuIds) {
+    public List<SysMenuRolesResVo> listRolesVoByMenuIds(List<Long> menuIds) {
         return sysMenuMapper.selectRolesVoByMenuIds(menuIds);
     }
 
-    private List<SysMenuTreeVo> generateMenuTree(List<SysMenuTreeVo> menus, Long rootId) {
-        List<SysMenuTreeVo> resultList = new ArrayList<>();
+    private List<SysMenuTreeResVo> generateMenuTree(List<SysMenuTreeResVo> menus, Long rootId) {
+        List<SysMenuTreeResVo> resultList = new ArrayList<>();
         menus.forEach(menu -> {
             // 确定下父亲
             if (ObjectUtil.notEqual(menu.getParentId(), rootId)) {
@@ -74,7 +74,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                     return;
                 }
                 // 拿儿子列表
-                List<SysMenuTreeVo> children = menu.getChildren();
+                List<SysMenuTreeResVo> children = menu.getChildren();
                 // 存儿子
                 m.setChildren(generateMenuTree(menus, m.getId()));
                 children.add(m);

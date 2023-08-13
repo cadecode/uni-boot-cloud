@@ -1,8 +1,8 @@
 package com.github.cadecode.uniboot.framework.svc.convert;
 
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysApi;
-import com.github.cadecode.uniboot.framework.svc.request.SysApiRequest.SysApiAddRequest;
-import com.github.cadecode.uniboot.framework.svc.request.SysApiRequest.SysApiUpdateRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiAddReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiUpdateReqVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -21,12 +21,12 @@ public interface SysApiConvert {
     @Mapping(target = "updateUser", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "createTime", ignore = true)
-    SysApi requestToPo(SysApiUpdateRequest request);
+    SysApi voToPo(SysApiUpdateReqVo reqVo);
 
     @Mapping(target = "updateUser", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createTime", ignore = true)
-    SysApi requestToPo(SysApiAddRequest request);
+    SysApi voToPo(SysApiAddReqVo reqVo);
 
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.github.cadecode.uniboot.framework.svc.mapper.SysRoleMapper">
-    <resultMap id="SysRoleUnionVoMap" type="com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo$SysRoleUnionVo">
+    <resultMap id="SysRoleUnionVoMap" type="com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo$SysRoleUnionResVo">
         <result column="id" property="id"/>
         <result column="code" property="code"/>
         <result column="name" property="name"/>
@@ -48,21 +48,21 @@
             )
         </if>
     </select>
-    <select id="selectRolesVo" resultMap="SysRoleUnionVoMap">
+    <select id="selectUnionVo" resultMap="SysRoleUnionVoMap">
         SELECT sr.*, JSON_ARRAYAGG(sm.id) m_id, JSON_ARRAYAGG(sa.id) a_id
         FROM sys_role sr
         LEFT JOIN sys_role_menu srm ON srm.role_id = sr.id
         LEFT JOIN sys_role_api sra ON sra.role_id = sr.id
         LEFT JOIN sys_menu sm ON srm.menu_id = sm.id
         LEFT JOIN sys_api sa ON sra.api_id = sa.id
-        <if test="request != null">
+        <if test="req != null">
             <where>
-                <if test="request.code != null and request.code.length > 0">
-                    <bind name="bindCode" value="'%' + request.code + '%'"/>
+                <if test="req.code != null and req.code.length > 0">
+                    <bind name="bindCode" value="'%' + req.code + '%'"/>
                     sr.code like #{bindCode}
                 </if>
-                <if test="request.name != null and request.name.length > 0">
-                    <bind name="bindName" value="'%' + request.name + '%'"/>
+                <if test="req.name != null and req.name.length > 0">
+                    <bind name="bindName" value="'%' + req.name + '%'"/>
                     AND sr.name like #{bindName}
                 </if>
             </where>
@@ -70,7 +70,7 @@
         GROUP BY sr.id, sr.code
         ORDER BY sr.code
     </select>
-    <select id="selectRolesVoByRoleIds" resultMap="SysRoleUnionVoMap">
+    <select id="selectUnionVoByRoleIds" resultMap="SysRoleUnionVoMap">
         SELECT sr.*, JSON_ARRAYAGG(sm.id) m_id, JSON_ARRAYAGG(sa.id) a_id
         FROM sys_role sr
         LEFT JOIN sys_role_menu srm ON srm.role_id = sr.id

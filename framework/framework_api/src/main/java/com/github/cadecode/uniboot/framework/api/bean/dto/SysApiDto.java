@@ -1,4 +1,4 @@
-package com.github.cadecode.uniboot.framework.api.response;
+package com.github.cadecode.uniboot.framework.api.bean.dto;
 
 import lombok.Data;
 
@@ -6,15 +6,15 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * SysApi response
+ * SysApi res dto
  *
  * @author Cade Li
  * @since 2023/8/11
  */
-public class SysApiResponse {
+public class SysApiDto {
 
     @Data
-    public static class SysApiRolesResponse {
+    public static class SysApiRolesResDto {
 
         private Long id;
 

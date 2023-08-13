@@ -20,7 +20,7 @@ public class SysLogDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class SysLogSaveDto {
+    public static class SysLogSaveReqDto {
 
         private String logType;
 

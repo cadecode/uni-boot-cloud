@@ -2,9 +2,9 @@ package com.github.cadecode.uniboot.framework.svc.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysRole;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionVo;
-import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest.SysRoleMappingRequest;
-import com.github.cadecode.uniboot.framework.svc.request.SysRoleRequest.SysRoleUnionRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleMappingReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionResVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -37,20 +37,20 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
 
     int deleteRoleApiByRoleIds(@Param("roleIds") List<Long> roleIds);
 
-    int deleteRoleUser(List<SysRoleMappingRequest> list);
+    int deleteRoleUser(List<SysRoleMappingReqVo> list);
 
-    int deleteRoleMenu(List<SysRoleMappingRequest> list);
+    int deleteRoleMenu(List<SysRoleMappingReqVo> list);
 
-    int deleteRoleApi(List<SysRoleMappingRequest> list);
+    int deleteRoleApi(List<SysRoleMappingReqVo> list);
 
-    int insertRoleUser(List<SysRoleMappingRequest> list);
+    int insertRoleUser(List<SysRoleMappingReqVo> list);
 
-    int insertRoleMenu(List<SysRoleMappingRequest> list);
+    int insertRoleMenu(List<SysRoleMappingReqVo> list);
 
-    int insertRoleApi(List<SysRoleMappingRequest> list);
+    int insertRoleApi(List<SysRoleMappingReqVo> list);
 
-    List<SysRoleUnionVo> selectRolesVo(@Param("request") SysRoleUnionRequest request);
+    List<SysRoleUnionResVo> selectUnionVo(@Param("req") SysRoleUnionReqVo reqVo);
 
-    List<SysRoleUnionVo> selectRolesVoByRoleIds(@Param("roleIds") List<Long> roleIds);
+    List<SysRoleUnionResVo> selectUnionVoByRoleIds(@Param("roleIds") List<Long> roleIds);
 
 }
