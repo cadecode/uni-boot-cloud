@@ -1,7 +1,6 @@
 package com.github.cadecode.uniboot.framework.svc.bean.po;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.github.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
 import com.github.cadecode.uniboot.common.plugin.mybatis.converter.BoolToIntTypeHandler;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +25,7 @@ public class SysLog {
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
-    private LogTypeEnum logType;
+    private String logType;
     /**
      * url
      */

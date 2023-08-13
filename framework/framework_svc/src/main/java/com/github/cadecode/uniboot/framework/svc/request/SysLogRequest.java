@@ -1,7 +1,6 @@
 package com.github.cadecode.uniboot.framework.svc.request;
 
 import com.github.cadecode.uniboot.common.core.web.response.PageParams;
-import com.github.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,7 +21,7 @@ public class SysLogRequest {
 
         private Date startTime;
         private Date endTime;
-        private List<LogTypeEnum> logTypeList;
+        private List<String> logTypeList;
         private String url;
         private String accessUser;
         private Boolean exceptional;
@@ -32,7 +31,7 @@ public class SysLogRequest {
     @Data
     public static class SysLogSaveRequest {
 
-        private LogTypeEnum logType;
+        private String logType;
 
         private String url;
 

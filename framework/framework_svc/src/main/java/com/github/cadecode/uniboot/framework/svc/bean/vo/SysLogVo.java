@@ -1,6 +1,5 @@
 package com.github.cadecode.uniboot.framework.svc.bean.vo;
 
-import com.github.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,7 +17,7 @@ public class SysLogVo {
 
         private Long id;
 
-        private LogTypeEnum logType;
+        private String logType;
 
         private String url;
 

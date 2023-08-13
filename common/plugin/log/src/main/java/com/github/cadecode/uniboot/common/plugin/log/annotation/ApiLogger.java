@@ -1,8 +1,6 @@
 package com.github.cadecode.uniboot.common.plugin.log.annotation;
 
 
-import com.github.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
-
 import java.lang.annotation.*;
 
 /**
@@ -17,7 +15,7 @@ import java.lang.annotation.*;
 public @interface ApiLogger {
     boolean value() default true;
 
-    LogTypeEnum type() default LogTypeEnum.OTHER;
+    String type() default "";
 
     String description() default "";
 

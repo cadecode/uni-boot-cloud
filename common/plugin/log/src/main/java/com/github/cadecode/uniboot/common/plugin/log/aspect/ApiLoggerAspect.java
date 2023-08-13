@@ -5,7 +5,8 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandler;
-import lombok.*;
+import com.github.cadecode.uniboot.common.plugin.log.model.BaseLogInfo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -15,8 +16,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 请求响应信息日志 AOP 类
@@ -91,7 +90,7 @@ public class ApiLoggerAspect {
             return;
         }
         try {
-            String resultStr = null;
+            String resultStr;
             boolean exceptional = false;
             if (ObjectUtil.isNotNull(throwable)) {
                 exceptional = true;
@@ -101,34 +100,22 @@ public class ApiLoggerAspect {
                     resultStr = JacksonUtil.toJson(result);
                 } catch (Exception e) {
                     resultStr = ExceptionUtil.stacktraceToString(e);
-                    log.error("API log [{}]: request result to json fail", apiLogger.type().getType(), e);
+                    log.error("API log [{}]: request result to json fail", apiLogger.type(), e);
                 }
             }
             BaseLogInfo baseLogInfo = BaseLogInfo.builder().apiLogger(apiLogger).request(attributes.getRequest())
                     .resultStr(resultStr).timeCost(timeCost).exceptional(exceptional).build();
             Object logObj = apiLogHandler.generateLog(point, baseLogInfo);
             // 打印日志
-            log.info("API log [{}]: {}", apiLogger.type().getType(), JacksonUtil.toJson(logObj));
+            log.info("API log [{}]: {}", apiLogger.type(), JacksonUtil.toJson(logObj));
             // 持久化
             try {
                 apiLogHandler.save(apiLogger, logObj);
             } catch (Exception e) {
-                log.error("API log [{}]: save async fail", apiLogger.type().getType(), e);
+                log.error("API log [{}]: save async fail", apiLogger.type(), e);
             }
         } catch (Exception e) {
-            log.error("API log [{}]: handle logger fail", apiLogger.type().getType(), e);
+            log.error("API log [{}]: handle logger fail", apiLogger.type(), e);
         }
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class BaseLogInfo {
-        private ApiLogger apiLogger;
-        private Boolean exceptional;
-        private HttpServletRequest request;
-        private String resultStr;
-        private Long timeCost;
     }
 }

@@ -2,7 +2,7 @@ package com.github.cadecode.uniboot.common.plugin.log.handler;
 
 import cn.hutool.core.collection.CollUtil;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
-import com.github.cadecode.uniboot.common.plugin.log.aspect.ApiLoggerAspect.BaseLogInfo;
+import com.github.cadecode.uniboot.common.plugin.log.model.BaseLogInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -45,7 +45,7 @@ public abstract class AbstractApiLogHandler {
             return Collections.emptyMap();
         }
         if (names.length != args.length) {
-            log.error("API log [{}]: method [{}] param and the pass value do not match", apiLogger.type().getType(), methodSignature.getName());
+            log.error("API log [{}]: method [{}] param and the pass value do not match", apiLogger.type(), methodSignature.getName());
             return Collections.emptyMap();
         }
         Map<String, Object> map = new HashMap<>();

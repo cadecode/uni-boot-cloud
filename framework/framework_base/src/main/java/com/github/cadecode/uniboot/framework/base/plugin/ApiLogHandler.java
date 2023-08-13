@@ -8,8 +8,8 @@ import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
-import com.github.cadecode.uniboot.common.plugin.log.aspect.ApiLoggerAspect.BaseLogInfo;
 import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandler;
+import com.github.cadecode.uniboot.common.plugin.log.model.BaseLogInfo;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogSaveDto;
 import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.api.feignclient.SysLogClient;
@@ -53,7 +53,7 @@ public class ApiLogHandler extends AbstractApiLogHandler {
             paramsJson = JacksonUtil.toJson(getRequestParams(point, apiLogger));
         } catch (Exception e) {
             paramsJson = ExceptionUtil.stacktraceToString(e);
-            log.error("API log [{}]: request params to json fail", apiLogger.type().getType(), e);
+            log.error("API log [{}]: request params to json fail", apiLogger.type(), e);
         }
         // 获取描述
         String description = apiLogger.description();
@@ -102,7 +102,7 @@ public class ApiLogHandler extends AbstractApiLogHandler {
         try {
             sysLogClient.save(Collections.singletonList(dto));
         } catch (Exception e) {
-            log.error("API log [{}]: save fail", apiLogger.type().getType(), e);
+            log.error("API log [{}]: save fail", apiLogger.type(), e);
         }
     }
 }
