@@ -2,7 +2,7 @@ package com.github.cadecode.uniboot.framework.svc.controller;
 
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
-import com.github.cadecode.uniboot.framework.api.consts.LogType;
+import com.github.cadecode.uniboot.framework.api.consts.LogTypeConst;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.svc.config.FrameSecurityConfig;
 import io.swagger.annotations.Api;
@@ -31,14 +31,14 @@ public class AuthController {
 
     private final AuthClient authClient;
 
-    @ApiLogger(type = LogType.AUTH, enableSave = true, description = "用户登录")
+    @ApiLogger(type = LogTypeConst.AUTH, enableSave = true, description = "用户登录")
     @ApiOperation("登录")
     @PostMapping("login")
     public ApiResult<?> login(@RequestParam String username, @RequestParam String password) {
         return authClient.login(username, password);
     }
 
-    @ApiLogger(type = LogType.AUTH, enableSave = true, description = "用户注销")
+    @ApiLogger(type = LogTypeConst.AUTH, enableSave = true, description = "用户注销")
     @ApiOperation("注销")
     @PostMapping("logout")
     public ApiResult<?> logout() {

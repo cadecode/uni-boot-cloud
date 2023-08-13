@@ -2,7 +2,7 @@ package com.github.cadecode.uniboot.framework.svc.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
-import com.github.cadecode.uniboot.framework.api.consts.KeyPrefix;
+import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiInner;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysApi;
@@ -66,7 +66,7 @@ public class SysApiController {
         return new PageResult<>((int) rolesVoPage.getTotal(), rolesVoPage.getList());
     }
 
-    @CacheEvict(cacheNames = KeyPrefix.API_ROLES, key = "'all'")
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @ApiOperation("更新API")
     @PostMapping("update")
     public boolean update(@RequestBody @Valid SysApiRequest.SysApiUpdateRequest request) {
@@ -74,7 +74,7 @@ public class SysApiController {
         return sysApiService.updateById(po);
     }
 
-    @CacheEvict(cacheNames = KeyPrefix.API_ROLES, key = "'all'")
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @ApiOperation("添加API")
     @PostMapping("add")
     public boolean add(@RequestBody @Valid SysApiRequest.SysApiAddRequest request) {

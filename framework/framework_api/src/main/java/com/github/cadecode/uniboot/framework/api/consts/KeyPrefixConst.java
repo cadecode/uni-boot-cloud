@@ -6,7 +6,7 @@ package com.github.cadecode.uniboot.framework.api.consts;
  * @author Cade Li
  * @date 2022/5/29
  */
-public interface KeyPrefix {
+public interface KeyPrefixConst {
 
     /**
      * 登录用户信息

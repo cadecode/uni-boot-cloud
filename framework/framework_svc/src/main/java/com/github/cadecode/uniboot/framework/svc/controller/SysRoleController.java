@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.framework.svc.controller;
 
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
-import com.github.cadecode.uniboot.framework.api.consts.KeyPrefix;
+import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysRole;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleListVo;
@@ -100,7 +100,7 @@ public class SysRoleController {
         return sysRoleService.listUnionVoByRoleIds(roleIds);
     }
 
-    @CacheEvict(cacheNames = KeyPrefix.API_ROLES, key = "'all'")
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @ApiOperation("更新角色")
     @PostMapping("update")
     public boolean update(@RequestBody @Valid SysRoleRequest.SysRoleUpdateRequest request) {
@@ -108,7 +108,7 @@ public class SysRoleController {
         return sysRoleService.updateById(po);
     }
 
-    @CacheEvict(cacheNames = KeyPrefix.API_ROLES, key = "'all'")
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @ApiOperation("添加角色")
     @PostMapping("add")
     public boolean add(@RequestBody @Valid SysRoleRequest.SysRoleAddRequest request) {

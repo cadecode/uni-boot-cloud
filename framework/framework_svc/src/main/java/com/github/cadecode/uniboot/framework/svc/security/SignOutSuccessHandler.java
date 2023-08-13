@@ -9,7 +9,7 @@ import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
 import com.github.cadecode.uniboot.common.plugin.cache.util.KeyGeneUtil;
 import com.github.cadecode.uniboot.common.plugin.cache.util.RedisUtil;
 import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
-import com.github.cadecode.uniboot.framework.api.consts.KeyPrefix;
+import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthErrorEnum;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
 import com.github.cadecode.uniboot.framework.base.config.SecurityConfig.SecurityProperties;
@@ -40,7 +40,7 @@ public class SignOutSuccessHandler implements LogoutSuccessHandler {
         // 删除保存登录信息的 redis key
         String uuidToken = request.getHeader(HttpConst.HEAD_TOKEN);
         if (StrUtil.isNotEmpty(uuidToken) && properties.getAuthModel() == AuthModelEnum.REDIS) {
-            String loginUserKey = KeyGeneUtil.key(KeyPrefix.LOGIN_USER, uuidToken);
+            String loginUserKey = KeyGeneUtil.key(KeyPrefixConst.LOGIN_USER, uuidToken);
             RedisUtil.del(loginUserKey);
         }
         // 写入响应
