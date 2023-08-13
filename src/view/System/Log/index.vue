@@ -53,8 +53,8 @@
           <el-table-column property="url" label="URL" width="400px" fixed show-overflow-tooltip />
           <el-table-column property="exceptional" label="异常状态" width="80px">
             <template slot-scope="scope">
-              <el-tag v-if="!scope.exceptional" type="success">正常</el-tag>
-              <el-tag v-else type="danger">异常</el-tag>
+              <el-tag v-if="scope.row.exceptional" type="danger">异常</el-tag>
+              <el-tag v-else type="success">正常</el-tag>
             </template>
           </el-table-column>
           <el-table-column property="accessUser" label="访问用户" width="160px" />
