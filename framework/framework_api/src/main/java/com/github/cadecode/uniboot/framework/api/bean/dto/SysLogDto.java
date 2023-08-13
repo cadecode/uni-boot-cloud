@@ -1,6 +1,5 @@
 package com.github.cadecode.uniboot.framework.api.bean.dto;
 
-import com.github.cadecode.uniboot.common.plugin.log.enums.LogTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +22,7 @@ public class SysLogDto {
     @Builder
     public static class SysLogSaveDto {
 
-        private LogTypeEnum logType;
+        private String logType;
 
         private String url;
 
