@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
 import com.github.cadecode.uniboot.common.plugin.cache.util.KeyGeneUtil;
 import com.github.cadecode.uniboot.common.plugin.cache.util.RedisUtil;
-import com.github.cadecode.uniboot.framework.api.consts.KeyPrefix;
+import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthErrorEnum;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
 import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
@@ -40,7 +40,7 @@ public class RedisTokenAuthFilterService extends TokenAuthFilterService {
             return;
         }
         // 查询 redis 中 token
-        String loginUserKey = KeyGeneUtil.key(KeyPrefix.LOGIN_USER, uuidToken);
+        String loginUserKey = KeyGeneUtil.key(KeyPrefixConst.LOGIN_USER, uuidToken);
         SysUserDetails sysUserDetails = RedisUtil.get(loginUserKey, SysUserDetails.class);
         // redis 中用户不存在
         if (Objects.isNull(sysUserDetails)) {

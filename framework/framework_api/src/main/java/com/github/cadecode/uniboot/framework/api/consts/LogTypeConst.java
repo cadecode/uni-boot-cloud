@@ -6,7 +6,7 @@ package com.github.cadecode.uniboot.framework.api.consts;
  * @author Cade Li
  * @since 2023/8/13
  */
-public interface LogType {
+public interface LogTypeConst {
 
     /**
      * curd
