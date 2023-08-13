@@ -1,7 +1,11 @@
 package com.github.cadecode.uniboot.framework.svc.bean.vo;
 
+import com.github.cadecode.uniboot.common.core.web.response.PageParams;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -13,7 +17,48 @@ import java.util.Date;
 public class SysDictVo {
 
     @Data
-    public static class SysDictPageVo {
+    @EqualsAndHashCode(callSuper = true)
+    public static class SysDictPageReqVo extends PageParams {
+        private String name;
+        private String type;
+    }
+
+    @Data
+    public static class SysDictAddReqVo {
+        @NotEmpty
+        private String name;
+        @NotEmpty
+        private String type;
+        private String label;
+        @NotEmpty
+        private String value;
+        @NotNull
+        private Boolean defaultFlag;
+        private String description;
+        @NotNull
+        private Integer orderNum;
+    }
+
+    @Data
+    public static class SysDictUpdateReqVo {
+        @NotNull
+        private Long id;
+        @NotEmpty
+        private String name;
+        @NotEmpty
+        private String type;
+        private String label;
+        @NotEmpty
+        private String value;
+        @NotNull
+        private Boolean defaultFlag;
+        private String description;
+        @NotNull
+        private Integer orderNum;
+    }
+
+    @Data
+    public static class SysDictPageResVo {
         private Long id;
         private String name;
         private String type;
@@ -28,7 +73,7 @@ public class SysDictVo {
     }
 
     @Data
-    public static class SysDictGetByTypeVo {
+    public static class SysDictGetByTypeResVo {
         private Long id;
         private String name;
         private String type;
@@ -39,7 +84,7 @@ public class SysDictVo {
     }
 
     @Data
-    public static class SysDictSuggestVo {
+    public static class SysDictSuggestResVo {
         private String name;
         private String type;
     }

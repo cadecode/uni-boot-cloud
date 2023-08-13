@@ -1,8 +1,8 @@
 package com.github.cadecode.uniboot.framework.base.security.voter;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.github.cadecode.uniboot.framework.api.bean.dto.SysApiDto.SysApiRolesResDto;
 import com.github.cadecode.uniboot.framework.api.feignclient.SysApiClient;
-import com.github.cadecode.uniboot.framework.api.response.SysApiResponse.SysApiRolesResponse;
 import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -43,12 +43,12 @@ public class DataBaseRoleVoter extends RoleVoter {
         FilterInvocation fi = (FilterInvocation) object;
         String requestUrl = fi.getRequest().getRequestURI();
         // 获取 api role 的关系列表
-        List<SysApiRolesResponse> apiRolesResponseList = sysApiClient.listRolesVo();
+        List<SysApiRolesResDto> apiRolesResponseList = sysApiClient.listRolesResVo();
         // 获取用户角色
         SysUserDetails sysUserDetails = SecurityUtil.getUserDetails(authentication);
         List<String> roles = sysUserDetails.getRoles();
         // 获取与 url 相同的配置，不存在与 url 相同配置则使用 spring mvc ant 风格匹配
-        SysApiRolesResponse apiRolesResponse = apiRolesResponseList.stream()
+        SysApiRolesResDto apiRolesResponse = apiRolesResponseList.stream()
                 .filter(api -> requestUrl.equals(api.getUrl()))
                 .findFirst()
                 .orElseGet(() -> {

@@ -1,11 +1,7 @@
 package com.github.cadecode.uniboot.framework.svc.convert;
 
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysDict;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDictVo.SysDictGetByTypeVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDictVo.SysDictPageVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDictVo.SysDictSuggestVo;
-import com.github.cadecode.uniboot.framework.svc.request.SysDictRequest.SysDictAddRequest;
-import com.github.cadecode.uniboot.framework.svc.request.SysDictRequest.SysDictUpdateRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDictVo.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -22,20 +18,20 @@ import java.util.List;
 public interface SysDictConvert {
     SysDictConvert INSTANCE = Mappers.getMapper(SysDictConvert.class);
 
-    List<SysDictPageVo> poToPageVo(List<SysDict> records);
+    List<SysDictPageResVo> poToPageResVo(List<SysDict> records);
 
     @Mapping(target = "updateUser", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createTime", ignore = true)
-    SysDict requestToPo(SysDictAddRequest request);
+    SysDict voToPo(SysDictAddReqVo reqVo);
 
     @Mapping(target = "updateUser", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "createTime", ignore = true)
-    SysDict requestToPo(SysDictUpdateRequest request);
+    SysDict voToPo(SysDictUpdateReqVo reqVo);
 
-    List<SysDictGetByTypeVo> poToGetByTypeVo(List<SysDict> dictList);
+    List<SysDictGetByTypeResVo> poToGetByTypeResVo(List<SysDict> dictList);
 
-    SysDictSuggestVo poToSuggestVo(SysDict po);
+    SysDictSuggestResVo poToSuggestResVo(SysDict po);
 }

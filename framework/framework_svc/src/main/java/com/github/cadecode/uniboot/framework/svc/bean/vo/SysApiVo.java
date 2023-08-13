@@ -1,10 +1,10 @@
 package com.github.cadecode.uniboot.framework.svc.bean.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.github.cadecode.uniboot.common.core.web.response.PageParams;
+import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +17,30 @@ import java.util.List;
 public class SysApiVo {
 
     @Data
-    public static class SysApiRolesVo {
+    @EqualsAndHashCode(callSuper = true)
+    public static class SysApiRolesReqVo extends PageParams {
+        private String url;
+        private String description;
+    }
+
+    @Data
+    public static class SysApiUpdateReqVo {
+        @NotNull
+        private Long id;
+        private String url;
+        private String description;
+    }
+
+    @Data
+    public static class SysApiAddReqVo {
+        @NotEmpty
+        private String url;
+        @NotEmpty
+        private String description;
+    }
+
+    @Data
+    public static class SysApiRolesResVo {
 
         private Long id;
 
@@ -38,7 +61,7 @@ public class SysApiVo {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class SysApiSwaggerVo {
+    public static class SysApiSwaggerResVo {
 
         private String url;
 

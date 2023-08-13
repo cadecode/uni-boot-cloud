@@ -1,12 +1,13 @@
 package com.github.cadecode.uniboot.framework.svc.bean.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeVo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.github.cadecode.uniboot.common.core.web.response.PageParams;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeResVo;
+import lombok.*;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,77 @@ import java.util.List;
 public class SysUserVo {
 
     @Data
-    public static class SysUserRolesVo {
+    public static class SysUserModifyInfoReqVo {
+        @NotEmpty
+        private String nickName;
+        private String phone;
+        @Email
+        private String mail;
+        private String sex;
+    }
+
+    @Data
+    public static class SysUserModifyPassReqVo {
+        @NotEmpty
+        private String oldPass;
+        @NotEmpty
+        private String newPass;
+        @NotEmpty
+        private String confirmedPass;
+    }
+
+    @Data
+    @EqualsAndHashCode(callSuper = true)
+    public static class SysUserRolesReqVo extends PageParams {
+        private String username;
+        private String nickName;
+        private List<Long> roleIdList;
+        private Boolean enableFlag;
+    }
+
+    @Data
+    public static class SysUserUpdateEnableReqVo {
+        @NotNull
+        private Long id;
+        @NotNull
+        private Boolean enableFlag;
+    }
+
+    @Data
+    public static class SysUserUpdateReqVo {
+        @NotNull
+        private Long id;
+        @NotEmpty
+        private String username;
+        @NotEmpty
+        private String nickName;
+        private String password;
+        private String phone;
+        @Email
+        private String mail;
+        @NotEmpty
+        private String sex;
+    }
+
+    @Data
+    public static class SysUserAddReqVo {
+        @NotEmpty
+        private String username;
+        @NotEmpty
+        private String nickName;
+        @NotEmpty
+        private String password;
+        private String phone;
+        @Email
+        private String mail;
+        @NotEmpty
+        private String sex;
+        @NotNull
+        private Boolean enableFlag;
+    }
+
+    @Data
+    public static class SysUserRolesResVo {
 
         private Long id;
 
@@ -56,7 +127,7 @@ public class SysUserVo {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class SysUserInfoVo {
-        private List<SysMenuTreeVo> menuList;
+    public static class SysUserInfoResVo {
+        private List<SysMenuTreeResVo> menuList;
     }
 }

@@ -2,8 +2,8 @@ package com.github.cadecode.uniboot.framework.svc.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysUser;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserRolesVo;
-import com.github.cadecode.uniboot.framework.svc.request.SysUserRequest.SysUserRolesRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserRolesReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserRolesResVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,10 +18,10 @@ import java.util.List;
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
-    List<SysUserRolesVo> selectRolesVoByUserIds(@Param("userIds") List<Long> userIds);
+    List<SysUserRolesResVo> selectRolesVoByUserIds(@Param("userIds") List<Long> userIds);
 
-    List<SysUserRolesVo> selectRolesVoByUsername(@Param("username") String username);
+    List<SysUserRolesResVo> selectRolesVoByUsername(@Param("username") String username);
 
-    List<SysUserRolesVo> selectRolesVo(@Param("request") SysUserRolesRequest request);
+    List<SysUserRolesResVo> selectRolesVo(@Param("req") SysUserRolesReqVo reqVo);
 
 }

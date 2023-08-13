@@ -6,10 +6,9 @@ import com.github.cadecode.uniboot.common.plugin.mybatis.converter.BoolToIntType
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiInner;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysLog;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysLogVo.SysLogPageVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysLogVo.SysLogPageResVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysLogVo.SysLogSaveReqVo;
 import com.github.cadecode.uniboot.framework.svc.convert.SysLogConvert;
-import com.github.cadecode.uniboot.framework.svc.request.SysLogRequest.SysLogPageRequest;
-import com.github.cadecode.uniboot.framework.svc.request.SysLogRequest.SysLogSaveRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysLogService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -26,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
+
+import static com.github.cadecode.uniboot.framework.svc.bean.vo.SysLogVo.SysLogPageReqVo;
 
 /**
  * 日志管理
@@ -46,18 +47,18 @@ public class SysLogController {
 
     @ApiOperation("查询列表")
     @PostMapping("page")
-    public PageResult<SysLogPageVo> page(@RequestBody @Valid SysLogPageRequest request) {
-        PageInfo<SysLog> pageInfo = PageHelper.startPage(request.getPageNumber(), request.getPageSize())
+    public PageResult<SysLogPageResVo> page(@RequestBody @Valid SysLogPageReqVo reqVo) {
+        PageInfo<SysLog> pageInfo = PageHelper.startPage(reqVo.getPageNumber(), reqVo.getPageSize())
                 .doSelectPageInfo(() -> logService.lambdaQuery()
-                        .ge(ObjectUtil.isNotEmpty(request.getStartTime()), SysLog::getCreateTime, request.getStartTime())
-                        .le(ObjectUtil.isNotEmpty(request.getEndTime()), SysLog::getCreateTime, request.getEndTime())
-                        .in(ObjectUtil.isNotEmpty(request.getLogTypeList()), SysLog::getLogType, request.getLogTypeList())
-                        .likeRight(ObjectUtil.isNotEmpty(request.getAccessUser()), SysLog::getAccessUser, request.getAccessUser())
-                        .like(ObjectUtil.isNotEmpty(request.getUrl()), SysLog::getUrl, request.getUrl())
-                        .eq(ObjectUtil.isNotNull(request.getExceptional()), SysLog::getExceptional, BoolToIntTypeHandler.mapping(request.getExceptional()))
+                        .ge(ObjectUtil.isNotEmpty(reqVo.getStartTime()), SysLog::getCreateTime, reqVo.getStartTime())
+                        .le(ObjectUtil.isNotEmpty(reqVo.getEndTime()), SysLog::getCreateTime, reqVo.getEndTime())
+                        .in(ObjectUtil.isNotEmpty(reqVo.getLogTypeList()), SysLog::getLogType, reqVo.getLogTypeList())
+                        .likeRight(ObjectUtil.isNotEmpty(reqVo.getAccessUser()), SysLog::getAccessUser, reqVo.getAccessUser())
+                        .like(ObjectUtil.isNotEmpty(reqVo.getUrl()), SysLog::getUrl, reqVo.getUrl())
+                        .eq(ObjectUtil.isNotNull(reqVo.getExceptional()), SysLog::getExceptional, BoolToIntTypeHandler.mapping(reqVo.getExceptional()))
                         .orderByDesc(SysLog::getCreateTime)
                         .list());
-        List<SysLogPageVo> voList = SysLogConvert.INSTANCE.poToVo(pageInfo.getList());
+        List<SysLogPageResVo> voList = SysLogConvert.INSTANCE.poToVo(pageInfo.getList());
         return new PageResult<>((int) pageInfo.getTotal(), voList);
     }
 
@@ -70,8 +71,8 @@ public class SysLogController {
     @ApiInner(onlyClient = true)
     @ApiOperation("添加")
     @PostMapping("save")
-    public boolean save(@RequestBody @NotEmpty List<SysLogSaveRequest> requestList) {
-        List<SysLog> poList = SysLogConvert.INSTANCE.requestToPo(requestList);
+    public boolean save(@RequestBody @NotEmpty List<SysLogSaveReqVo> requestList) {
+        List<SysLog> poList = SysLogConvert.INSTANCE.voToPo(requestList);
         return logService.saveBatch(poList);
     }
 }

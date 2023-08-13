@@ -1,7 +1,11 @@
 package com.github.cadecode.uniboot.framework.svc.bean.vo;
 
+import com.github.cadecode.uniboot.common.core.web.response.PageParams;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +19,61 @@ import java.util.List;
 public class SysMenuVo {
 
     @Data
-    public static class SysMenuTreeVo {
+    @EqualsAndHashCode(callSuper = true)
+    public static class SysMenuRolesReqVo extends PageParams {
+        private String routeName;
+        private String menuName;
+        private List<Long> roleIdList;
+        private Boolean enableFlag;
+        private Long parentId;
+    }
+
+    @Data
+    public static class SysMenuUpdateEnableReqVo {
+        @NotNull
+        private Long id;
+        @NotNull
+        private Boolean enableFlag;
+    }
+
+    @Data
+    public static class SysMenuUpdateReqVo {
+        @NotNull
+        private Long id;
+        private Long parentId;
+        @NotEmpty
+        private String routeName;
+        @NotEmpty
+        private String routePath;
+        private String componentPath;
+        @NotEmpty
+        private String menuName;
+        private String icon;
+        @NotNull
+        private Integer orderNum;
+    }
+
+    @Data
+    public static class SysMenuAddReqVo {
+        private Long parentId;
+        @NotEmpty
+        private String routeName;
+        @NotEmpty
+        private String routePath;
+        private String componentPath;
+        @NotEmpty
+        private String menuName;
+        @NotNull
+        private Boolean leafFlag;
+        private String icon;
+        @NotNull
+        private Integer orderNum;
+        @NotNull
+        private Boolean enableFlag;
+    }
+
+    @Data
+    public static class SysMenuTreeResVo {
         private Long id;
 
         private Long parentId;
@@ -32,11 +90,11 @@ public class SysMenuVo {
 
         private String icon;
 
-        private List<SysMenuTreeVo> children = new ArrayList<>();
+        private List<SysMenuTreeResVo> children = new ArrayList<>();
     }
 
     @Data
-    public static class SysMenuRolesVo {
+    public static class SysMenuRolesResVo {
         private Long id;
 
         private Long parentId;

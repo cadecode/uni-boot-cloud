@@ -2,8 +2,8 @@ package com.github.cadecode.uniboot.framework.svc.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysApi;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesVo;
-import com.github.cadecode.uniboot.framework.svc.request.SysApiRequest.SysApiRolesRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesResVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -16,11 +16,11 @@ import java.util.List;
  */
 public interface SysApiService extends IService<SysApi> {
 
-    List<SysApiRolesVo> listRolesVo();
+    List<SysApiRolesResVo> listRolesVo();
 
-    List<SysApiRolesVo> listRolesVoByApiIds(List<Long> userIds);
+    List<SysApiRolesResVo> listRolesVoByApiIds(List<Long> userIds);
 
-    List<SysApiRolesVo> listRolesVo(SysApiRolesRequest request);
+    List<SysApiRolesResVo> listRolesVo(SysApiRolesReqVo reqVo);
 
-    PageInfo<SysApiRolesVo> pageRolesVo(SysApiRolesRequest request);
+    PageInfo<SysApiRolesResVo> pageRolesVo(SysApiRolesReqVo reqVo);
 }

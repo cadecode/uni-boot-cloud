@@ -7,11 +7,10 @@ import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysUser;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserInfoVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.SysUserRolesVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeResVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.*;
 import com.github.cadecode.uniboot.framework.svc.convert.SysUserConvert;
-import com.github.cadecode.uniboot.framework.svc.request.SysUserRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysMenuService;
 import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
 import com.github.cadecode.uniboot.framework.svc.service.SysUserService;
@@ -58,31 +57,31 @@ public class SysUserController {
      */
     @ApiOperation("获取用户信息")
     @PostMapping("get_info")
-    public SysUserInfoVo getInfo() {
+    public SysUserInfoResVo getInfo() {
         SysUserDetails userDetails = SecurityUtil.getUserDetails(null);
-        List<SysMenuTreeVo> sysMenuTreeVos = sysMenuService.listTreeVoByRoles(userDetails.getRoles());
-        return SysUserInfoVo.builder().menuList(sysMenuTreeVos).build();
+        List<SysMenuTreeResVo> sysMenuTreeResVos = sysMenuService.listTreeVoByRoles(userDetails.getRoles());
+        return SysUserInfoResVo.builder().menuList(sysMenuTreeResVos).build();
     }
 
     @ApiOperation("修改用户信息（用户中心）")
     @PostMapping("modify_info")
-    public boolean modifyInfo(@RequestBody @Valid SysUserRequest.SysUserModifyInfoRequest request) {
+    public boolean modifyInfo(@RequestBody @Valid SysUserModifyInfoReqVo reqVo) {
         SysUserDetails userDetails = SecurityUtil.getUserDetails(null);
-        SysUser po = SysUserConvert.INSTANCE.requestToPo(request);
+        SysUser po = SysUserConvert.INSTANCE.voToPo(reqVo);
         po.setId(userDetails.getId());
         return sysUserService.updateById(po);
     }
 
     @ApiOperation("修改用户密码（用户中心）")
     @PostMapping("modify_pass")
-    public boolean modifyPass(@RequestBody @Valid SysUserRequest.SysUserModifyPassRequest request) {
+    public boolean modifyPass(@RequestBody @Valid SysUserModifyPassReqVo reqVo) {
         SysUserDetails userDetails = SecurityUtil.getUserDetails(null);
         SysUser sysUser = sysUserService.lambdaQuery().select(SysUser::getPassword)
                 .eq(SysUser::getId, userDetails.getId()).one();
-        if (ObjectUtil.notEqual(request.getNewPass(), request.getConfirmedPass())) {
+        if (ObjectUtil.notEqual(reqVo.getNewPass(), reqVo.getConfirmedPass())) {
             throw ApiException.of("新密码和确认密码不一致");
         }
-        if (!passwordEncoder.matches(request.getOldPass(), sysUser.getPassword())) {
+        if (!passwordEncoder.matches(reqVo.getOldPass(), sysUser.getPassword())) {
             throw ApiException.of("原密码错误");
         }
         return sysUserService.lambdaUpdate()
@@ -91,45 +90,45 @@ public class SysUserController {
                         .password(sysUser.getPassword())
                         .build())
                 .update(SysUser.builder()
-                        .password(passwordEncoder.encode(request.getNewPass()))
+                        .password(passwordEncoder.encode(reqVo.getNewPass()))
                         .build());
     }
 
     @ApiOperation("查询用户列表（带角色）")
     @PostMapping("page_roles_vo")
-    public PageResult<SysUserRolesVo> pageRolesVo(@RequestBody @Valid SysUserRequest.SysUserRolesRequest request) {
-        PageInfo<SysUserRolesVo> rolesVoPage = sysUserService.pageRolesVo(request);
+    public PageResult<SysUserRolesResVo> pageRolesVo(@RequestBody @Valid SysUserRolesReqVo reqVo) {
+        PageInfo<SysUserRolesResVo> rolesVoPage = sysUserService.pageRolesVo(reqVo);
         return new PageResult<>((int) rolesVoPage.getTotal(), rolesVoPage.getList());
     }
 
     @ApiOperation("更新用户启用状态")
     @PostMapping("update_enable")
-    public boolean updateEnable(@RequestBody @Valid SysUserRequest.SysUserUpdateEnableRequest request) {
+    public boolean updateEnable(@RequestBody @Valid SysUserUpdateEnableReqVo reqVo) {
         return sysUserService.updateById(SysUser.builder()
-                .id(request.getId())
-                .enableFlag(request.getEnableFlag())
+                .id(reqVo.getId())
+                .enableFlag(reqVo.getEnableFlag())
                 .build());
     }
 
     @ApiOperation("更新用户")
     @PostMapping("update")
-    public boolean update(@RequestBody @Valid SysUserRequest.SysUserUpdateRequest request) {
+    public boolean update(@RequestBody @Valid SysUserVo.SysUserUpdateReqVo reqVo) {
         String encodePass = null;
-        if (ObjectUtil.isNotEmpty(request.getPassword())) {
-            encodePass = passwordEncoder.encode(request.getPassword());
+        if (ObjectUtil.isNotEmpty(reqVo.getPassword())) {
+            encodePass = passwordEncoder.encode(reqVo.getPassword());
         }
-        SysUser po = SysUserConvert.INSTANCE.requestToPo(request);
+        SysUser po = SysUserConvert.INSTANCE.voToPo(reqVo);
         po.setPassword(encodePass);
         return sysUserService.updateById(po);
     }
 
     @ApiOperation("添加用户")
     @PostMapping("add")
-    public boolean add(@RequestBody @Valid SysUserRequest.SysUserAddRequest request) {
-        if (ObjectUtil.isNotEmpty(request.getPassword())) {
-            request.setPassword(passwordEncoder.encode(request.getPassword()));
+    public boolean add(@RequestBody @Valid SysUserAddReqVo reqVo) {
+        if (ObjectUtil.isNotEmpty(reqVo.getPassword())) {
+            reqVo.setPassword(passwordEncoder.encode(reqVo.getPassword()));
         }
-        SysUser sysUser = SysUserConvert.INSTANCE.requestToPo(request);
+        SysUser sysUser = SysUserConvert.INSTANCE.voToPo(reqVo);
         return sysUserService.save(sysUser);
     }
 
@@ -144,7 +143,7 @@ public class SysUserController {
 
     @ApiOperation("获取用户（带角色）byUserIds")
     @PostMapping("list_roles_vo_by_user_ids")
-    public List<SysUserRolesVo> listRolesVoByUserIds(@RequestBody @NotEmpty List<Long> userIdList) {
+    public List<SysUserRolesResVo> listRolesVoByUserIds(@RequestBody @NotEmpty List<Long> userIdList) {
         return sysUserService.listRolesVoByUserIds(userIdList);
     }
 

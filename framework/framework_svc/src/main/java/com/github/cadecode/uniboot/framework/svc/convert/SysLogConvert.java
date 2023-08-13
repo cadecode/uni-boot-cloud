@@ -1,8 +1,8 @@
 package com.github.cadecode.uniboot.framework.svc.convert;
 
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysLog;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysLogVo.SysLogPageVo;
-import com.github.cadecode.uniboot.framework.svc.request.SysLogRequest.SysLogSaveRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysLogVo.SysLogPageResVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysLogVo.SysLogSaveReqVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -19,7 +19,7 @@ public interface SysLogConvert {
 
     SysLogConvert INSTANCE = Mappers.getMapper(SysLogConvert.class);
 
-    List<SysLogPageVo> poToVo(List<SysLog> records);
+    List<SysLogPageResVo> poToVo(List<SysLog> records);
 
-    List<SysLog> requestToPo(List<SysLogSaveRequest> requestList);
+    List<SysLog> voToPo(List<SysLogSaveReqVo> requestList);
 }

@@ -10,7 +10,7 @@ import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandler;
 import com.github.cadecode.uniboot.common.plugin.log.model.BaseLogInfo;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogSaveDto;
+import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogSaveReqDto;
 import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.api.feignclient.SysLogClient;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;
@@ -40,7 +40,7 @@ public class ApiLogHandler extends AbstractApiLogHandler {
     /**
      * 构造 LogInfo
      */
-    public SysLogSaveDto generateLog(ProceedingJoinPoint point, BaseLogInfo baseLogInfo) {
+    public SysLogSaveReqDto generateLog(ProceedingJoinPoint point, BaseLogInfo baseLogInfo) {
         ApiLogger apiLogger = baseLogInfo.getApiLogger();
         // 解析 user-agent
         String userAgentStr = ServletUtil.getHeader(baseLogInfo.getRequest(), HttpConst.HEAD_USER_AGENT, CharsetUtil.CHARSET_UTF_8);
@@ -63,7 +63,7 @@ public class ApiLogHandler extends AbstractApiLogHandler {
                 description = apiOperation.value();
             }
         }
-        return SysLogSaveDto.builder()
+        return SysLogSaveReqDto.builder()
                 .logType(apiLogger.type())
                 .classMethod(point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName())
                 .exceptional(baseLogInfo.getExceptional())
@@ -92,7 +92,7 @@ public class ApiLogHandler extends AbstractApiLogHandler {
         if (!apiLogger.enableSave()) {
             return;
         }
-        SysLogSaveDto dto = (SysLogSaveDto) o;
+        SysLogSaveReqDto dto = (SysLogSaveReqDto) o;
         if (!apiLogger.saveParams()) {
             dto.setRequestParams(null);
         }

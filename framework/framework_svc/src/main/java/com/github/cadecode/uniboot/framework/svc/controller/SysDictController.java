@@ -4,11 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysDict;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDictVo.SysDictGetByTypeVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDictVo.SysDictPageVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDictVo.SysDictSuggestVo;
 import com.github.cadecode.uniboot.framework.svc.convert.SysDictConvert;
-import com.github.cadecode.uniboot.framework.svc.request.SysDictRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysDictService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,6 +20,8 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.github.cadecode.uniboot.framework.svc.bean.vo.SysDictVo.*;
 
 /**
  * 日志管理
@@ -44,28 +42,28 @@ public class SysDictController {
 
     @ApiOperation("查询列表")
     @PostMapping("page")
-    public PageResult<SysDictPageVo> page(@RequestBody @Valid SysDictRequest.SysDictPageRequest request) {
-        PageInfo<SysDict> pageInfo = PageHelper.startPage(request.getPageNumber(), request.getPageSize())
+    public PageResult<SysDictPageResVo> page(@RequestBody @Valid SysDictPageReqVo reqVo) {
+        PageInfo<SysDict> pageInfo = PageHelper.startPage(reqVo.getPageNumber(), reqVo.getPageSize())
                 .doSelectPageInfo(() -> sysDictService.lambdaQuery()
-                        .likeRight(ObjectUtil.isNotEmpty(request.getName()), SysDict::getName, request.getName())
-                        .likeRight(ObjectUtil.isNotEmpty(request.getType()), SysDict::getType, request.getType())
+                        .likeRight(ObjectUtil.isNotEmpty(reqVo.getName()), SysDict::getName, reqVo.getName())
+                        .likeRight(ObjectUtil.isNotEmpty(reqVo.getType()), SysDict::getType, reqVo.getType())
                         .orderByDesc(SysDict::getCreateTime)
                         .list());
-        List<SysDictPageVo> voList = SysDictConvert.INSTANCE.poToPageVo(pageInfo.getList());
+        List<SysDictPageResVo> voList = SysDictConvert.INSTANCE.poToPageResVo(pageInfo.getList());
         return new PageResult<>((int) pageInfo.getTotal(), voList);
     }
 
     @ApiOperation("添加")
     @PostMapping("add")
-    public boolean add(@RequestBody @Valid SysDictRequest.SysDictAddRequest request) {
-        SysDict po = SysDictConvert.INSTANCE.requestToPo(request);
+    public boolean add(@RequestBody @Valid SysDictAddReqVo reqVo) {
+        SysDict po = SysDictConvert.INSTANCE.voToPo(reqVo);
         return sysDictService.save(po);
     }
 
     @ApiOperation("更新")
     @PostMapping("update")
-    public boolean update(@RequestBody @Valid SysDictRequest.SysDictUpdateRequest request) {
-        SysDict po = SysDictConvert.INSTANCE.requestToPo(request);
+    public boolean update(@RequestBody @Valid SysDictUpdateReqVo reqVo) {
+        SysDict po = SysDictConvert.INSTANCE.voToPo(reqVo);
         return sysDictService.updateById(po);
     }
 
@@ -77,25 +75,25 @@ public class SysDictController {
 
     @ApiOperation("查询 ByType")
     @GetMapping("list_by_type")
-    public List<SysDictGetByTypeVo> listByType(@RequestParam String type) {
+    public List<SysDictGetByTypeResVo> listByType(@RequestParam String type) {
         List<SysDict> dictList = sysDictService.lambdaQuery().eq(SysDict::getType, type).list();
-        return SysDictConvert.INSTANCE.poToGetByTypeVo(dictList);
+        return SysDictConvert.INSTANCE.poToGetByTypeResVo(dictList);
     }
 
     @ApiOperation("查询 ByIds")
     @PostMapping("list_by_ids")
-    public List<SysDictPageVo> listByIds(@RequestBody @NotEmpty List<Long> idList) {
+    public List<SysDictPageResVo> listByIds(@RequestBody @NotEmpty List<Long> idList) {
         List<SysDict> dictList = sysDictService.listByIds(idList);
-        return SysDictConvert.INSTANCE.poToPageVo(dictList);
+        return SysDictConvert.INSTANCE.poToPageResVo(dictList);
     }
 
     @ApiOperation("查询字典类型种类")
     @PostMapping("list_type")
-    public List<SysDictSuggestVo> listType() {
+    public List<SysDictSuggestResVo> listType() {
         List<SysDict> dictList = sysDictService.lambdaQuery().select(SysDict::getName, SysDict::getType).list();
         return dictList.stream()
-                .map(SysDictConvert.INSTANCE::poToSuggestVo)
-                .sorted(Comparator.comparing(SysDictSuggestVo::getType))
+                .map(SysDictConvert.INSTANCE::poToSuggestResVo)
+                .sorted(Comparator.comparing(SysDictSuggestResVo::getType))
                 .distinct()
                 .collect(Collectors.toList());
     }

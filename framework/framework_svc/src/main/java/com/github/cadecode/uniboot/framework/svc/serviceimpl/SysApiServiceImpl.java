@@ -2,9 +2,9 @@ package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysApi;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesResVo;
 import com.github.cadecode.uniboot.framework.svc.mapper.SysApiMapper;
-import com.github.cadecode.uniboot.framework.svc.request.SysApiRequest.SysApiRolesRequest;
 import com.github.cadecode.uniboot.framework.svc.service.SysApiService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -26,23 +26,23 @@ public class SysApiServiceImpl extends ServiceImpl<SysApiMapper, SysApi> impleme
     private final SysApiMapper sysApiMapper;
 
     @Override
-    public List<SysApiRolesVo> listRolesVo() {
+    public List<SysApiRolesResVo> listRolesVo() {
         return sysApiMapper.selectRolesVo(null);
     }
 
     @Override
-    public List<SysApiRolesVo> listRolesVoByApiIds(List<Long> userIds) {
+    public List<SysApiRolesResVo> listRolesVoByApiIds(List<Long> userIds) {
         return sysApiMapper.selectRolesVoByApiIds(userIds);
     }
 
     @Override
-    public List<SysApiRolesVo> listRolesVo(SysApiRolesRequest request) {
-        return sysApiMapper.selectRolesVo(request);
+    public List<SysApiRolesResVo> listRolesVo(SysApiRolesReqVo reqVo) {
+        return sysApiMapper.selectRolesVo(reqVo);
     }
 
     @Override
-    public PageInfo<SysApiRolesVo> pageRolesVo(SysApiRolesRequest request) {
-        return PageHelper.startPage(request.getPageNumber(), request.getPageSize())
-                .doSelectPageInfo(() -> listRolesVo(request));
+    public PageInfo<SysApiRolesResVo> pageRolesVo(SysApiRolesReqVo reqVo) {
+        return PageHelper.startPage(reqVo.getPageNumber(), reqVo.getPageSize())
+                .doSelectPageInfo(() -> listRolesVo(reqVo));
     }
 }

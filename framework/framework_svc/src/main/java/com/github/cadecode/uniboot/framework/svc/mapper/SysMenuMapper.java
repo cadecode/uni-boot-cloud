@@ -2,8 +2,8 @@ package com.github.cadecode.uniboot.framework.svc.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesVo;
-import com.github.cadecode.uniboot.framework.svc.request.SysMenuRequest.SysMenuRolesRequest;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesResVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,8 +20,8 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
     List<SysMenu> selectByRoles(@Param("roleCodes") List<String> roleCodes);
 
-    List<SysMenuRolesVo> selectRolesVo(@Param("request") SysMenuRolesRequest request);
+    List<SysMenuRolesResVo> selectRolesVo(@Param("req") SysMenuRolesReqVo reqVo);
 
-    List<SysMenuRolesVo> selectRolesVoByMenuIds(@Param("menuIds") List<Long> menuIds);
+    List<SysMenuRolesResVo> selectRolesVoByMenuIds(@Param("menuIds") List<Long> menuIds);
 
 }
