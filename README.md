@@ -63,9 +63,6 @@
 1. 代码结构
 
    ```sh
-   ├── application
-   ├── business
-   │   ├── example
    ├── common
    │   ├── core
    │   ├── plugin
@@ -80,6 +77,13 @@
    │   └── pom.xml
    ├── dependencies
    ├── framework
+   │   ├── framework_api
+   │   ├── framework_base
+   │   ├── framework_svc
+   ├── example
+   │   ├── example_api
+   │   ├── example_svc
+   ├── gateway
    ├── LICENSE
    ├── pom.xml
    └── README.md
@@ -88,9 +92,6 @@
 2. 目录介绍
 
    ```sh
-   application                 # 项目启动入口，包含项目配置文件
-   business                    # 业务模块
-   business/example             # 业务模块示例，包含用于模拟测试的 Controller、Service 等，可丢弃
    common                      # 通用模块
    common/core                 # 通用核心模块，包含公共注解、常量、异常、工具类、抽象模板等
    common/plugin               # 通用插件模块，用于抽离各种组件、第三方库
@@ -102,7 +103,14 @@
    common/plugin/mybatis       # mybatis 模块，集成 MybatisPlus、PageHelper
    common/plugin/swagger       # swagger 模块，集成 knife4j，动态配置 swagger 的 module
    dependencies                # 依赖管理模块，作为父模块，管理全局依赖版本
-   framework                   # 系统功能模块，提供相关框架配置、基础功能支持，如用户/菜单/角色/字典等管理功能等
+   framework                   # 框架模块
+   framework/framework_api     # 框架 feign api
+   framework/framework_base    # 框架通用配置
+   framework/framework_svc     # 框架服务，提供基础功能支持，如用户/菜单/角色/字典等管理功能等
+   example                     # 示例模块
+   example/example_api         # 示例 feign api
+   example/example_svc         # 示例服务
+   gateway                     # 网关服务
    ```
 
 ## 演示截图
@@ -110,3 +118,4 @@
 参见配套前端项目
 
 [uni-boot-admin-vue](https://github.com/cadecode/uni-boot-admin-vue)
+
