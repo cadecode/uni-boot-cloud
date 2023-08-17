@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Configuration
 @EnableConfigurationProperties(DynamicDSProperties.class)
-@ConditionalOnProperty(name = "uni-boot.config.dynamic-ds-on", havingValue = "true")
-public class DynamicDSConfig {
+@ConditionalOnProperty(name = "uni-boot.dynamic-ds.enable", havingValue = "true")
+public class DynamicDSAutoConfig {
 
     private final DynamicDSProperties properties;
 

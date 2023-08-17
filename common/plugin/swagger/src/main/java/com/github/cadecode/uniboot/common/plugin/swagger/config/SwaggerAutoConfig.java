@@ -22,7 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @Import(SwaggerRegisterKit.class)
 @EnableConfigurationProperties(SwaggerProperties.class)
-@ConditionalOnProperty(name = "uni-boot.config.swagger-on", havingValue = "true")
+@ConditionalOnProperty(name = "uni-boot.swagger.enable", havingValue = "true")
 public class SwaggerAutoConfig implements WebMvcConfigurer, InitializingBean {
 
     private final SwaggerProperties swaggerProperties;
