@@ -113,16 +113,12 @@ management:
 
 # uni-boot
 uni-boot:
-  config:
-    name: ${spring.application.name}
-    version: 2023.1.0
-    swagger-on: true
-    dynamic-ds-on: false
   swagger:
+    enable: true
+    version: ${uni-boot.config.version}
     name: Cade Li
     url: https://github.com/cadecode/uni-boot-admin
     email: cadecode@foxmail.com
-    version: ${uni-boot.config.version}
     module:
       default: com.github.cadecode.uniboot
   security:
