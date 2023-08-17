@@ -15,6 +15,8 @@ import java.util.Map;
 @ConfigurationProperties("uni-boot.swagger")
 public class SwaggerProperties {
 
+    private boolean enable;
+
     /**
      * 模块和包名 MAP
      */
