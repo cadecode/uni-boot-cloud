@@ -21,6 +21,7 @@
         <module>mybatis</module>
         <module>swagger</module>
         <module>concurrent</module>
+        <module>mq</module>
     </modules>
 
     <dependencies>
