@@ -299,25 +299,6 @@ export function listRoleUnionVoByRoleIds(data) {
   });
 }
 
-export function pageLog(data) {
-  return request({
-    url: '/framework/system/log/page',
-    method: 'post',
-    data
-  });
-}
-
-export function deleteLog(data) {
-  return request({
-    url: '/framework/system/log/delete',
-    method: 'post',
-    data
-  }, {
-    messageFn: res => res.data,
-    messagePrefix: '删除日志'
-  });
-}
-
 export function pageDict(data) {
   return request({
     url: '/framework/system/dict/page',

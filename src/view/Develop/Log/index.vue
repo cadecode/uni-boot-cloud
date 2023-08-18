@@ -2,6 +2,17 @@
   <div class="app-container log-management-container">
     <div class="log-management-filter">
       <el-form ref="logsFilterForm" size="small" inline :model="logsFilterForm.data" :rules="logsFilterForm.rules">
+        <el-form-item label="服务" prop="serviceUrl">
+          <el-select v-model="logsFilterForm.data.serviceUrl" collapse-tags filterable placeholder="请选择">
+            <el-option
+              v-for="item in logsFilterForm.option.serviceUrl"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        <br>
         <el-form-item label="日期" prop="createTimeRange">
           <el-date-picker
             v-model="logsFilterForm.data.createTimeRange"
@@ -109,7 +120,8 @@
   </div>
 </template>
 <script>
-import {deleteLog, listDictByType, pageLog} from '@/api/system';
+import {listDictByType} from '@/api/system';
+import {deleteLog, pageLog} from '@/api/develop';
 
 export default {
   name: 'VLogManagement',
@@ -117,6 +129,7 @@ export default {
     return {
       logsFilterForm: {
         data: {
+          serviceUrl: null,
           createTimeRange: [],
           logTypeList: null,
           url: null,
@@ -125,7 +138,8 @@ export default {
         },
         rules: {},
         option: {
-          logType: []
+          logType: [],
+          serviceUrl: []
         }
       },
       logListTable: {
@@ -165,10 +179,19 @@ export default {
     }
   },
   created() {
+    this.listServiceUrl();
     this.listLogType();
-    this.listLogs();
   },
   methods: {
+    listServiceUrl() {
+      listDictByType('serviceUrl').then(res => {
+        this.logsFilterForm.option.serviceUrl = res.data;
+        const defaultUrl = this.logsFilterForm.option.serviceUrl.filter(o => o.defaultFlag)[0];
+        if (defaultUrl) {
+          this.logsFilterForm.data.serviceUrl = defaultUrl.value;
+        }
+      });
+    },
     listLogType() {
       listDictByType('logType').then(res => {
         this.logsFilterForm.option.logType = res.data;
@@ -189,13 +212,13 @@ export default {
         pageSize: this.logListTable.page.pageSize
       };
       // 查询日志列表
-      return pageLog(data).then(res => {
+      return pageLog(this.logsFilterForm.data.serviceUrl, data).then(res => {
         this.logListTable.data = res.data.records;
         this.logListTable.page.total = res.data.total;
       });
     },
     deleteLog(index, row) {
-      deleteLog([row.id]).then(res => {
+      deleteLog(this.logsFilterForm.data.serviceUrl, [row.id]).then(res => {
         if (res.data) {
           this.logListTable.data.splice(index, 1);
         }
