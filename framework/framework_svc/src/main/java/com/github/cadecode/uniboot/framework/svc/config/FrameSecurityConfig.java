@@ -110,7 +110,5 @@ public class FrameSecurityConfig extends SecurityConfig {
         ignoring.antMatchers("/auth/login");
         // 放行接口权限表查询接口
         ignoring.antMatchers("/system/api/list_roles_vo");
-        // 放行系统日志写入接口
-        ignoring.antMatchers("/system/log/save");
     }
 }
