@@ -2,7 +2,6 @@ package com.github.cadecode.uniboot.framework.base.plugin.convert;
 
 import com.github.cadecode.uniboot.framework.base.plugin.bean.po.PlgLog;
 import com.github.cadecode.uniboot.framework.base.plugin.bean.vo.PlgLogVo.PlgLogPageResVo;
-import com.github.cadecode.uniboot.framework.base.plugin.bean.vo.PlgLogVo.PlgLogSaveReqVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -21,5 +20,4 @@ public interface PlgLogConvert {
 
     List<PlgLogPageResVo> poToVo(List<PlgLog> records);
 
-    List<PlgLog> voToPo(List<PlgLogSaveReqVo> requestList);
 }
