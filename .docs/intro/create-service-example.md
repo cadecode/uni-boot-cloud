@@ -1,5 +1,11 @@
 ## 服务创建示例
 
+### 创建数据库
+
+sql/framework 目录下的 sql 是 framework 服务所需的
+
+若新建服务依赖了 uni-boot-framework-base，且使用了其他数据库，则需要执行 all_svc.sql
+
 ### 创建模块
 
 创建一个模块 uni-boot-xxx，继承自 uni-boot-dependencies
@@ -23,6 +29,7 @@ api 模块供外部调用、DTO 共享，svc 模块提供基础服务
 本项目子模块版本维护在根 pom，第三方模块版本维护在 uni-boot-dependencies
 
 api 模块基本依赖：
+
 ```xml
 
 <dependencies>
@@ -44,6 +51,7 @@ api 模块基本依赖：
 ```
 
 svc 模块基本依赖：
+
 ```xml
 
 <project>
@@ -144,6 +152,7 @@ public class UniXxxApplication extends SpringBootServletInitializer {
 ## 配置文件
 
 bootstrap.yml
+
 ```yaml
 logging:
   file:
@@ -171,7 +180,6 @@ spring:
           - shared-config-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
 ```
 
-logback-spring.xml
-```xml
-<!--略-->
-```
+uni-boot-xxx-dev.yml dev 环境配置，推荐托管到 nacos 配置中心，参考 application-config-example.md
+
+logback-spring.xml 略
