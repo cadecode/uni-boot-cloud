@@ -29,45 +29,6 @@ public class PlgLogVo {
     }
 
     @Data
-    public static class PlgLogSaveReqVo {
-
-        private String logType;
-
-        private String url;
-
-        private Boolean exceptional;
-
-        private String accessUser;
-
-        private String description;
-
-        private String classMethod;
-
-        private String threadId;
-
-        private String threadName;
-
-        private String ip;
-
-        private String httpMethod;
-
-        private String requestParams;
-
-        private String result;
-
-        private Long timeCost;
-
-        private String os;
-
-        private String browser;
-
-        private String userAgent;
-
-        private String traceId;
-
-    }
-
-    @Data
     public static class PlgLogPageResVo {
 
         private Long id;
