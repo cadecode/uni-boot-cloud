@@ -169,12 +169,7 @@ spring:
       primary: master
       datasource:
         master:
-          url: jdbc:p6spy:mysql://localhost:3306/demo?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-          username: root
-          password: ENC(donQ3DazAc4/6B+NFSRdxw==)
-          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-        slave1:
-          url: jdbc:p6spy:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          url: jdbc:p6spy:mysql://localhost:3306/uni_boot_dev?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
           username: root
           password: ENC(donQ3DazAc4/6B+NFSRdxw==)
           driver-class-name: com.p6spy.engine.spy.P6SpyDriver
@@ -210,12 +205,7 @@ spring:
       primary: master
       datasource:
         master:
-          url: jdbc:p6spy:mysql://localhost:3306/demo?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-          username: root
-          password: ENC(donQ3DazAc4/6B+NFSRdxw==)
-          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-        slave1:
-          url: jdbc:p6spy:mysql://localhost:3306/demo_cluster?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          url: jdbc:p6spy:mysql://localhost:3306/uni_boot_dev_example?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
           username: root
           password: ENC(donQ3DazAc4/6B+NFSRdxw==)
           driver-class-name: com.p6spy.engine.spy.P6SpyDriver
