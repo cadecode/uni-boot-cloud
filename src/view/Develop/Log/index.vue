@@ -3,7 +3,7 @@
     <div class="log-management-filter">
       <el-form ref="logsFilterForm" size="small" inline :model="logsFilterForm.data" :rules="logsFilterForm.rules">
         <el-form-item label="服务" prop="serviceUrl">
-          <el-select v-model="logsFilterForm.data.serviceUrl" collapse-tags filterable placeholder="请选择">
+          <el-select v-model="logsFilterForm.data.serviceUrl" filterable placeholder="请选择">
             <el-option
               v-for="item in logsFilterForm.option.serviceUrl"
               :key="item.value"
@@ -45,7 +45,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="listLogs">搜索</el-button>
+          <el-button type="primary" @click="pageLogs(1)">搜索</el-button>
           <el-button @click="() => this.$refs.logsFilterForm.resetFields()">重置</el-button>
         </el-form-item>
       </el-form>
@@ -54,7 +54,7 @@
       <el-tab-pane label="日志列表">
         <el-table
           ref="logListTable"
-          height="calc(100vh - 221px)"
+          height="calc(100vh - 272px)"
           :data="logListTable.data"
           highlight-current-row
           @current-change="logListTableClick"
@@ -136,7 +136,9 @@ export default {
           accessUser: null,
           exceptional: null
         },
-        rules: {},
+        rules: {
+          serviceUrl: [{required: true, message: '请选择服务', trigger: 'blur'}]
+        },
         option: {
           logType: [],
           serviceUrl: []
@@ -197,11 +199,6 @@ export default {
         this.logsFilterForm.option.logType = res.data;
       });
     },
-    listLogs() {
-      this.pageLogs(1).then(() => {
-        this.logListTable.page.pageNumber = 1;
-      });
-    },
     pageLogs(currPage) {
       // 分页插件回调传递当前页号
       const data = {
@@ -211,10 +208,18 @@ export default {
         pageNumber: currPage,
         pageSize: this.logListTable.page.pageSize
       };
-      // 查询日志列表
-      return pageLog(this.logsFilterForm.data.serviceUrl, data).then(res => {
-        this.logListTable.data = res.data.records;
-        this.logListTable.page.total = res.data.total;
+      this.$refs.logsFilterForm.validate((valid) => {
+        if (valid) {
+          // 查询日志列表
+          pageLog(this.logsFilterForm.data.serviceUrl, data).then(res => {
+            this.logListTable.data = res.data.records;
+            this.logListTable.page.total = res.data.total;
+            // 重置页码
+            if (currPage === 1) {
+              this.logListTable.page.pageNumber = 1;
+            }
+          });
+        }
       });
     },
     deleteLog(index, row) {
@@ -239,7 +244,7 @@ export default {
   }
 
   .log-management-log {
-    height: calc(100vh - 131px);
+    height: calc(100vh - 182px);
     width: 100%;
     vertical-align: top;
   }
