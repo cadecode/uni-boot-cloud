@@ -16,7 +16,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="listApis">搜索</el-button>
+          <el-button type="primary" @click="pageApis(1)">搜索</el-button>
           <el-button @click="() => this.$refs.apisFilterForm.resetFields()">重置</el-button>
           <el-button type="info" @click="addApiForm.showDialog = true">添加API</el-button>
         </el-form-item>
@@ -191,15 +191,10 @@ export default {
     };
   },
   created() {
-    this.listApis();
+    this.pageApis(1);
     this.loadRoleTree();
   },
   methods: {
-    listApis() {
-      this.pageApis(1).then(() => {
-        this.apiListTable.page.pageNumber = 1;
-      });
-    },
     pageApis(currPage) {
       // 分页插件回调传递当前页号
       const data = {
@@ -208,9 +203,12 @@ export default {
         pageSize: this.apiListTable.page.pageSize
       };
       // 查询API列表
-      return pageApiRolesVo(data).then(res => {
+      pageApiRolesVo(data).then(res => {
         this.apiListTable.data = res.data.records;
         this.apiListTable.page.total = res.data.total;
+        if (currPage === 1) {
+          this.apiListTable.page.pageNumber = 1;
+        }
       });
     },
     // 修改API后刷新列表该行内容
@@ -251,7 +249,7 @@ export default {
             if (res.data) {
               this.addApiForm.showDialog = false;
               // 从后端刷新列表
-              this.listApis();
+              this.pageApis(1);
             }
           });
         }

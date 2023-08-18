@@ -9,7 +9,7 @@
           <el-input v-model="rolesFilterForm.data.name" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="listRoles">搜索</el-button>
+          <el-button type="primary" @click="pageRoles(1)">搜索</el-button>
           <el-button @click="() => this.$refs.rolesFilterForm.resetFields()">重置</el-button>
           <el-button type="info" @click="addRoleForm.showDialog = true">添加角色</el-button>
         </el-form-item>
@@ -218,15 +218,10 @@ export default {
     };
   },
   created() {
-    this.listRoles();
+    this.pageRoles(1);
     this.loadApiTree();
   },
   methods: {
-    listRoles() {
-      this.pageRoles(1).then(() => {
-        this.roleListTable.page.pageNumber = 1;
-      });
-    },
     pageRoles(currPage) {
       // 分页插件回调传递当前页号
       const data = {
@@ -235,9 +230,12 @@ export default {
         pageSize: this.roleListTable.page.pageSize
       };
       // 查询角色列表
-      return pageRoleUnionVo(data).then(res => {
+      pageRoleUnionVo(data).then(res => {
         this.roleListTable.data = res.data.records;
         this.roleListTable.page.total = res.data.total;
+        if (currPage === 1) {
+          this.roleListTable.page.pageNumber = 1;
+        }
       });
     },
     // 修改角色后刷新列表该行内容
@@ -278,7 +276,7 @@ export default {
             if (res.data) {
               this.addRoleForm.showDialog = false;
               // 从后端刷新列表
-              this.listRoles();
+              this.pageRoles(1);
             }
           });
         }

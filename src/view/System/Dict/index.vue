@@ -9,7 +9,7 @@
           <el-input v-model="dictFilterForm.data.type" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="listDict">搜索</el-button>
+          <el-button type="primary" @click="pageDict(1)">搜索</el-button>
           <el-button @click="() => this.$refs.dictFilterForm.resetFields()">重置</el-button>
           <el-button type="info" @click="addDictForm.showDialog = true">添加字典</el-button>
         </el-form-item>
@@ -229,14 +229,9 @@ export default {
     }
   },
   created() {
-    this.listDict();
+    this.pageDict(1);
   },
   methods: {
-    listDict() {
-      this.pageDict(1).then(() => {
-        this.dictListTable.page.pageNumber = 1;
-      });
-    },
     pageDict(currPage) {
       // 分页插件回调传递当前页号
       const data = {
@@ -245,9 +240,12 @@ export default {
         pageSize: this.dictListTable.page.pageSize
       };
       // 查询字典列表
-      return pageDict(data).then(res => {
+      pageDict(data).then(res => {
         this.dictListTable.data = res.data.records;
         this.dictListTable.page.total = res.data.total;
+        if (currPage === 1) {
+          this.dictListTable.page.pageNumber = 1;
+        }
       });
     },
     deleteDict(index, row) {
@@ -296,7 +294,7 @@ export default {
               this.addDictForm.showDialog = false;
               // 重新拉取建议列表
               this.addDictForm.urlSuggestList = null;
-              this.listDict();
+              this.pageDict(1);
             }
           });
         }

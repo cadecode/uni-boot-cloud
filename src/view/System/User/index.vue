@@ -25,7 +25,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="listUsers">搜索</el-button>
+          <el-button type="primary" @click="pageUsers(1)">搜索</el-button>
           <el-button @click="() => this.$refs.usersFilterForm.resetFields()">重置</el-button>
           <el-button type="info" @click="addUserForm.showDialog = true">添加用户</el-button>
         </el-form-item>
@@ -251,15 +251,10 @@ export default {
     };
   },
   created() {
-    this.listUsers();
+    this.pageUsers(1);
     this.loadRoleTree();
   },
   methods: {
-    listUsers() {
-      this.pageUsers(1).then(() => {
-        this.userListTable.page.pageNumber = 1;
-      });
-    },
     pageUsers(currPage) {
       // 分页插件回调传递当前页号
       const data = {
@@ -268,9 +263,12 @@ export default {
         pageSize: this.userListTable.page.pageSize
       };
       // 查询用户列表
-      return pageUserRolesVo(data).then(res => {
+      pageUserRolesVo(data).then(res => {
         this.userListTable.data = res.data.records;
         this.userListTable.page.total = res.data.total;
+        if (currPage === 1) {
+          this.userListTable.page.pageNumber = 1;
+        }
       });
     },
     // 修改用户后刷新列表该行内容
@@ -323,7 +321,7 @@ export default {
             if (res.data) {
               this.addUserForm.showDialog = false;
               // 从后端刷新列表
-              this.listUsers();
+              this.pageUsers(1);
             }
           });
         }

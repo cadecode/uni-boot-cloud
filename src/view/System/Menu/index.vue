@@ -37,7 +37,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="listMenus">搜索</el-button>
+          <el-button type="primary" @click="pageMenus(1)">搜索</el-button>
           <el-button @click="() => this.$refs.menusFilterForm.resetFields()">重置</el-button>
           <el-button type="info" @click="addMenu">添加根菜单</el-button>
         </el-form-item>
@@ -337,18 +337,10 @@ export default {
     };
   },
   created() {
-    this.listMenus();
+    this.pageMenus(1);
     this.loadRoleTree();
   },
   methods: {
-    listMenus() {
-      this.pageMenus(1).then(() => {
-        this.menuListTable.page.pageNumber = 1;
-        // 重置时清空展开内容
-        this.$refs.menuListTable.layout.store.states.lazyTreeNodeMap = {};
-        this.$refs.menuListTable.layout.store.states.treeData = {};
-      });
-    },
     pageMenus(currPage) {
       // 分页插件回调传递当前页号
       const data = {
@@ -357,13 +349,19 @@ export default {
         pageSize: this.menuListTable.page.pageSize
       };
       // 查询用户列表
-      return pageMenuRolesVo(data).then(res => {
+      pageMenuRolesVo(data).then(res => {
         this.menuListTable.data = res.data.records;
         // 设置 hasChildren 辅助表格树形展示
         this.menuListTable.data.forEach(o => {
           o.hasChildren = !o.leafFlag;
         });
         this.menuListTable.page.total = res.data.total;
+        if (currPage === 1) {
+          this.menuListTable.page.pageNumber = 1;
+          // 重置时清空展开内容
+          this.$refs.menuListTable.layout.store.states.lazyTreeNodeMap = {};
+          this.$refs.menuListTable.layout.store.states.treeData = {};
+        }
       });
     },
     // 修改用户后刷新列表该行内容
@@ -434,7 +432,7 @@ export default {
           if (res.data) {
             // 若添加的是根菜单
             if (!this.addMenuForm.row) {
-              this.listMenus();
+              this.pageMenus(1);
               this.addMenuForm.showDialog = false;
               return;
             }
