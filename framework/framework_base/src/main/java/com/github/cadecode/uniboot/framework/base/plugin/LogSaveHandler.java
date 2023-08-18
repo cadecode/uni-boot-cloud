@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 
 /**
- * Api Log 处理器实现
+ * Log 处理器实现-save
  *
  * @author Cade Li
  * @since 2023/6/8
@@ -33,7 +33,7 @@ import java.util.Collections;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class ApiLogHandler extends AbstractApiLogHandler {
+public class LogSaveHandler extends AbstractApiLogHandler {
 
     private final SysLogClient sysLogClient;
 
