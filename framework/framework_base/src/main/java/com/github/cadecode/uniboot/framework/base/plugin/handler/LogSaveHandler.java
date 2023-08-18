@@ -10,9 +10,9 @@ import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandler;
 import com.github.cadecode.uniboot.common.plugin.log.model.BaseLogInfo;
-import com.github.cadecode.uniboot.framework.api.bean.dto.SysLogDto.SysLogSaveReqDto;
 import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
-import com.github.cadecode.uniboot.framework.api.feignclient.SysLogClient;
+import com.github.cadecode.uniboot.framework.base.plugin.bean.po.PlgLog;
+import com.github.cadecode.uniboot.framework.base.plugin.service.PlgLogService;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
 
 /**
  * Log 处理器实现-save
@@ -35,12 +33,12 @@ import java.util.Collections;
 @Component
 public class LogSaveHandler extends AbstractApiLogHandler {
 
-    private final SysLogClient sysLogClient;
+    private final PlgLogService logService;
 
     /**
-     * 构造 LogInfo
+     * 构造 Log 信息对象
      */
-    public SysLogSaveReqDto generateLog(ProceedingJoinPoint point, BaseLogInfo baseLogInfo) {
+    public PlgLog generateLog(ProceedingJoinPoint point, BaseLogInfo baseLogInfo) {
         ApiLogger apiLogger = baseLogInfo.getApiLogger();
         // 解析 user-agent
         String userAgentStr = ServletUtil.getHeader(baseLogInfo.getRequest(), HttpConst.HEAD_USER_AGENT, CharsetUtil.CHARSET_UTF_8);
@@ -63,7 +61,7 @@ public class LogSaveHandler extends AbstractApiLogHandler {
                 description = apiOperation.value();
             }
         }
-        return SysLogSaveReqDto.builder()
+        return PlgLog.builder()
                 .logType(apiLogger.type())
                 .classMethod(point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName())
                 .exceptional(baseLogInfo.getExceptional())
@@ -92,15 +90,15 @@ public class LogSaveHandler extends AbstractApiLogHandler {
         if (!apiLogger.enableSave()) {
             return;
         }
-        SysLogSaveReqDto dto = (SysLogSaveReqDto) o;
+        PlgLog po = (PlgLog) o;
         if (!apiLogger.saveParams()) {
-            dto.setRequestParams(null);
+            po.setRequestParams(null);
         }
         if (!apiLogger.saveResult()) {
-            dto.setResult(null);
+            po.setResult(null);
         }
         try {
-            sysLogClient.save(Collections.singletonList(dto));
+            logService.save(po);
         } catch (Exception e) {
             log.error("API log [{}]: save fail", apiLogger.type(), e);
         }

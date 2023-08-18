@@ -4,11 +4,9 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.common.plugin.mybatis.converter.BoolToIntTypeHandler;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
-import com.github.cadecode.uniboot.framework.base.annotation.ApiInner;
 import com.github.cadecode.uniboot.framework.base.plugin.bean.po.PlgLog;
 import com.github.cadecode.uniboot.framework.base.plugin.bean.vo.PlgLogVo;
 import com.github.cadecode.uniboot.framework.base.plugin.bean.vo.PlgLogVo.PlgLogPageResVo;
-import com.github.cadecode.uniboot.framework.base.plugin.bean.vo.PlgLogVo.PlgLogSaveReqVo;
 import com.github.cadecode.uniboot.framework.base.plugin.convert.PlgLogConvert;
 import com.github.cadecode.uniboot.framework.base.plugin.service.PlgLogService;
 import com.github.pagehelper.PageHelper;
@@ -65,13 +63,5 @@ public class PlgLogController {
     @PostMapping("delete")
     public boolean delete(@RequestBody @NotEmpty List<Long> idList) {
         return logService.removeBatchByIds(idList);
-    }
-
-    @ApiInner(onlyClient = true)
-    @ApiOperation("添加")
-    @PostMapping("save")
-    public boolean save(@RequestBody @NotEmpty List<PlgLogSaveReqVo> requestList) {
-        List<PlgLog> poList = PlgLogConvert.INSTANCE.voToPo(requestList);
-        return logService.saveBatch(poList);
     }
 }
