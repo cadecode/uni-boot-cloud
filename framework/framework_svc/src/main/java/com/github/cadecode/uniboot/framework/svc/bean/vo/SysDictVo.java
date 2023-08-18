@@ -79,6 +79,7 @@ public class SysDictVo {
         private String type;
         private String label;
         private String value;
+        private Boolean defaultFlag;
         private String description;
         private Integer orderNum;
     }
