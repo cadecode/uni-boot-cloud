@@ -33,10 +33,6 @@
         </dependency>
         <dependency>
             <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-log</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
             <artifactId>uni-boot-common-plugin-cache</artifactId>
         </dependency>
     </dependencies>
