@@ -23,7 +23,7 @@
           />
         </el-form-item>
         <el-form-item label="日志类型" prop="logTypeList">
-          <el-select v-model="logsFilterForm.data.logTypeList" collapse-tags multiple filterable placeholder="请选择">
+          <el-select v-model="logsFilterForm.data.logTypeList" clearable collapse-tags multiple filterable placeholder="请选择">
             <el-option
               v-for="item in logsFilterForm.option.logType"
               :key="item.value"
