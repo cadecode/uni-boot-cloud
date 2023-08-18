@@ -1,4 +1,4 @@
-package com.github.cadecode.uniboot.framework.svc.bean.po;
+package com.github.cadecode.uniboot.framework.base.plugin.bean.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.github.cadecode.uniboot.common.plugin.mybatis.converter.BoolToIntTypeHandler;
@@ -20,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @TableName(autoResultMap = true)
-public class SysLog {
+public class PlgLog {
 
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;

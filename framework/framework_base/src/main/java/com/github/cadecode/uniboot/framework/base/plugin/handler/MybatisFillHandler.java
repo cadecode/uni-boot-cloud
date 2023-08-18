@@ -1,4 +1,4 @@
-package com.github.cadecode.uniboot.framework.base.plugin;
+package com.github.cadecode.uniboot.framework.base.plugin.handler;
 
 import com.github.cadecode.uniboot.common.plugin.mybatis.handler.AbstractObjectFillHandler;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;

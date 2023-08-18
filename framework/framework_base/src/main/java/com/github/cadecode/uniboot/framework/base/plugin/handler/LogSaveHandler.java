@@ -1,4 +1,4 @@
-package com.github.cadecode.uniboot.framework.base.plugin;
+package com.github.cadecode.uniboot.framework.base.plugin.handler;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.CharsetUtil;

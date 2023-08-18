@@ -1,4 +1,4 @@
-package com.github.cadecode.uniboot.framework.svc.bean.vo;
+package com.github.cadecode.uniboot.framework.base.plugin.bean.vo;
 
 import com.github.cadecode.uniboot.common.core.web.response.PageParams;
 import lombok.Data;
@@ -13,12 +13,11 @@ import java.util.List;
  * @author Cade Li
  * @since 2023/5/26
  */
-public class SysLogVo {
-
+public class PlgLogVo {
 
     @Data
     @EqualsAndHashCode(callSuper = true)
-    public static class SysLogPageReqVo extends PageParams {
+    public static class PlgLogPageReqVo extends PageParams {
 
         private Date startTime;
         private Date endTime;
@@ -30,7 +29,7 @@ public class SysLogVo {
     }
 
     @Data
-    public static class SysLogSaveReqVo {
+    public static class PlgLogSaveReqVo {
 
         private String logType;
 
@@ -69,7 +68,7 @@ public class SysLogVo {
     }
 
     @Data
-    public static class SysLogPageResVo {
+    public static class PlgLogPageResVo {
 
         private Long id;
 
