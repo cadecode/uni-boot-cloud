@@ -48,6 +48,7 @@
               </el-button>
             </template>
           </el-table-column>
+          <el-table-column property="orderNum" label="排序" width="100px" />
           <el-table-column property="description" label="描述" width="400px" show-overflow-tooltip />
         </el-table>
         <el-pagination
