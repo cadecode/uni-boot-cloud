@@ -45,14 +45,14 @@ public class RabbitAutoConfig implements BeanFactoryPostProcessor, EnvironmentAw
             rabbitProperties.getExchanges().forEach(o -> {
                 Exchange exchange = o.toBuilder().build();
                 beanFactory.registerSingleton(o.getName(), exchange);
-                log.info("Rabbit auto register exchange, {}", o.getName());
+                log.info("Rabbit auto register exchange, {}, {}", o.getName(), o);
             });
         }
         if (ObjectUtil.isNotEmpty(rabbitProperties.getQueues())) {
             rabbitProperties.getQueues().forEach(o -> {
                 Queue queue = o.toBuilder().build();
                 beanFactory.registerSingleton(o.getName(), queue);
-                log.info("Rabbit auto register queue, {}", o.getName());
+                log.info("Rabbit auto register queue, {}, {}", o.getName(), o);
             });
         }
         if (ObjectUtil.isNotEmpty(rabbitProperties.getBindings())) {
@@ -65,7 +65,7 @@ public class RabbitAutoConfig implements BeanFactoryPostProcessor, EnvironmentAw
                 }
                 Binding binding = new Binding(bindName, o.getBindType(), o.getExchangeName(), o.getRoutingKey(), o.getArguments());
                 beanFactory.registerSingleton(o.getBindName() + "-" + o.getExchangeName(), binding);
-                log.info("Rabbit auto register binding, {} to {}, bindType:{}", o.getBindName(), o.getExchangeName(), o.getBindType());
+                log.info("Rabbit auto register binding, {} to {}, bindType:{}, {}", o.getBindName(), o.getExchangeName(), o.getBindType(), o);
             });
         }
     }
