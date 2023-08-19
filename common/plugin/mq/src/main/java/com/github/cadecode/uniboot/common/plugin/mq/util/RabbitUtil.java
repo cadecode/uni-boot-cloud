@@ -1,6 +1,7 @@
 package com.github.cadecode.uniboot.common.plugin.mq.util;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -27,31 +28,50 @@ public class RabbitUtil implements InitializingBean {
     }
 
     public static String send(String exchangeName, String routingKey, Object message) {
-        return send(exchangeName, routingKey, message, msg -> msg);
+        return send(exchangeName, routingKey, message, msg -> msg, null);
     }
 
     public static String send(String exchangeName, String routingKey, Object message, MessagePostProcessor postProcessor) {
-        CorrelationData correlationData = geneCorrelationData(message);
+        return send(exchangeName, routingKey, message, postProcessor, null);
+    }
+
+    public static String send(String exchangeName, String routingKey, Object message, MessagePostProcessor postProcessor,
+                              CorrelationData correlationData) {
+        // 不存在消息 id 时构造新的 correlationData
+        if (ObjectUtil.isNull(correlationData) || ObjectUtil.isNull(correlationData.getId())) {
+            correlationData = geneCorrelationData();
+        }
         RABBIT_TEMPLATE.convertAndSend(exchangeName, routingKey, message, postProcessor, correlationData);
         return correlationData.getId();
     }
 
     public static String sendDelay(String exchangeName, String routingKey, Object message, Integer delayTime) {
-        return sendDelay(exchangeName, routingKey, message, delayTime, msg -> msg);
+        return sendDelay(exchangeName, routingKey, message, delayTime, msg -> msg, null);
     }
 
-    public static String sendDelay(String exchangeName, String routingKey, Object message, Integer delayTime, MessagePostProcessor postProcessor) {
-        CorrelationData correlationData = geneCorrelationData(message);
+    public static String sendDelay(String exchangeName, String routingKey, Object message, Integer delayTime,
+                                   MessagePostProcessor postProcessor) {
+        return sendDelay(exchangeName, routingKey, message, delayTime, postProcessor, null);
+    }
+
+    public static String sendDelay(String exchangeName, String routingKey, Object message, Integer delayTime,
+                                   MessagePostProcessor postProcessor, CorrelationData correlationData) {
+        CorrelationData currCorrelationData;
+        if (ObjectUtil.isNull(correlationData) || ObjectUtil.isNull(correlationData.getId())) {
+            currCorrelationData = geneCorrelationData();
+        } else {
+            currCorrelationData = correlationData;
+        }
         RABBIT_TEMPLATE.convertAndSend(exchangeName, routingKey, message, msg -> {
             // 注入 delay 时间
             msg.getMessageProperties().setDelay(delayTime);
-            postProcessor.postProcessMessage(msg, correlationData);
+            postProcessor.postProcessMessage(msg, currCorrelationData);
             return msg;
-        }, correlationData);
-        return correlationData.getId();
+        }, currCorrelationData);
+        return currCorrelationData.getId();
     }
 
-    public static CorrelationData geneCorrelationData(Object message) {
+    public static CorrelationData geneCorrelationData() {
         // 有 hutool 雪花算法生成 id
         String msgId = String.valueOf(IdUtil.getSnowflakeNextIdStr());
         return new CorrelationData(msgId);
