@@ -52,6 +52,8 @@ public class RabbitProperties {
         private boolean durable = true;
         private boolean exclusive;
         private boolean autoDelete;
+        private String dlExchange;
+        private String dlRoutingKey;
         private Map<String, Object> arguments;
 
         public QueueBuilder toBuilder() {
@@ -70,6 +72,10 @@ public class RabbitProperties {
             }
             if (autoDelete) {
                 builder.autoDelete();
+            }
+            if (!ObjectUtil.hasNull(dlExchange, dlRoutingKey)) {
+                builder.deadLetterExchange(dlExchange);
+                builder.deadLetterRoutingKey(dlRoutingKey);
             }
             if (ObjectUtil.isNotEmpty(arguments)) {
                 arguments.forEach(builder::withArgument);
