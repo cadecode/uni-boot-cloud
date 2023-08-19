@@ -1,10 +1,6 @@
 package com.github.cadecode.uniboot.common.plugin.log.model;
 
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,14 +10,14 @@ import javax.servlet.http.HttpServletRequest;
  * @author Cade Li
  * @since 2023/8/13
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class BaseLogInfo {
-    private ApiLogger apiLogger;
-    private Boolean exceptional;
-    private HttpServletRequest request;
-    private String resultStr;
-    private Long timeCost;
+public interface BaseLogInfo {
+    ApiLogger getApiLogger();
+
+    Boolean getExceptional();
+
+    HttpServletRequest getRequest();
+
+    String getResultStr();
+
+    Long getTimeCost();
 }

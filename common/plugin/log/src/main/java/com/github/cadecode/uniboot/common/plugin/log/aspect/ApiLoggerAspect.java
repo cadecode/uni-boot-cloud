@@ -5,7 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandler;
-import com.github.cadecode.uniboot.common.plugin.log.model.BaseLogInfo;
+import com.github.cadecode.uniboot.common.plugin.log.model.LogInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -103,7 +103,7 @@ public class ApiLoggerAspect {
                     log.error("API log [{}]: request result to json fail", apiLogger.type(), e);
                 }
             }
-            BaseLogInfo baseLogInfo = BaseLogInfo.builder().apiLogger(apiLogger).request(attributes.getRequest())
+            LogInfo baseLogInfo = LogInfo.builder().apiLogger(apiLogger).request(attributes.getRequest())
                     .resultStr(resultStr).timeCost(timeCost).exceptional(exceptional).build();
             Object logObj = apiLogHandler.generateLog(point, baseLogInfo);
             // 打印日志
