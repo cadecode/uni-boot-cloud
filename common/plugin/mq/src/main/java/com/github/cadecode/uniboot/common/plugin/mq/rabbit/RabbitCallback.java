@@ -82,8 +82,9 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
         // 设置 correlationData 后置处理
         rabbitTemplate.setCorrelationDataPostProcessor((message, correlationData) -> {
             // 填充 correlationDataId 到 MessageProperties
-            if (ObjectUtil.isNotNull(correlationData.getId())) {
-                message.getMessageProperties().setCorrelationId(correlationData.getId());
+            if (ObjectUtil.isNotNull(correlationData) && ObjectUtil.isNotNull(correlationData.getId())) {
+                String correlationId = correlationData.getId();
+                message.getMessageProperties().setCorrelationId(correlationId);
             }
             return correlationData;
         });
