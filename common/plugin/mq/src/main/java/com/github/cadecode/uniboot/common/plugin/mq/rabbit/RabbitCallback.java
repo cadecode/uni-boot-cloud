@@ -44,9 +44,11 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         // 获取 correlationData id
         String correlationId = ObjectUtil.defaultIfNull(correlationData, CorrelationData::getId, "");
-        if (!ack) {
-            log.error("Rabbit message send fail, correlationId:{}, cause:{}", correlationId, cause);
+        if (ack) {
+            log.debug("Rabbit message send ok, id:{}", correlationId);
+            return;
         }
+        log.error("Rabbit message send fail, correlationId:{}, cause:{}", correlationId, cause);
     }
 
     /**
