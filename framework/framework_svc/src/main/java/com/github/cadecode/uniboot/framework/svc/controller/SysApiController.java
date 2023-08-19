@@ -1,6 +1,5 @@
 package com.github.cadecode.uniboot.framework.svc.controller;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
@@ -8,7 +7,6 @@ import com.github.cadecode.uniboot.framework.base.annotation.ApiInner;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysApi;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesReqVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesResVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiSwaggerResVo;
 import com.github.cadecode.uniboot.framework.svc.convert.SysApiConvert;
 import com.github.cadecode.uniboot.framework.svc.service.SysApiService;
 import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
@@ -24,17 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiAddReqVo;
 import static com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiUpdateReqVo;
@@ -57,10 +48,6 @@ public class SysApiController {
     private final SysApiService sysApiService;
     private final SysRoleService sysRoleService;
 
-    /**
-     * 获取全部接口的处理器 mapping
-     */
-    private final RequestMappingHandlerMapping handlerMapping;
 
     @ApiOperation("查询API列表（带角色）")
     @PostMapping("page_roles_vo")
@@ -98,31 +85,6 @@ public class SysApiController {
     @PostMapping("list_roles_vo_by_api_ids")
     public List<SysApiRolesResVo> listRolesVoByApiIds(@RequestBody @NotEmpty List<Long> apiIdList) {
         return sysApiService.listRolesVoByApiIds(apiIdList);
-    }
-
-    @ApiOperation("获取全部接口及 swagger 注解")
-    @PostMapping("list_swagger_vo")
-    public List<SysApiSwaggerResVo> listSwaggerVo() {
-        Map<RequestMappingInfo, HandlerMethod> methodMap = handlerMapping.getHandlerMethods();
-        return methodMap.entrySet()
-                .stream()
-                .map(e -> {
-                    ArrayList<String> urlList = new ArrayList<>(e.getKey().getPatternsCondition().getPatterns());
-                    String url = null;
-                    if (ObjectUtil.isNotEmpty(urlList)) {
-                        url = urlList.get(0);
-                    }
-                    ApiOperation operation = e.getValue().getMethod().getAnnotation(ApiOperation.class);
-                    String description = null;
-                    if (ObjectUtil.isNotNull(operation)) {
-                        description = operation.value();
-                    }
-                    return SysApiSwaggerResVo.builder().url(url).description(description).build();
-                })
-                .filter(o -> ObjectUtil.isNotEmpty(o.getUrl()))
-                .distinct()
-                .sorted(Comparator.comparing(SysApiSwaggerResVo::getUrl))
-                .collect(Collectors.toList());
     }
 
     @ApiInner(onlyClient = true)
