@@ -242,9 +242,9 @@ export function removeRoleApi(data) {
   });
 }
 
-export function listApiSwaggerVo(data) {
+export function listSwaggerDescVo(serviceUrl, data) {
   return request({
-    url: '/framework/system/api/list_swagger_vo',
+    url: serviceUrl + '/plugin/swagger/list_desc_vo',
     method: 'post',
     data
   });

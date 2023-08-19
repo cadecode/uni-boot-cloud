@@ -106,6 +106,16 @@
         :model="addApiForm.data"
         :rules="addApiForm.rule"
       >
+        <el-form-item label="服务" prop="serviceUrl">
+          <el-select v-model="addApiForm.data.serviceUrl" filterable placeholder="请选择" @change="handleServiceUrlChange">
+            <el-option
+              v-for="item in addApiForm.option.serviceUrl"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="接口路径" prop="url">
           <el-autocomplete v-model="addApiForm.data.url" :fetch-suggestions="listUrlSuggest" @select="handleUrlSelect" />
         </el-form-item>
@@ -127,7 +137,7 @@ import {
   addRoleApi,
   deleteApi,
   listApiRolesVoByApiIds,
-  listApiSwaggerVo,
+  listSwaggerDescVo, listDictByType,
   listRole,
   pageApiRolesVo,
   removeRoleApi,
@@ -178,6 +188,7 @@ export default {
       },
       addApiForm: {
         data: {
+          serviceUrl: null,
           url: null,
           description: null
         },
@@ -185,16 +196,30 @@ export default {
         urlSuggestList: null,
         rule: {
           url: [{required: true, message: '请输入接口路径', trigger: 'blur'}],
-          description: [{required: true, message: '请输入描述', trigger: 'blur'}]
+          description: [{required: true, message: '请输入描述', trigger: 'blur'}],
+          serviceUrl: [{required: true, message: '请选择服务', trigger: 'blur'}]
+        },
+        option: {
+          serviceUrl: []
         }
       }
     };
   },
   created() {
+    this.listServiceUrl();
     this.pageApis(1);
     this.loadRoleTree();
   },
   methods: {
+    listServiceUrl() {
+      listDictByType('serviceUrl').then(res => {
+        this.addApiForm.option.serviceUrl = res.data;
+        const defaultUrl = this.addApiForm.option.serviceUrl.filter(o => o.defaultFlag)[0];
+        if (defaultUrl) {
+          this.addApiForm.data.serviceUrl = defaultUrl.value;
+        }
+      });
+    },
     pageApis(currPage) {
       // 分页插件回调传递当前页号
       const data = {
@@ -301,7 +326,7 @@ export default {
         cb(this.addApiForm.urlSuggestList.filter(o => o.value.includes(queryString)));
         return;
       }
-      listApiSwaggerVo().then(res => {
+      listSwaggerDescVo(this.addApiForm.data.serviceUrl).then(res => {
         res.data.forEach(o => { o.value = o.description ? `${o.url} | ${o.description}` : o.url; });
         this.addApiForm.urlSuggestList = res.data;
         cb(res.data);
@@ -310,6 +335,9 @@ export default {
     handleUrlSelect(item) {
       this.addApiForm.data.url = item.url;
       this.addApiForm.data.description = item.description;
+    },
+    handleServiceUrlChange() {
+      this.addApiForm.urlSuggestList = null;
     }
   }
 };
