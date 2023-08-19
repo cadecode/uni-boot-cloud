@@ -1,7 +1,8 @@
 package com.github.cadecode.uniboot.framework.svc.bean.vo;
 
 import com.github.cadecode.uniboot.common.core.web.response.PageParams;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -55,16 +56,5 @@ public class SysApiVo {
         private String updateUser;
 
         private List<String> roles;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Builder
-    public static class SysApiSwaggerResVo {
-
-        private String url;
-
-        private String description;
     }
 }
