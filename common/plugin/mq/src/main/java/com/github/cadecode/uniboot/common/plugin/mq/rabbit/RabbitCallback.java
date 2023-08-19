@@ -1,0 +1,83 @@
+package com.github.cadecode.uniboot.common.plugin.mq.rabbit;
+
+import cn.hutool.core.util.ObjectUtil;
+import com.github.cadecode.uniboot.common.plugin.mq.consts.RabbitConst;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.core.ReturnedMessage;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate.ConfirmCallback;
+import org.springframework.amqp.rabbit.core.RabbitTemplate.ReturnsCallback;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+/**
+ * RabbitMQ 可靠性回调
+ *
+ * @author Cade Li
+ * @since 2023/8/18
+ */
+@Slf4j
+@RequiredArgsConstructor
+@Component
+public class RabbitCallback implements ConfirmCallback, ReturnsCallback, InitializingBean {
+
+    /**
+     * 交换机名称映射
+     */
+    private Map<String, Exchange> exchangeNameMap;
+
+    private final List<Exchange> exchanges;
+
+    private final RabbitTemplate rabbitTemplate;
+
+    /**
+     * 消息是否成功到达交换机
+     */
+    @Override
+    public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+        // 获取 correlationData id
+        String correlationId = ObjectUtil.defaultIfNull(correlationData, CorrelationData::getId, "");
+        if (!ack) {
+            log.error("Rabbit message send fail, correlationId:{}, cause:{}", correlationId, cause);
+        }
+    }
+
+    /**
+     * 消息是否成功投递到队列
+     */
+    @Override
+    public void returnedMessage(ReturnedMessage returned) {
+        // 由于 delay 交换机会默认执行退回回调，不需要处理
+        if (isExchangeDelayed(returned.getExchange())) {
+            return;
+        }
+        log.error("Rabbit message is returned, message:{}, replyCode:{}. replyText:{}, exchange:{}, routingKey :{}",
+                returned.getMessage(), returned.getReplyCode(), returned.getReplyText(), returned.getExchange(), returned.getRoutingKey());
+    }
+
+    /**
+     * 判断是否是 delay 交换机
+     */
+    private boolean isExchangeDelayed(String exchangeName) {
+        if (ObjectUtil.isEmpty(exchangeNameMap)) {
+            exchangeNameMap = exchanges.stream().collect(Collectors.toMap(Exchange::getName, o -> o));
+        }
+        // 若是 delay 交换机
+        Exchange exchange = exchangeNameMap.get(exchangeName);
+        return exchange.isDelayed() || RabbitConst.EXC_TYPE_DELAYED.equals(exchange.getType());
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        // 设置回调
+        rabbitTemplate.setConfirmCallback(this);
+        rabbitTemplate.setReturnsCallback(this);
+    }
+}
