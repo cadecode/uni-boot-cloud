@@ -54,6 +54,11 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
 
     // rabbit head -- end
 
+    /**
+     * TxMsg CorrelationData ReturnedMessage 默认 replyText
+     */
+    public static final String DEFAULT_TX_MSG_REPLY_TEXT = "DEFAULT_TX_MSG_REPLY";
+
     private final RedisLockKit redisLockKit;
 
     private final PlgMqMsgService mqMsgService;
@@ -65,10 +70,13 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
             redisLockKit.lock(lockKey);
             Date currDate = new Date();
             List<PlgMqMsg> msgList = mqMsgService.lambdaQuery()
-                    .ge(PlgMqMsg::getNextRetryTime, currDate)
+                    .le(PlgMqMsg::getNextRetryTime, currDate)
                     .eq(PlgMqMsg::getSendState, SendStateEnum.FAIL)
                     .ltSql(PlgMqMsg::getCurrRetryTimes, "max_retry_times")
                     .list();
+            if (ObjectUtil.isEmpty(msgList)) {
+                return;
+            }
             long retryCount = msgList.stream()
                     .filter(o -> {
                         int newCurrRetryTimes = o.getCurrRetryTimes() + 1;
@@ -114,6 +122,9 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
                     .le(PlgMqMsg::getCreateTime, lastDate)
                     .eq(PlgMqMsg::getSendState, SendStateEnum.OVER)
                     .list();
+            if (ObjectUtil.isEmpty(msgList)) {
+                return;
+            }
             List<String> batchIdList = msgList.stream().map(PlgMqMsg::getId).collect(Collectors.toList());
             boolean removeFlag = mqMsgService.removeBatchByIds(batchIdList);
             log.debug("TxMsg clear, {}, currDate:{}, queryCount:{}", removeFlag, currDate, msgList.size());
@@ -136,7 +147,7 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
 
     @Override
     public void sendNoTransaction(BaseTxMsg txMsg, MsgOption msgOption) {
-        // 空实现
+        throw new TxMsgException("TxMsg no transaction");
     }
 
     @Override
@@ -186,7 +197,8 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
             msg.getMessageProperties().getHeaders().put(HEAD_TX_MSG_BIZ_TYPE, txMsg.getBizType());
             msg.getMessageProperties().getHeaders().put(HEAD_TX_MSG_BIZ_KEY, txMsg.getBizKey());
             // 设置 ReturnedMessage，用于 callback 中获取消息
-            correlationData.setReturned(new ReturnedMessage(msg, -9999, null, null, null));
+            ReturnedMessage defaultReturnedMessage = new ReturnedMessage(msg, 0, DEFAULT_TX_MSG_REPLY_TEXT, null, null);
+            correlationData.setReturned(defaultReturnedMessage);
             return msg;
         }, correlationData);
     }
@@ -198,45 +210,27 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
             return;
         }
         Message message = correlationData.getReturned().getMessage();
-        boolean txMsgFlag = message.getMessageProperties().getHeaders().containsKey(HEAD_TX_MSG_ID);
-        if (!txMsgFlag) {
+        if (!isTxMsg(message)) {
             return;
         }
         String bizType = String.valueOf(message.getMessageProperties().getHeaders().get(HEAD_TX_MSG_BIZ_TYPE));
         String bizKey = String.valueOf(message.getMessageProperties().getHeaders().get(HEAD_TX_MSG_BIZ_KEY));
+        // 若交换机没有 ack
         if (!ack) {
             boolean updateFailFlag = updatePreparingToFail(correlationData.getId(), cause);
             log.debug("TxMsg set to FAIL on confirm, {}, txMsg:{}, biz:{}_{}", updateFailFlag, correlationData.getId(), bizType, bizKey);
             return;
         }
-        // ack 为 true 时，状态改为 OVER
+        // 若被退回，不修改状态
+        if (isTxReturned(correlationData.getReturned())) {
+            return;
+        }
+        // 状态改为 OVER
         boolean updateOverFlag = mqMsgService.lambdaUpdate()
                 .eq(PlgMqMsg::getId, correlationData.getId())
-                .eq(PlgMqMsg::getSendState, SendStateEnum.PREPARING)
                 .set(PlgMqMsg::getSendState, SendStateEnum.OVER)
                 .update(new PlgMqMsg());
         log.debug("TxMsg set to OVER on confirm, {}, txMsg:{}, biz:{}_{}", updateOverFlag, correlationData.getId(), bizType, bizKey);
-    }
-
-    @Override
-    public void handleReturned(ReturnedMessage returned) {
-        Message message = returned.getMessage();
-        boolean txMsgFlag = message.getMessageProperties().getHeaders().containsKey(HEAD_TX_MSG_ID);
-        if (!txMsgFlag) {
-            return;
-        }
-        String txMsgId = String.valueOf(message.getMessageProperties().getHeaders().get(HEAD_TX_MSG_ID));
-        String bizType = String.valueOf(message.getMessageProperties().getHeaders().get(HEAD_TX_MSG_BIZ_TYPE));
-        String bizKey = String.valueOf(message.getMessageProperties().getHeaders().get(HEAD_TX_MSG_BIZ_KEY));
-        // 构造 cause
-        String cause = StrUtil.format("Returned message:{}, replyCode:{}. replyText:{}, exchange:{}, routingKey :{}",
-                returned.getMessage(), returned.getReplyCode(), returned.getReplyText(), returned.getExchange(), returned.getRoutingKey());
-        boolean updateFailFlag = mqMsgService.lambdaUpdate()
-                .eq(PlgMqMsg::getId, txMsgId)
-                .set(PlgMqMsg::getSendState, SendStateEnum.FAIL)
-                .set(PlgMqMsg::getCause, cause)
-                .update(new PlgMqMsg());
-        log.debug("TxMsg set to FAIL on returned, {}, txMsg:{}, biz:{}_{}", updateFailFlag, txMsgId, bizType, bizKey);
     }
 
     private boolean updatePreparingToFail(String txMsgId, String cause) {
@@ -246,5 +240,36 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
                 .set(PlgMqMsg::getSendState, SendStateEnum.FAIL)
                 .set(PlgMqMsg::getCause, cause)
                 .update(new PlgMqMsg());
+    }
+
+    private boolean isTxReturned(ReturnedMessage returned) {
+        // 当不是默认 replyText，说明被 ReturnsCallback 覆盖
+        // RabbitMq 会先回调 ReturnsCallback
+        return !DEFAULT_TX_MSG_REPLY_TEXT.equals(returned.getReplyText());
+    }
+
+    @Override
+    public void handleReturned(ReturnedMessage returned) {
+        Message message = returned.getMessage();
+        if (!isTxMsg(message)) {
+            return;
+        }
+        String txMsgId = String.valueOf(message.getMessageProperties().getHeaders().get(HEAD_TX_MSG_ID));
+        String bizType = String.valueOf(message.getMessageProperties().getHeaders().get(HEAD_TX_MSG_BIZ_TYPE));
+        String bizKey = String.valueOf(message.getMessageProperties().getHeaders().get(HEAD_TX_MSG_BIZ_KEY));
+        // 构造 cause
+        String cause = StrUtil.format("Returned message:{}, replyCode:{}. replyText:{}, exchange:{}, routingKey :{}",
+                returned.getMessage(), returned.getReplyCode(), returned.getReplyText(), returned.getExchange(), returned.getRoutingKey());
+        // 状态改为 FAIL
+        boolean updateFailFlag = mqMsgService.lambdaUpdate()
+                .eq(PlgMqMsg::getId, txMsgId)
+                .set(PlgMqMsg::getSendState, SendStateEnum.FAIL)
+                .set(PlgMqMsg::getCause, cause)
+                .update(new PlgMqMsg());
+        log.debug("TxMsg set to FAIL on returned, {}, txMsg:{}, biz:{}_{}", updateFailFlag, txMsgId, bizType, bizKey);
+    }
+
+    private boolean isTxMsg(Message message) {
+        return message.getMessageProperties().getHeaders().containsKey(HEAD_TX_MSG_ID);
     }
 }
