@@ -23,7 +23,7 @@ public interface PlgMqMsgConvert {
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "sendState", ignore = true)
     @Mapping(target = "nextRetryTime", ignore = true)
-    @Mapping(target = "currRetryTimes", ignore = true)
+    @Mapping(target = "leftRetryTimes", ignore = true)
     @Mapping(target = "createTime", ignore = true)
     @Mapping(target = "consumeState", ignore = true)
     @Mapping(target = "cause", ignore = true)
