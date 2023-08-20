@@ -30,8 +30,8 @@ public class TxMsgKit {
     }
 
     public void sendTx(BaseTxMsg txMsg, MsgOption msgOption) {
-        txMsgTaskHandler.checkBeforeSend(txMsg, msgOption);
         MsgOption currOption = txMsgProperties.createMsgOption(msgOption);
+        txMsgTaskHandler.checkBeforeSend(txMsg, currOption);
         // 若没有事务
         if (!TransactionSynchronizationManager.isActualTransactionActive()) {
             log.error("TxMsg send need transaction, txMsg:{}, biz:{}_{}", txMsg.getId(), txMsg.getBizType(), txMsg.getBizKey());
@@ -39,7 +39,7 @@ public class TxMsgKit {
             return;
         }
         // 持久化
-        txMsgTaskHandler.saveBeforeRegister(txMsg, msgOption);
+        txMsgTaskHandler.saveBeforeRegister(txMsg, currOption);
         // 注册到事务管理器
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
             @Override
