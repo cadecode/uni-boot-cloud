@@ -19,6 +19,8 @@ public abstract class AbstractTxMsgHandler {
 
     public abstract void doClear(Long autoClearInterval);
 
+    public abstract void checkBeforeSend(BaseTxMsg txMsg, MsgOption msgOption);
+
     public abstract void sendNoTransaction(BaseTxMsg txMsg, MsgOption msgOption);
 
     public abstract void sendNotCommit(BaseTxMsg txMsg, MsgOption msgOption);

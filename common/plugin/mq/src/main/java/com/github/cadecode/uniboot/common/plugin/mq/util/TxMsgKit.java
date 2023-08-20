@@ -30,6 +30,7 @@ public class TxMsgKit {
     }
 
     public void sendTx(BaseTxMsg txMsg, MsgOption msgOption) {
+        txMsgTaskHandler.checkBeforeSend(txMsg, msgOption);
         MsgOption currOption = txMsgProperties.createMsgOption(msgOption);
         // 若没有事务
         if (!TransactionSynchronizationManager.isActualTransactionActive()) {
