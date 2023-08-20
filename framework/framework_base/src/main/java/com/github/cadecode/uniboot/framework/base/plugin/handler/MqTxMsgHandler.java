@@ -71,7 +71,7 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
             Date currDate = new Date();
             List<PlgMqMsg> msgList = mqMsgService.lambdaQuery()
                     .le(PlgMqMsg::getNextRetryTime, currDate)
-                    .eq(PlgMqMsg::getSendState, SendStateEnum.FAIL)
+                    .ne(PlgMqMsg::getSendState, SendStateEnum.OVER)
                     .gt(PlgMqMsg::getLeftRetryTimes, 0)
                     .list();
             if (ObjectUtil.isEmpty(msgList)) {
