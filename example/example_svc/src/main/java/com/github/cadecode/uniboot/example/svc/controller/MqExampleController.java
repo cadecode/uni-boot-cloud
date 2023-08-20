@@ -1,12 +1,15 @@
 package com.github.cadecode.uniboot.example.svc.controller;
 
+import com.github.cadecode.uniboot.common.plugin.mq.model.TxMsg;
 import com.github.cadecode.uniboot.common.plugin.mq.util.RabbitUtil;
+import com.github.cadecode.uniboot.common.plugin.mq.util.TxMsgKit;
 import com.github.cadecode.uniboot.example.svc.bean.data.ExampleMsgDo;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("demo/mq")
 public class MqExampleController {
+
+    private final TxMsgKit txMsgKit;
 
     @ApiOperation("发送 delay 消息")
     @GetMapping("send_delay")
@@ -45,6 +50,20 @@ public class MqExampleController {
     public boolean sendObj(@RequestParam String exchange, @RequestParam String routingKey) {
         ExampleMsgDo msgDo = new ExampleMsgDo("Test key", "Test name");
         RabbitUtil.send(exchange, routingKey, msgDo);
+        return true;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @ApiOperation("发送事务消息")
+    @GetMapping("send_tx")
+    public boolean sendTx(@RequestParam String exchange, @RequestParam String routingKey) {
+        txMsgKit.sendTx(TxMsg.builder()
+                .bizType("Test biz")
+                .bizKey("TestBiz001")
+                .exchange(exchange)
+                .routingKey(routingKey)
+                .message("Test TxMsg")
+                .build());
         return true;
     }
 }
