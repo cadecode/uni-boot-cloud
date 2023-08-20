@@ -47,9 +47,9 @@ CREATE TABLE IF NOT EXISTS plg_mq_msg
     message               TEXT            NOT NULL COMMENT '消息内容',
     send_state            VARCHAR(100)    NULL COMMENT '发送方状态',
     consume_state         VARCHAR(100)    NULL COMMENT '消费方状态',
-    next_retry_time       DATETIME            NULL COMMENT '下次重试时间',
+    next_retry_time       DATETIME        NULL COMMENT '下次重试时间',
     cause                 TEXT            NULL COMMENT '重试原因',
-    curr_retry_times      INT             NULL COMMENT '当前重试次数',
+    left_retry_times      INT             NULL COMMENT '剩余重试次数',
     max_retry_times       INT             NULL COMMENT '最大重试次数',
     backoff_init_interval BIGINT UNSIGNED NULL COMMENT '退避-初始时间间隔',
     backoff_multiplier    DOUBLE          NULL COMMENT '退避-乘子',
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS plg_mq_msg
     update_user           VARCHAR(100)    NULL,
     PRIMARY KEY (id),
     INDEX idx_create_time (create_time, send_state),
-    INDEX idx_next_retry_time (next_retry_time, send_state),
+    INDEX idx_next_retry_time (next_retry_time, send_state, left_retry_times),
     INDEX idx_biz_type (biz_type),
     INDEX idx_send_state (send_state)
 ) ENGINE = InnoDB
