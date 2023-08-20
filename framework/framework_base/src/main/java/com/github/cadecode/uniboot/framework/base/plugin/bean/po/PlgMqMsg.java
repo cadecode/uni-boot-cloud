@@ -38,7 +38,7 @@ public class PlgMqMsg {
 
     private String cause;
 
-    private Integer currRetryTimes;
+    private Integer leftRetryTimes;
 
     private Integer maxRetryTimes;
 

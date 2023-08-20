@@ -72,23 +72,23 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
             List<PlgMqMsg> msgList = mqMsgService.lambdaQuery()
                     .le(PlgMqMsg::getNextRetryTime, currDate)
                     .eq(PlgMqMsg::getSendState, SendStateEnum.FAIL)
-                    .ltSql(PlgMqMsg::getCurrRetryTimes, "max_retry_times")
+                    .gt(PlgMqMsg::getLeftRetryTimes, 0)
                     .list();
             if (ObjectUtil.isEmpty(msgList)) {
                 return;
             }
             long retryCount = msgList.stream()
                     .filter(o -> {
-                        int newCurrRetryTimes = o.getCurrRetryTimes() + 1;
+                        int newLeftRetryTimes = o.getLeftRetryTimes() - 1;
                         Date newNextRetryTime = calcNextRetryTime(new Date(), o.getBackoffInitInterval(),
-                                o.getBackoffMultiplier(), o.getBackoffMaxInterval(), newCurrRetryTimes);
+                                o.getBackoffMultiplier(), o.getBackoffMaxInterval(), o.getMaxRetryTimes() - newLeftRetryTimes);
                         try {
                             TxMsg txMsg = PlgMqMsgConvert.INSTANCE.poToTxMsg(o);
                             doSendCommittedOrRetry(txMsg);
-                            boolean updateFlag = updateRetryTime(o.getId(), newCurrRetryTimes, newNextRetryTime);
+                            boolean updateFlag = updateRetryTime(o.getId(), newLeftRetryTimes, newNextRetryTime);
                             log.debug("TxMsg sent on retry, updateFlag:{}, txMsg:{}, biz:{}_{}", updateFlag, o.getId(), o.getBizType(), o.getBizKey());
                         } catch (Exception e) {
-                            boolean updateFlag = updateRetryTime(o.getId(), newCurrRetryTimes, newNextRetryTime);
+                            boolean updateFlag = updateRetryTime(o.getId(), newLeftRetryTimes, newNextRetryTime);
                             log.debug("TxMsg send fail on retry, updateFlag:{}, txMsg:{}, biz:{}_{}", updateFlag, o.getId(), o.getBizType(), o.getBizKey());
                             return false;
                         }
@@ -101,10 +101,10 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
         }
     }
 
-    private boolean updateRetryTime(String txMsgId, int newCurrRetryTimes, Date newNextRetryTime) {
+    private boolean updateRetryTime(String txMsgId, int newLeftRetryTimes, Date newNextRetryTime) {
         return mqMsgService.lambdaUpdate()
                 .eq(PlgMqMsg::getId, txMsgId)
-                .set(PlgMqMsg::getCurrRetryTimes, newCurrRetryTimes)
+                .set(PlgMqMsg::getLeftRetryTimes, newLeftRetryTimes)
                 .set(PlgMqMsg::getNextRetryTime, newNextRetryTime)
                 .update(new PlgMqMsg());
     }
@@ -161,9 +161,10 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
         PlgMqMsg plgMqMsg = PlgMqMsgConvert.INSTANCE.baseTxMsgToPo(txMsg, msgOption);
         plgMqMsg.setSendState(SendStateEnum.PREPARING);
         // 计算下次重试时间
-        plgMqMsg.setCurrRetryTimes(0);
+        plgMqMsg.setLeftRetryTimes(plgMqMsg.getMaxRetryTimes());
         plgMqMsg.setNextRetryTime(calcNextRetryTime(new Date(), plgMqMsg.getBackoffInitInterval(),
-                plgMqMsg.getBackoffMultiplier(), plgMqMsg.getBackoffMaxInterval(), plgMqMsg.getCurrRetryTimes()));
+                plgMqMsg.getBackoffMultiplier(), plgMqMsg.getBackoffMaxInterval(),
+                plgMqMsg.getMaxRetryTimes() - plgMqMsg.getLeftRetryTimes()));
         mqMsgService.save(plgMqMsg);
         log.debug("TxMsg save, txMsg:{}, biz:{}_{}", txMsg.getId(), txMsg.getBizType(), txMsg.getBizKey());
     }
