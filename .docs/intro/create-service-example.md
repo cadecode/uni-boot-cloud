@@ -4,7 +4,7 @@
 
 sql/framework 目录下的 sql 是 framework 服务所需的
 
-若新建服务依赖了 uni-boot-framework-base，且使用了其他数据库，则需要执行 all_svc.sql
+若新建服务依赖了 uni-boot-framework-base，且使用了其他数据库，则需要执行 common-plguin.sql
 
 ### 创建模块
 
