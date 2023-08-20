@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.common.plugin.cache.l2cache.cache;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.cadecode.uniboot.common.plugin.cache.l2cache.DLCacheProperties;
 import com.github.cadecode.uniboot.common.plugin.cache.l2cache.DLCacheProperties.LocalConfig;
@@ -46,7 +46,7 @@ public class DLCacheManager implements CacheManager {
         long expiration = 0;
         // 获取针对 cache name 设置的过期时间
         Map<String, Long> cacheExpirationMap = cacheProperties.getCacheExpirationMap();
-        if (ObjectUtil.isNotEmpty(cacheExpirationMap) && cacheExpirationMap.get(name) > 0) {
+        if (ObjUtil.isNotEmpty(cacheExpirationMap) && cacheExpirationMap.get(name) > 0) {
             expiration = cacheExpirationMap.get(name);
         } else if (cacheProperties.getDefaultExpiration() > 0) {
             expiration = cacheProperties.getDefaultExpiration();
@@ -56,11 +56,11 @@ public class DLCacheManager implements CacheManager {
         }
         // 设置参数
         LocalConfig localConfig = cacheProperties.getLocal();
-        if (ObjectUtil.isNotNull(localConfig.getInitialCapacity()) && localConfig.getInitialCapacity() > 0) {
+        if (ObjUtil.isNotNull(localConfig.getInitialCapacity()) && localConfig.getInitialCapacity() > 0) {
             caffeine.initialCapacity(localConfig.getInitialCapacity());
 
         }
-        if (ObjectUtil.isNotNull(localConfig.getMaximumSize()) && localConfig.getMaximumSize() > 0) {
+        if (ObjUtil.isNotNull(localConfig.getMaximumSize()) && localConfig.getMaximumSize() > 0) {
             caffeine.maximumSize(localConfig.getMaximumSize());
         }
         return new DLCache(name, expiration, cacheProperties, caffeine.build(), redisTemplate);

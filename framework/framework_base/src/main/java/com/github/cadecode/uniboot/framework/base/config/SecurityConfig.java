@@ -3,7 +3,7 @@ package com.github.cadecode.uniboot.framework.base.config;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
@@ -171,7 +171,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 filterChain)
                 throws ServletException, IOException {
             String traceId = ServletUtil.getHeader(request, HttpConst.HEAD_TRACE_ID, CharsetUtil.CHARSET_UTF_8);
-            if (ObjectUtil.isNotEmpty(traceId)) {
+            if (ObjUtil.isNotEmpty(traceId)) {
                 MDC.put(HttpConst.HEAD_TRACE_ID, traceId);
             }
             filterChain.doFilter(request, response);

@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.framework.base.security.filter;
 
 import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
 import com.github.cadecode.uniboot.common.core.enums.ApiErrorCode;
@@ -64,7 +64,7 @@ public abstract class TokenAuthFilterService implements StrategyService {
     public void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (RequestUtil.isInnerRequest(request)) {
             SysUserDetails userDetailsDto = RequestUtil.getInnerUserDetails(request);
-            if (ObjectUtil.isNotNull(userDetailsDto)) {
+            if (ObjUtil.isNotNull(userDetailsDto)) {
                 setAuthentication(request, userDetailsDto);
                 filterChain.doFilter(request, response);
                 return;

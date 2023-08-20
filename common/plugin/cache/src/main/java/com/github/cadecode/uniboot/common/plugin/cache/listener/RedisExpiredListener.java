@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.common.plugin.cache.listener;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.core.annotation.Order;
@@ -54,7 +54,7 @@ public class RedisExpiredListener extends RedisMessageListener {
                     .filter(o -> o.checkKey(key))
                     .sorted(Comparator.comparing(o -> {
                         Order order = o.getClass().getAnnotation(Order.class);
-                        return ObjectUtil.defaultIfNull(order, Order::value, 0);
+                        return ObjUtil.defaultIfNull(order, Order::value, 0);
                     }).reversed())
                     .findAny();
             if (!handlerOpt.isPresent()) {

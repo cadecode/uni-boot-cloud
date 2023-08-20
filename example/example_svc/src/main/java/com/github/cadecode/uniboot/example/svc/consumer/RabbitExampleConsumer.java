@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.example.svc.consumer;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.example.svc.bean.data.ExampleMsgDo;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class RabbitExampleConsumer {
     public void exampleBizQueue0(String body, Message message, Channel channel) throws IOException {
         log.info("Received msg:{}", body);
         // 自动模式下，测试重试机制
-        if (ObjectUtil.equal(body, "ERROR")) {
+        if (ObjUtil.equal(body, "ERROR")) {
             throw new RuntimeException("ERROR");
         }
     }

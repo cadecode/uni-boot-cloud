@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesReqVo;
@@ -39,7 +39,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public List<SysMenuTreeResVo> listTreeVoByRoles(List<String> roleCodes) {
         List<SysMenu> sysMenus = listByRoles(roleCodes);
         List<SysMenuTreeResVo> menuTreeVoList = sysMenus.stream()
-                .filter(m -> ObjectUtil.equal(m.getEnableFlag(), true))
+                .filter(m -> ObjUtil.equal(m.getEnableFlag(), true))
                 .map(SysMenuConvert.INSTANCE::poToTreeResVo)
                 .collect(Collectors.toList());
         return generateMenuTree(menuTreeVoList, null);
@@ -65,12 +65,12 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         List<SysMenuTreeResVo> resultList = new ArrayList<>();
         menus.forEach(menu -> {
             // 确定下父亲
-            if (ObjectUtil.notEqual(menu.getParentId(), rootId)) {
+            if (ObjUtil.notEqual(menu.getParentId(), rootId)) {
                 return;
             }
             menus.forEach(m -> {
                 // 比一下是不是儿子
-                if (ObjectUtil.notEqual(m.getParentId(), menu.getId())) {
+                if (ObjUtil.notEqual(m.getParentId(), menu.getId())) {
                     return;
                 }
                 // 拿儿子列表

@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.framework.base.security.voter;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.framework.api.bean.dto.SysApiDto.SysApiRolesResDto;
 import com.github.cadecode.uniboot.framework.api.feignclient.SysApiClient;
 import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
@@ -65,7 +65,7 @@ public class DataBaseRoleVoter extends RoleVoter {
         }
         // 如果该 api 配置没有关联角色，则通过
         // stream().noneMatch 表示没有符合条件的
-        if (apiRolesResponse.getRoles().stream().noneMatch(ObjectUtil::isNotNull)) {
+        if (apiRolesResponse.getRoles().stream().noneMatch(ObjUtil::isNotNull)) {
             return ACCESS_GRANTED;
         }
         // 取用户 token 内角色和数据库查询出角色的交集

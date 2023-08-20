@@ -3,7 +3,7 @@ package com.github.cadecode.uniboot.common.core.util;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelFileUtil;
 import cn.hutool.poi.excel.sax.ExcelSaxReader;
@@ -108,7 +108,7 @@ public class OfficeUtil {
                             geneHeadFieldMap();
                             geneCopyOptions();
                             // 存在 head 第一行解析完成后 return
-                            if (ObjectUtil.equal(hasHead, true)) {
+                            if (ObjUtil.equal(hasHead, true)) {
                                 return;
                             }
                         }
@@ -130,28 +130,28 @@ public class OfficeUtil {
         }
 
         private void checkAndInitParams() {
-            if (ObjectUtil.isNull(sheetIndex)) {
+            if (ObjUtil.isNull(sheetIndex)) {
                 // 默认读取首个 sheet
                 sheetIndex = 0;
             }
-            if (ObjectUtil.isNull(hasHead)) {
+            if (ObjUtil.isNull(hasHead)) {
                 // 默认有表头
                 hasHead = true;
             }
-            if (ObjectUtil.isNull(rowHandler)) {
+            if (ObjUtil.isNull(rowHandler)) {
                 throw new RuntimeException("Can not read without rowHandler");
             }
         }
 
         private boolean initIndexHeadMap(List<Object> rowCells) {
-            if (ObjectUtil.isNotNull(indexHeadMap)) {
+            if (ObjUtil.isNotNull(indexHeadMap)) {
                 return false;
             }
             AtomicInteger tmpIdx = new AtomicInteger();
             indexHeadMap = rowCells.stream()
                     .collect(Collectors.toMap(o -> tmpIdx.getAndIncrement(), o -> {
                         // 有表头时使用表头映射
-                        if (ObjectUtil.equal(hasHead, true)) {
+                        if (ObjUtil.equal(hasHead, true)) {
                             return String.valueOf(o);
                         }
                         // 无表头时使用列序映射
@@ -165,7 +165,7 @@ public class OfficeUtil {
                 field.setAccessible(true);
                 ExcelField excelField = field.getAnnotation(ExcelField.class);
                 // 若不存在 ExcelField 注解，加入忽略
-                if (ObjectUtil.isNull(excelField)) {
+                if (ObjUtil.isNull(excelField)) {
                     ignoredFields.add(field.getName());
                     continue;
                 }
@@ -175,7 +175,7 @@ public class OfficeUtil {
                     continue;
                 }
                 // 若存在表头，且 headAlias 不为空
-                if (hasHead && ObjectUtil.isNotEmpty(excelField.headAlias())) {
+                if (hasHead && ObjUtil.isNotEmpty(excelField.headAlias())) {
                     headFieldMap.put(excelField.headAlias(), field.getName());
                     continue;
                 }
@@ -205,7 +205,7 @@ public class OfficeUtil {
                     .sheetIndex(sheetIndex)
                     .hasHead(hasHead);
             ExcelRowHandler<T> newRowHandler;
-            if (ObjectUtil.isNull(rowHandler)) {
+            if (ObjUtil.isNull(rowHandler)) {
                 readHelper.rowHandler((sheetIndex, rowIndex, bean) -> beanList.add(bean)).read();
                 return beanList;
             }

@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.common.plugin.mybatis.converter;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -27,7 +27,7 @@ public class BoolToIntTypeHandler extends BaseTypeHandler<Boolean> {
     public static final String MAPPING = "typeHandler=BoolToIntTypeHandler";
 
     public static Integer mapping(Boolean o) {
-        return ObjectUtil.isNull(o) ? null : (o ? 1 : 0);
+        return ObjUtil.isNull(o) ? null : (o ? 1 : 0);
     }
 
     @Override

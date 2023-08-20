@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.common.plugin.mq.config;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
@@ -37,25 +37,25 @@ public class RabbitAutoConfig implements BeanFactoryPostProcessor, EnvironmentAw
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         BindResult<RabbitProperties> bindResult = Binder.get(environment).bind(RabbitProperties.ENV_CONF_RABBIT_PREFIX, RabbitProperties.class);
         RabbitProperties rabbitProperties = bindResult.orElse(null);
-        if (ObjectUtil.isNull(rabbitProperties)) {
+        if (ObjUtil.isNull(rabbitProperties)) {
             log.info("Rabbit env config {} not found", RabbitProperties.ENV_CONF_RABBIT_PREFIX);
             return;
         }
-        if (ObjectUtil.isNotEmpty(rabbitProperties.getExchanges())) {
+        if (ObjUtil.isNotEmpty(rabbitProperties.getExchanges())) {
             rabbitProperties.getExchanges().forEach(o -> {
                 Exchange exchange = o.toBuilder().build();
                 beanFactory.registerSingleton(o.getName(), exchange);
                 log.info("Rabbit auto register exchange, {}, {}", o.getName(), o);
             });
         }
-        if (ObjectUtil.isNotEmpty(rabbitProperties.getQueues())) {
+        if (ObjUtil.isNotEmpty(rabbitProperties.getQueues())) {
             rabbitProperties.getQueues().forEach(o -> {
                 Queue queue = o.toBuilder().build();
                 beanFactory.registerSingleton(o.getName(), queue);
                 log.info("Rabbit auto register queue, {}, {}", o.getName(), o);
             });
         }
-        if (ObjectUtil.isNotEmpty(rabbitProperties.getBindings())) {
+        if (ObjUtil.isNotEmpty(rabbitProperties.getBindings())) {
             rabbitProperties.getBindings().forEach(o -> {
                 String bindName = o.getBindName();
                 // 对随机后缀的队列，不能直接用 bean name，需要获取 queue 的 bean 再获取队列名称

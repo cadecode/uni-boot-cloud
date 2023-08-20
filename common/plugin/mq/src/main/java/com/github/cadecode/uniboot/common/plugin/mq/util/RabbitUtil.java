@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.common.plugin.mq.util;
 
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -38,7 +38,7 @@ public class RabbitUtil implements InitializingBean {
     public static String send(String exchangeName, String routingKey, Object message, MessagePostProcessor postProcessor,
                               CorrelationData correlationData) {
         // 不存在消息 id 时构造新的 correlationData
-        if (ObjectUtil.isNull(correlationData) || ObjectUtil.isNull(correlationData.getId())) {
+        if (ObjUtil.isNull(correlationData) || ObjUtil.isNull(correlationData.getId())) {
             correlationData = geneCorrelationData();
         }
         RABBIT_TEMPLATE.convertAndSend(exchangeName, routingKey, message, postProcessor, correlationData);
@@ -57,7 +57,7 @@ public class RabbitUtil implements InitializingBean {
     public static String sendDelay(String exchangeName, String routingKey, Object message, Integer delayTime,
                                    MessagePostProcessor postProcessor, CorrelationData correlationData) {
         CorrelationData currCorrelationData;
-        if (ObjectUtil.isNull(correlationData) || ObjectUtil.isNull(correlationData.getId())) {
+        if (ObjUtil.isNull(correlationData) || ObjUtil.isNull(correlationData.getId())) {
             currCorrelationData = geneCorrelationData();
         } else {
             currCorrelationData = correlationData;

@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.framework.base.advisor;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.exception.ApiException;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
@@ -87,7 +87,7 @@ public class ApiResultAdvisor implements ResponseBodyAdvice<Object> {
             return JacksonUtil.toJson(ApiResult.ok(body));
         }
         // 对接口返回 null 特殊处理
-        if (ObjectUtil.isNull(body)) {
+        if (ObjUtil.isNull(body)) {
             throw ApiException.of(FrameErrorEnum.RES_BODY_NULL, "");
         }
         return ApiResult.ok(body);

@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.framework.base.plugin.controller;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.base.plugin.bean.vo.PlgSwaggerVo.PlgSwaggerDescResVo;
 import io.swagger.annotations.Api;
@@ -50,17 +50,17 @@ public class PlgSwaggerController {
                 .map(e -> {
                     ArrayList<String> urlList = new ArrayList<>(e.getKey().getPatternsCondition().getPatterns());
                     String url = null;
-                    if (ObjectUtil.isNotEmpty(urlList)) {
+                    if (ObjUtil.isNotEmpty(urlList)) {
                         url = urlList.get(0);
                     }
                     ApiOperation operation = e.getValue().getMethod().getAnnotation(ApiOperation.class);
                     String description = null;
-                    if (ObjectUtil.isNotNull(operation)) {
+                    if (ObjUtil.isNotNull(operation)) {
                         description = operation.value();
                     }
                     return PlgSwaggerDescResVo.builder().url(url).description(description).build();
                 })
-                .filter(o -> ObjectUtil.isNotEmpty(o.getUrl()))
+                .filter(o -> ObjUtil.isNotEmpty(o.getUrl()))
                 .distinct()
                 .sorted(Comparator.comparing(PlgSwaggerDescResVo::getUrl))
                 .collect(Collectors.toList());

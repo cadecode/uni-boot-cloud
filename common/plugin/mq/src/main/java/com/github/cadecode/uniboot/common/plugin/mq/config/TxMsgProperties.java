@@ -2,7 +2,7 @@ package com.github.cadecode.uniboot.common.plugin.mq.config;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -66,7 +66,7 @@ public class TxMsgProperties implements InitializingBean {
     private MsgOption defaultMsgOption;
 
     public MsgOption createMsgOption(MsgOption msgOption) {
-        if (ObjectUtil.isNull(msgOption)) {
+        if (ObjUtil.isNull(msgOption)) {
             msgOption = new MsgOption();
         }
         BeanUtil.copyProperties(defaultMsgOption, msgOption, CopyOptions.create().setOverride(false));
@@ -81,7 +81,7 @@ public class TxMsgProperties implements InitializingBean {
                 .backoffMultiplier(DEFAULT_BACKOFF_MULTIPLIER)
                 .backoffMaxInterval(DEFAULT_BACKOFF_MAX_INTERVAL)
                 .build();
-        if (ObjectUtil.isNull(defaultMsgOption)) {
+        if (ObjUtil.isNull(defaultMsgOption)) {
             defaultMsgOption = allDefaultOption;
         } else {
             BeanUtil.copyProperties(allDefaultOption, defaultMsgOption, CopyOptions.create().setOverride(false));

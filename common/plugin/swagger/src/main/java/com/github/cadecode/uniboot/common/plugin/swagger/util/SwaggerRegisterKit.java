@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.common.plugin.swagger.util;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.util.SpringUtil;
 import com.github.cadecode.uniboot.common.plugin.swagger.config.SwaggerProperties;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class SwaggerRegisterKit {
      */
     public void registerModule(SwaggerProperties prop) {
         log.info("Starting to config swagger dockets");
-        if (ObjectUtil.isEmpty(prop.getModule())) {
+        if (ObjUtil.isEmpty(prop.getModule())) {
             log.info("Swagger dockets config not found");
             return;
         }
