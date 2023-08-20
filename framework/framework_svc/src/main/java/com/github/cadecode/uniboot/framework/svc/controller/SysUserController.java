@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.framework.svc.controller;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.exception.ApiException;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
@@ -78,7 +78,7 @@ public class SysUserController {
         SysUserDetails userDetails = SecurityUtil.getUserDetails(null);
         SysUser sysUser = sysUserService.lambdaQuery().select(SysUser::getPassword)
                 .eq(SysUser::getId, userDetails.getId()).one();
-        if (ObjectUtil.notEqual(reqVo.getNewPass(), reqVo.getConfirmedPass())) {
+        if (ObjUtil.notEqual(reqVo.getNewPass(), reqVo.getConfirmedPass())) {
             throw ApiException.of("新密码和确认密码不一致");
         }
         if (!passwordEncoder.matches(reqVo.getOldPass(), sysUser.getPassword())) {
@@ -114,7 +114,7 @@ public class SysUserController {
     @PostMapping("update")
     public boolean update(@RequestBody @Valid SysUserVo.SysUserUpdateReqVo reqVo) {
         String encodePass = null;
-        if (ObjectUtil.isNotEmpty(reqVo.getPassword())) {
+        if (ObjUtil.isNotEmpty(reqVo.getPassword())) {
             encodePass = passwordEncoder.encode(reqVo.getPassword());
         }
         SysUser po = SysUserConvert.INSTANCE.voToPo(reqVo);
@@ -125,7 +125,7 @@ public class SysUserController {
     @ApiOperation("添加用户")
     @PostMapping("add")
     public boolean add(@RequestBody @Valid SysUserAddReqVo reqVo) {
-        if (ObjectUtil.isNotEmpty(reqVo.getPassword())) {
+        if (ObjUtil.isNotEmpty(reqVo.getPassword())) {
             reqVo.setPassword(passwordEncoder.encode(reqVo.getPassword()));
         }
         SysUser sysUser = SysUserConvert.INSTANCE.voToPo(reqVo);

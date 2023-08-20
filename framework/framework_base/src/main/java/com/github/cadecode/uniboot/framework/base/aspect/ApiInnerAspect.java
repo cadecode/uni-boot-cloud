@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.framework.base.aspect;
 
 import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.github.cadecode.uniboot.common.core.exception.ApiException;
 import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
@@ -40,12 +40,12 @@ public class ApiInnerAspect {
         ApiInner apiInner = methodSignature.getMethod().getAnnotation(ApiInner.class);
         // 获取 request
         HttpServletRequest servletRequest = RequestUtil.getRequest();
-        if (ObjectUtil.isNull(servletRequest)) {
+        if (ObjUtil.isNull(servletRequest)) {
             return;
         }
         // 获取请求头
         String source = ServletUtil.getHeader(servletRequest, HttpConst.HEAD_SOURCE, CharsetUtil.CHARSET_UTF_8);
-        boolean innerFlag = ObjectUtil.equal(source, HttpConst.HEAD_SOURCE_VALUE);
+        boolean innerFlag = ObjUtil.equal(source, HttpConst.HEAD_SOURCE_VALUE);
         // 判断是否仅供内部调用
         if (apiInner.onlyClient() && !innerFlag) {
             throw ApiException.of(AuthErrorEnum.TOKEN_NO_AUTHORITY, "ApiInner AOP：该接口仅供内部调用");

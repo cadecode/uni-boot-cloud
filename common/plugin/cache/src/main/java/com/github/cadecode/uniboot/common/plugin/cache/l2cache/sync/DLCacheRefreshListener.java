@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.common.plugin.cache.l2cache.sync;
 
 import cn.hutool.core.collection.ConcurrentHashSet;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.plugin.cache.l2cache.DLCacheProperties;
 import com.github.cadecode.uniboot.common.plugin.cache.l2cache.cache.DLCacheManager;
 import com.github.cadecode.uniboot.common.plugin.cache.listener.RedisMessageListener;
@@ -42,7 +42,7 @@ public class DLCacheRefreshListener extends RedisMessageListener {
     public void onMessage(Message message, byte[] pattern) {
         // 序列化出刷新消息
         DLCacheRefreshMsg refreshMsg = (DLCacheRefreshMsg) RedisUtil.getTemplate().getValueSerializer().deserialize(message.getBody());
-        if (ObjectUtil.isNull(refreshMsg)) {
+        if (ObjUtil.isNull(refreshMsg)) {
             return;
         }
         // 判断是不是自身节点发出

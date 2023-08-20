@@ -4,7 +4,7 @@ import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.github.cadecode.uniboot.common.core.util.AssertUtil;
@@ -74,7 +74,7 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
                     .ne(PlgMqMsg::getSendState, SendStateEnum.OVER)
                     .gt(PlgMqMsg::getLeftRetryTimes, 0)
                     .list();
-            if (ObjectUtil.isEmpty(msgList)) {
+            if (ObjUtil.isEmpty(msgList)) {
                 return;
             }
             long retryCount = msgList.stream()
@@ -122,7 +122,7 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
                     .le(PlgMqMsg::getCreateTime, lastDate)
                     .eq(PlgMqMsg::getSendState, SendStateEnum.OVER)
                     .list();
-            if (ObjectUtil.isEmpty(msgList)) {
+            if (ObjUtil.isEmpty(msgList)) {
                 return;
             }
             List<String> batchIdList = msgList.stream().map(PlgMqMsg::getId).collect(Collectors.toList());
@@ -140,7 +140,7 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
         AssertUtil.isNull(txMsg.getRoutingKey(), () -> new TxMsgException("TxMsg routing key null"));
         AssertUtil.isNull(txMsg.getMessage(), () -> new TxMsgException("TxMsg message null"));
         // 没有设置 id 时生成雪花 id
-        if (ObjectUtil.isEmpty(txMsg.getId())) {
+        if (ObjUtil.isEmpty(txMsg.getId())) {
             ((TxMsg) txMsg).setId(String.valueOf(IdWorker.getId(txMsg)));
         }
     }
@@ -206,8 +206,8 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
 
     @Override
     public void handleConfirm(CorrelationData correlationData, boolean ack, String cause) {
-        if (ObjectUtil.isNull(correlationData) || ObjectUtil.isNull(correlationData.getId())
-                || ObjectUtil.isNull(correlationData.getReturned())) {
+        if (ObjUtil.isNull(correlationData) || ObjUtil.isNull(correlationData.getId())
+                || ObjUtil.isNull(correlationData.getReturned())) {
             return;
         }
         Message message = correlationData.getReturned().getMessage();

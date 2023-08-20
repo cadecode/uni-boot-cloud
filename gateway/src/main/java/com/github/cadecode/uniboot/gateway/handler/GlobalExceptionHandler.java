@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.gateway.handler;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.enums.ApiErrorCode;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
             errorCode = FrameErrorEnum.GW_SVC_INTERNAL_ERROR;
         }
         ApiResult<Object> result = ApiResult.error(errorCode).moreInfo(moreInfo).path(path);
-        if (ObjectUtil.isNotNull(status)) {
+        if (ObjUtil.isNotNull(status)) {
             result.status(status);
         }
         return result;

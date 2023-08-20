@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.cadecode.uniboot.common.core.exception.ApiException;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysUser;
@@ -36,7 +36,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public UserDetails loadUserByUsername(String username) {
         List<SysUserRolesResVo> userRolesVoList = sysUserMapper.selectRolesVoByUsername(username);
         // 用户账户不存在
-        if (ObjectUtil.isEmpty(userRolesVoList)) {
+        if (ObjUtil.isEmpty(userRolesVoList)) {
             throw ApiException.of("该用户不存在");
         }
         SysUserRolesResVo userRolesVo = userRolesVoList.get(0);

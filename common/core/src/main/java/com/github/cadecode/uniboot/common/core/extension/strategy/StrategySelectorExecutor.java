@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.common.core.extension.strategy;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.exception.ExtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class StrategySelectorExecutor extends AbstractStrategyExecutor {
     @Override
     public <S extends StrategyService> void execute(Class<S> clazz, StrategyContext context, Consumer<S> consumer) {
         List<S> services = selectServices(clazz, context);
-        if (ObjectUtil.isNotEmpty(services)) {
+        if (ObjUtil.isNotEmpty(services)) {
             consumer.accept(services.get(0));
             return;
         }
@@ -53,7 +53,7 @@ public class StrategySelectorExecutor extends AbstractStrategyExecutor {
     @Override
     public <S extends StrategyService> void executeAll(Class<S> clazz, StrategyContext context, Consumer<S> consumer) {
         List<S> services = selectServices(clazz, context);
-        if (ObjectUtil.isNotEmpty(services)) {
+        if (ObjUtil.isNotEmpty(services)) {
             services.forEach(consumer);
             return;
         }
@@ -71,7 +71,7 @@ public class StrategySelectorExecutor extends AbstractStrategyExecutor {
     @Override
     public <R, S extends StrategyService> R execute(Class<S> clazz, StrategyContext context, Function<S, R> function) {
         List<S> services = selectServices(clazz, context);
-        if (ObjectUtil.isNotEmpty(services)) {
+        if (ObjUtil.isNotEmpty(services)) {
             return function.apply(services.get(0));
         }
         throw new ExtException("Strategy service not found");
@@ -88,7 +88,7 @@ public class StrategySelectorExecutor extends AbstractStrategyExecutor {
     @Override
     public <S extends StrategyService> List<Object> executeAll(Class<S> clazz, StrategyContext context, Function<S, Object> function) {
         List<S> services = selectServices(clazz, context);
-        if (ObjectUtil.isNotEmpty(services)) {
+        if (ObjUtil.isNotEmpty(services)) {
             return services.stream()
                     .map(function)
                     .collect(Collectors.toList());

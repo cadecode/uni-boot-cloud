@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.framework.base.plugin.controller;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.common.plugin.mybatis.converter.BoolToIntTypeHandler;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
@@ -47,12 +47,12 @@ public class PlgLogController {
     public PageResult<PlgLogPageResVo> page(@RequestBody @Valid PlgLogVo.PlgLogPageReqVo reqVo) {
         PageInfo<PlgLog> pageInfo = PageHelper.startPage(reqVo.getPageNumber(), reqVo.getPageSize())
                 .doSelectPageInfo(() -> logService.lambdaQuery()
-                        .ge(ObjectUtil.isNotEmpty(reqVo.getStartTime()), PlgLog::getCreateTime, reqVo.getStartTime())
-                        .le(ObjectUtil.isNotEmpty(reqVo.getEndTime()), PlgLog::getCreateTime, reqVo.getEndTime())
-                        .in(ObjectUtil.isNotEmpty(reqVo.getLogTypeList()), PlgLog::getLogType, reqVo.getLogTypeList())
-                        .likeRight(ObjectUtil.isNotEmpty(reqVo.getAccessUser()), PlgLog::getAccessUser, reqVo.getAccessUser())
-                        .like(ObjectUtil.isNotEmpty(reqVo.getUrl()), PlgLog::getUrl, reqVo.getUrl())
-                        .eq(ObjectUtil.isNotNull(reqVo.getExceptional()), PlgLog::getExceptional, BoolToIntTypeHandler.mapping(reqVo.getExceptional()))
+                        .ge(ObjUtil.isNotEmpty(reqVo.getStartTime()), PlgLog::getCreateTime, reqVo.getStartTime())
+                        .le(ObjUtil.isNotEmpty(reqVo.getEndTime()), PlgLog::getCreateTime, reqVo.getEndTime())
+                        .in(ObjUtil.isNotEmpty(reqVo.getLogTypeList()), PlgLog::getLogType, reqVo.getLogTypeList())
+                        .likeRight(ObjUtil.isNotEmpty(reqVo.getAccessUser()), PlgLog::getAccessUser, reqVo.getAccessUser())
+                        .like(ObjUtil.isNotEmpty(reqVo.getUrl()), PlgLog::getUrl, reqVo.getUrl())
+                        .eq(ObjUtil.isNotNull(reqVo.getExceptional()), PlgLog::getExceptional, BoolToIntTypeHandler.mapping(reqVo.getExceptional()))
                         .orderByDesc(PlgLog::getCreateTime)
                         .list());
         List<PlgLogPageResVo> voList = PlgLogConvert.INSTANCE.poToVo(pageInfo.getList());

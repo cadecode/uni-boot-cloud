@@ -2,7 +2,7 @@ package com.github.cadecode.uniboot.framework.base.config;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.EscapeUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,14 +48,14 @@ public class FeignConfig {
         // 设置内部请求来源标识
         requestTemplate.header(HttpConst.HEAD_SOURCE, HttpConst.HEAD_SOURCE_VALUE);
         HttpServletRequest servletRequest = RequestUtil.getRequest();
-        if (ObjectUtil.isNull(servletRequest)) {
+        if (ObjUtil.isNull(servletRequest)) {
             return;
         }
         // 配置客户端 IP
         requestTemplate.header(HttpConst.HEAD_FORWARDED_FOR, ServletUtil.getClientIP(servletRequest));
         // 传递 trace id
         String traceId = ServletUtil.getHeader(servletRequest, HttpConst.HEAD_TRACE_ID, CharsetUtil.CHARSET_UTF_8);
-        if (ObjectUtil.isNotEmpty(traceId)) {
+        if (ObjUtil.isNotEmpty(traceId)) {
             requestTemplate.header(HttpConst.HEAD_TRACE_ID, traceId);
         }
         // 传递用户 token

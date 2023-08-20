@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.common.plugin.mq.config;
 
 import cn.hutool.core.lang.UUID;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import lombok.Data;
 import org.springframework.amqp.core.Binding.DestinationType;
 import org.springframework.amqp.core.ExchangeBuilder;
@@ -73,11 +73,11 @@ public class RabbitProperties {
             if (autoDelete) {
                 builder.autoDelete();
             }
-            if (!ObjectUtil.hasNull(dlExchange, dlRoutingKey)) {
+            if (!ObjUtil.hasNull(dlExchange, dlRoutingKey)) {
                 builder.deadLetterExchange(dlExchange);
                 builder.deadLetterRoutingKey(dlRoutingKey);
             }
-            if (ObjectUtil.isNotEmpty(arguments)) {
+            if (ObjUtil.isNotEmpty(arguments)) {
                 arguments.forEach(builder::withArgument);
             }
             return builder;
@@ -120,10 +120,10 @@ public class RabbitProperties {
             if (!declare) {
                 builder.suppressDeclaration();
             }
-            if (ObjectUtil.isNotEmpty(declaringAdmins)) {
+            if (ObjUtil.isNotEmpty(declaringAdmins)) {
                 builder.admins(arguments);
             }
-            if (ObjectUtil.isNotEmpty(arguments)) {
+            if (ObjUtil.isNotEmpty(arguments)) {
                 arguments.forEach(builder::withArgument);
             }
             return builder;

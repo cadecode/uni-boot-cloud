@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.common.plugin.mq.rabbit;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.plugin.mq.consts.RabbitConst;
 import com.github.cadecode.uniboot.common.plugin.mq.handler.AbstractTxMsgHandler;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,7 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         // 获取 correlationData id
-        String correlationId = ObjectUtil.defaultIfNull(correlationData, CorrelationData::getId, "");
+        String correlationId = ObjUtil.defaultIfNull(correlationData, CorrelationData::getId, "");
         if (ack) {
             log.debug("Rabbit message send ok, id:{}", correlationId);
             txMsgTaskHandler.handleConfirm(correlationData, true, cause);
@@ -74,7 +74,7 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
      * 判断是否是 delay 交换机
      */
     private boolean isExchangeDelayed(String exchangeName) {
-        if (ObjectUtil.isEmpty(exchangeNameMap)) {
+        if (ObjUtil.isEmpty(exchangeNameMap)) {
             exchangeNameMap = exchanges.stream().collect(Collectors.toMap(Exchange::getName, o -> o));
         }
         // 若是 delay 交换机
@@ -90,7 +90,7 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
         // 设置 correlationData 后置处理
         rabbitTemplate.setCorrelationDataPostProcessor((message, correlationData) -> {
             // 填充 correlationDataId 到 MessageProperties
-            if (ObjectUtil.isNotNull(correlationData) && ObjectUtil.isNotNull(correlationData.getId())) {
+            if (ObjUtil.isNotNull(correlationData) && ObjUtil.isNotNull(correlationData.getId())) {
                 String correlationId = correlationData.getId();
                 message.getMessageProperties().setCorrelationId(correlationId);
             }

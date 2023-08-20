@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.framework.base.feign;
 
 import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.cadecode.uniboot.common.core.enums.ApiErrorCode;
@@ -41,7 +41,7 @@ public class FeignErrorDecoder implements ErrorDecoder {
         // 获取 ErrorMessage
         ErrorMessage error = result.getError();
         // 返回默认包装的 FeignException
-        if (ObjectUtil.isNull(error)) {
+        if (ObjUtil.isNull(error)) {
             FeignException feignException = FeignException.errorStatus(methodKey, response);
             return ApiException.of(FrameErrorEnum.RPC_UNKNOWN_ERROR, feignException);
         }

@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.framework.base.util;
 
 import cn.hutool.core.lang.UUID;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.base.config.SecurityConfig.SecurityProperties;
 import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
@@ -48,9 +48,9 @@ public class SecurityUtil implements InitializingBean {
      */
     public static String getTokenFromRequest(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if (ObjectUtil.isNotEmpty(cookies)) {
+        if (ObjUtil.isNotEmpty(cookies)) {
             Optional<Cookie> optionalCookie = Arrays.stream(cookies)
-                    .filter(c -> ObjectUtil.equal(c.getName(), HttpConst.HEAD_TOKEN))
+                    .filter(c -> ObjUtil.equal(c.getName(), HttpConst.HEAD_TOKEN))
                     .findAny();
             if (optionalCookie.isPresent()) {
                 return optionalCookie.get().getValue();
@@ -76,7 +76,7 @@ public class SecurityUtil implements InitializingBean {
      * @return token
      */
     public static boolean isAuthenticated(Authentication authentication) {
-        if (ObjectUtil.isNull(authentication)) {
+        if (ObjUtil.isNull(authentication)) {
             authentication = SecurityContextHolder.getContext().getAuthentication();
         }
         return authentication != null && authentication.getPrincipal() instanceof SysUserDetails;
@@ -89,7 +89,7 @@ public class SecurityUtil implements InitializingBean {
      * @return SysUserDetails
      */
     public static SysUserDetails getUserDetails(Authentication authentication) {
-        if (ObjectUtil.isNull(authentication)) {
+        if (ObjUtil.isNull(authentication)) {
             authentication = SecurityContextHolder.getContext().getAuthentication();
         }
         if (authentication != null && authentication.getPrincipal() instanceof SysUserDetails) {

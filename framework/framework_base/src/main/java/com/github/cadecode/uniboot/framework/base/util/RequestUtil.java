@@ -2,7 +2,7 @@ package com.github.cadecode.uniboot.framework.base.util;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.EscapeUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
@@ -23,7 +23,7 @@ public class RequestUtil {
 
     public static HttpServletRequest getRequest() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (ObjectUtil.isNull(requestAttributes)) {
+        if (ObjUtil.isNull(requestAttributes)) {
             return null;
         }
         return requestAttributes.getRequest();
@@ -31,7 +31,7 @@ public class RequestUtil {
 
     public static HttpServletResponse getResponse() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (ObjectUtil.isNull(requestAttributes)) {
+        if (ObjUtil.isNull(requestAttributes)) {
             return null;
         }
         return requestAttributes.getResponse();
@@ -44,14 +44,14 @@ public class RequestUtil {
      * @return 是否是内部请求
      */
     public static boolean isInnerRequest(HttpServletRequest request) {
-        if (ObjectUtil.isNull(request)) {
+        if (ObjUtil.isNull(request)) {
             request = getRequest();
         }
-        if (ObjectUtil.isNull(request)) {
+        if (ObjUtil.isNull(request)) {
             return false;
         }
         String source = ServletUtil.getHeader(request, HttpConst.HEAD_SOURCE, CharsetUtil.CHARSET_UTF_8);
-        return ObjectUtil.equal(source, HttpConst.HEAD_SOURCE_VALUE);
+        return ObjUtil.equal(source, HttpConst.HEAD_SOURCE_VALUE);
     }
 
     /**
@@ -61,15 +61,15 @@ public class RequestUtil {
      * @return 内部请求携带的用户信息
      */
     public static SysUserDetails getInnerUserDetails(HttpServletRequest request) {
-        if (ObjectUtil.isNull(request)) {
+        if (ObjUtil.isNull(request)) {
             request = getRequest();
         }
-        if (ObjectUtil.isNull(request)) {
+        if (ObjUtil.isNull(request)) {
             return null;
         }
         // feign 拦截器填充时做了转义处理
         String escapedUserDetailsJson = ServletUtil.getHeader(request, HttpConst.HEAD_USER_DETAILS, CharsetUtil.CHARSET_UTF_8);
-        if (ObjectUtil.isNotEmpty(escapedUserDetailsJson)) {
+        if (ObjUtil.isNotEmpty(escapedUserDetailsJson)) {
             return JacksonUtil.toBean(EscapeUtil.unescape(escapedUserDetailsJson), SysUserDetails.class);
         }
         return null;

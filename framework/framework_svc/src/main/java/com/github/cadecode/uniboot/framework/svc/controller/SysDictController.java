@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.framework.svc.controller;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysDict;
@@ -45,8 +45,8 @@ public class SysDictController {
     public PageResult<SysDictPageResVo> page(@RequestBody @Valid SysDictPageReqVo reqVo) {
         PageInfo<SysDict> pageInfo = PageHelper.startPage(reqVo.getPageNumber(), reqVo.getPageSize())
                 .doSelectPageInfo(() -> sysDictService.lambdaQuery()
-                        .likeRight(ObjectUtil.isNotEmpty(reqVo.getName()), SysDict::getName, reqVo.getName())
-                        .likeRight(ObjectUtil.isNotEmpty(reqVo.getType()), SysDict::getType, reqVo.getType())
+                        .likeRight(ObjUtil.isNotEmpty(reqVo.getName()), SysDict::getName, reqVo.getName())
+                        .likeRight(ObjUtil.isNotEmpty(reqVo.getType()), SysDict::getType, reqVo.getType())
                         .orderByDesc(SysDict::getCreateTime)
                         .list());
         List<SysDictPageResVo> voList = SysDictConvert.INSTANCE.poToPageResVo(pageInfo.getList());

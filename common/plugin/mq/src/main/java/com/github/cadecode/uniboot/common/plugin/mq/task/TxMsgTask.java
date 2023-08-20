@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.common.plugin.mq.task;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.plugin.mq.config.TxMsgProperties;
 import com.github.cadecode.uniboot.common.plugin.mq.handler.AbstractTxMsgHandler;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class TxMsgTask {
         log.info("TxMsg task do retry started");
         taskScheduler.scheduleWithFixedDelay(txMsgTaskHandler::doRetry, txMsgProperties.getRetryFixDelay());
         log.info("TxMsg task do clear start, {}", txMsgProperties.getAutoClear());
-        if (ObjectUtil.equal(txMsgProperties.getAutoClear(), true)) {
+        if (ObjUtil.equal(txMsgProperties.getAutoClear(), true)) {
             taskScheduler.scheduleWithFixedDelay(() -> txMsgTaskHandler.doClear(txMsgProperties.getAutoClearInterval()),
                     txMsgProperties.getClearFixDelay());
         }

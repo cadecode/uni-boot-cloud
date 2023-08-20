@@ -2,7 +2,7 @@ package com.github.cadecode.uniboot.framework.base.plugin.handler;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
@@ -55,9 +55,9 @@ public class LogSaveHandler extends AbstractApiLogHandler {
         }
         // 获取描述
         String description = apiLogger.description();
-        if (ObjectUtil.isEmpty(description)) {
+        if (ObjUtil.isEmpty(description)) {
             ApiOperation apiOperation = ((MethodSignature) point.getSignature()).getMethod().getAnnotation(ApiOperation.class);
-            if (ObjectUtil.isNotNull(apiOperation)) {
+            if (ObjUtil.isNotNull(apiOperation)) {
                 description = apiOperation.value();
             }
         }

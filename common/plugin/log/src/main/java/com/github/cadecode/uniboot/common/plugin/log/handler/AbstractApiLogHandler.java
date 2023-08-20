@@ -1,6 +1,7 @@
 package com.github.cadecode.uniboot.common.plugin.log.handler;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.model.BaseLogInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,6 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public abstract class AbstractApiLogHandler {
         MethodSignature methodSignature = (MethodSignature) signature;
         String[] names = methodSignature.getParameterNames();
         Object[] args = joinPoint.getArgs();
-        if (ObjectUtils.isEmpty(names) || ObjectUtils.isEmpty(args)) {
+        if (ObjUtil.isEmpty(names) || ObjUtil.isEmpty(args)) {
             return Collections.emptyMap();
         }
         if (names.length != args.length) {

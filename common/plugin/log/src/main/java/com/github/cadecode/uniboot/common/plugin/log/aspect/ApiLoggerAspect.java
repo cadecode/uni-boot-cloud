@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.common.plugin.log.aspect;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
 import com.github.cadecode.uniboot.common.plugin.log.handler.AbstractApiLogHandler;
@@ -86,13 +86,13 @@ public class ApiLoggerAspect {
     public void handleLogger(ProceedingJoinPoint point, ApiLogger apiLogger, Object result, Throwable throwable, Long timeCost) {
         // 解析请求对象
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (ObjectUtil.isNull(attributes)) {
+        if (ObjUtil.isNull(attributes)) {
             return;
         }
         try {
             String resultStr;
             boolean exceptional = false;
-            if (ObjectUtil.isNotNull(throwable)) {
+            if (ObjUtil.isNotNull(throwable)) {
                 exceptional = true;
                 resultStr = ExceptionUtil.stacktraceToString(throwable);
             } else {

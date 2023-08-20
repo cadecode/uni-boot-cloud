@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.framework.base.feign;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.base.util.RequestUtil;
 import feign.Client;
@@ -39,7 +39,7 @@ public class FeignClientDecorator implements Client {
      */
     protected void fillResponseHeader(Map<String, Collection<String>> headers) {
         HttpServletResponse servletResponse = RequestUtil.getResponse();
-        if (ObjectUtil.isNull(servletResponse)) {
+        if (ObjUtil.isNull(servletResponse)) {
             return;
         }
         // 获取 token

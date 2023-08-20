@@ -1,6 +1,6 @@
 package com.github.cadecode.uniboot.common.core.util;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.enums.ApiErrorCode;
 import com.github.cadecode.uniboot.common.core.exception.ApiException;
 
@@ -109,7 +109,7 @@ public class AssertUtil {
      * @param exceptionSupplier 运行时异常提供者
      */
     public static void isNull(Object o, Supplier<RuntimeException> exceptionSupplier) {
-        isTrue(ObjectUtil.isNull(o), exceptionSupplier);
+        isTrue(ObjUtil.isNull(o), exceptionSupplier);
     }
 
     /**
@@ -119,7 +119,7 @@ public class AssertUtil {
      * @param moreInfo 异常信息
      */
     public static void isNull(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isNull(o), () -> ApiException.of(moreInfo));
+        isTrue(ObjUtil.isNull(o), () -> ApiException.of(moreInfo));
     }
 
     /**
@@ -130,7 +130,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNull(Object o, ApiErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isNull(o), () -> ApiException.of(errorCode, moreInfo));
+        isTrue(ObjUtil.isNull(o), () -> ApiException.of(errorCode, moreInfo));
     }
 
     /**
@@ -142,7 +142,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNull(Object o, ApiErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isNull(o), () -> ApiException.of(errorCode, throwable, moreInfo));
+        isTrue(ObjUtil.isNull(o), () -> ApiException.of(errorCode, throwable, moreInfo));
     }
 
     /**
@@ -152,7 +152,7 @@ public class AssertUtil {
      * @param exceptionSupplier 运行时异常提供者
      */
     public static void isNotNull(Object o, Supplier<RuntimeException> exceptionSupplier) {
-        isTrue(ObjectUtil.isNotNull(o), exceptionSupplier);
+        isTrue(ObjUtil.isNotNull(o), exceptionSupplier);
     }
 
     /**
@@ -162,7 +162,7 @@ public class AssertUtil {
      * @param moreInfo 异常信息
      */
     public static void isNotNull(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isNotNull(o), () -> ApiException.of(moreInfo));
+        isTrue(ObjUtil.isNotNull(o), () -> ApiException.of(moreInfo));
     }
 
     /**
@@ -173,7 +173,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNotNull(Object o, ApiErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isNotNull(o), () -> ApiException.of(errorCode, moreInfo));
+        isTrue(ObjUtil.isNotNull(o), () -> ApiException.of(errorCode, moreInfo));
     }
 
     /**
@@ -185,7 +185,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNotNull(Object o, ApiErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isNotNull(o), () -> ApiException.of(errorCode, throwable, moreInfo));
+        isTrue(ObjUtil.isNotNull(o), () -> ApiException.of(errorCode, throwable, moreInfo));
     }
 
     /**
@@ -195,7 +195,7 @@ public class AssertUtil {
      * @param exceptionSupplier 运行时异常提供者
      */
     public static void isEmpty(Object o, Supplier<RuntimeException> exceptionSupplier) {
-        isTrue(ObjectUtil.isEmpty(o), exceptionSupplier);
+        isTrue(ObjUtil.isEmpty(o), exceptionSupplier);
     }
 
     /**
@@ -205,7 +205,7 @@ public class AssertUtil {
      * @param moreInfo 异常信息
      */
     public static void isEmpty(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isEmpty(o), () -> ApiException.of(moreInfo));
+        isTrue(ObjUtil.isEmpty(o), () -> ApiException.of(moreInfo));
     }
 
     /**
@@ -216,7 +216,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isEmpty(Object o, ApiErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isEmpty(o), () -> ApiException.of(errorCode, moreInfo));
+        isTrue(ObjUtil.isEmpty(o), () -> ApiException.of(errorCode, moreInfo));
     }
 
     /**
@@ -228,7 +228,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isEmpty(Object o, ApiErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isEmpty(o), () -> ApiException.of(errorCode, throwable, moreInfo));
+        isTrue(ObjUtil.isEmpty(o), () -> ApiException.of(errorCode, throwable, moreInfo));
     }
 
     /**
@@ -238,7 +238,7 @@ public class AssertUtil {
      * @param exceptionSupplier 运行时异常提供者
      */
     public static void isNotEmpty(Object o, Supplier<RuntimeException> exceptionSupplier) {
-        isTrue(ObjectUtil.isNotEmpty(o), exceptionSupplier);
+        isTrue(ObjUtil.isNotEmpty(o), exceptionSupplier);
     }
 
     /**
@@ -248,7 +248,7 @@ public class AssertUtil {
      * @param moreInfo 异常信息
      */
     public static void isNotEmpty(Object o, String moreInfo) {
-        isTrue(ObjectUtil.isNotEmpty(o), () -> ApiException.of(moreInfo));
+        isTrue(ObjUtil.isNotEmpty(o), () -> ApiException.of(moreInfo));
     }
 
     /**
@@ -259,7 +259,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNotEmpty(Object o, ApiErrorCode errorCode, String moreInfo) {
-        isTrue(ObjectUtil.isNotEmpty(o), () -> ApiException.of(errorCode, moreInfo));
+        isTrue(ObjUtil.isNotEmpty(o), () -> ApiException.of(errorCode, moreInfo));
     }
 
     /**
@@ -271,7 +271,7 @@ public class AssertUtil {
      * @param moreInfo  异常信息
      */
     public static void isNotEmpty(Object o, ApiErrorCode errorCode, Throwable throwable, String moreInfo) {
-        isTrue(ObjectUtil.isNotEmpty(o), () -> ApiException.of(errorCode, throwable, moreInfo));
+        isTrue(ObjUtil.isNotEmpty(o), () -> ApiException.of(errorCode, throwable, moreInfo));
     }
 
 }
