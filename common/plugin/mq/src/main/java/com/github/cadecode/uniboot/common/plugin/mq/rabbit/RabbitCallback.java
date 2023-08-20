@@ -2,6 +2,7 @@ package com.github.cadecode.uniboot.common.plugin.mq.rabbit;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.github.cadecode.uniboot.common.plugin.mq.consts.RabbitConst;
+import com.github.cadecode.uniboot.common.plugin.mq.handler.AbstractTxMsgHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Exchange;
@@ -37,6 +38,8 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
 
     private final RabbitTemplate rabbitTemplate;
 
+    private final AbstractTxMsgHandler txMsgTaskHandler;
+
     /**
      * 消息是否成功到达交换机
      */
@@ -46,9 +49,11 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
         String correlationId = ObjectUtil.defaultIfNull(correlationData, CorrelationData::getId, "");
         if (ack) {
             log.debug("Rabbit message send ok, id:{}", correlationId);
+            txMsgTaskHandler.handleConfirm(correlationData, true, cause);
             return;
         }
         log.error("Rabbit message send fail, correlationId:{}, cause:{}", correlationId, cause);
+        txMsgTaskHandler.handleConfirm(correlationData, false, cause);
     }
 
     /**
@@ -62,6 +67,7 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
         }
         log.error("Rabbit message is returned, message:{}, replyCode:{}. replyText:{}, exchange:{}, routingKey :{}",
                 returned.getMessage(), returned.getReplyCode(), returned.getReplyText(), returned.getExchange(), returned.getRoutingKey());
+        txMsgTaskHandler.handleReturned(returned);
     }
 
     /**
