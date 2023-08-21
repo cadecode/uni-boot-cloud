@@ -55,7 +55,7 @@ public class PlgLogController {
                         .eq(ObjUtil.isNotNull(reqVo.getExceptional()), PlgLog::getExceptional, BoolToIntTypeHandler.mapping(reqVo.getExceptional()))
                         .orderByDesc(PlgLog::getCreateTime)
                         .list());
-        List<PlgLogPageResVo> voList = PlgLogConvert.INSTANCE.poToVo(pageInfo.getList());
+        List<PlgLogPageResVo> voList = PlgLogConvert.INSTANCE.poToPageResVo(pageInfo.getList());
         return new PageResult<>((int) pageInfo.getTotal(), voList);
     }
 
