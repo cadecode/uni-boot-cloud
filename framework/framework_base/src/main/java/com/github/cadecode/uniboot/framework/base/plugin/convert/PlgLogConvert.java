@@ -18,6 +18,6 @@ public interface PlgLogConvert {
 
     PlgLogConvert INSTANCE = Mappers.getMapper(PlgLogConvert.class);
 
-    List<PlgLogPageResVo> poToVo(List<PlgLog> records);
+    List<PlgLogPageResVo> poToPageResVo(List<PlgLog> records);
 
 }
