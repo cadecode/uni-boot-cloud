@@ -103,7 +103,7 @@
         />
       </el-tab-pane>
     </el-tabs>
-    <el-dialog title="查看参数/结果" :visible.sync="showParamsDialog.showDialog" width="50%">
+    <el-dialog title="查看详情" :visible.sync="showParamsDialog.showDialog" width="50%">
       <el-tabs type="border-card">
         <el-tab-pane label="参数">
           <pre class="log-management-show-params">
