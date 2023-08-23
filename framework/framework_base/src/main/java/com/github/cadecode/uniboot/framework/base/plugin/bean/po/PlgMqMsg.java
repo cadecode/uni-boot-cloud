@@ -3,7 +3,10 @@ package com.github.cadecode.uniboot.framework.base.plugin.bean.po;
 import com.baomidou.mybatisplus.annotation.*;
 import com.github.cadecode.uniboot.framework.base.plugin.enums.ConsumeStateEnum;
 import com.github.cadecode.uniboot.framework.base.plugin.enums.SendStateEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -14,6 +17,9 @@ import java.util.Date;
  * @since 2023/8/19
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @TableName(autoResultMap = true)
 public class PlgMqMsg {
 
