@@ -29,6 +29,22 @@ spring:
         min-idle: 0
         max-idle: 8
         max-wait: -1
+  # rabbitmq 公共配置
+  rabbitmq:
+    publisher-returns: true
+    publisher-confirm-type: correlated
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 8
+        acknowledge-mode: manual
+        retry:
+          enabled: true
+          max-attempts: 5
+          max-interval: 10000
+          initial-interval: 2000
+          multiplier: 2
+        prefetch: 5
   # 数据源公共配置
   datasource:
     druid:
@@ -163,6 +179,12 @@ spring:
     port: 6379
     password: ENC(jIiKGruIMgDkKx5wj2gJRCROqPutkTvZ)
     database: 0
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
+    virtual-host: /uni_dev
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     dynamic:
@@ -199,6 +221,12 @@ spring:
     port: 6379
     password: ENC(jIiKGruIMgDkKx5wj2gJRCROqPutkTvZ)
     database: 0
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
+    virtual-host: /uni_dev
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     dynamic:
@@ -217,6 +245,41 @@ uni-boot:
     description: Example 服务在线文档 By Swagger
   security:
     ignore-urls:
+  mq:
+    rabbit:
+      enable: true
+      exchanges:
+        - name: uni.delay
+          type: topic
+          delayed: true
+        - name: uni.topic
+          type: topic
+      queues:
+        - name: example-delay-queue-0
+        - name: example-delay-queue-1
+          random-suffix: true
+          auto-delete: true
+        - name: example-biz-queue-0
+          dl-exchange: uni.topic
+          dl-routing-key: example-biz-queue-0-dl-rk
+        - name: example-biz-queue-0-dl
+        - name: example-biz-queue-1
+      bindings:
+        - bind-name: example-delay-queue-0
+          exchange-name: uni.delay
+          routing-key: example-delay-queue-0-rk
+        - bind-name: example-delay-queue-1
+          exchange-name: uni.delay
+          routing-key: example-delay-queue-1-rk
+        - bind-name: example-biz-queue-0
+          exchange-name: uni.topic
+          routing-key: example-biz-queue-0-rk
+        - bind-name: example-biz-queue-0-dl
+          exchange-name: uni.topic
+          routing-key: example-biz-queue-0-dl-rk
+        - bind-name: example-biz-queue-1
+          exchange-name: uni.topic
+          routing-key: example-biz-queue-1-rk
 ```
 
 ### gateway 服务配置
