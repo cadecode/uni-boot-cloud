@@ -56,6 +56,8 @@
 
    集成 knife4j，提供 swagger module 的动态配置支持
 
+   基础 RabbitMQ，提供通过配置声明交换机和队列功能，以及事务消息、消息重试的支持
+
    ...
 
 ## 功能模块
@@ -73,6 +75,7 @@
    │   │   ├── log
    │   │   ├── mybatis
    │   │   ├── swagger
+   │   │   ├── mq
    │   │   └── pom.xml
    │   └── pom.xml
    ├── dependencies
@@ -102,6 +105,7 @@
    common/plugin/log           # 日志模块，集成 API 访问日志
    common/plugin/mybatis       # mybatis 模块，集成 MybatisPlus、PageHelper
    common/plugin/swagger       # swagger 模块，集成 knife4j，动态配置 swagger 的 module
+   common/plugin/mq            # mq 模块，集成 RabbitMQ，提供事务消息、消息重试的支持
    dependencies                # 依赖管理模块，作为父模块，管理全局依赖版本
    framework                   # 框架模块
    framework/framework_api     # 框架 feign api
@@ -118,4 +122,3 @@
 参见配套前端项目
 
 [uni-boot-admin-vue](https://github.com/cadecode/uni-boot-admin-vue)
-
