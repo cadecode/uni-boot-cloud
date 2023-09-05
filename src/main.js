@@ -2,6 +2,7 @@ import Vue from 'vue';
 import ElementUI, {Message, MessageBox} from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'nprogress/nprogress.css';
+import {Fragment} from 'vue-frag';
 
 /**
  * A modern alternative to CSS resets
@@ -39,6 +40,12 @@ import router from '@/router';
 Vue.use(ElementUI);
 Vue.prototype.$message = Message;
 Vue.prototype.$messageBox = MessageBox;
+
+/**
+ * Vue template 多入口
+ * Fragment 增强
+ */
+Vue.component('Fragment', Fragment);
 
 /**
  * 开启生产提示，正式环境可只为false以减少warn
