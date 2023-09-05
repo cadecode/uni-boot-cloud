@@ -3,14 +3,21 @@
     <div class="log-management-filter">
       <el-form ref="logsFilterForm" size="small" inline :model="logsFilterForm.data" :rules="logsFilterForm.rules">
         <el-form-item label="服务" prop="serviceUrl">
-          <el-select v-model="logsFilterForm.data.serviceUrl" filterable placeholder="请选择">
-            <el-option
-              v-for="item in logsFilterForm.option.serviceUrl"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+          <base-dict-loader
+            dict-type="serviceUrl"
+            @load="(dict, defaultDict) => logsFilterForm.data.serviceUrl = defaultDict"
+          >
+            <template v-slot="scope">
+              <el-select v-model="logsFilterForm.data.serviceUrl" filterable placeholder="请选择">
+                <el-option
+                  v-for="item in scope.dictList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </template>
+          </base-dict-loader>
         </el-form-item>
         <br>
         <el-form-item label="日期" prop="createTimeRange">
@@ -23,14 +30,29 @@
           />
         </el-form-item>
         <el-form-item label="日志类型" prop="logTypeList">
-          <el-select v-model="logsFilterForm.data.logTypeList" clearable collapse-tags multiple filterable placeholder="请选择">
-            <el-option
-              v-for="item in logsFilterForm.option.logType"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+          <base-dict-loader
+            dict-type="logType"
+            multiple
+            @load="(dict, defaultDict) => logsFilterForm.data.logTypeList = defaultDict"
+          >
+            <template v-slot="scope">
+              <el-select
+                v-model="logsFilterForm.data.logTypeList"
+                clearable
+                collapse-tags
+                multiple
+                filterable
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in scope.dictList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </template>
+          </base-dict-loader>
         </el-form-item>
         <el-form-item label="URL" prop="url">
           <el-input v-model="logsFilterForm.data.url" />
@@ -120,11 +142,12 @@
   </div>
 </template>
 <script>
-import {listDictByType} from '@/api/system';
 import {deleteLog, pageLog} from '@/api/develop';
+import BaseDictLoader from '@/component/BaseDictLoader';
 
 export default {
   name: 'VLogManagement',
+  components: {BaseDictLoader},
   data() {
     return {
       logsFilterForm: {
@@ -138,10 +161,6 @@ export default {
         },
         rules: {
           serviceUrl: [{required: true, message: '请选择服务', trigger: 'blur'}]
-        },
-        option: {
-          logType: [],
-          serviceUrl: []
         }
       },
       logListTable: {
@@ -180,25 +199,7 @@ export default {
       }
     }
   },
-  created() {
-    this.listServiceUrl();
-    this.listLogType();
-  },
   methods: {
-    listServiceUrl() {
-      listDictByType('serviceUrl').then(res => {
-        this.logsFilterForm.option.serviceUrl = res.data;
-        const defaultUrl = this.logsFilterForm.option.serviceUrl.filter(o => o.defaultFlag)[0];
-        if (defaultUrl) {
-          this.logsFilterForm.data.serviceUrl = defaultUrl.value;
-        }
-      });
-    },
-    listLogType() {
-      listDictByType('logType').then(res => {
-        this.logsFilterForm.option.logType = res.data;
-      });
-    },
     pageLogs(currPage) {
       // 分页插件回调传递当前页号
       const data = {

@@ -3,14 +3,18 @@
     <div class="mq-msg-management-filter">
       <el-form ref="mqMsgFilterForm" size="small" inline :model="mqMsgFilterForm.data" :rules="mqMsgFilterForm.rules">
         <el-form-item label="服务" prop="serviceUrl">
-          <el-select v-model="mqMsgFilterForm.data.serviceUrl" filterable placeholder="请选择">
-            <el-option
-              v-for="item in mqMsgFilterForm.option.serviceUrl"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+          <base-dict-loader dict-type="serviceUrl" @load="(dict, defaultDict) => mqMsgFilterForm.data.serviceUrl = defaultDict">
+            <template v-slot="scope">
+              <el-select v-model="mqMsgFilterForm.data.serviceUrl" filterable placeholder="请选择">
+                <el-option
+                  v-for="item in scope.dictList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </template>
+          </base-dict-loader>
         </el-form-item>
         <br>
         <el-form-item label="日期" prop="createTimeRange">
@@ -26,21 +30,29 @@
           <el-input v-model="mqMsgFilterForm.data.bizType" />
         </el-form-item>
         <el-form-item label="发送状态" prop="sendStateList">
-          <el-select
-            v-model="mqMsgFilterForm.data.sendStateList"
-            clearable
-            collapse-tags
+          <base-dict-loader
+            dict-type="mqMsgSendState"
             multiple
-            filterable
-            placeholder="请选择"
+            @load="loadSendStateDict"
           >
-            <el-option
-              v-for="item in mqMsgFilterForm.option.sendStateList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+            <template v-slot="scope">
+              <el-select
+                v-model="mqMsgFilterForm.data.sendStateList"
+                clearable
+                collapse-tags
+                multiple
+                filterable
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in scope.dictList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </template>
+          </base-dict-loader>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="pageMqMsg(1)">搜索</el-button>
@@ -145,11 +157,12 @@
   </div>
 </template>
 <script>
-import {listDictByType} from '@/api/system';
 import {listMqMsgByIdList, pageMqMsg, updateMqMsg} from '@/api/develop';
+import BaseDictLoader from '@/component/BaseDictLoader';
 
 export default {
   name: 'VMqMsgManagement',
+  components: {BaseDictLoader},
   data() {
     return {
       mqMsgFilterForm: {
@@ -163,8 +176,7 @@ export default {
           serviceUrl: [{required: true, message: '请选择服务', trigger: 'blur'}]
         },
         option: {
-          sendStateList: [],
-          serviceUrl: []
+          sendStateList: []
         }
       },
       mqMsgListTable: {
@@ -213,28 +225,10 @@ export default {
       }
     }
   },
-  created() {
-    this.listServiceUrl();
-    this.listSendState();
-  },
   methods: {
-    listServiceUrl() {
-      listDictByType('serviceUrl').then(res => {
-        this.mqMsgFilterForm.option.serviceUrl = res.data;
-        const defaultUrl = res.data.filter(o => o.defaultFlag)[0];
-        if (defaultUrl) {
-          this.mqMsgFilterForm.data.serviceUrl = defaultUrl.value;
-        }
-      });
-    },
-    listSendState() {
-      listDictByType('mqMsgSendState').then(res => {
-        this.mqMsgFilterForm.option.sendStateList = res.data;
-        const defaultUrlList = res.data.filter(o => o.defaultFlag);
-        if (defaultUrlList) {
-          this.mqMsgFilterForm.data.sendStateList = defaultUrlList.map(o => o.value);
-        }
-      });
+    loadSendStateDict(dict, defaultDict) {
+      this.mqMsgFilterForm.option.sendStateList = dict;
+      this.mqMsgFilterForm.data.sendStateList = defaultDict;
     },
     pageMqMsg(currPage) {
       // 分页插件回调传递当前页号
