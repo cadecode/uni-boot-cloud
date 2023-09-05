@@ -63,7 +63,7 @@
               <el-table-column property="routeName" label="路由名" width="170px" fixed />
               <el-table-column property="menuName" label="菜单名" width="170px" fixed />
               <el-table-column property="enableFlag" label="启用" width="60px">
-                <template slot-scope="scope">
+                <template v-slot="scope">
                   <el-switch
                     v-model="scope.row.enableFlag"
                     @change="flag => updateEnable(flag, scope.$index, scope.row)"
@@ -74,7 +74,7 @@
               <el-table-column property="updateUser" label="更新人" width="160px" />
               <el-table-column property="createTime" label="创建时间" width="150px" />
               <el-table-column label="操作" width="180px">
-                <template slot-scope="scope">
+                <template v-slot="scope">
                   <el-button size="mini" @click="updateMenu(scope.$index, scope.row)">
                     <el-icon class="el-icon-edit" />
                   </el-button>

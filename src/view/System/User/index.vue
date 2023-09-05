@@ -47,7 +47,7 @@
               <el-table-column property="nickName" label="昵称" width="300px" fixed />
               <el-table-column property="sex" label="性别" width="60px" />
               <el-table-column property="enableFlag" label="启用" width="60px">
-                <template slot-scope="scope">
+                <template v-slot="scope">
                   <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.$index, scope.row)" />
                 </template>
               </el-table-column>
@@ -55,7 +55,7 @@
               <el-table-column property="updateUser" label="更新人" width="160px" />
               <el-table-column property="createTime" label="创建时间" width="150px" />
               <el-table-column label="操作" width="180px">
-                <template slot-scope="scope">
+                <template v-slot="scope">
                   <el-button size="mini" @click="updateUser(scope.$index, scope.row)"><el-icon class="el-icon-edit" /></el-button>
                   <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)"><el-icon class="el-icon-delete" /></el-button>
                 </template>

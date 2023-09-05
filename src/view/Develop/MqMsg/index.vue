@@ -66,7 +66,7 @@
           <el-table-column property="consumeState" label="消费状态" width="100px" />
           <el-table-column property="leftRetryTimes" label="剩余重试次数" width="80px" />
           <el-table-column label="操作" width="180px">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <el-button size="mini" type="primary" @click="() => showDetailDialog.showDialog = true">
                 <el-icon class="el-icon-search" />
               </el-button>

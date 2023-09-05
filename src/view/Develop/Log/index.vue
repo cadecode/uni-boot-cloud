@@ -63,7 +63,7 @@
           <el-table-column property="logType" label="日志类型" width="120px" fixed />
           <el-table-column property="url" label="URL" width="400px" fixed show-overflow-tooltip />
           <el-table-column property="exceptional" label="异常状态" width="80px">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <el-tag v-if="scope.row.exceptional" type="danger">异常</el-tag>
               <el-tag v-else type="success">正常</el-tag>
             </template>
@@ -71,7 +71,7 @@
           <el-table-column property="accessUser" label="访问用户" width="160px" />
           <el-table-column property="createTime" label="访问时间" width="150px" />
           <el-table-column label="操作" width="180px">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <el-button size="mini" type="primary" @click="() => showParamsDialog.showDialog = true">
                 <el-icon class="el-icon-search" />
               </el-button>

@@ -40,7 +40,7 @@
               <el-table-column property="updateUser" label="更新人" width="160px" />
               <el-table-column property="createTime" label="创建时间" width="150px" />
               <el-table-column label="操作" width="180px">
-                <template slot-scope="scope">
+                <template v-slot="scope">
                   <el-button size="mini" @click="updateApi(scope.$index, scope.row)">
                     <el-icon class="el-icon-edit" />
                   </el-button>
