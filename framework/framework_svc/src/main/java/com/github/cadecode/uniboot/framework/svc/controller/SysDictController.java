@@ -2,6 +2,7 @@ package com.github.cadecode.uniboot.framework.svc.controller;
 
 import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
+import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysDict;
 import com.github.cadecode.uniboot.framework.svc.convert.SysDictConvert;
@@ -12,6 +13,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +56,7 @@ public class SysDictController {
         return new PageResult<>((int) pageInfo.getTotal(), voList);
     }
 
+    @CacheEvict(cacheNames = KeyPrefixConst.DICT, key = "#reqVo.type")
     @ApiOperation("添加")
     @PostMapping("add")
     public boolean add(@RequestBody @Valid SysDictAddReqVo reqVo) {
@@ -60,6 +64,7 @@ public class SysDictController {
         return sysDictService.save(po);
     }
 
+    @CacheEvict(cacheNames = KeyPrefixConst.DICT, key = "#reqVo.type")
     @ApiOperation("更新")
     @PostMapping("update")
     public boolean update(@RequestBody @Valid SysDictUpdateReqVo reqVo) {
@@ -67,12 +72,14 @@ public class SysDictController {
         return sysDictService.updateById(po);
     }
 
+    @CacheEvict(cacheNames = KeyPrefixConst.DICT, allEntries = true)
     @ApiOperation("删除")
     @PostMapping("delete")
     public boolean delete(@RequestBody @NotEmpty List<Long> idList) {
         return sysDictService.removeBatchByIds(idList);
     }
 
+    @Cacheable(cacheNames = KeyPrefixConst.DICT, key = "#type")
     @ApiOperation("查询 ByType")
     @GetMapping("list_by_type")
     public List<SysDictGetByTypeResVo> listByType(@RequestParam String type) {

@@ -19,4 +19,9 @@ public interface KeyPrefixConst {
      * Api Roles 映射关系
      */
     String API_ROLES = "frame:cache:apiRoles";
+
+    /**
+     * 字典
+     */
+    String DICT = "frame:cache:dict";
 }
