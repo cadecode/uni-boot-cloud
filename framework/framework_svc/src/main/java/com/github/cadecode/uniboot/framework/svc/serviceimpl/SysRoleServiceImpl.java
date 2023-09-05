@@ -1,7 +1,6 @@
 package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysRole;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleMappingReqVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysRoleVo.SysRoleUnionReqVo;
@@ -11,7 +10,6 @@ import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,13 +61,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return sysRoleMapper.deleteRoleMenuByRoleIds(roleIds);
     }
 
-    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @Override
     public int removeRoleApiByApiIds(List<Long> apiIds) {
         return sysRoleMapper.deleteRoleApiByApiIds(apiIds);
     }
 
-    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @Override
     public int removeRoleApiByRoleIds(List<Long> roleIds) {
         return sysRoleMapper.deleteRoleApiByRoleIds(roleIds);
@@ -85,7 +81,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return sysRoleMapper.deleteRoleMenu(list);
     }
 
-    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @Override
     public int removeRoleApi(List<SysRoleMappingReqVo> list) {
         return sysRoleMapper.deleteRoleApi(list);
@@ -101,7 +96,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return sysRoleMapper.insertRoleMenu(list);
     }
 
-    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
     @Override
     public int addRoleApi(List<SysRoleMappingReqVo> list) {
         return sysRoleMapper.insertRoleApi(list);
