@@ -74,12 +74,14 @@ public class SysRoleController {
         return sysRoleService.removeRoleMenu(reqVoList) > 0;
     }
 
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'ALL'")
     @ApiOperation("添加API角色绑定")
     @PostMapping("add_api_mapping")
     public boolean addApiMapping(@RequestBody @NotEmpty List<SysRoleMappingReqVo> reqVoList) {
         return sysRoleService.addRoleApi(reqVoList) > 0;
     }
 
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'ALL'")
     @ApiOperation("删除API角色绑定")
     @PostMapping("remove_api_mapping")
     public boolean removeApiMapping(@RequestBody @NotEmpty List<SysRoleMappingReqVo> reqVoList) {
@@ -99,7 +101,7 @@ public class SysRoleController {
         return sysRoleService.listUnionVoByRoleIds(roleIds);
     }
 
-    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'ALL'")
     @ApiOperation("更新角色")
     @PostMapping("update")
     public boolean update(@RequestBody @Valid SysRoleVo.SysRoleUpdateReqVo reqVo) {
@@ -107,7 +109,7 @@ public class SysRoleController {
         return sysRoleService.updateById(po);
     }
 
-    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'ALL'")
     @ApiOperation("添加角色")
     @PostMapping("add")
     public boolean add(@RequestBody @Valid SysRoleAddReqVo reqVo) {
@@ -115,6 +117,7 @@ public class SysRoleController {
         return sysRoleService.save(sysRole);
     }
 
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'ALL'")
     @ApiOperation("删除角色（多选）")
     @PostMapping("delete")
     @Transactional(rollbackFor = Exception.class)

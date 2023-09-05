@@ -56,7 +56,7 @@ public class SysApiController {
         return new PageResult<>((int) rolesVoPage.getTotal(), rolesVoPage.getList());
     }
 
-    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'ALL'")
     @ApiOperation("更新API")
     @PostMapping("update")
     public boolean update(@RequestBody @Valid SysApiUpdateReqVo reqVo) {
@@ -64,7 +64,7 @@ public class SysApiController {
         return sysApiService.updateById(po);
     }
 
-    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'all'")
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'ALL'")
     @ApiOperation("添加API")
     @PostMapping("add")
     public boolean add(@RequestBody @Valid SysApiAddReqVo reqVo) {
@@ -72,6 +72,7 @@ public class SysApiController {
         return sysApiService.save(sysApi);
     }
 
+    @CacheEvict(cacheNames = KeyPrefixConst.API_ROLES, key = "'ALL'")
     @ApiOperation("删除API（多选）")
     @PostMapping("delete")
     @Transactional(rollbackFor = Exception.class)
