@@ -15,6 +15,7 @@ import com.github.cadecode.uniboot.framework.base.util.RequestUtil;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;
 import feign.Client;
 import feign.Client.Default;
+import feign.Logger.Level;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import feign.codec.ErrorDecoder;
@@ -39,6 +40,9 @@ import javax.servlet.http.HttpServletRequest;
 @Configuration
 public class FeignConfig {
 
+    /**
+     * feign 拦截器
+     */
     @Bean
     public RequestInterceptor requestInterceptor() {
         return this::configRequestTemplate;
@@ -92,8 +96,19 @@ public class FeignConfig {
         return new RetryableFeignBlockingLoadBalancerClient(decorator, loadBalancerClient, loadBalancedRetryFactory, properties, loadBalancerClientFactory);
     }
 
+    /**
+     * feign 消息 decoder
+     */
     @Bean
     public ErrorDecoder errorDecoder(ObjectMapper objectMapper) {
         return new FeignErrorDecoder(objectMapper);
+    }
+
+    /**
+     * feign 默认日志级别
+     */
+    @Bean
+    public Level feignLogLevel() {
+        return Level.BASIC;
     }
 }
