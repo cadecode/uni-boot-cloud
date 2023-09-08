@@ -21,6 +21,7 @@
     "echarts": "^5.4.1",
     "element-ui": "^2.15.13",
     "js-cookie": "2.2.0",
+    "lodash-es": "^4.17.21",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
