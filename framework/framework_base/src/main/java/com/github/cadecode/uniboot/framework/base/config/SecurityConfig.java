@@ -30,7 +30,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -98,8 +98,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .accessDecisionManager(new UnanimousBased(
                         Arrays.asList(new WebExpressionVoter(), dataBaseRoleVoter)));
-        // 配置 Token 校验过滤器
-        http.addFilterBefore(tokenAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        // 配置 token 校验过滤器
+        http.addFilterBefore(tokenAuthFilter, LogoutFilter.class);
         // 配置 trace id 过滤器
         http.addFilterBefore(new TraceInfoFilter(), TokenAuthFilter.class);
         log.info("Config Security over，AuthModel:{}", properties.getAuthModel());
