@@ -1,4 +1,4 @@
-package com.github.cadecode.uniboot.framework.base.security.filter;
+package com.github.cadecode.uniboot.framework.base.security.strategy;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
@@ -26,7 +26,7 @@ import java.io.IOException;
  */
 @RequiredArgsConstructor
 @Component
-public class JwtTokenAuthFilterService extends TokenAuthFilterService {
+public class JwtTokenAuthStrategyImpl extends TokenAuthStrategy {
 
     @Override
     public void handler(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

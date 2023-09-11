@@ -1,4 +1,4 @@
-package com.github.cadecode.uniboot.framework.base.security.filter;
+package com.github.cadecode.uniboot.framework.base.security.strategy;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RequiredArgsConstructor
 @Component
-public class RedisTokenAuthFilterService extends TokenAuthFilterService {
+public class RedisTokenAuthStrategyImpl extends TokenAuthStrategy {
 
     @Override
     public void handler(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

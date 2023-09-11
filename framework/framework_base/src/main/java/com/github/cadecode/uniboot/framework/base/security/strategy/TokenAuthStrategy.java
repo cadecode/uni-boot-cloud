@@ -1,4 +1,4 @@
-package com.github.cadecode.uniboot.framework.base.security.filter;
+package com.github.cadecode.uniboot.framework.base.security.strategy;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.ObjUtil;
@@ -27,7 +27,7 @@ import java.io.IOException;
  * @author Cade Li
  * @since 2023/6/25
  */
-public abstract class TokenAuthFilterService implements StrategyService {
+public abstract class TokenAuthStrategy implements StrategyService {
 
     /**
      * 设置认证信息
