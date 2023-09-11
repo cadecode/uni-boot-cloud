@@ -1,7 +1,8 @@
 package com.github.cadecode.uniboot.framework.svc.config;
 
+import cn.hutool.core.collection.CollUtil;
+import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyExecutor;
 import com.github.cadecode.uniboot.framework.base.config.SecurityConfig;
-import com.github.cadecode.uniboot.framework.base.security.filter.TokenAuthFilter;
 import com.github.cadecode.uniboot.framework.base.security.handler.NoAuthenticationHandler;
 import com.github.cadecode.uniboot.framework.base.security.handler.NoAuthorityHandler;
 import com.github.cadecode.uniboot.framework.base.security.voter.DataBaseRoleVoter;
@@ -13,8 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity.IgnoredRequestConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,12 +59,12 @@ public class FrameSecurityConfig extends SecurityConfig {
 
     private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
-    public FrameSecurityConfig(SecurityProperties properties, NoAuthenticationHandler noAuthenticationHandler,
-                               NoAuthorityHandler noAuthorityHandler, TokenAuthFilter tokenAuthFilter,
+    public FrameSecurityConfig(StrategyExecutor strategyExecutor, SecurityProperties properties,
+                               NoAuthenticationHandler noAuthenticationHandler, NoAuthorityHandler noAuthorityHandler,
                                DataBaseRoleVoter dataBaseRoleVoter, LoginSuccessHandler loginSuccessHandler,
                                LoginFailureHandler loginFailureHandler, SignOutSuccessHandler signOutSuccessHandler,
                                UserDetailsService userDetailsService) {
-        super(properties, noAuthenticationHandler, noAuthorityHandler, tokenAuthFilter, dataBaseRoleVoter);
+        super(strategyExecutor, properties, noAuthenticationHandler, noAuthorityHandler, dataBaseRoleVoter);
         this.loginSuccessHandler = loginSuccessHandler;
         this.loginFailureHandler = loginFailureHandler;
         this.signOutSuccessHandler = signOutSuccessHandler;
@@ -88,6 +87,13 @@ public class FrameSecurityConfig extends SecurityConfig {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
+        configLoginAndLogout(http);
+    }
+
+    /**
+     * 配置登录、注销处理
+     */
+    private void configLoginAndLogout(HttpSecurity http) throws Exception {
         // 配置注销处理器
         http.logout().permitAll()
                 .logoutUrl(LOGOUT_URL)
@@ -103,12 +109,14 @@ public class FrameSecurityConfig extends SecurityConfig {
     }
 
     @Override
-    public void configure(WebSecurity web) {
-        super.configure(web);
-        IgnoredRequestConfigurer ignoring = web.ignoring();
-        // 放行登录接口
-        ignoring.antMatchers("/auth/login");
-        // 放行接口权限表查询接口
-        ignoring.antMatchers("/system/api/list_roles_vo");
+    public void afterPropertiesSet() {
+        super.afterPropertiesSet();
+        // 加入忽略 url list
+        this.getProperties().getIgnoringMatcherList().addAll(CollUtil.newArrayList(
+                // 放行登录接口
+                "/auth/login",
+                // 放行接口权限表查询接口
+                "/system/api/list_roles_vo"
+        ));
     }
 }

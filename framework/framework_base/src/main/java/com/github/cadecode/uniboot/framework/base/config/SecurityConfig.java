@@ -2,20 +2,20 @@ package com.github.cadecode.uniboot.framework.base.config;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ObjUtil;
-import cn.hutool.extra.servlet.ServletUtil;
-import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
+import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyExecutor;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
 import com.github.cadecode.uniboot.framework.base.config.SecurityConfig.SecurityProperties;
+import com.github.cadecode.uniboot.framework.base.security.filter.CorsAllowAnyFilter;
 import com.github.cadecode.uniboot.framework.base.security.filter.TokenAuthFilter;
+import com.github.cadecode.uniboot.framework.base.security.filter.TraceInfoFilter;
 import com.github.cadecode.uniboot.framework.base.security.handler.NoAuthenticationHandler;
 import com.github.cadecode.uniboot.framework.base.security.handler.NoAuthorityHandler;
 import com.github.cadecode.uniboot.framework.base.security.voter.DataBaseRoleVoter;
 import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -31,13 +31,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,11 +49,14 @@ import java.util.List;
 @EnableConfigurationProperties(SecurityProperties.class)
 @ConditionalOnMissingBean(SecurityConfig.class)
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean {
+
+    private final StrategyExecutor strategyExecutor;
 
     /**
      * 配置项
      */
+    @Getter
     private final SecurityProperties properties;
 
     /**
@@ -66,11 +64,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private final NoAuthenticationHandler noAuthenticationHandler;
     private final NoAuthorityHandler noAuthorityHandler;
-
-    /**
-     * 注入 Token 过滤器
-     */
-    private final TokenAuthFilter tokenAuthFilter;
 
     /**
      * 注入投票器
@@ -83,10 +76,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         // 关闭 session 管理
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        configAuthorize(http);
+        registerFilter(http);
+        log.info("Config Security over，AuthModel:{}", properties.getAuthModel());
+    }
+
+    /**
+     * 配置鉴权规则
+     */
+    private void configAuthorize(HttpSecurity http) throws Exception {
         // 配置鉴权规则
+        List<String> permitAllList = properties.getPermitAllList();
+        log.info("Config Security permit all list:{}", permitAllList);
         http.authorizeRequests()
                 // 尝试请求直接通过
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers(ArrayUtil.toArray(permitAllList, String.class)).permitAll()
                 .anyRequest().authenticated();
         // 配置异常处理
         http.exceptionHandling()
@@ -98,27 +103,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .accessDecisionManager(new UnanimousBased(
                         Arrays.asList(new WebExpressionVoter(), dataBaseRoleVoter)));
-        // 配置 token 校验过滤器
-        http.addFilterBefore(tokenAuthFilter, LogoutFilter.class);
+    }
+
+    /**
+     * 配置 filter
+     */
+    private void registerFilter(HttpSecurity http) {
+        // 配置 Token 校验过滤器
+        http.addFilterBefore(new TokenAuthFilter(strategyExecutor, properties), LogoutFilter.class);
         // 配置 trace id 过滤器
         http.addFilterBefore(new TraceInfoFilter(), TokenAuthFilter.class);
-        log.info("Config Security over，AuthModel:{}", properties.getAuthModel());
+        // 配置跨域过滤器
+        http.addFilterBefore(new CorsAllowAnyFilter(), TraceInfoFilter.class);
     }
 
     @Override
     public void configure(WebSecurity web) {
         // 忽略配置器
         IgnoredRequestConfigurer ignoring = web.ignoring();
-        // 放行 swagger knife 文档
-        ignoring.antMatchers("/doc.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs/**");
-        // 放行其他框架
-        ignoring.antMatchers("/error", "/druid/**", "/actuator/**");
         // 设置忽略的路径
-        List<String> ignoreUrls = properties.getIgnoreUrls();
-        if (CollUtil.isNotEmpty(ignoreUrls)) {
-            log.info("Config Security ignore urls:{}", ignoreUrls);
-            ignoring.antMatchers(ArrayUtil.toArray(ignoreUrls, String.class));
-        }
+        List<String> ignoringMatcherList = properties.getIgnoringMatcherList();
+        log.info("Config Security ignoring matcher list:{}", ignoringMatcherList);
+        ignoring.antMatchers(ArrayUtil.toArray(ignoringMatcherList, String.class));
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        // 对 SecurityProperties 配置项进行修改
+        // 加入忽略 url list
+        this.getProperties().getIgnoringMatcherList().addAll(CollUtil.newArrayList(
+                // 放行 swagger knife 文档
+                "/doc.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs/**",
+                // 放行其他框架
+                "/error", "/druid/**", "/actuator/**"
+        ));
     }
 
     /**
@@ -134,14 +152,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         private AuthModelEnum authModel;
 
         /**
-         * 忽略鉴权的 url
+         * permitAll url list
          */
-        private List<String> ignoreUrls;
+        private List<String> permitAllList = new ArrayList<>();
+
+        /**
+         * 忽略鉴权的 url list
+         */
+        private List<String> ignoringMatcherList = new ArrayList<>();
 
         /**
          * JWT Token 配置
          */
         private TokenConfig tokenConfig;
+
     }
 
     /**
@@ -159,22 +183,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          * 密钥
          */
         private String secret;
-    }
-
-    /**
-     * Filter
-     * trace id to MDC
-     */
-    public static class TraceInfoFilter extends OncePerRequestFilter {
-        @Override
-        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain
-                filterChain)
-                throws ServletException, IOException {
-            String traceId = ServletUtil.getHeader(request, HttpConst.HEAD_TRACE_ID, CharsetUtil.CHARSET_UTF_8);
-            if (ObjUtil.isNotEmpty(traceId)) {
-                MDC.put(HttpConst.HEAD_TRACE_ID, traceId);
-            }
-            filterChain.doFilter(request, response);
-        }
     }
 }
