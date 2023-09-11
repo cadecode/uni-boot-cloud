@@ -29,9 +29,13 @@ public class TxMsgTask {
 
     @EventListener(ApplicationStartedEvent.class)
     public void onApplicationStartedEvent() {
+        if (ObjUtil.equals(txMsgProperties.getEnableRetry(), false)) {
+            log.info("TxMsg task enable retry false");
+            return;
+        }
         log.info("TxMsg task do retry started");
         taskScheduler.scheduleWithFixedDelay(txMsgTaskHandler::doRetry, txMsgProperties.getRetryFixDelay());
-        log.info("TxMsg task do clear start, {}", txMsgProperties.getAutoClear());
+        log.info("TxMsg task do clear started, {}", txMsgProperties.getAutoClear());
         if (ObjUtil.equal(txMsgProperties.getAutoClear(), true)) {
             taskScheduler.scheduleWithFixedDelay(() -> txMsgTaskHandler.doClear(txMsgProperties.getAutoClearInterval()),
                     txMsgProperties.getClearFixDelay());

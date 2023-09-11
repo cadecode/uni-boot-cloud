@@ -41,6 +41,11 @@ public class TxMsgProperties implements InitializingBean {
     // 重试默认属性 --end
 
     /**
+     * 是否开启重试
+     */
+    private Boolean enableRetry = true;
+
+    /**
      * 定时重试间隔时间
      */
     private Long retryFixDelay = DEFAULT_RETRY_FIX_DELAY;
