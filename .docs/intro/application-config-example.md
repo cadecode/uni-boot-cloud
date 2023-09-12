@@ -202,7 +202,7 @@ uni-boot:
     title: Framework API Docs
     description: Framework 服务在线文档 By Swagger
   security:
-    ignore-urls: /common/download**
+    permit-all-list: /common/download**
   framework:
     file-base-path: D:/uniboot/file/temp/
 ```
@@ -244,7 +244,7 @@ uni-boot:
     title: Example API Docs
     description: Example 服务在线文档 By Swagger
   security:
-    ignore-urls:
+    permit-all-list:
   mq:
     tx-msg:
       enable-retry: true
