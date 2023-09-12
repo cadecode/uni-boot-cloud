@@ -79,7 +79,7 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
         }
         // 若是 delay 交换机
         Exchange exchange = exchangeNameMap.get(exchangeName);
-        return exchange.isDelayed() || RabbitConst.EXC_TYPE_DELAYED.equals(exchange.getType());
+        return ObjUtil.isNotNull(exchange) && (exchange.isDelayed() || RabbitConst.EXC_TYPE_DELAYED.equals(exchange.getType()));
     }
 
     @Override
