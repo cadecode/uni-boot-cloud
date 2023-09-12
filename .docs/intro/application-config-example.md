@@ -246,6 +246,8 @@ uni-boot:
   security:
     ignore-urls:
   mq:
+    tx-msg:
+      enable-retry: true
     rabbit:
       enable: true
       exchanges:
