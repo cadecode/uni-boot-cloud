@@ -20,7 +20,9 @@ import java.io.IOException;
 @Component
 public class RabbitExampleConsumer {
 
-    @RabbitListener(queues = "example-delay-queue-0", id = "example-delay-queue-0", ackMode = "AUTO")
+    @RabbitListener(queues = "example-delay-queue-0",
+            id = "example-delay-queue-0",
+            ackMode = "AUTO")
     public void exampleDelayQueue0(String body, Message message, Channel channel) throws IOException {
         log.info("Received msg:{}", body);
     }
@@ -28,14 +30,19 @@ public class RabbitExampleConsumer {
     /**
      * 测试 SpEL 获取 queue name
      */
-    @RabbitListener(queues = "#{@'example-delay-queue-1'.name}", id = "example-delay-queue-1")
+    @RabbitListener(containerFactory = "default",
+            queues = "#{@'default_example-delay-queue-1'.name}",
+            id = "example-delay-queue-1")
     public void exampleDelayQueue1(String body, Message message, Channel channel) throws IOException {
         log.info("Received msg:{}", body);
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
 
 
-    @RabbitListener(queues = "example-biz-queue-0", id = "example-biz-queue-0", ackMode = "AUTO")
+    @RabbitListener(containerFactory = "default",
+            queues = "example-biz-queue-0",
+            id = "example-biz-queue-0",
+            ackMode = "AUTO")
     public void exampleBizQueue0(String body, Message message, Channel channel) throws IOException {
         log.info("Received msg:{}", body);
         // 自动模式下，测试重试机制
@@ -47,9 +54,11 @@ public class RabbitExampleConsumer {
     /**
      * 测试用对象获取消息
      */
-    @RabbitListener(queues = "example-biz-queue-1", id = "example-biz-queue-1", ackMode = "AUTO")
+    @RabbitListener(containerFactory = "default",
+            queues = "example-biz-queue-1",
+            id = "example-biz2-queue-1",
+            ackMode = "AUTO")
     public void exampleBizQueue1(ExampleMsgDo msgDo, Message message, Channel channel) throws IOException {
         log.info("Received msg:{}", msgDo);
     }
-
 }
