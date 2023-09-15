@@ -43,6 +43,7 @@
         <dynamic-tp.version>1.1.3</dynamic-tp.version>
         <easyexcel.version>3.1.1</easyexcel.version>
         <spring-plugin.version>2.0.0.RELEASE</spring-plugin.version>
+        <multirabbit.version>2.5.0</multirabbit.version>
     </properties>
 
     <dependencies>
@@ -215,6 +216,12 @@
                 <groupId>org.springframework.plugin</groupId>
                 <artifactId>spring-plugin-core</artifactId>
                 <version>${spring-plugin.version}</version>
+            </dependency>
+            <!--rabbitmq 多数据源-->
+            <dependency>
+                <groupId>com.free-now.multirabbit</groupId>
+                <artifactId>spring-multirabbit</artifactId>
+                <version>${multirabbit.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
