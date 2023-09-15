@@ -17,5 +17,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
+        <!--rabbit 多数据源-->
+        <dependency>
+            <groupId>com.free-now.multirabbit</groupId>
+            <artifactId>spring-multirabbit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-core</artifactId>
+        </dependency>
     </dependencies>
 </project>
