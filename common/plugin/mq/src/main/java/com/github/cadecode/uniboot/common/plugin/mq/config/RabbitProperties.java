@@ -27,11 +27,17 @@ public class RabbitProperties {
 
     private boolean enable;
 
-    private List<ExchangeBuildProperties> exchanges;
+    private Map<String, DeclareProperties> declares;
 
-    private List<QueueBuildProperties> queues;
-
-    private List<BindingBuildProperties> bindings;
+    /**
+     * 针对一个 RabbitMQ 连接配置的交换机、队列、绑定的声明
+     */
+    @Data
+    public static class DeclareProperties {
+        private List<ExchangeBuildProperties> exchanges;
+        private List<QueueBuildProperties> queues;
+        private List<BindingBuildProperties> bindings;
+    }
 
     /**
      * 队列声明常用配置项
