@@ -56,7 +56,7 @@
 
    集成 knife4j，提供 swagger module 的动态配置支持
 
-   集成 RabbitMQ，提供通过配置声明交换机和队列功能，以及事务消息、消息重试的支持
+   集成 RabbitMQ，提供通过配置声明多数据源、交换机和队列功能，以及事务消息、消息重试的支持
 
    集成 OpenFeign，提供统一的消息拦截器、ErrorDecoder、HttpClient 配置等
 
