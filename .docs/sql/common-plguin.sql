@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS plg_mq_msg
     biz_key               VARCHAR(200)    NULL COMMENT '业务键',
     exchange              VARCHAR(200)    NOT NULL COMMENT '交换机',
     routing_key           VARCHAR(200)    NOT NULL COMMENT '路由 key',
+    connection_name       VARCHAR(200)    NULL COMMENT '连接名称',
     message               TEXT            NOT NULL COMMENT '消息内容',
     send_state            VARCHAR(100)    NULL COMMENT '发送方状态',
     consume_state         VARCHAR(100)    NULL COMMENT '消费方状态',
