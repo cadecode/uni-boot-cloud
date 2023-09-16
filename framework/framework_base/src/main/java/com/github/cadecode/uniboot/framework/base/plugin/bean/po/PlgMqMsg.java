@@ -36,6 +36,8 @@ public class PlgMqMsg {
 
     private String message;
 
+    private String connectionName;
+
     private SendStateEnum sendState;
 
     private ConsumeStateEnum consumeState;
