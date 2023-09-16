@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.ReturnedMessage;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.connection.SimpleResourceHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -143,6 +144,11 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
         if (ObjUtil.isEmpty(txMsg.getId())) {
             ((TxMsg) txMsg).setId(String.valueOf(IdWorker.getId(txMsg)));
         }
+        // 填充 connectionName
+        if (ObjUtil.isEmpty(txMsg.getConnectionName())) {
+            String connectionName = (String) SimpleResourceHolder.get(RabbitUtil.template().getConnectionFactory());
+            ((TxMsg) txMsg).setConnectionName(connectionName);
+        }
     }
 
     @Override
@@ -190,18 +196,27 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
     }
 
     private void doSendCommittedOrRetry(BaseTxMsg txMsg) {
-        // 放入 txMsg id
-        CorrelationData correlationData = new CorrelationData(txMsg.getId());
-        RabbitUtil.send(txMsg.getExchange(), txMsg.getRoutingKey(), txMsg.getMessage(), msg -> {
-            // 设置事务消息 head 标记
-            msg.getMessageProperties().getHeaders().put(HEAD_TX_MSG_ID, txMsg.getId());
-            msg.getMessageProperties().getHeaders().put(HEAD_TX_MSG_BIZ_TYPE, txMsg.getBizType());
-            msg.getMessageProperties().getHeaders().put(HEAD_TX_MSG_BIZ_KEY, txMsg.getBizKey());
-            // 设置 ReturnedMessage，用于 callback 中获取消息
-            ReturnedMessage defaultReturnedMessage = new ReturnedMessage(msg, 0, DEFAULT_TX_MSG_REPLY_TEXT, null, null);
-            correlationData.setReturned(defaultReturnedMessage);
-            return msg;
-        }, correlationData);
+        try {
+            if (ObjUtil.isNotNull(txMsg.getConnectionName())) {
+                SimpleResourceHolder.bind(RabbitUtil.template().getConnectionFactory(), txMsg.getConnectionName());
+            }
+            // 放入 txMsg id
+            CorrelationData correlationData = new CorrelationData(txMsg.getId());
+            RabbitUtil.send(txMsg.getExchange(), txMsg.getRoutingKey(), txMsg.getMessage(), msg -> {
+                // 设置事务消息 head 标记
+                msg.getMessageProperties().getHeaders().put(HEAD_TX_MSG_ID, txMsg.getId());
+                msg.getMessageProperties().getHeaders().put(HEAD_TX_MSG_BIZ_TYPE, txMsg.getBizType());
+                msg.getMessageProperties().getHeaders().put(HEAD_TX_MSG_BIZ_KEY, txMsg.getBizKey());
+                // 设置 ReturnedMessage，用于 callback 中获取消息
+                ReturnedMessage defaultReturnedMessage = new ReturnedMessage(msg, 0, DEFAULT_TX_MSG_REPLY_TEXT, null, null);
+                correlationData.setReturned(defaultReturnedMessage);
+                return msg;
+            }, correlationData);
+        } finally {
+            if (ObjUtil.isNotNull(txMsg.getConnectionName())) {
+                SimpleResourceHolder.unbindIfPossible(RabbitUtil.template().getConnectionFactory());
+            }
+        }
     }
 
     @Override

@@ -34,4 +34,7 @@ public class TxMsg implements BaseTxMsg {
     private String routingKey;
 
     private String message;
+
+    private String connectionName;
+
 }

@@ -34,6 +34,7 @@ public class PlgMqMsgVo {
         private String bizKey;
         private String exchange;
         private String routingKey;
+        private String connectionName;
         private String message;
         private SendStateEnum sendState;
         private ConsumeStateEnum consumeState;
