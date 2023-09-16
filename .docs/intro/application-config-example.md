@@ -29,22 +29,6 @@ spring:
         min-idle: 0
         max-idle: 8
         max-wait: -1
-  # rabbitmq 公共配置
-  rabbitmq:
-    publisher-returns: true
-    publisher-confirm-type: correlated
-    listener:
-      simple:
-        concurrency: 1
-        max-concurrency: 8
-        acknowledge-mode: manual
-        retry:
-          enabled: true
-          max-attempts: 5
-          max-interval: 10000
-          initial-interval: 2000
-          multiplier: 2
-        prefetch: 5
   # 数据源公共配置
   datasource:
     druid:
@@ -158,12 +142,61 @@ spring:
         - 192.168.0.
         - 192.168.238.
         - 10.
+  # rabbitmq
+  multirabbitmq:
+    enabled: true
+    # 指定默认的连接名称（必要）
+    default-connection: default
+    connections:
+      # 自定义的 connectionName
+      default:
+        host: localhost
+        port: 5672
+        username: rabbitmq
+        password: rabbitmq
+        virtual-host: uni_dev
+        publisher-returns: true
+        publisher-confirm-type: correlated
+        listener:
+          simple:
+            concurrency: 1
+            max-concurrency: 8
+            acknowledge-mode: manual
+            retry:
+              enabled: true
+              max-attempts: 5
+              max-interval: 10000
+              initial-interval: 2000
+              multiplier: 2
+            prefetch: 5
+      test:
+        host: localhost
+        port: 5672
+        username: rabbitmq
+        password: rabbitmq
+        virtual-host: uni_dev_test
+        publisher-returns: true
+        publisher-confirm-type: correlated
+        listener:
+          simple:
+            concurrency: 1
+            max-concurrency: 8
+            acknowledge-mode: manual
 
 # 关闭 swagger 认证
 knife4j:
   basic:
     enable: false
 ```
+
+> 通过 spring-multirabbit 实现 RabbitMQ 的多数据源，使用 spring.multirabbitmq 配置多个连接
+>
+> 在使用 @RabbitListener 监听队列时，指定 containerFactory 为 connectionName
+>
+> 在注入 RabbitTemplate 发送消息时，发送前使用 SimpleResourceHolder.bind 将 connectionFactory 绑定到 connectName，发送完毕后
+> unbind
+>
+> 注意：publisher-returns 可能不生效，已在 RabbitCallback 中通过 rabbitTemplate.setMandatory(true) 强制开启
 
 ### framework 服务配置
 
@@ -179,12 +212,6 @@ spring:
     port: 6379
     password: ENC(jIiKGruIMgDkKx5wj2gJRCROqPutkTvZ)
     database: 0
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: rabbitmq
-    password: rabbitmq
-    virtual-host: /uni_dev
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     dynamic:
@@ -205,6 +232,10 @@ uni-boot:
     permit-all-list: /common/download**
   framework:
     file-base-path: D:/uniboot/file/temp/
+  mq:
+    tx-msg:
+      # 关闭重试
+      enable-retry: false
 ```
 
 ### example 服务配置
@@ -221,12 +252,6 @@ spring:
     port: 6379
     password: ENC(jIiKGruIMgDkKx5wj2gJRCROqPutkTvZ)
     database: 0
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: rabbitmq
-    password: rabbitmq
-    virtual-host: /uni_dev
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     dynamic:
@@ -247,42 +272,63 @@ uni-boot:
     permit-all-list:
   mq:
     tx-msg:
+      # 开启重试
       enable-retry: true
+    # rabbitmq 自动创建
     rabbit:
       enable: true
-      exchanges:
-        - name: uni.delay
-          type: topic
-          delayed: true
-        - name: uni.topic
-          type: topic
-      queues:
-        - name: example-delay-queue-0
-        - name: example-delay-queue-1
-          random-suffix: true
-          auto-delete: true
-        - name: example-biz-queue-0
-          dl-exchange: uni.topic
-          dl-routing-key: example-biz-queue-0-dl-rk
-        - name: example-biz-queue-0-dl
-        - name: example-biz-queue-1
-      bindings:
-        - bind-name: example-delay-queue-0
-          exchange-name: uni.delay
-          routing-key: example-delay-queue-0-rk
-        - bind-name: example-delay-queue-1
-          exchange-name: uni.delay
-          routing-key: example-delay-queue-1-rk
-        - bind-name: example-biz-queue-0
-          exchange-name: uni.topic
-          routing-key: example-biz-queue-0-rk
-        - bind-name: example-biz-queue-0-dl
-          exchange-name: uni.topic
-          routing-key: example-biz-queue-0-dl-rk
-        - bind-name: example-biz-queue-1
-          exchange-name: uni.topic
-          routing-key: example-biz-queue-1-rk
+      declares:
+        default:
+          exchanges:
+            - name: default.delay
+              type: topic
+              delayed: true
+            - name: default.topic
+              type: topic
+          queues:
+            - name: example-delay-queue-0
+            - name: example-delay-queue-1
+              random-suffix: true
+              auto-delete: true
+            - name: example-biz-queue-0
+              dl-exchange: default.topic
+              dl-routing-key: example-biz-queue-0-dl-rk
+            - name: example-biz-queue-0-dl
+            - name: example-biz-queue-1
+          bindings:
+            - bind-name: example-delay-queue-0
+              exchange-name: default.delay
+              routing-key: example-delay-queue-0-rk
+            - bind-name: example-delay-queue-1
+              exchange-name: default.delay
+              routing-key: example-delay-queue-1-rk
+            - bind-name: example-biz-queue-0
+              exchange-name: default.topic
+              routing-key: example-biz-queue-0-rk
+            - bind-name: example-biz-queue-0-dl
+              exchange-name: default.topic
+              routing-key: example-biz-queue-0-dl-rk
+            - bind-name: example-biz-queue-1
+              exchange-name: default.topic
+              routing-key: example-biz-queue-1-rk
+        test:
+          exchanges:
+            - name: test.topic
+              type: topic
+          queues:
+            - name: test-biz-queue-0
+          bindings:
+            - bind-name: test-biz-queue-0
+              exchange-name: test.topic
+              routing-key: test-biz-queue-0-rk
 ```
+
+> 通过 uni-boot-mq.rabbit.declares 指定一个 RabbitMQ ConnectionName 需要声明的交换机、队列以及绑定关系，
+> 这会自动注入 bean 容器，bean 名称格式是 connectionName_declareName
+>
+> 注意：当指定 random-suffix 为 true 时，会创建随机的队列名，若要在 @RabbitListener 中指定 queue 名称，可使用 SpringEL 表达式，如
+> queues = "#{@'default_example-delay-queue-1'.name}"，其中 default 是 connectionName，example-delay-queue-1 是队列 bean
+> name
 
 ### gateway 服务配置
 
