@@ -1,5 +1,6 @@
 package com.github.cadecode.uniboot.example.svc.controller;
 
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.plugin.mq.model.TxMsg;
 import com.github.cadecode.uniboot.common.plugin.mq.util.RabbitUtil;
 import com.github.cadecode.uniboot.common.plugin.mq.util.TxMsgKit;
@@ -9,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.connection.SimpleResourceHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,14 +58,24 @@ public class MqExampleController {
     @Transactional(rollbackFor = Exception.class)
     @ApiOperation("发送事务消息")
     @GetMapping("send_tx")
-    public boolean sendTx(@RequestParam String exchange, @RequestParam String routingKey) {
-        txMsgKit.sendTx(TxMsg.builder()
-                .bizType("Test biz")
-                .bizKey("TestBiz001")
-                .exchange(exchange)
-                .routingKey(routingKey)
-                .message("Test TxMsg")
-                .build());
+    public boolean sendTx(@RequestParam String exchange, @RequestParam String routingKey,
+                          @RequestParam(required = false) String connectionName) {
+        try {
+            if (ObjUtil.isNotNull(connectionName)) {
+                SimpleResourceHolder.bind(RabbitUtil.template().getConnectionFactory(), connectionName);
+            }
+            txMsgKit.sendTx(TxMsg.builder()
+                    .bizType("Test biz")
+                    .bizKey("TestBiz001")
+                    .exchange(exchange)
+                    .routingKey(routingKey)
+                    .message("Test TxMsg")
+                    .build());
+        } finally {
+            if (ObjUtil.isNotNull(connectionName)) {
+                SimpleResourceHolder.unbindIfPossible(RabbitUtil.template().getConnectionFactory());
+            }
+        }
         return true;
     }
 }
