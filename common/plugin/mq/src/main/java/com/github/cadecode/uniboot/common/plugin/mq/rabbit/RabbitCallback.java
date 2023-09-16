@@ -84,6 +84,8 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
 
     @Override
     public void afterPropertiesSet() {
+        // 开启 ReturnsCallback
+        rabbitTemplate.setMandatory(true);
         // 设置回调
         rabbitTemplate.setConfirmCallback(this);
         rabbitTemplate.setReturnsCallback(this);
