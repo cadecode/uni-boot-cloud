@@ -74,6 +74,7 @@
           <el-table-column property="bizKey" label="业务键" width="200px" show-overflow-tooltip />
           <el-table-column property="exchange" label="交换机" width="200px" show-overflow-tooltip />
           <el-table-column property="routingKey" label="路由" width="200px" show-overflow-tooltip />
+          <el-table-column property="connectionName" label="连接名称" width="200px" show-overflow-tooltip />
           <el-table-column property="sendState" label="发送状态" width="100px" />
           <el-table-column property="consumeState" label="消费状态" width="100px" />
           <el-table-column property="leftRetryTimes" label="剩余重试次数" width="80px" />
