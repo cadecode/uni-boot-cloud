@@ -13,11 +13,11 @@ import lombok.Getter;
 @Getter
 public abstract class AbstractPipelineContext implements PipelineContext {
 
-    private final ExtTypeCode extTypeCode;
+    private final ExtTypeCode pipelineType;
     private final FilterSelector filterSelector;
 
-    public AbstractPipelineContext(ExtTypeCode extTypeCode, FilterSelector filterSelector) {
-        this.extTypeCode = extTypeCode;
+    public AbstractPipelineContext(ExtTypeCode pipelineType, FilterSelector filterSelector) {
+        this.pipelineType = pipelineType;
         this.filterSelector = filterSelector;
     }
 
