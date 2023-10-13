@@ -47,6 +47,12 @@ public class SecurityUtil implements InitializingBean {
      * @return token
      */
     public static String getTokenFromRequest(HttpServletRequest request) {
+        // 从请求头获取
+        String token = request.getHeader(HttpConst.HEAD_TOKEN);
+        if (ObjUtil.isNotEmpty(token)) {
+            return token;
+        }
+        // 从 cookie 中解析
         Cookie[] cookies = request.getCookies();
         if (ObjUtil.isNotEmpty(cookies)) {
             Optional<Cookie> optionalCookie = Arrays.stream(cookies)
@@ -56,7 +62,8 @@ public class SecurityUtil implements InitializingBean {
                 return optionalCookie.get().getValue();
             }
         }
-        return request.getHeader(HttpConst.HEAD_TOKEN);
+        // 从 url 参数中提取
+        return request.getParameter(HttpConst.HEAD_TOKEN);
     }
 
     /**
