@@ -10,6 +10,7 @@
     "preview": "node build/index.js --preview",
     "svgo": "svgo -f src/icon/svg --config=src/icon/svgo.yml",
     "lint": "eslint --ext .js,.vue src",
+    "lint:fix": "eslint --ext .js,.vue src --fix",
     "test:unit": "jest --clearCache && vue-cli-service test:unit",
     "test:ci": "npm run lint && npm run test:unit"
   },
