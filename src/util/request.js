@@ -41,13 +41,13 @@ service.interceptors.request.use(
  *  {status, data, error:{code, message, path, moreInfo}}
  */
 service.interceptors.response.use(
-  async (response) => {
+  async(response) => {
     const res = response.data;
     await checkResError(response);
     await checkResToken(response);
     return res;
   },
-  async (error) => {
+  async(error) => {
     console.error(error);
     const response = error.response;
     // 存在返回的json数据
@@ -108,7 +108,7 @@ function confirmReLogin(res) {
     type: 'warning',
     confirmButtonText: '返回登录页',
     cancelButtonText: '取消'
-  }).then(async () => {
+  }).then(async() => {
     // 使用 async 包裹，可等待完成 resetToken
     // 清理 token 并返回登录页
     await store.dispatch('user/resetToken');
