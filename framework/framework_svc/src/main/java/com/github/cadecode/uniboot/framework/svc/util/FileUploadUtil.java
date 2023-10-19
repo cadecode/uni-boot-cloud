@@ -51,6 +51,14 @@ public class FileUploadUtil implements InitializingBean {
         return DOWNLOAD_PATH;
     }
 
+    public static String uploadPath(String fileName) {
+        return UPLOAD_PATH + fileName;
+    }
+
+    public static String downloadPath(String fileName) {
+        return DOWNLOAD_PATH + fileName;
+    }
+
     public static String downloadUrl(String fileName) {
         return DEFAULT_DOWNLOAD_API + "?fileName=" + fileName;
     }
