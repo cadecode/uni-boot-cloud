@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 通用API
@@ -37,12 +40,12 @@ public class CommonController {
 
     @ApiOperation("上传文件")
     @PostMapping("common/upload")
-    public boolean upload(@RequestPart("file") MultipartFile file) {
+    public String upload(@RequestPart("file") MultipartFile file) {
         String originalFilename = file.getOriginalFilename();
         boolean checked = FileUploadUtil.checkAllowedExtension(originalFilename);
         AssertUtil.isFalse(checked, FrameErrorEnum.EXTENSION_NOT_ALLOWED, originalFilename + "不被允许");
         String renamedFileName = FileUploadUtil.renameByUUID(originalFilename);
-        String targetFilePath = FileUploadUtil.uploadPath() + renamedFileName;
+        String targetFilePath = FileUploadUtil.uploadPath(renamedFileName);
         try {
             File targetFile = FileUtil.file(targetFilePath);
             FileUtil.mkParentDirs(targetFile);
@@ -50,27 +53,24 @@ public class CommonController {
         } catch (IOException e) {
             throw ApiException.of(FrameErrorEnum.UPLOAD_FILE_FAIL, e, originalFilename + "上传失败");
         }
-        return true;
+        return renamedFileName;
     }
 
     @ApiOperation("上传多文件")
     @PostMapping("common/upload_files")
-    public int uploadFiles(@RequestPart("files") MultipartFile[] files) {
-        int res = 0;
-        for (MultipartFile file : files) {
-            upload(file);
-            res++;
-        }
-        return res;
+    public List<String> uploadFiles(@RequestPart("files") MultipartFile[] files) {
+        return Arrays.stream(files)
+                .map(this::upload)
+                .collect(Collectors.toList());
     }
 
     @ApiOperation("下载文件")
     @GetMapping(FileUploadUtil.DEFAULT_DOWNLOAD_API)
-    public void download(HttpServletRequest request, HttpServletResponse response, String fileName) throws IOException {
+    public void download(HttpServletRequest request, HttpServletResponse response, String fileName) {
         boolean checked = FileUploadUtil.checkAllowedExtension(fileName);
         AssertUtil.isFalse(checked, FrameErrorEnum.EXTENSION_NOT_ALLOWED, fileName + "不被允许");
         // 写文件流
-        String targetFilePath = FileUploadUtil.downloadPath() + fileName;
+        String targetFilePath = FileUploadUtil.downloadPath(fileName);
         boolean exist = FileUtil.exist(targetFilePath);
         AssertUtil.isFalse(exist, FrameErrorEnum.FILE_NOT_FOUND, fileName + "不存在");
         ServletUtil.write(response, new File(targetFilePath));
@@ -78,10 +78,9 @@ public class CommonController {
 
     @ApiOperation("下载临时文件")
     @GetMapping(FileUploadUtil.DEFAULT_DOWNLOAD_TEMP_API)
-    public void downloadTemp(HttpServletRequest request, HttpServletResponse response, String fileName) throws IOException {
+    public void downloadTemp(HttpServletRequest request, HttpServletResponse response, String fileName) {
         download(request, response, fileName);
-        String targetFilePath = FileUploadUtil.downloadPath() + fileName;
+        String targetFilePath = FileUploadUtil.downloadPath(fileName);
         FileUtil.del(targetFilePath);
     }
-
 }
