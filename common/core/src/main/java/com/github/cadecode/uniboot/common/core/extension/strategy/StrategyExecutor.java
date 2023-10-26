@@ -16,8 +16,8 @@ public interface StrategyExecutor {
 
     <S extends StrategyService> void executeAll(Class<S> clazz, StrategyContext context, Consumer<S> consumer);
 
-    <R, S extends StrategyService> R execute(Class<S> clazz, StrategyContext context, Function<S, R> function);
+    <R, S extends StrategyService> R submit(Class<S> clazz, StrategyContext context, Function<S, R> function);
 
-    <S extends StrategyService> List<Object> executeAll(Class<S> clazz, StrategyContext context, Function<S, Object> function);
+    <S extends StrategyService> List<Object> submitAll(Class<S> clazz, StrategyContext context, Function<S, Object> function);
 
 }

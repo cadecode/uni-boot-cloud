@@ -69,7 +69,7 @@ public class StrategySelectorExecutor extends AbstractStrategyExecutor {
      * @return 返回值
      */
     @Override
-    public <R, S extends StrategyService> R execute(Class<S> clazz, StrategyContext context, Function<S, R> function) {
+    public <R, S extends StrategyService> R submit(Class<S> clazz, StrategyContext context, Function<S, R> function) {
         List<S> services = selectServices(clazz, context);
         if (ObjUtil.isNotEmpty(services)) {
             return function.apply(services.get(0));
@@ -86,7 +86,7 @@ public class StrategySelectorExecutor extends AbstractStrategyExecutor {
      * @return 返回值
      */
     @Override
-    public <S extends StrategyService> List<Object> executeAll(Class<S> clazz, StrategyContext context, Function<S, Object> function) {
+    public <S extends StrategyService> List<Object> submitAll(Class<S> clazz, StrategyContext context, Function<S, Object> function) {
         List<S> services = selectServices(clazz, context);
         if (ObjUtil.isNotEmpty(services)) {
             return services.stream()

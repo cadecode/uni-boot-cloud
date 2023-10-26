@@ -54,7 +54,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        ApiResult<SysUserDetails> result = strategyExecutor.execute(LoginSuccessHandleService.class, securityProperties::getAuthModel, s -> {
+        ApiResult<SysUserDetails> result = strategyExecutor.submit(LoginSuccessHandleService.class, securityProperties::getAuthModel, s -> {
             return s.getResult(request, response, authentication);
         });
         updateLoginInfo(result.getData());
