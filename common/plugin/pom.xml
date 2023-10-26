@@ -22,6 +22,7 @@
         <module>swagger</module>
         <module>concurrent</module>
         <module>mq</module>
+        <module>storage</module>
     </modules>
 
     <dependencies>

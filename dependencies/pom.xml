@@ -44,6 +44,7 @@
         <easyexcel.version>3.1.1</easyexcel.version>
         <spring-plugin.version>2.0.0.RELEASE</spring-plugin.version>
         <multirabbit.version>2.5.0</multirabbit.version>
+        <x-file-storage.version>2.0.0</x-file-storage.version>
     </properties>
 
     <dependencies>
@@ -222,6 +223,12 @@
                 <groupId>com.free-now.multirabbit</groupId>
                 <artifactId>spring-multirabbit</artifactId>
                 <version>${multirabbit.version}</version>
+            </dependency>
+            <!--通用文件存储-->
+            <dependency>
+                <groupId>org.dromara.x-file-storage</groupId>
+                <artifactId>x-file-storage-spring</artifactId>
+                <version>${x-file-storage.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
