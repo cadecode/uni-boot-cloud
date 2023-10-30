@@ -145,7 +145,14 @@ public class PlgFileController {
         List<PlgFile> plgFileList = plgFileService.listByIds(idList);
         List<FileInfo> fileInfoList = PlgFileConvert.INSTANCE.poToFileInfo(plgFileList);
         return fileInfoList.stream()
-                .filter(fileStorageService::delete)
+                .filter(o -> {
+                    try {
+                        return fileStorageService.delete(o);
+                    } catch (Exception e) {
+                        log.error("Delete files by id", e);
+                        return false;
+                    }
+                })
                 .collect(Collectors.toList());
     }
 }
