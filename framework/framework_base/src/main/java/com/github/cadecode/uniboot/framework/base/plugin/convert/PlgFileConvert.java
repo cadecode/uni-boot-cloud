@@ -29,4 +29,6 @@ public interface PlgFileConvert {
     PlgFile fileInfoToPo(FileInfo fileInfo);
 
     List<PlgFilePageResVo> poToPageResVo(List<PlgFile> poList);
+
+    List<FileInfo> poToFileInfo(List<PlgFile> plgFileList);
 }

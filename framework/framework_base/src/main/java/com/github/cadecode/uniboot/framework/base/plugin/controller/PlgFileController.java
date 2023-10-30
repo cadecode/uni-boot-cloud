@@ -66,7 +66,7 @@ public class PlgFileController {
         return new PageResult<>((int) pageInfo.getTotal(), voList);
     }
 
-    @ApiOperation("删除-批量")
+    @ApiOperation("删除记录-批量")
     @PostMapping("record/delete")
     public boolean delete(@RequestBody @NotEmpty List<Long> idList) {
         return plgFileService.removeBatchByIds(idList);
@@ -131,5 +131,21 @@ public class PlgFileController {
         FileInfo fileInfo = fileStorageService.getFileInfoByUrl(url);
         fileStorageService.download(fileInfo).inputStream(in -> ServletUtil.write(response, in));
         fileStorageService.delete(fileInfo);
+    }
+
+    @ApiOperation("通用删除文件-byUrl")
+    @PostMapping("storage/delete_by_url")
+    public boolean deleteFile(@RequestParam String url) {
+        return fileStorageService.delete(url);
+    }
+
+    @ApiOperation("通用删除文件-byId")
+    @PostMapping("storage/delete_by_id")
+    public List<FileInfo> deleteFiles(@RequestBody List<Long> idList) {
+        List<PlgFile> plgFileList = plgFileService.listByIds(idList);
+        List<FileInfo> fileInfoList = PlgFileConvert.INSTANCE.poToFileInfo(plgFileList);
+        return fileInfoList.stream()
+                .filter(fileStorageService::delete)
+                .collect(Collectors.toList());
     }
 }
