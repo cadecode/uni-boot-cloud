@@ -51,11 +51,15 @@
 
         <dependency>
             <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-framework-base</artifactId>
+            <artifactId>uni-boot-common-plugin-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-actuator</artifactId>
+            <artifactId>uni-boot-common-plugin-mq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-framework-base</artifactId>
         </dependency>
     </dependencies>
 
