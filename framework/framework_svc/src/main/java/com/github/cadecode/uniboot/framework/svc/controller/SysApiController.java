@@ -90,8 +90,8 @@ public class SysApiController {
 
     @ApiInner(onlyClient = true)
     @ApiOperation("查询API列表-全部")
-    @PostMapping("list_roles_vo")
-    public List<SysApiRolesResVo> listRolesVo() {
+    @PostMapping("client_list_roles_vo")
+    public List<SysApiRolesResVo> clientListRolesVo() {
         return sysApiService.listRolesVo();
     }
 }

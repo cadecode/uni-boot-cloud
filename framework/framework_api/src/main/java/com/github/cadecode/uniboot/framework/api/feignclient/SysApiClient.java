@@ -19,7 +19,7 @@ import java.util.List;
 public interface SysApiClient {
 
     @Cacheable(cacheNames = KeyPrefixConst.API_ROLES, key = "'ALL'")
-    @PostMapping("system/api/list_roles_vo")
+    @PostMapping("system/api/client_list_roles_vo")
     List<SysApiRolesResDto> listRolesResVo();
 
 }
