@@ -41,6 +41,7 @@ public interface PlgMqMsgConvert {
 
     List<PlgMqMsgPageResVo> poToPageResVo(List<PlgMqMsg> poList);
 
+    @Mapping(target = "connectionName", ignore = true)
     @Mapping(target = "updateUser", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "routingKey", ignore = true)
