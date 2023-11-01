@@ -4,6 +4,7 @@ import com.github.cadecode.uniboot.framework.api.bean.dto.SysUserDto.SysUserGetB
 import com.github.cadecode.uniboot.framework.api.consts.SvcNameConst;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * SysApi feign client
@@ -15,6 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface SysUserClient {
 
     @PostMapping("system/user/client/get_by_username")
-    SysUserGetByUsernameResDto getByUsername();
+    SysUserGetByUsernameResDto getByUsername(@RequestParam("username") String username);
 
 }
