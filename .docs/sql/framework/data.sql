@@ -114,6 +114,8 @@ VALUES (1, 301);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 302);
 INSERT INTO sys_role_menu (role_id, menu_id)
+VALUES (1, 303);
+INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 306);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 307);
