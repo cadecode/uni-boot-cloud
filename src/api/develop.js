@@ -46,3 +46,26 @@ export function updateMqMsg(serviceUrl, data) {
   });
 }
 
+export function pageFile(serviceUrl, data) {
+  return request({
+    url: serviceUrl + '/plugin/file/record/page',
+    method: 'post',
+    data
+  });
+}
+
+export function deleteFileRecord(serviceUrl, data) {
+  return request({
+    url: serviceUrl + '/plugin/file/record/delete',
+    method: 'post',
+    data
+  });
+}
+
+export function deleteFileStorage(serviceUrl, data) {
+  return request({
+    url: serviceUrl + '/plugin/file/storage/delete_by_id',
+    method: 'post',
+    data
+  });
+}
