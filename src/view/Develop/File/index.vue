@@ -181,7 +181,7 @@ export default {
         page: {
           total: 0,
           pageNumber: 1,
-          pageSize: 9
+          pageSize: 10
         }
       },
       showFileInfoDialog: {
