@@ -3,6 +3,8 @@ package com.github.cadecode.uniboot.framework.base.plugin.controller;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
+import com.github.cadecode.uniboot.common.plugin.log.annotation.ApiLogger;
+import com.github.cadecode.uniboot.framework.api.consts.LogTypeConst;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.base.plugin.bean.po.PlgFile;
 import com.github.cadecode.uniboot.framework.base.plugin.bean.vo.PlgFileVo.PlgFilePageReqVo;
@@ -133,12 +135,14 @@ public class PlgFileController {
         fileStorageService.delete(fileInfo);
     }
 
+    @ApiLogger(type = LogTypeConst.REMOVE, enableSave = true)
     @ApiOperation("通用删除文件-byUrl")
     @PostMapping("storage/delete_by_url")
     public boolean deleteFile(@RequestParam String url) {
         return fileStorageService.delete(url);
     }
 
+    @ApiLogger(type = LogTypeConst.REMOVE, enableSave = true)
     @ApiOperation("通用删除文件-byId")
     @PostMapping("storage/delete_by_id")
     public List<FileInfo> deleteFiles(@RequestBody List<Long> idList) {
