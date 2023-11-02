@@ -111,14 +111,10 @@
     <el-dialog title="查看详情" :visible.sync="showDetailDialog.showDialog" width="50%">
       <el-tabs type="border-card">
         <el-tab-pane label="消息内容">
-          <pre class="mq-msg-management-show-details">
-          {{ showMessage }}
-          </pre>
+          <pre class="mq-msg-management-show-details">{{ showMessage }}</pre>
         </el-tab-pane>
         <el-tab-pane label="异常原因">
-          <pre class="mq-msg-management-show-details">
-          {{ showCause }}
-          </pre>
+          <pre class="mq-msg-management-show-details">{{ showCause }}</pre>
         </el-tab-pane>
       </el-tabs>
     </el-dialog>

@@ -128,14 +128,10 @@
     <el-dialog title="查看详情" :visible.sync="showParamsDialog.showDialog" width="50%">
       <el-tabs type="border-card">
         <el-tab-pane label="参数">
-          <pre class="log-management-show-params">
-          {{ showParams }}
-          </pre>
+          <pre class="log-management-show-params">{{ showParams }}</pre>
         </el-tab-pane>
         <el-tab-pane label="结果">
-          <pre class="log-management-show-params">
-          {{ showResult }}
-          </pre>
+          <pre class="log-management-show-params">{{ showResult }}</pre>
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
