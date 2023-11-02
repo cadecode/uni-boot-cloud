@@ -58,6 +58,10 @@ VALUES (302, 3, 'MqMsg', '/develop/mq_msg', '/Develop/MqMsg', '消息队列', 1,
         '2023-08-24 10:30:42', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon,
                       order_num, enable_flag, create_time, update_time, update_user)
+VALUES (303, 3, 'File', '/develop/file', '/Develop/File', '文件管理', 1, null, 303, 1, '2023-08-22 23:23:46',
+        '2023-08-24 10:30:42', 'admin');
+INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon,
+                      order_num, enable_flag, create_time, update_time, update_user)
 VALUES (306, 3, 'Icon', '/develop/icon', '/Develop/Icon', '图标', 1, null, 306, 1, '2023-08-18 15:03:30', null, null);
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon,
                       order_num, enable_flag, create_time, update_time, update_user)
