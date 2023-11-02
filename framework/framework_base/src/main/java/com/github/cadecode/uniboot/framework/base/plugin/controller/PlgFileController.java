@@ -91,10 +91,10 @@ public class PlgFileController {
     @ApiOperation("通用上传图片")
     @PostMapping("storage/upload_image")
     public FileInfo uploadImage(@RequestPart MultipartFile file,
-                                @RequestPart(required = false) Integer width,
-                                @RequestPart(required = false) Integer height,
-                                @RequestPart(required = false) Integer thWidth,
-                                @RequestPart(required = false) Integer thHeight) {
+                                @RequestParam(required = false) Integer width,
+                                @RequestParam(required = false) Integer height,
+                                @RequestParam(required = false) Integer thWidth,
+                                @RequestParam(required = false) Integer thHeight) {
         UploadPretreatment uploadPretreatment = fileStorageService.of(file);
         // 根据传入条件设置宽高和缩略
         if (!ObjUtil.hasNull(width, height)) {
@@ -109,10 +109,10 @@ public class PlgFileController {
     @ApiOperation("通用上传图片-批量")
     @PostMapping("storage/upload_images")
     public List<FileInfo> uploadImages(@RequestPart MultipartFile[] files,
-                                       @RequestPart(required = false) Integer width,
-                                       @RequestPart(required = false) Integer height,
-                                       @RequestPart(required = false) Integer thWidth,
-                                       @RequestPart(required = false) Integer thHeight) {
+                                       @RequestParam(required = false) Integer width,
+                                       @RequestParam(required = false) Integer height,
+                                       @RequestParam(required = false) Integer thWidth,
+                                       @RequestParam(required = false) Integer thHeight) {
         return Arrays.stream(files)
                 .map(o -> uploadImage(o, width, height, thWidth, thHeight))
                 .collect(Collectors.toList());
