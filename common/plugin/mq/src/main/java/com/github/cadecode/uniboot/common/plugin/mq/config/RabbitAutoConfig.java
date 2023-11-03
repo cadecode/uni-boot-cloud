@@ -26,10 +26,10 @@ import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
@@ -40,65 +40,91 @@ import java.util.Map;
  * @since 2023/8/17
  */
 @Slf4j
-@RequiredArgsConstructor
 @EnableConfigurationProperties(RabbitProperties.class)
 @Configuration
 @ConditionalOnProperty(name = "uni-boot.mq.rabbit.enable", havingValue = "true")
-public class RabbitAutoConfig implements InitializingBean {
+public class RabbitAutoConfig {
 
-    private final MessageConverter messageConverter;
-    private final MultiRabbitProperties multiRabbitProperties;
-    private final SimpleRoutingConnectionFactory multiRabbitConnectionFactory;
-    private final Map<String, SimpleRabbitListenerContainerFactory> rabbitListenerContainerFactoryMap;
+    @Bean
+    public MultiRabbitContainerFactoryConfig multiRabbitContainerFactoryConfig(MessageConverter messageConverter,
+                                                                               MultiRabbitProperties multiRabbitProperties,
+                                                                               SimpleRoutingConnectionFactory multiRabbitConnectionFactory,
+                                                                               Map<String, SimpleRabbitListenerContainerFactory> rabbitListenerContainerFactoryMap) {
+        return new MultiRabbitContainerFactoryConfig(messageConverter, multiRabbitProperties, multiRabbitConnectionFactory, rabbitListenerContainerFactoryMap);
+    }
 
-    @Override
-    public void afterPropertiesSet() {
-        configureContainerFactory();
+    @Bean
+    public MultiRabbitDeclareBeanFactoryPostProcessor multiRabbitDeclareBeanFactoryPostProcessor() {
+        return new MultiRabbitDeclareBeanFactoryPostProcessor();
+    }
+
+    @DependsOn(MultiRabbitConstants.CONNECTION_FACTORY_BEAN_NAME)
+    @Bean
+    public MultiRabbitContainerBeanPostProcessor multiRabbitContainerBeanPostProcessor() {
+        return new MultiRabbitContainerBeanPostProcessor();
     }
 
     /**
-     * 配置 SimpleRabbitListenerContainerFactory
-     * spring-multirabbit {@link  org.springframework.boot.autoconfigure.amqp.MultiRabbitAutoConfiguration}
-     * 自动配置 SimpleRabbitListenerContainerFactory, 部分配置有缺失，此方法用于补偿
-     * 参考 {@link SimpleRabbitListenerContainerFactoryConfigurer}
-     */
-    private void configureContainerFactory() {
-        multiRabbitProperties.getConnections().forEach((connectionName, props) -> {
-            MultiRabbitContainerFactoryConfigurer configurer = new MultiRabbitContainerFactoryConfigurer(props.getListener().getSimple());
-            configurer.setMessageConverter(messageConverter);
-            SimpleRabbitListenerContainerFactory containerFactory = rabbitListenerContainerFactoryMap.get(connectionName);
-            ConnectionFactory targetConnectionFactory = multiRabbitConnectionFactory.getTargetConnectionFactory(connectionName);
-            configurer.configure(containerFactory, targetConnectionFactory);
-        });
-    }
-
-    /**
-     * MultiRabbit ContainerFactory 配置器
+     * RabbitMQ ContainerFactory 配置
+     * 提供对 MultiRabbit 支持
      */
     @RequiredArgsConstructor
-    private static class MultiRabbitContainerFactoryConfigurer
-            extends AbstractRabbitListenerContainerFactoryConfigurer<SimpleRabbitListenerContainerFactory> {
+    public static class MultiRabbitContainerFactoryConfig implements InitializingBean {
 
-        private final org.springframework.boot.autoconfigure.amqp.RabbitProperties.SimpleContainer config;
+        private final MessageConverter messageConverter;
+        private final MultiRabbitProperties multiRabbitProperties;
+        private final SimpleRoutingConnectionFactory multiRabbitConnectionFactory;
+        private final Map<String, SimpleRabbitListenerContainerFactory> rabbitListenerContainerFactoryMap;
 
         @Override
-        public void configure(SimpleRabbitListenerContainerFactory factory, ConnectionFactory connectionFactory) {
-            PropertyMapper map = PropertyMapper.get();
-            configure(factory, connectionFactory, config);
-            map.from(config::getConcurrency).whenNonNull().to(factory::setConcurrentConsumers);
-            map.from(config::getMaxConcurrency).whenNonNull().to(factory::setMaxConcurrentConsumers);
-            map.from(config::getBatchSize).whenNonNull().to(factory::setBatchSize);
-            map.from(config::isConsumerBatchEnabled).to(factory::setConsumerBatchEnabled);
+        public void afterPropertiesSet() {
+            configureContainerFactory();
         }
 
-        @Override
-        public void setMessageConverter(MessageConverter messageConverter) {
-            super.setMessageConverter(messageConverter);
+        /**
+         * 配置 SimpleRabbitListenerContainerFactory
+         * spring-multirabbit {@link  org.springframework.boot.autoconfigure.amqp.MultiRabbitAutoConfiguration}
+         * 自动配置 SimpleRabbitListenerContainerFactory, 部分配置有缺失，此方法用于补偿
+         * 参考 {@link SimpleRabbitListenerContainerFactoryConfigurer}
+         */
+        private void configureContainerFactory() {
+            multiRabbitProperties.getConnections().forEach((connectionName, props) -> {
+                MultiRabbitContainerFactoryConfigurer configurer = new MultiRabbitContainerFactoryConfigurer(props.getListener().getSimple());
+                configurer.setMessageConverter(messageConverter);
+                SimpleRabbitListenerContainerFactory containerFactory = rabbitListenerContainerFactoryMap.get(connectionName);
+                ConnectionFactory targetConnectionFactory = multiRabbitConnectionFactory.getTargetConnectionFactory(connectionName);
+                configurer.configure(containerFactory, targetConnectionFactory);
+            });
         }
 
-        @Override
-        public void setMessageRecoverer(MessageRecoverer messageRecoverer) {
-            super.setMessageRecoverer(messageRecoverer);
+        /**
+         * MultiRabbit ContainerFactory 配置器
+         */
+        @RequiredArgsConstructor
+        private static class MultiRabbitContainerFactoryConfigurer
+                extends AbstractRabbitListenerContainerFactoryConfigurer<SimpleRabbitListenerContainerFactory> {
+
+            private final org.springframework.boot.autoconfigure.amqp.RabbitProperties.SimpleContainer config;
+
+            @Override
+            public void configure(SimpleRabbitListenerContainerFactory factory, ConnectionFactory connectionFactory) {
+                PropertyMapper map = PropertyMapper.get();
+                configure(factory, connectionFactory, config);
+                map.from(config::getConcurrency).whenNonNull().to(factory::setConcurrentConsumers);
+                map.from(config::getMaxConcurrency).whenNonNull().to(factory::setMaxConcurrentConsumers);
+                map.from(config::getBatchSize).whenNonNull().to(factory::setBatchSize);
+                map.from(config::isConsumerBatchEnabled).to(factory::setConsumerBatchEnabled);
+            }
+
+            @Override
+            public void setMessageConverter(MessageConverter messageConverter) {
+                super.setMessageConverter(messageConverter);
+            }
+
+            @Override
+            public void setMessageRecoverer(MessageRecoverer messageRecoverer) {
+                super.setMessageRecoverer(messageRecoverer);
+            }
         }
     }
 
@@ -107,8 +133,6 @@ public class RabbitAutoConfig implements InitializingBean {
      * 注入的 bean 名称格式为 connectionName_declareName
      * 使用 {@link org.springframework.amqp.core.Declarable} setAdminsThatShouldDeclare 方法指定 AmqpAdmin bean
      */
-    @Component
-    @ConditionalOnProperty(name = "uni-boot.mq.rabbit.enable", havingValue = "true")
     public static class MultiRabbitDeclareBeanFactoryPostProcessor implements BeanFactoryPostProcessor, EnvironmentAware {
         private Environment environment;
 
@@ -176,8 +200,6 @@ public class RabbitAutoConfig implements InitializingBean {
      * 导致 getBean 获取对应 RabbitAdmin 实例失败
      * 此处使用 @DependsOn 使 multiRabbitConnectionFactory 提前加载
      */
-    @DependsOn(MultiRabbitConstants.CONNECTION_FACTORY_BEAN_NAME)
-    @Component
     public static class MultiRabbitContainerBeanPostProcessor implements BeanPostProcessor {
 
     }
