@@ -55,7 +55,7 @@ public class ThreadPoolConfig {
         scheduler.setPoolSize(Runtime.getRuntime().availableProcessors());
         scheduler.setThreadNamePrefix("taskScheduler-");
         scheduler.setWaitForTasksToCompleteOnShutdown(true);
-        scheduler.setAwaitTerminationSeconds(300);
+        scheduler.setAwaitTerminationSeconds(30);
         scheduler.setErrorHandler(throwable -> {
             log.error("Scheduled task execute fail,", throwable);
         });
