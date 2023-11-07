@@ -3,8 +3,8 @@ import store from '@/store';
 /**
  * 给定一组角色列表，判断当前用户是否包含其中的角色
  *
- * @param {Array<String>} value
- * @returns {Boolean}
+ * @param {string[]} value
+ * @returns {boolean}
  */
 function checkPermission(value) {
   if (value && value instanceof Array && value.length > 0) {
