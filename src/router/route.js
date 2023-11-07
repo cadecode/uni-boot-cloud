@@ -16,19 +16,6 @@ const constRoutes = [
     path: '/404',
     component: () => import('@/view/Page404.vue'),
     hidden: true
-  },
-  {
-    path: '/user_center',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: '',
-        name: 'UserCenter',
-        component: () => import('@/view/UserCenter'),
-        meta: {title: '个人中心'}
-      }
-    ]
   }
 ];
 
@@ -46,6 +33,7 @@ const notFoundRoute = {path: '*', redirect: '/404', hidden: true};
  * @typedef {Object} Menu
  * @property {number} parentId 父级菜单id
  * @property {boolean} leafFlag 是否是页面
+ * @property {boolean} hiddenFlag 是否是
  * @property {string} routePath 路由路径
  * @property {string} routeName 路由名称
  * @property {string} componentPath 组件路径
@@ -64,6 +52,7 @@ function menuToRoute(menu) {
     const route = {
       path: menu.routePath,
       component: Layout,
+      hidden: menu.hiddenFlag,
       children: [
         {
           path: '',
@@ -84,6 +73,7 @@ function menuToRoute(menu) {
       path: menu.routePath,
       name: menu.routeName,
       component: Layout,
+      hidden: menu.hiddenFlag,
       // noRedirect 面包屑中是否可点击导航
       meta: {title: menu.menuName, icon: menu.icon, noRedirect: true}
     };
@@ -96,6 +86,7 @@ function menuToRoute(menu) {
       path: menu.routePath,
       name: menu.routeName,
       component: requireComponent(menu.componentPath),
+      hidden: menu.hiddenFlag,
       meta: {title: menu.menuName, icon: menu.icon}
     };
     return {route, currRoute: route};
@@ -121,7 +112,7 @@ function requireComponent(path) {
 /**
  * 转换后端menu列表为routes
  * 后端menu结构：{id,parentId,routeName,routePath,componentPath,menuName,leafFlag,icon}
- * @param {Array<Menu>} menuList
+ * @param {Menu[]} menuList
  * @return {Array} 路由数组
  */
 function convertAsyncRoutes(menuList) {

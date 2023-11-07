@@ -39,14 +39,14 @@
         <el-form-item>
           <el-button type="primary" @click="pageMenus(1)">搜索</el-button>
           <el-button @click="() => this.$refs.menusFilterForm.resetFields()">重置</el-button>
-          <el-button type="info" @click="addMenu">添加根菜单</el-button>
+          <el-button type="info" @click="addMenu">添加菜单/路由</el-button>
         </el-form-item>
       </el-form>
     </div>
     <el-row :gutter="15">
       <el-col :xs="24" :sm="24" :md="24" :lg="21" :xl="21">
-        <el-tabs type="border-card" class="menu-management-menu">
-          <el-tab-pane label="菜单列表">
+        <el-tabs v-model="listTableTabName" type="border-card" class="menu-management-menu" @tab-click="handleListTableTabClick">
+          <el-tab-pane name="menuListTab" label="侧边菜单列表">
             <el-table
               ref="menuListTable"
               height="calc(100vh - 221px)"
@@ -56,7 +56,7 @@
               lazy
               :load="loadMenuChildren"
               :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-              @current-change="menuListTableClick"
+              @row-click="listTableClick"
             >
               <el-table-column property="orderNum" label="NO." width="200px" fixed />
               <el-table-column property="id" label="ID" width="170px" fixed />
@@ -105,13 +105,57 @@
               @current-change="pageMenus"
             />
           </el-tab-pane>
+          <el-tab-pane name="hiddenRouteListTab" label="内部路由列表">
+            <el-table
+              ref="hiddenRouteListTable"
+              height="calc(100vh - 221px)"
+              :data="hiddenRouteListTable.data"
+              highlight-current-row
+              row-key="id"
+              @row-click="listTableClick"
+            >
+              <el-table-column property="id" label="ID" width="170px" fixed />
+              <el-table-column property="routeName" label="路由名" width="170px" fixed />
+              <el-table-column property="menuName" label="菜单名" width="170px" fixed />
+              <el-table-column property="enableFlag" label="启用" width="60px">
+                <template v-slot="scope">
+                  <el-switch
+                    v-model="scope.row.enableFlag"
+                    @change="flag => updateEnable(flag, scope.$index, scope.row)"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column property="updateTime" label="更新时间" width="150px" />
+              <el-table-column property="updateUser" label="更新人" width="160px" />
+              <el-table-column property="createTime" label="创建时间" width="150px" />
+              <el-table-column label="操作" width="180px">
+                <template v-slot="scope">
+                  <el-button size="mini" @click="updateMenu(scope.$index, scope.row)">
+                    <el-icon class="el-icon-edit" />
+                  </el-button>
+                  <el-button size="mini" type="danger" @click="deleteMenu(scope.$index, scope.row)">
+                    <el-icon class="el-icon-delete" />
+                  </el-button>
+                </template>
+              </el-table-column>
+              <el-table-column property="routePath" label="路由路径" width="300px" show-overflow-tooltip />
+              <el-table-column property="componentPath" label="组件路径" width="300px" show-overflow-tooltip />
+            </el-table>
+            <el-pagination
+              layout="prev, pager, next"
+              :page-size="menuListTable.page.pageSize"
+              :total="menuListTable.page.total"
+              :current-page.sync="menuListTable.page.pageNumber"
+              @current-change="pageMenus"
+            />
+          </el-tab-pane>
         </el-tabs>
       </el-col>
       <el-col :xs="24" :sm="24" :md="24" :lg="3" :xl="3">
         <el-tabs type="border-card" class="menu-management-role">
           <el-tab-pane label="角色绑定">
             <el-tree
-              v-if="menuListTable.currClick"
+              v-if="listTableCurrClick"
               ref="roleTree"
               :data="roleTree.data"
               :props="roleTree.props"
@@ -124,7 +168,11 @@
         </el-tabs>
       </el-col>
     </el-row>
-    <el-dialog title="更新菜单" :visible.sync="updateMenuForm.showDialog" width="30%">
+    <el-dialog
+      :title="isHiddenRouteClicked() ? '更新内部路由' : '更新侧边菜单'"
+      :visible.sync="updateMenuForm.showDialog"
+      width="30%"
+    >
       <el-form
         ref="updateMenuForm"
         label-width="100px"
@@ -144,12 +192,14 @@
         <el-form-item label="组件路径" prop="componentPath">
           <el-input v-model="updateMenuForm.data.componentPath" />
         </el-form-item>
-        <el-form-item label="图标" prop="icon">
-          <el-input v-model="updateMenuForm.data.icon" />
-        </el-form-item>
-        <el-form-item label="排序" prop="orderNum">
-          <el-input v-model="updateMenuForm.data.orderNum" type="number" />
-        </el-form-item>
+        <template v-if="!isHiddenRouteClicked()">
+          <el-form-item label="图标" prop="icon">
+            <el-input v-model="updateMenuForm.data.icon" />
+          </el-form-item>
+          <el-form-item label="排序" prop="orderNum">
+            <el-input v-model="updateMenuForm.data.orderNum" type="number" />
+          </el-form-item>
+        </template>
         <el-form-item>
           <el-button @click="() => this.$refs.updateMenuForm.resetFields()">重置</el-button>
           <el-button @click="updateMenuForm.showDialog = false">取消</el-button>
@@ -157,7 +207,11 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-dialog title="添加菜单" :visible.sync="addMenuForm.showDialog" width="30%">
+    <el-dialog
+      :title="isHiddenRouteClicked() ? '添加内部路由' : '添加侧边菜单'"
+      :visible.sync="addMenuForm.showDialog"
+      width="30%"
+    >
       <el-form
         ref="addMenuForm"
         label-width="100px"
@@ -183,15 +237,17 @@
         <el-form-item label="是否页面" prop="leafFlag">
           <el-radio-group v-model="addMenuForm.data.leafFlag">
             <el-radio :label="true">是</el-radio>
-            <el-radio :label="false">否</el-radio>
+            <el-radio :label="false" :disabled="isHiddenRouteClicked()">否</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="图标" prop="icon">
-          <el-input v-model="addMenuForm.data.icon" />
-        </el-form-item>
-        <el-form-item label="排序" prop="orderNum">
-          <el-input v-model="addMenuForm.data.orderNum" type="number" />
-        </el-form-item>
+        <template v-if="!isHiddenRouteClicked()">
+          <el-form-item label="图标" prop="icon">
+            <el-input v-model="addMenuForm.data.icon" />
+          </el-form-item>
+          <el-form-item label="排序" prop="orderNum">
+            <el-input v-model="addMenuForm.data.orderNum" type="number" />
+          </el-form-item>
+        </template>
         <el-form-item>
           <el-button @click="() => this.$refs.addMenuForm.resetFields()">重置</el-button>
           <el-button @click="addMenuForm.showDialog = false">取消</el-button>
@@ -228,8 +284,21 @@ export default {
         },
         rules: {}
       },
+      // 选中 tab name
+      listTableTabName: 'menuListTab',
+      // 表格选中的行
+      listTableCurrClick: null,
+      // 侧边栏列表
       menuListTable: {
-        currClick: null,
+        data: [],
+        page: {
+          total: 0,
+          pageNumber: 1,
+          pageSize: 12
+        }
+      },
+      // 内部路由列表
+      hiddenRouteListTable: {
         data: [],
         page: {
           total: 0,
@@ -341,21 +410,35 @@ export default {
     this.loadRoleTree();
   },
   methods: {
+    isHiddenRouteClicked() {
+      return this.listTableTabName === 'hiddenRouteListTab';
+    },
     pageMenus(currPage) {
+      const hiddenFlag = this.isHiddenRouteClicked();
       // 分页插件回调传递当前页号
       const data = {
         ...this.menusFilterForm.data,
+        hiddenFlag,
         pageNumber: currPage,
-        pageSize: this.menuListTable.page.pageSize
+        pageSize: hiddenFlag ? this.hiddenRouteListTable.page.pageSize : this.menuListTable.page.pageSize
       };
       // 查询用户列表
       pageMenuRolesVo(data).then(res => {
+        // 内部路由菜单数据
+        if (hiddenFlag) {
+          this.hiddenRouteListTable.data = res.data.records;
+          this.hiddenRouteListTable.page.total = res.data.total;
+          if (currPage === 1) {
+            this.hiddenRouteListTable.page.pageNumber = 1;
+          }
+          return;
+        }
+
+        // 侧边栏菜单数据
         this.menuListTable.data = res.data.records;
-        // 设置 hasChildren 辅助表格树形展示
-        this.menuListTable.data.forEach(o => {
-          o.hasChildren = !o.leafFlag;
-        });
         this.menuListTable.page.total = res.data.total;
+        // 设置 hasChildren 辅助表格树形展示
+        this.menuListTable.data.forEach(o => { o.hasChildren = !o.leafFlag; });
         if (currPage === 1) {
           this.menuListTable.page.pageNumber = 1;
           // 重置时清空展开内容
@@ -420,6 +503,7 @@ export default {
         // 若是添加子菜单，注入当前行的 id 作为新菜单的父级ID
         if (row) {
           this.addMenuForm.data.parentId = row.id;
+          this.addMenuForm.data.parentMenuName = row.menuName;
         }
       });
     },
@@ -428,7 +512,7 @@ export default {
         if (!valid) {
           return;
         }
-        addMenu(this.addMenuForm.data).then(res => {
+        addMenu({...this.addMenuForm.data, hiddenFlag: this.isHiddenRouteClicked()}).then(res => {
           if (res.data) {
             // 若添加的是根菜单
             if (!this.addMenuForm.row) {
@@ -449,8 +533,20 @@ export default {
     },
     deleteMenu(index, row) {
       const del = () => {
+        const hiddenFlag = this.isHiddenRouteClicked();
         deleteMenu([row.id]).then(res => {
           if (res.data) {
+            // 内部路由数据
+            if (hiddenFlag) {
+              const findIndex = this.hiddenRouteListTable.data.findIndex(o => o.id === row.id);
+              if (findIndex !== -1) {
+                this.hiddenRouteListTable.data.splice(findIndex, 1);
+              }
+              this.listTableCurrClick = null;
+              return;
+            }
+
+            // 侧边菜单数据
             let findIndex = this.menuListTable.data.findIndex(o => o.id === row.id);
             if (findIndex !== -1) {
               this.menuListTable.data.splice(findIndex, 1);
@@ -461,6 +557,7 @@ export default {
               findIndex = treeNode.findIndex(o => o.id === row.id);
               treeNode.splice(findIndex, 1);
             }
+            this.listTableCurrClick = null;
           }
         });
       };
@@ -501,8 +598,8 @@ export default {
         this.roleTree.data = res.data;
       });
     },
-    menuListTableClick(curr, old) {
-      this.menuListTable.currClick = curr;
+    listTableClick(curr, old) {
+      this.listTableCurrClick = curr;
       if (curr) {
         this.$nextTick(() => {
           this.$refs.roleTree.setCheckedKeys(curr.roles);
@@ -513,21 +610,32 @@ export default {
       const checked = state.checkedNodes.includes(obj);
       // 启用该角色
       if (checked) {
-        addRoleMenu([{id: this.menuListTable.currClick.id, roleId: obj.id}]).then(res => {
+        addRoleMenu([{id: this.listTableCurrClick.id, roleId: obj.id}]).then(res => {
           if (res.data) {
             // 添加到对象中
-            this.menuListTable.currClick.roles.push(obj.code);
+            this.listTableCurrClick.roles.push(obj.code);
           }
         });
         return;
       }
-      removeRoleMenu([{id: this.menuListTable.currClick.id, roleId: obj.id}]).then(res => {
+      removeRoleMenu([{id: this.listTableCurrClick.id, roleId: obj.id}]).then(res => {
         if (res.data) {
           // 删除该角色
-          const index = this.menuListTable.currClick.roles.indexOf(obj.code);
-          this.menuListTable.currClick.roles.splice(index, 1);
+          const index = this.listTableCurrClick.roles.indexOf(obj.code);
+          this.listTableCurrClick.roles.splice(index, 1);
         }
       });
+    },
+    handleListTableTabClick() {
+      // 清空选中
+      this.listTableCurrClick = null;
+      this.$refs.menuListTable.setCurrentRow();
+      this.$refs.hiddenRouteListTable.setCurrentRow();
+
+      // 当内部路由表格为空时，切换 tab 时加载一次
+      if (this.isHiddenRouteClicked() && this.hiddenRouteListTable.data.length === 0) {
+        this.pageMenus(1);
+      }
     }
   }
 };
