@@ -9,6 +9,7 @@ const constRoutes = [
   {
     path: '/login',
     component: () => import('@/view/Login'),
+    // hidden 表示不在侧边菜单展示
     hidden: true
   },
   {
@@ -78,11 +79,12 @@ function menuToRoute(menu) {
   // 顶级且是菜单
   if (menu.parentId === null && !menu.leafFlag) {
     const route = {
+      // alwaysShow 不管多少 children，都会展示展开箭头
       alwaysShow: true,
       path: menu.routePath,
       name: menu.routeName,
       component: Layout,
-      // noRedirect面包屑中是否可点击导航
+      // noRedirect 面包屑中是否可点击导航
       meta: {title: menu.menuName, icon: menu.icon, noRedirect: true}
     };
     return {route, currRoute: route};
