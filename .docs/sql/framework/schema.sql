@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS sys_menu
     icon           TEXT         NULL COMMENT '图标',
     order_num      INT          NULL COMMENT '排序',
     enable_flag    TINYINT      NOT NULL COMMENT '是否启用',
+    hidden_flag TINYINT NOT NULL COMMENT '是否隐藏（内部路由）',
 
     create_time    DATETIME DEFAULT CURRENT_TIMESTAMP,
     update_time    DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
