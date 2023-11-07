@@ -72,6 +72,12 @@ public class SysMenu {
     @TableField(typeHandler = BoolToIntTypeHandler.class)
     private Boolean enableFlag;
 
+    /**
+     * 是否隐藏（用于内部路由）
+     */
+    @TableField(typeHandler = BoolToIntTypeHandler.class)
+    private Boolean hiddenFlag;
+
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
