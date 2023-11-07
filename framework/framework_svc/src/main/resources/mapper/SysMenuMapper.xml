@@ -53,6 +53,9 @@
                 <if test="req.enableFlag != null">
                     AND sm.enable_flag = #{req.enableFlag, typeHandler=BoolToIntTypeHandler}
                 </if>
+                <if test="req.hiddenFlag != null">
+                    AND sm.hidden_flag = #{req.hiddenFlag, typeHandler=BoolToIntTypeHandler}
+                </if>
                 <if test="req.roleIdList != null and req.roleIdList.size > 0 ">
                     AND sr.id in (
                     <foreach collection="req.roleIdList" item="id" separator=",">
@@ -63,7 +66,14 @@
             </where>
         </if>
         GROUP BY sm.id, sm.order_num, sm.create_time
-        ORDER BY sm.order_num
+        <choose>
+            <when test="req.hiddenFlag != null and req.hiddenFlag">
+                ORDER BY sm.create_time DESC
+            </when>
+            <otherwise>
+                ORDER BY sm.order_num
+            </otherwise>
+        </choose>
     </select>
     <select id="selectRolesVoByMenuIds" resultMap="SysMenuRolesVoMap">
         SELECT sm.*, JSON_ARRAYAGG(sr.code) r_code

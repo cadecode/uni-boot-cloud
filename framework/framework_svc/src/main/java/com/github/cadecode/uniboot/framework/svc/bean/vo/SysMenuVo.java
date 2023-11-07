@@ -26,6 +26,7 @@ public class SysMenuVo {
         private List<Long> roleIdList;
         private Boolean enableFlag;
         private Long parentId;
+        private Boolean hiddenFlag;
     }
 
     @Data
@@ -49,7 +50,6 @@ public class SysMenuVo {
         @NotEmpty
         private String menuName;
         private String icon;
-        @NotNull
         private Integer orderNum;
     }
 
@@ -66,10 +66,11 @@ public class SysMenuVo {
         @NotNull
         private Boolean leafFlag;
         private String icon;
-        @NotNull
         private Integer orderNum;
         @NotNull
         private Boolean enableFlag;
+        @NotNull
+        private Boolean hiddenFlag;
     }
 
     @Data
@@ -87,6 +88,8 @@ public class SysMenuVo {
         private String menuName;
 
         private Boolean leafFlag;
+
+        private Boolean hiddenFlag;
 
         private String icon;
 
@@ -114,6 +117,8 @@ public class SysMenuVo {
         private Integer orderNum;
 
         private Boolean enableFlag;
+
+        private Boolean hiddenFlag;
 
         private List<String> roles;
 
