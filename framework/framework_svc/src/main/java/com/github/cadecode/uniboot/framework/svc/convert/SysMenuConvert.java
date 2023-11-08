@@ -2,11 +2,14 @@ package com.github.cadecode.uniboot.framework.svc.convert;
 
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuAddReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuPageResVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeResVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuUpdateReqVo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 /**
  * 系统菜单BEAN转换
@@ -19,9 +22,11 @@ public interface SysMenuConvert {
 
     SysMenuConvert INSTANCE = Mappers.getMapper(SysMenuConvert.class);
 
+
     @Mapping(target = "children", ignore = true)
     SysMenuTreeResVo poToTreeResVo(SysMenu sysMenu);
 
+    @Mapping(target = "hiddenFlag", ignore = true)
     @Mapping(target = "updateUser", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "leafFlag", ignore = true)
@@ -35,4 +40,5 @@ public interface SysMenuConvert {
     @Mapping(target = "createTime", ignore = true)
     SysMenu voPo(SysMenuAddReqVo reqVo);
 
+    List<SysMenuPageResVo> poToPageVo(List<SysMenu> list);
 }
