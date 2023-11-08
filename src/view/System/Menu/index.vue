@@ -222,8 +222,13 @@
         <el-form-item label="路由名称" prop="routeName">
           <el-input v-model="addMenuForm.data.routeName" />
         </el-form-item>
-        <el-form-item v-if="addMenuForm.row" label="父级ID" prop="parentId">
-          <el-input v-model="addMenuForm.data.parentId" />
+        <el-form-item label="父级 ID" prop="parentId">
+          <el-autocomplete
+            v-model="addMenuForm.data.parentId"
+            :fetch-suggestions="listParentMenuSuggest"
+            placeholder="不填写时为顶级菜单"
+            @select="handleParentMenuSelect"
+          />
         </el-form-item>
         <el-form-item label="菜单名称" prop="menuName">
           <el-input v-model="addMenuForm.data.menuName" />
@@ -264,6 +269,7 @@ import {
   deleteMenu,
   listMenuRolesVoByMenuIds,
   listRole,
+  pageMenu,
   pageMenuRolesVo,
   removeRoleMenu,
   updateMenu,
@@ -374,7 +380,6 @@ export default {
         },
         showDialog: false,
         rule: {
-          parentId: [{required: true, message: '请输入父级ID', trigger: 'blur'}],
           routeName: [{required: true, message: '请输入路由名', trigger: 'blur'}],
           routePath: [{required: true, message: '请输入路由路径', trigger: 'blur'}],
           componentPath: [{
@@ -401,7 +406,8 @@ export default {
           menuName: [{required: true, message: '请输入菜单名', trigger: 'blur'}],
           leafFlag: [{required: true, message: '请选择是否页面', trigger: 'blur'}],
           orderNum: [{required: true, message: '请输入排序', trigger: 'blur'}]
-        }
+        },
+        parentMenuSuggestList: null
       }
     };
   },
@@ -503,7 +509,6 @@ export default {
         // 若是添加子菜单，注入当前行的 id 作为新菜单的父级ID
         if (row) {
           this.addMenuForm.data.parentId = row.id;
-          this.addMenuForm.data.parentMenuName = row.menuName;
         }
       });
     },
@@ -636,6 +641,20 @@ export default {
       if (this.isHiddenRouteClicked() && this.hiddenRouteListTable.data.length === 0) {
         this.pageMenus(1);
       }
+    },
+    listParentMenuSuggest(queryString, cb) {
+      if (this.addMenuForm.parentMenuSuggestList) {
+        cb(this.addMenuForm.parentMenuSuggestList.filter(o => !queryString || o.value.includes(queryString)));
+        return;
+      }
+      pageMenu({pageNumber: 0, pageSize: 0, leafFlag: false}).then(res => {
+        res.data.records.forEach(o => { o.value = `${o.id} | ${o.menuName} | ${o.routeName}`; });
+        this.addMenuForm.parentMenuSuggestList = res.data.records;
+        cb(this.addMenuForm.parentMenuSuggestList);
+      });
+    },
+    handleParentMenuSelect(item) {
+      this.addMenuForm.data.parentId = item.id;
     }
   }
 };
@@ -669,6 +688,10 @@ export default {
     ::v-deep .el-tree-node__expand-icon {
       display: none;
     }
+  }
+
+  ::v-deep .el-autocomplete .el-input {
+    width: 436px !important;
   }
 }
 </style>

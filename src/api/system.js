@@ -97,6 +97,14 @@ export function pageMenuRolesVo(data) {
   });
 }
 
+export function pageMenu(data) {
+  return request({
+    url: '/framework/system/menu/page',
+    method: 'post',
+    data
+  });
+}
+
 export function updateMenuEnable(data) {
   return request({
     url: '/framework/system/menu/update_enable',
