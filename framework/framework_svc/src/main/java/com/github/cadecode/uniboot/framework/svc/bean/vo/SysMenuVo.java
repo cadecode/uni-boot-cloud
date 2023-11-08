@@ -30,6 +30,17 @@ public class SysMenuVo {
     }
 
     @Data
+    @EqualsAndHashCode(callSuper = true)
+    public static class SysMenuPageReqVo extends PageParams {
+        private String routeName;
+        private String menuName;
+        private Boolean enableFlag;
+        private Long parentId;
+        private Boolean hiddenFlag;
+        private Boolean leafFlag;
+    }
+
+    @Data
     public static class SysMenuUpdateEnableReqVo {
         @NotNull
         private Long id;
@@ -127,6 +138,36 @@ public class SysMenuVo {
         private Date updateTime;
 
         private String updateUser;
+    }
 
+    @Data
+    public static class SysMenuPageResVo {
+        private Long id;
+
+        private Long parentId;
+
+        private String routeName;
+
+        private String routePath;
+
+        private String componentPath;
+
+        private String menuName;
+
+        private Boolean leafFlag;
+
+        private String icon;
+
+        private Integer orderNum;
+
+        private Boolean enableFlag;
+
+        private Boolean hiddenFlag;
+
+        private Date createTime;
+
+        private Date updateTime;
+
+        private String updateUser;
     }
 }

@@ -1,11 +1,14 @@
 package com.github.cadecode.uniboot.framework.svc.controller;
 
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
+import com.github.cadecode.uniboot.common.plugin.mybatis.converter.BoolToIntTypeHandler;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
 import com.github.cadecode.uniboot.framework.svc.convert.SysMenuConvert;
 import com.github.cadecode.uniboot.framework.svc.service.SysMenuService;
 import com.github.cadecode.uniboot.framework.svc.service.SysRoleService;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +46,22 @@ public class SysMenuController {
 
     private final SysMenuService sysMenuService;
     private final SysRoleService sysRoleService;
+
+    @ApiOperation("查询菜单列表")
+    @PostMapping("page")
+    public PageResult<SysMenuPageResVo> page(@RequestBody @Valid SysMenuPageReqVo reqVo) {
+        PageInfo<SysMenu> page = PageHelper.startPage(reqVo.getPageNumber(), reqVo.getPageSize())
+                .doSelectPageInfo(() -> sysMenuService.lambdaQuery()
+                        .eq(ObjUtil.isNotEmpty(reqVo.getParentId()), SysMenu::getParentId, reqVo.getParentId())
+                        .eq(ObjUtil.isNotEmpty(reqVo.getMenuName()), SysMenu::getMenuName, reqVo.getMenuName())
+                        .eq(ObjUtil.isNotEmpty(reqVo.getRouteName()), SysMenu::getRouteName, reqVo.getRouteName())
+                        .eq(ObjUtil.isNotEmpty(reqVo.getEnableFlag()), SysMenu::getEnableFlag, BoolToIntTypeHandler.mapping(reqVo.getEnableFlag()))
+                        .eq(ObjUtil.isNotEmpty(reqVo.getLeafFlag()), SysMenu::getLeafFlag, BoolToIntTypeHandler.mapping(reqVo.getLeafFlag()))
+                        .eq(ObjUtil.isNotEmpty(reqVo.getHiddenFlag()), SysMenu::getHiddenFlag, BoolToIntTypeHandler.mapping(reqVo.getHiddenFlag()))
+                        .list());
+        List<SysMenuPageResVo> resVoList = SysMenuConvert.INSTANCE.poToPageVo(page.getList());
+        return new PageResult<>((int) page.getTotal(), resVoList);
+    }
 
     @ApiOperation("查询菜单列表（带角色）")
     @PostMapping("page_roles_vo")
