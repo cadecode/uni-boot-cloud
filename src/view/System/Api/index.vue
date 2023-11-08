@@ -107,14 +107,18 @@
         :rules="addApiForm.rule"
       >
         <el-form-item label="服务" prop="serviceUrl">
-          <el-select v-model="addApiForm.data.serviceUrl" filterable placeholder="请选择" @change="handleServiceUrlChange">
-            <el-option
-              v-for="item in addApiForm.option.serviceUrl"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
+          <base-dict-loader dict-type="serviceUrl" @load="(dict, defaultDict) => addApiForm.data.serviceUrl = defaultDict">
+            <template v-slot="scope">
+              <el-select v-model="addApiForm.data.serviceUrl" filterable placeholder="请选择" @change="handleServiceUrlChange">
+                <el-option
+                  v-for="item in scope.dictList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </template>
+          </base-dict-loader>
         </el-form-item>
         <el-form-item label="接口路径" prop="url">
           <el-autocomplete v-model="addApiForm.data.url" :fetch-suggestions="listUrlSuggest" @select="handleUrlSelect" />
@@ -137,15 +141,17 @@ import {
   addRoleApi,
   deleteApi,
   listApiRolesVoByApiIds,
-  listSwaggerDescVo, listDictByType,
+  listSwaggerDescVo,
   listRole,
   pageApiRolesVo,
   removeRoleApi,
   updateApi
 } from '@/api/system';
+import BaseDictLoader from '@/component/BaseDictLoader';
 
 export default {
   name: 'VApiManagement',
+  components: {BaseDictLoader},
   data() {
     return {
       apisFilterForm: {
@@ -206,20 +212,10 @@ export default {
     };
   },
   created() {
-    this.listServiceUrl();
     this.pageApis(1);
     this.loadRoleTree();
   },
   methods: {
-    listServiceUrl() {
-      listDictByType('serviceUrl').then(res => {
-        this.addApiForm.option.serviceUrl = res.data;
-        const defaultUrl = this.addApiForm.option.serviceUrl.filter(o => o.defaultFlag)[0];
-        if (defaultUrl) {
-          this.addApiForm.data.serviceUrl = defaultUrl.value;
-        }
-      });
-    },
     pageApis(currPage) {
       // 分页插件回调传递当前页号
       const data = {
