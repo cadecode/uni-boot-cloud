@@ -62,6 +62,7 @@ public class SysMenuVo {
         private String menuName;
         private String icon;
         private Integer orderNum;
+        private Boolean cacheFlag;
     }
 
     @Data
@@ -82,6 +83,8 @@ public class SysMenuVo {
         private Boolean enableFlag;
         @NotNull
         private Boolean hiddenFlag;
+        @NotNull
+        private Boolean cacheFlag;
     }
 
     @Data
@@ -101,6 +104,8 @@ public class SysMenuVo {
         private Boolean leafFlag;
 
         private Boolean hiddenFlag;
+
+        private Boolean cacheFlag;
 
         private String icon;
 
@@ -130,6 +135,8 @@ public class SysMenuVo {
         private Boolean enableFlag;
 
         private Boolean hiddenFlag;
+
+        private Boolean cacheFlag;
 
         private List<String> roles;
 
@@ -163,6 +170,8 @@ public class SysMenuVo {
         private Boolean enableFlag;
 
         private Boolean hiddenFlag;
+
+        private Boolean cacheFlag;
 
         private Date createTime;
 
