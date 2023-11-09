@@ -78,6 +78,12 @@ public class SysMenu {
     @TableField(typeHandler = BoolToIntTypeHandler.class)
     private Boolean hiddenFlag;
 
+    /**
+     * 是否启用内部缓存
+     */
+    @TableField(typeHandler = BoolToIntTypeHandler.class)
+    private Boolean cacheFlag;
+
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 

@@ -23,69 +23,69 @@ INSERT INTO sys_role (id, code, name, description)
 -- 插入菜单
 -- ----------------------------
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (1, null, 'Home', '/home/demo_home', '/Home/DemoHome', '首页', 1, 'el-icon-s-home', 1, 1, 0,
-        '2023-08-18 15:03:26', '2023-11-07 12:56:43', 'admin');
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (1, null, 'Home', '/home/demo_home', '/Home/DemoHome', '首页', 1, 'el-icon-s-home', 1, 1, 0, 0,
+        '2023-08-18 15:03:26', '2023-11-09 15:57:57', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (2, null, 'System', '/system', '/system', '系统管理', 0, 'el-icon-setting', 2, 1, 0, '2023-08-18 15:03:26',
-        '2023-11-07 12:56:43', 'admin');
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (2, null, 'System', '/system', '/system', '系统管理', 0, 'el-icon-setting', 2, 1, 0, 0, '2023-08-18 15:03:26',
+        '2023-11-09 15:57:56', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (3, null, 'Develop', '/develop', '/develop', '开发管理', 0, 'el-icon-s-platform', 3, 1, 0, '2023-08-18 15:03:29',
-        '2023-11-07 14:08:48', 'admin');
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (3, null, 'Develop', '/develop', '/develop', '开发管理', 0, 'el-icon-s-platform', 3, 1, 0, 0,
+        '2023-08-18 15:03:29', '2023-11-09 15:57:57', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (201, 2, 'User', '/system/user', '/System/User', '用户管理', 1, null, 201, 1, 0, '2023-08-18 15:03:27',
-        '2023-11-07 12:56:43', 'admin');
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (201, 2, 'User', '/system/user', '/System/User', '用户管理', 1, null, 201, 1, 0, 0, '2023-08-18 15:03:27',
+        '2023-11-09 15:57:57', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (202, 2, 'Role', '/system/role', '/System/Role', '角色管理', 1, null, 202, 1, 0, '2023-08-18 15:03:27',
-        '2023-11-07 12:56:42', null);
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (202, 2, 'Role', '/system/role', '/System/Role', '角色管理', 1, null, 202, 1, 0, 0, '2023-08-18 15:03:27',
+        '2023-11-09 15:57:55', null);
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (203, 2, 'Menu', '/system/menu', '/System/Menu', '菜单管理', 1, null, 203, 1, 0, '2023-08-18 15:03:28',
-        '2023-11-07 12:56:44', null);
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (203, 2, 'Menu', '/system/menu', '/System/Menu', '菜单管理', 1, null, 203, 1, 0, 0, '2023-08-18 15:03:28',
+        '2023-11-09 15:57:56', null);
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (204, 2, 'Api', '/system/api', '/System/Api', 'API管理', 1, null, 204, 1, 0, '2023-08-18 15:03:28',
-        '2023-11-07 12:56:43', null);
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (204, 2, 'Api', '/system/api', '/System/Api', 'API管理', 1, null, 204, 1, 0, 0, '2023-08-18 15:03:28',
+        '2023-11-09 15:57:54', null);
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (205, 2, 'Dict', '/system/dict', '/System/Dict', '字典管理', 1, null, 205, 1, 0, '2023-08-18 15:03:29',
-        '2023-11-07 12:56:44', null);
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (205, 2, 'Dict', '/system/dict', '/System/Dict', '字典管理', 1, null, 205, 1, 0, 0, '2023-08-18 15:03:29',
+        '2023-11-09 15:57:56', null);
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (301, 3, 'Log', '/develop/log', '/Develop/Log', '日志管理', 1, null, 301, 1, 0, '2023-08-18 15:03:30',
-        '2023-11-07 12:56:43', null);
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (301, 3, 'Log', '/develop/log', '/Develop/Log', '日志管理', 1, null, 301, 1, 0, 0, '2023-08-18 15:03:30',
+        '2023-11-09 15:57:57', null);
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (302, 3, 'MqMsg', '/develop/mq_msg', '/Develop/MqMsg', '消息队列', 1, null, 302, 1, 0, '2023-08-22 23:23:46',
-        '2023-11-07 12:56:43', 'admin');
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (302, 3, 'MqMsg', '/develop/mq_msg', '/Develop/MqMsg', '消息队列', 1, null, 302, 1, 0, 0, '2023-08-22 23:23:46',
+        '2023-11-09 15:57:56', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (303, 3, 'File', '/develop/file', '/Develop/File', '文件管理', 1, null, 303, 1, 0, '2023-08-22 23:23:46',
-        '2023-11-07 12:56:44', 'admin');
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (303, 3, 'File', '/develop/file', '/Develop/File', '文件管理', 1, null, 303, 1, 0, 0, '2023-08-22 23:23:46',
+        '2023-11-09 15:57:56', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (306, 3, 'Icon', '/develop/icon', '/Develop/Icon', '图标', 1, null, 306, 1, 0, '2023-08-18 15:03:30',
-        '2023-11-07 12:56:42', null);
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (306, 3, 'Icon', '/develop/icon', '/Develop/Icon', '图标', 1, null, 306, 1, 0, 0, '2023-08-18 15:03:30',
+        '2023-11-09 15:57:56', null);
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (307, 3, 'Echarts', '/develop/echarts', '/Develop/Echarts', 'Echarts 示例', 1, null, 307, 1, 0,
-        '2023-08-18 15:03:30', '2023-11-07 12:56:44', null);
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (307, 3, 'Echarts', '/develop/echarts', '/Develop/Echarts', 'Echarts 示例', 1, null, 307, 1, 0, 0,
+        '2023-08-18 15:03:30', '2023-11-09 15:57:55', null);
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (308, 3, 'Swagger', 'http://localhost:8000/doc.html', null, 'Swagger', 1, null, 308, 1, 0, '2023-08-18 15:03:30',
-        '2023-11-07 12:56:43', null);
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (308, 3, 'Swagger', 'http://localhost:8000/doc.html', null, 'Swagger', 1, null, 308, 1, 0, 0,
+        '2023-08-18 15:03:30', '2023-11-09 15:57:55', null);
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
 VALUES (1000, null, 'GithubUrl', 'https://github.com/cadecode/uni-boot-admin', null, '源码仓库', 1, 'el-icon-star-on',
-        1000, 0, 0, '2023-08-18 15:03:31', '2023-11-07 14:08:27', 'admin');
+        1000, 0, 0, 0, '2023-08-18 15:03:31', '2023-11-09 15:57:55', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
-                      enable_flag, hidden_flag, create_time, update_time, update_user)
-VALUES (1001, null, 'UserCenter', '/user_center', '/UserCenter', '个人中心', 1, null, null, 1, 1, '2023-11-07 15:54:25',
-        '2023-11-07 16:03:37', 'admin');
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (1001, null, 'UserCenter', '/user_center', '/UserCenter', '个人中心', 1, null, null, 1, 1, 0,
+        '2023-11-07 15:54:25', '2023-11-09 15:58:54', 'admin');
 
 -- ----------------------------
 -- 插入 API
@@ -136,6 +136,8 @@ INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 309);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 1000);
+INSERT INTO sys_role_menu (role_id, menu_id)
+VALUES (1, 1001);
 
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (2, 1);
@@ -153,11 +155,15 @@ INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (2, 205);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (2, 1000);
+INSERT INTO sys_role_menu (role_id, menu_id)
+VALUES (1, 1001);
 
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (3, 1);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (3, 1000);
+INSERT INTO sys_role_menu (role_id, menu_id)
+VALUES (1, 1001);
 -- ----------------------------
 -- 插入角色API关系
 -- ----------------------------
