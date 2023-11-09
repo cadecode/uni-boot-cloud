@@ -95,6 +95,7 @@
               <el-table-column property="routePath" label="路由路径" width="300px" show-overflow-tooltip />
               <el-table-column property="componentPath" label="组件路径" width="300px" show-overflow-tooltip />
               <el-table-column property="leafFlag" label="是否页面" :formatter="(row, col, cell) => cell?'是':'否'" />
+              <el-table-column property="cacheFlag" label="是否缓存" :formatter="(row, col, cell) => cell?'是':'否'" />
               <el-table-column property="icon" label="图标" width="150px" />
             </el-table>
             <el-pagination
@@ -140,6 +141,7 @@
               </el-table-column>
               <el-table-column property="routePath" label="路由路径" width="300px" show-overflow-tooltip />
               <el-table-column property="componentPath" label="组件路径" width="300px" show-overflow-tooltip />
+              <el-table-column property="cacheFlag" label="是否缓存" :formatter="(row, col, cell) => cell?'是':'否'" />
             </el-table>
             <el-pagination
               layout="prev, pager, next"
@@ -192,6 +194,12 @@
         <el-form-item label="组件路径" prop="componentPath">
           <el-input v-model="updateMenuForm.data.componentPath" />
         </el-form-item>
+        <el-form-item label="是否缓存" prop="cacheFlag">
+          <el-radio-group v-model="updateMenuForm.data.cacheFlag">
+            <el-radio :label="true">是</el-radio>
+            <el-radio :label="false">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <template v-if="!isHiddenRouteClicked()">
           <el-form-item label="图标" prop="icon">
             <el-input v-model="updateMenuForm.data.icon" />
@@ -243,6 +251,12 @@
           <el-radio-group v-model="addMenuForm.data.leafFlag">
             <el-radio :label="true">是</el-radio>
             <el-radio :label="false" :disabled="isHiddenRouteClicked()">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="是否缓存" prop="cacheFlag">
+          <el-radio-group v-model="addMenuForm.data.cacheFlag">
+            <el-radio :label="true">是</el-radio>
+            <el-radio :label="false">否</el-radio>
           </el-radio-group>
         </el-form-item>
         <template v-if="!isHiddenRouteClicked()">
@@ -331,7 +345,8 @@ export default {
           componentPath: null,
           menuName: null,
           icon: null,
-          orderNum: null
+          orderNum: null,
+          cacheFlag: null
         },
         showDialog: false,
         rule: {
@@ -359,7 +374,8 @@ export default {
             }, trigger: 'blur'
           }],
           menuName: [{required: true, message: '请输入菜单名', trigger: 'blur'}],
-          orderNum: [{required: true, message: '请输入排序', trigger: 'blur'}]
+          orderNum: [{required: true, message: '请输入排序', trigger: 'blur'}],
+          cacheFlag: [{required: true, message: '请选择是否缓存', trigger: 'blur'}]
         }
       },
       addMenuForm: {
@@ -376,7 +392,8 @@ export default {
           leafFlag: null,
           icon: null,
           orderNum: null,
-          enableFlag: true
+          enableFlag: true,
+          cacheFlag: null
         },
         showDialog: false,
         rule: {
@@ -405,7 +422,8 @@ export default {
           }],
           menuName: [{required: true, message: '请输入菜单名', trigger: 'blur'}],
           leafFlag: [{required: true, message: '请选择是否页面', trigger: 'blur'}],
-          orderNum: [{required: true, message: '请输入排序', trigger: 'blur'}]
+          orderNum: [{required: true, message: '请输入排序', trigger: 'blur'}],
+          cacheFlag: [{required: true, message: '请选择是否缓存', trigger: 'blur'}]
         },
         parentMenuSuggestList: null
       }
