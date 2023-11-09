@@ -39,6 +39,10 @@ const notFoundRoute = {path: '*', redirect: '/404', hidden: true};
  * @property {string} componentPath 组件路径
  * @property {string} menuName 菜单名称
  * @property {string} icon 图标
+ * @property {string} title 标题
+ * @property {string} icon 图标
+ * @property {string} cacheFlag 是否缓存
+ * @property {string} affix 是否钉在 TAG 栏（暂未实现）
  */
 
 /**
@@ -58,7 +62,7 @@ function menuToRoute(menu) {
           path: '',
           name: menu.routeName,
           component: requireComponent(menu.componentPath),
-          meta: {title: menu.menuName, icon: menu.icon}
+          meta: {title: menu.menuName, icon: menu.icon, cacheFlag: menu.cacheFlag}
         }
       ],
       meta: {}
@@ -75,7 +79,7 @@ function menuToRoute(menu) {
       component: Layout,
       hidden: menu.hiddenFlag,
       // noRedirect 面包屑中是否可点击导航
-      meta: {title: menu.menuName, icon: menu.icon, noRedirect: true}
+      meta: {title: menu.menuName, icon: menu.icon, noRedirect: true, cacheFlag: menu.cacheFlag}
     };
     return {route, currRoute: route};
   }
@@ -87,7 +91,7 @@ function menuToRoute(menu) {
       name: menu.routeName,
       component: requireComponent(menu.componentPath),
       hidden: menu.hiddenFlag,
-      meta: {title: menu.menuName, icon: menu.icon}
+      meta: {title: menu.menuName, icon: menu.icon, cacheFlag: menu.cacheFlag}
     };
     return {route, currRoute: route};
   }
