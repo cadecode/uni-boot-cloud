@@ -90,7 +90,7 @@ import {mapGetters} from 'vuex';
 echarts.registerMap('china', require('@/asset/meta/geo_china.json'));
 
 export default {
-  name: 'VDemoHome',
+  name: 'DemoHome',
   components: {BaseEcharts},
   data() {
     return {

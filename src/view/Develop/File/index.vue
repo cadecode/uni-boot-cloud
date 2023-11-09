@@ -157,7 +157,7 @@ import {deleteFileRecord, deleteFileStorage, pageFile} from '@/api/develop';
 import BaseDictLoader from '@/component/BaseDictLoader/index.vue';
 
 export default {
-  name: 'VFileManagement',
+  name: 'FileManagement',
   components: {BaseDictLoader},
   data() {
     return {

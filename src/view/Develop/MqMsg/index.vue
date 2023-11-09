@@ -158,7 +158,7 @@ import {listMqMsgByIdList, pageMqMsg, updateMqMsg} from '@/api/develop';
 import BaseDictLoader from '@/component/BaseDictLoader';
 
 export default {
-  name: 'VMqMsgManagement',
+  name: 'MqMsgManagement',
   components: {BaseDictLoader},
   data() {
     return {

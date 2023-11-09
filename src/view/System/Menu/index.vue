@@ -292,7 +292,7 @@ import {
 import {isExternalUrl} from '@/util/common';
 
 export default {
-  name: 'VMenuManagement',
+  name: 'MenuManagement',
   data() {
     return {
       menusFilterForm: {

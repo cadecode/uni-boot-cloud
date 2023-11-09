@@ -36,6 +36,7 @@
 import BaseEcharts from '@/component/BaseEcharts/index.vue';
 
 export default {
+  name: 'EchartsDemo',
   components: {
     BaseEcharts
   },

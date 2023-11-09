@@ -63,7 +63,7 @@
 import {title} from '@/settings';
 
 export default {
-  name: 'VLogin',
+  name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (value.length < 1) {

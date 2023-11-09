@@ -144,7 +144,7 @@
 import {addDict, deleteDict, listDictByIds, listDictType, pageDict, updateDict} from '@/api/system';
 
 export default {
-  name: 'VDictManagement',
+  name: 'DictManagement',
   data() {
     return {
       dictFilterForm: {

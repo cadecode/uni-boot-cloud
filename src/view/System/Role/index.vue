@@ -151,7 +151,7 @@ import {
 } from '@/api/system';
 
 export default {
-  name: 'VRoleManagement',
+  name: 'RoleManagement',
   data() {
     return {
       rolesFilterForm: {

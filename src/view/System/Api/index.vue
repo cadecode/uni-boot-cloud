@@ -150,7 +150,7 @@ import {
 import BaseDictLoader from '@/component/BaseDictLoader';
 
 export default {
-  name: 'VApiManagement',
+  name: 'ApiManagement',
   components: {BaseDictLoader},
   data() {
     return {

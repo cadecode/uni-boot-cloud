@@ -101,7 +101,7 @@ import {mapGetters} from 'vuex';
 import {modifyInfo, modifyPass} from '@/api/userCenter';
 
 export default {
-  name: 'VUserCenter',
+  name: 'UserCenter',
   data() {
     return {
       modifyInfoForm: {

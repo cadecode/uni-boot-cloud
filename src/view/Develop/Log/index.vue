@@ -142,7 +142,7 @@ import {deleteLog, pageLog} from '@/api/develop';
 import BaseDictLoader from '@/component/BaseDictLoader';
 
 export default {
-  name: 'VLogManagement',
+  name: 'LogManagement',
   components: {BaseDictLoader},
   data() {
     return {
