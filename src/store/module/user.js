@@ -120,9 +120,10 @@ const actions = {
     return new Promise(resolve => {
       const asyncRoutes = convertAsyncRoutes(menuList) || [];
       // 第一条作为home路由
-      if (asyncRoutes.length > 0) {
+      const firstVisibleRoute = asyncRoutes.find(o => !o.hiddenFlag);
+      if (firstVisibleRoute) {
         // 设置home路由重定向
-        homeRoute.redirect = asyncRoutes[0].path;
+        homeRoute.redirect = firstVisibleRoute.path;
         asyncRoutes.push(homeRoute);
       }
       // 添加404兜底路由
