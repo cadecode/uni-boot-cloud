@@ -55,6 +55,10 @@
         </dependency>
         <dependency>
             <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-job</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
             <artifactId>uni-boot-example-api</artifactId>
         </dependency>
     </dependencies>
