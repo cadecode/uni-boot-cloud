@@ -120,7 +120,7 @@ const actions = {
     return new Promise(resolve => {
       const asyncRoutes = convertAsyncRoutes(menuList) || [];
       // 第一条作为home路由
-      const firstVisibleRoute = asyncRoutes.find(o => !o.hiddenFlag);
+      const firstVisibleRoute = asyncRoutes.find(o => !o.hidden);
       if (firstVisibleRoute) {
         // 设置home路由重定向
         homeRoute.redirect = firstVisibleRoute.path;
