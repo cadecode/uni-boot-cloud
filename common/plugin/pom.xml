@@ -23,6 +23,7 @@
         <module>concurrent</module>
         <module>mq</module>
         <module>storage</module>
+        <module>job</module>
     </modules>
 
     <dependencies>

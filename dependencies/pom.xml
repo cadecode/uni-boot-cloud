@@ -45,6 +45,7 @@
         <spring-plugin.version>2.0.0.RELEASE</spring-plugin.version>
         <multirabbit.version>2.5.0</multirabbit.version>
         <x-file-storage.version>2.0.0</x-file-storage.version>
+        <xxl-job.version>2.4.0</xxl-job.version>
     </properties>
 
     <dependencies>
@@ -229,6 +230,12 @@
                 <groupId>org.dromara.x-file-storage</groupId>
                 <artifactId>x-file-storage-spring</artifactId>
                 <version>${x-file-storage.version}</version>
+            </dependency>
+            <!--xxl-job 调度支持-->
+            <dependency>
+                <groupId>com.xuxueli</groupId>
+                <artifactId>xxl-job-core</artifactId>
+                <version>${xxl-job.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
