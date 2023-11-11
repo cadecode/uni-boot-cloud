@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.github.cadecode.uniboot.common.core.util.AssertUtil;
 import com.github.cadecode.uniboot.common.plugin.cache.util.KeyGeneUtil;
 import com.github.cadecode.uniboot.common.plugin.cache.util.RedisLockKit;
+import com.github.cadecode.uniboot.common.plugin.mq.config.TxMsgProperties;
 import com.github.cadecode.uniboot.common.plugin.mq.config.TxMsgProperties.MsgOption;
 import com.github.cadecode.uniboot.common.plugin.mq.exception.TxMsgException;
 import com.github.cadecode.uniboot.common.plugin.mq.handler.AbstractTxMsgHandler;
@@ -60,6 +61,8 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
      * TxMsg CorrelationData ReturnedMessage 默认 replyText
      */
     public static final String DEFAULT_TX_MSG_REPLY_TEXT = "DEFAULT_TX_MSG_REPLY";
+
+    private final TxMsgProperties txMsgProperties;
 
     private final RedisLockKit redisLockKit;
 
@@ -114,13 +117,13 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
 
     @XxlJob("MqTxMsgAutoClear")
     @Override
-    public void doClear(Long autoClearInterval) {
+    public void doClear() {
         String lockKey = KeyGeneUtil.lockKey(LOCK_TX_MSG_DO_CLEAR);
         try {
             redisLockKit.lock(lockKey);
             Date currDate = new Date();
             // 查找指定时长之前的记录
-            DateTime lastDate = DateUtil.offset(currDate, DateField.MILLISECOND, -autoClearInterval.intValue());
+            DateTime lastDate = DateUtil.offset(currDate, DateField.MILLISECOND, -txMsgProperties.getAutoClearInterval().intValue());
             List<PlgMqMsg> msgList = mqMsgService.lambdaQuery()
                     .select(PlgMqMsg::getId)
                     .le(PlgMqMsg::getCreateTime, lastDate)
