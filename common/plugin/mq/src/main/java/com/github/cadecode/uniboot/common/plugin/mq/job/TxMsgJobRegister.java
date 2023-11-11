@@ -1,4 +1,4 @@
-package com.github.cadecode.uniboot.common.plugin.mq.task;
+package com.github.cadecode.uniboot.common.plugin.mq.job;
 
 import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.plugin.mq.config.TxMsgProperties;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class TxMsgTask {
+public class TxMsgJobRegister {
 
     private final ThreadPoolTaskScheduler taskScheduler;
 
@@ -29,13 +29,14 @@ public class TxMsgTask {
 
     @EventListener(ApplicationStartedEvent.class)
     public void onApplicationStartedEvent() {
-        if (ObjUtil.equals(txMsgProperties.getEnableRetry(), false)) {
-            log.info("TxMsg task enable retry false");
-            return;
+        // 消息定时 retry
+        log.info("TxMsg task do retry start, {}", txMsgProperties.getEnableRetry());
+        if (ObjUtil.equals(txMsgProperties.getEnableRetry(), true)) {
+            taskScheduler.scheduleWithFixedDelay(txMsgTaskHandler::doRetry, txMsgProperties.getRetryFixDelay());
         }
-        log.info("TxMsg task do retry started");
-        taskScheduler.scheduleWithFixedDelay(txMsgTaskHandler::doRetry, txMsgProperties.getRetryFixDelay());
-        log.info("TxMsg task do clear started, {}", txMsgProperties.getAutoClear());
+
+        // 消息定时清理
+        log.info("TxMsg task do clear start, {}", txMsgProperties.getAutoClear());
         if (ObjUtil.equal(txMsgProperties.getAutoClear(), true)) {
             taskScheduler.scheduleWithFixedDelay(() -> txMsgTaskHandler.doClear(txMsgProperties.getAutoClearInterval()),
                     txMsgProperties.getClearFixDelay());

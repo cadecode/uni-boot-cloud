@@ -43,7 +43,7 @@ public class TxMsgProperties implements InitializingBean {
     /**
      * 是否开启重试
      */
-    private Boolean enableRetry = true;
+    private Boolean enableRetry = false;
 
     /**
      * 定时重试间隔时间
@@ -58,7 +58,7 @@ public class TxMsgProperties implements InitializingBean {
     /**
      * 是否开启自动清理
      */
-    private Boolean autoClear = true;
+    private Boolean autoClear = false;
 
     /**
      * 自动清理多久之前的记录
