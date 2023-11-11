@@ -20,6 +20,7 @@ import com.github.cadecode.uniboot.framework.base.plugin.bean.po.PlgMqMsg;
 import com.github.cadecode.uniboot.framework.base.plugin.convert.PlgMqMsgConvert;
 import com.github.cadecode.uniboot.framework.base.plugin.enums.SendStateEnum;
 import com.github.cadecode.uniboot.framework.base.plugin.service.PlgMqMsgService;
+import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -64,6 +65,7 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
 
     private final PlgMqMsgService mqMsgService;
 
+    @XxlJob("MqTxMsgRetry")
     @Override
     public void doRetry() {
         String lockKey = KeyGeneUtil.lockKey(LOCK_TX_MSG_DO_RETRY);
@@ -110,6 +112,7 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
                 .update(new PlgMqMsg());
     }
 
+    @XxlJob("MqTxMsgAutoClear")
     @Override
     public void doClear(Long autoClearInterval) {
         String lockKey = KeyGeneUtil.lockKey(LOCK_TX_MSG_DO_CLEAR);
