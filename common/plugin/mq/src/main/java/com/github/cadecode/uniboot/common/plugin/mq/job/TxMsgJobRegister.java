@@ -29,17 +29,23 @@ public class TxMsgJobRegister {
 
     @EventListener(ApplicationStartedEvent.class)
     public void onApplicationStartedEvent() {
+        registerRetryJob();
+        registerAutoClearJob();
+    }
+
+    private void registerRetryJob() {
         // 消息定时 retry
-        log.info("TxMsg task do retry start, {}", txMsgProperties.getEnableRetry());
+        log.info("TxMsg task retry start, {}", txMsgProperties.getEnableRetry());
         if (ObjUtil.equals(txMsgProperties.getEnableRetry(), true)) {
             taskScheduler.scheduleWithFixedDelay(txMsgTaskHandler::doRetry, txMsgProperties.getRetryFixDelay());
         }
+    }
 
+    private void registerAutoClearJob() {
         // 消息定时清理
-        log.info("TxMsg task do clear start, {}", txMsgProperties.getAutoClear());
-        if (ObjUtil.equal(txMsgProperties.getAutoClear(), true)) {
-            taskScheduler.scheduleWithFixedDelay(() -> txMsgTaskHandler.doClear(txMsgProperties.getAutoClearInterval()),
-                    txMsgProperties.getClearFixDelay());
+        log.info("TxMsg task auto clear start, {}", txMsgProperties.getAutoClear());
+        if (ObjUtil.equals(txMsgProperties.getAutoClear(), true)) {
+            taskScheduler.scheduleWithFixedDelay(txMsgTaskHandler::doClear, txMsgProperties.getClearFixDelay());
         }
     }
 }

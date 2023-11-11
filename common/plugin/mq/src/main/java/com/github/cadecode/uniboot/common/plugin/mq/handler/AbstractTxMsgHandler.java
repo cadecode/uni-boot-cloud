@@ -17,7 +17,7 @@ public abstract class AbstractTxMsgHandler {
 
     public abstract void doRetry();
 
-    public abstract void doClear(Long autoClearInterval);
+    public abstract void doClear();
 
     public abstract void checkBeforeSend(BaseTxMsg txMsg, MsgOption msgOption);
 
