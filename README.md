@@ -58,7 +58,9 @@
 
    集成 RabbitMQ，提供通过配置声明多数据源、交换机和队列功能，以及事务消息、消息重试的支持
 
-   集成 OpenFeign，提供统一的消息拦截器、ErrorDecoder、HttpClient 配置等
+   集成 x-file-storage，提供多平台文件存储、下载的支持
+
+   集成 xxl-job，提供分布式定时任务调度支持
 
    ...
 
@@ -78,6 +80,8 @@
    │   │   ├── mybatis
    │   │   ├── swagger
    │   │   ├── mq
+   │   │   ├── storage
+   │   │   ├── job
    │   │   └── pom.xml
    │   └── pom.xml
    ├── dependencies
@@ -108,6 +112,8 @@
    common/plugin/mybatis       # mybatis 模块，集成 MybatisPlus、PageHelper
    common/plugin/swagger       # swagger 模块，集成 knife4j，动态配置 swagger 的 module
    common/plugin/mq            # mq 模块，集成 RabbitMQ，提供事务消息、消息重试的支持
+   common/plugin/storage       # storage 模块，集成 x-file-storage
+   common/plugin/job           # job 模块，集成 xxl-job
    dependencies                # 依赖管理模块，作为父模块，管理全局依赖版本
    framework                   # 框架模块
    framework/framework_api     # 框架 feign api
@@ -124,3 +130,4 @@
 参见配套前端项目
 
 [uni-boot-admin-vue](https://github.com/cadecode/uni-boot-admin-vue)
+
