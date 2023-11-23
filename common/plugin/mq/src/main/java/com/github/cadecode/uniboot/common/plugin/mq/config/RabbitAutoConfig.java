@@ -14,7 +14,6 @@ import org.springframework.amqp.rabbit.retry.MessageRecoverer;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.amqp.AbstractRabbitListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.amqp.MultiRabbitConstants;
@@ -28,7 +27,6 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
 
 import java.util.Map;
@@ -56,12 +54,6 @@ public class RabbitAutoConfig {
     @Bean
     public MultiRabbitDeclareBeanFactoryPostProcessor multiRabbitDeclareBeanFactoryPostProcessor() {
         return new MultiRabbitDeclareBeanFactoryPostProcessor();
-    }
-
-    @DependsOn(MultiRabbitConstants.CONNECTION_FACTORY_BEAN_NAME)
-    @Bean
-    public MultiRabbitContainerBeanPostProcessor multiRabbitContainerBeanPostProcessor() {
-        return new MultiRabbitContainerBeanPostProcessor();
     }
 
     /**
@@ -192,15 +184,5 @@ public class RabbitAutoConfig {
         public String getAdminBeanName(String connectionName) {
             return connectionName + MultiRabbitConstants.RABBIT_ADMIN_SUFFIX;
         }
-    }
-
-    /**
-     * spring-multirabbit
-     * RabbitListener 注解指定 containerFactory 时，由于 multiRabbitConnectionFactory 未加载
-     * 导致 getBean 获取对应 RabbitAdmin 实例失败
-     * 此处使用 @DependsOn 使 multiRabbitConnectionFactory 提前加载
-     */
-    public static class MultiRabbitContainerBeanPostProcessor implements BeanPostProcessor {
-
     }
 }
