@@ -12,15 +12,15 @@
     <artifactId>uni-boot-common-plugin-mq</artifactId>
 
     <dependencies>
-        <!--rabbit-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
         <!--rabbit 多数据源-->
         <dependency>
             <groupId>com.free-now.multirabbit</groupId>
             <artifactId>spring-multirabbit</artifactId>
+        </dependency>
+        <!--rabbit-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
 
         <dependency>
