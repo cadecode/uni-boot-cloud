@@ -52,7 +52,6 @@ public class SysMenuVo {
     public static class SysMenuUpdateReqVo {
         @NotNull
         private Long id;
-        private Long parentId;
         @NotEmpty
         private String routeName;
         @NotEmpty
