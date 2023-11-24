@@ -32,13 +32,13 @@ public interface SysMenuConvert {
     @Mapping(target = "leafFlag", ignore = true)
     @Mapping(target = "enableFlag", ignore = true)
     @Mapping(target = "createTime", ignore = true)
-    SysMenu voPo(SysMenuUpdateReqVo reqVo);
+    SysMenu voToPo(SysMenuUpdateReqVo reqVo);
 
     @Mapping(target = "updateUser", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createTime", ignore = true)
-    SysMenu voPo(SysMenuAddReqVo reqVo);
+    SysMenu voToPo(SysMenuAddReqVo reqVo);
 
     List<SysMenuPageResVo> poToPageVo(List<SysMenu> list);
 }
