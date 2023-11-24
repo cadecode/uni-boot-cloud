@@ -82,14 +82,14 @@ public class SysMenuController {
     @ApiOperation("更新菜单")
     @PostMapping("update")
     public boolean update(@RequestBody @Valid SysMenuUpdateReqVo reqVo) {
-        SysMenu sysMenu = SysMenuConvert.INSTANCE.voPo(reqVo);
+        SysMenu sysMenu = SysMenuConvert.INSTANCE.voToPo(reqVo);
         return sysMenuService.updateById(sysMenu);
     }
 
     @ApiOperation("添加菜单")
     @PostMapping("add")
     public boolean add(@RequestBody @Valid SysMenuAddReqVo reqVo) {
-        SysMenu sysMenu = SysMenuConvert.INSTANCE.voPo(reqVo);
+        SysMenu sysMenu = SysMenuConvert.INSTANCE.voToPo(reqVo);
         return sysMenuService.save(sysMenu);
     }
 
