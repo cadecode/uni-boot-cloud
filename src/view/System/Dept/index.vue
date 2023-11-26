@@ -8,9 +8,12 @@
         :model="deptFilterForm.data"
         :rules="deptFilterForm.rules"
       >
+        <el-form-item label="部门名" prop="deptName">
+          <el-input v-model="deptFilterForm.data.deptName" />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="listDept()">搜索</el-button>
-          <!--<el-button @click="() => this.$refs.deptFilterForm.resetFields()">重置</el-button>-->
+          <el-button @click="() => this.$refs.deptFilterForm.resetFields()">重置</el-button>
           <el-button type="info" @click="addDept">添加部门</el-button>
         </el-form-item>
       </el-form>
@@ -150,6 +153,7 @@ export default {
     return {
       deptFilterForm: {
         data: {
+          deptName: null
         },
         rules: {}
       },
@@ -203,12 +207,11 @@ export default {
   },
   methods: {
     listDept() {
-      // const data = {
-      //   ...this.deptFilterForm.data
-      // };
+      const data = {
+        ...this.deptFilterForm.data
+      };
       // 查询部门列表
-      listDeptTreeVo().then(res => {
-        // 侧边栏菜单数据
+      listDeptTreeVo(data).then(res => {
         this.deptListTable.data = res.data;
       });
     },

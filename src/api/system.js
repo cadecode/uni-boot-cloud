@@ -373,10 +373,11 @@ export function listDictTypeSuggest() {
   });
 }
 
-export function listDeptTreeVo() {
+export function listDeptTreeVo(data) {
   return request({
     url: '/framework/system/dept/list_tree_vo',
-    method: 'post'
+    method: 'post',
+    data
   });
 }
 
