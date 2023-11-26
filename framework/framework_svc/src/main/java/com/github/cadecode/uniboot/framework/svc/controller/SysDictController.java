@@ -94,9 +94,9 @@ public class SysDictController {
         return SysDictConvert.INSTANCE.poToPageResVo(dictList);
     }
 
-    @ApiOperation("查询字典类型种类")
-    @PostMapping("list_type")
-    public List<SysDictSuggestResVo> listType() {
+    @ApiOperation("查询字典类型种类（搜索建议）")
+    @PostMapping("list_type_suggest")
+    public List<SysDictSuggestResVo> listTypeSuggest() {
         List<SysDict> dictList = sysDictService.lambdaQuery().select(SysDict::getName, SysDict::getType).list();
         return dictList.stream()
                 .map(SysDictConvert.INSTANCE::poToSuggestResVo)
