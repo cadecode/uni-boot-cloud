@@ -2,10 +2,7 @@ package com.github.cadecode.uniboot.framework.svc.controller;
 
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysDept;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDeptVo.SysDeptAddReqVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDeptVo.SysDeptQueryResVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDeptVo.SysDeptTreeResVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDeptVo.SysDeptUpdateReqVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDeptVo.*;
 import com.github.cadecode.uniboot.framework.svc.convert.SysDeptConvert;
 import com.github.cadecode.uniboot.framework.svc.service.SysDeptService;
 import io.swagger.annotations.Api;
@@ -44,8 +41,8 @@ public class SysDeptController {
 
     @ApiOperation("查询部门列表（树状）")
     @PostMapping("list_tree_vo")
-    public List<SysDeptTreeResVo> listTreeVo() {
-        return sysDeptService.listTreeVo();
+    public List<SysDeptTreeResVo> listTreeVo(@RequestBody @Valid SysDeptTreeReqVo reqVo) {
+        return sysDeptService.listTreeVo(reqVo);
     }
 
     @ApiOperation("更新部门")

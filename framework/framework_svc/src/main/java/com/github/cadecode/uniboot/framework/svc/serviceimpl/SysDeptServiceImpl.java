@@ -3,6 +3,7 @@ package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysDept;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDeptVo.SysDeptTreeReqVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDeptVo.SysDeptTreeResVo;
 import com.github.cadecode.uniboot.framework.svc.convert.SysDeptConvert;
 import com.github.cadecode.uniboot.framework.svc.mapper.SysDeptMapper;
@@ -22,8 +23,11 @@ import java.util.stream.Collectors;
 @Service
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
     @Override
-    public List<SysDeptTreeResVo> listTreeVo() {
-        List<SysDept> poList = list().stream()
+    public List<SysDeptTreeResVo> listTreeVo(SysDeptTreeReqVo reqVo) {
+        List<SysDept> poList = lambdaQuery()
+                .likeRight(ObjUtil.isNotEmpty(reqVo.getDeptName()), SysDept::getDeptName, reqVo.getDeptName())
+                .list()
+                .stream()
                 .sorted(Comparator.comparing(SysDept::getOrderNum))
                 .collect(Collectors.toList());
         List<SysDeptTreeResVo> treeResVoList = SysDeptConvert.INSTANCE.poToTreeResVo(poList);

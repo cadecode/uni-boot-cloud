@@ -2,6 +2,7 @@ package com.github.cadecode.uniboot.framework.svc.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysDept;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDeptVo.SysDeptTreeReqVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDeptVo.SysDeptTreeResVo;
 
 import java.util.List;
@@ -14,5 +15,5 @@ import java.util.List;
  */
 public interface SysDeptService extends IService<SysDept> {
 
-    List<SysDeptTreeResVo> listTreeVo();
+    List<SysDeptTreeResVo> listTreeVo(SysDeptTreeReqVo reqVo);
 }
