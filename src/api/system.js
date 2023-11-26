@@ -372,3 +372,49 @@ export function listDictTypeSuggest() {
     method: 'post'
   });
 }
+
+export function listDeptTreeVo() {
+  return request({
+    url: '/framework/system/dept/list_tree_vo',
+    method: 'post'
+  });
+}
+
+export function updateDept(data) {
+  return request({
+    url: '/framework/system/dept/update',
+    method: 'post',
+    data
+  });
+}
+
+export function addDept(data) {
+  return request({
+    url: '/framework/system/dept/add',
+    method: 'post',
+    data
+  });
+}
+
+export function deleteDept(data) {
+  return request({
+    url: '/framework/system/dept/delete',
+    method: 'post',
+    data
+  });
+}
+
+export function listDeptQueryVoByDeptIds(data) {
+  return request({
+    url: '/framework/system/dept/list_query_vo_by_dept_ids',
+    method: 'post',
+    data
+  });
+}
+
+export function listDeptParentSuggest() {
+  return request({
+    url: '/framework/system/dept/list_parent_suggest',
+    method: 'post'
+  });
+}
