@@ -141,7 +141,7 @@
   </div>
 </template>
 <script>
-import {addDict, deleteDict, listDictByIds, listDictType, pageDict, updateDict} from '@/api/system';
+import {addDict, deleteDict, listDictByIds, listDictTypeSuggest, pageDict, updateDict} from '@/api/system';
 
 export default {
   name: 'DictManagement',
@@ -305,7 +305,7 @@ export default {
         cb(this.addDictForm.urlSuggestList.filter(o => o.value.includes(queryString)));
         return;
       }
-      listDictType().then(res => {
+      listDictTypeSuggest().then(res => {
         res.data.forEach(o => { o.value = `${o.type} | ${o.name}`; });
         this.addDictForm.urlSuggestList = res.data;
         cb(res.data);

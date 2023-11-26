@@ -366,9 +366,9 @@ export function listDictByIds(data) {
   });
 }
 
-export function listDictType() {
+export function listDictTypeSuggest() {
   return request({
-    url: '/framework/system/dict/list_type',
+    url: '/framework/system/dict/list_type_suggest',
     method: 'post'
   });
 }
