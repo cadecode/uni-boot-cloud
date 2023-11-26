@@ -142,3 +142,25 @@ CREATE TABLE IF NOT EXISTS sys_dict
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
     COMMENT '系统字典表';
+-- ----------------------------
+-- 系统部门表
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS sys_dept
+(
+    id          BIGINT UNSIGNED,
+    dept_name   VARCHAR(50)     NOT NULL COMMENT '部门名',
+    parent_id   BIGINT UNSIGNED NULL COMMENT '父级ID',
+    order_num   INT             NULL COMMENT '排序',
+    leader      VARCHAR(500)    NULL COMMENT '领导名',
+    mail        VARCHAR(50)     null comment '邮箱',
+    phone       VARCHAR(50)     null comment '电话',
+
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    update_user VARCHAR(100)    NULL,
+    PRIMARY KEY (id),
+    INDEX idx_dept_name (dept_name),
+    INDEX idx_parent_id (parent_id)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+    COMMENT '系统部门表';
