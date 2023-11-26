@@ -183,8 +183,6 @@ export default {
       addDeptForm: {
         // 元数据引用
         row: null,
-        // 映射 id 和 children tree
-        treeMap: {},
         data: {
           parentId: null,
           deptName: null,
