@@ -48,12 +48,16 @@ VALUES (203, 2, 'MenuManagement', '/system/menu', '/System/Menu', '菜单管理'
         '2023-08-18 15:03:28', '2023-11-09 16:44:59', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
                       enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
-VALUES (204, 2, 'ApiManagement', '/system/api', '/System/Api', 'API管理', 1, null, 204, 1, 0, 0, '2023-08-18 15:03:28',
-        '2023-11-09 16:45:02', 'admin');
+VALUES (204, 2, 'DeptManagement', '/system/dept', '/System/Dept', '部门管理', 1, null, 204, 1, 0, 0,
+        '2023-11-25 09:46:20', '2023-11-26 10:05:19', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
                       enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
-VALUES (205, 2, 'DictManagement', '/system/dict', '/System/Dict', '字典管理', 1, null, 205, 1, 0, 0,
-        '2023-08-18 15:03:29', '2023-11-09 16:45:06', 'admin');
+VALUES (205, 2, 'ApiManagement', '/system/api', '/System/Api', 'API管理', 1, null, 205, 1, 0, 0, '2023-08-18 15:03:28',
+        '2023-11-26 10:05:19', 'admin');
+INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
+                      enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
+VALUES (206, 2, 'DictManagement', '/system/dict', '/System/Dict', '字典管理', 1, null, 206, 1, 0, 0,
+        '2023-08-18 15:03:29', '2023-11-26 10:05:19', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
                       enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
 VALUES (301, 3, 'LogManagement', '/develop/log', '/Develop/Log', '日志管理', 1, null, 301, 1, 0, 0,
@@ -85,7 +89,7 @@ VALUES (1000, null, 'GithubUrl', 'https://github.com/cadecode/uni-boot-admin', n
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
                       enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
 VALUES (1001, null, 'UserCenter', '/user_center', '/UserCenter', '个人中心', 1, null, null, 1, 1, 0,
-        '2023-11-07 15:54:25', '2023-11-09 16:29:51', 'admin');
+        '2023-11-07 15:54:25', '2023-11-09 17:57:17', 'admin');
 
 -- ----------------------------
 -- 插入 API
@@ -109,6 +113,8 @@ VALUES (1, 1);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 2);
 INSERT INTO sys_role_menu (role_id, menu_id)
+VALUES (1, 3);
+INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 201);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 202);
@@ -119,7 +125,7 @@ VALUES (1, 204);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 205);
 INSERT INTO sys_role_menu (role_id, menu_id)
-VALUES (1, 3);
+VALUES (1, 206);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 301);
 INSERT INTO sys_role_menu (role_id, menu_id)
@@ -138,7 +144,6 @@ INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 1000);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (1, 1001);
-
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (2, 1);
 INSERT INTO sys_role_menu (role_id, menu_id)
@@ -154,16 +159,18 @@ VALUES (2, 204);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (2, 205);
 INSERT INTO sys_role_menu (role_id, menu_id)
+VALUES (2, 206);
+INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (2, 1000);
 INSERT INTO sys_role_menu (role_id, menu_id)
-VALUES (1, 1001);
-
+VALUES (2, 1001);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (3, 1);
 INSERT INTO sys_role_menu (role_id, menu_id)
 VALUES (3, 1000);
 INSERT INTO sys_role_menu (role_id, menu_id)
-VALUES (1, 1001);
+VALUES (3, 1001);
+
 -- ----------------------------
 -- 插入角色API关系
 -- ----------------------------
@@ -238,5 +245,13 @@ INSERT INTO sys_dict (id, name, type, label, value, description, order_num, defa
 VALUES (15, 'MQ消息发送状态', 'mqMsgSendState', '完成', 'OVER', 'MQ 消息发送完成', 3, 0, '2023-08-22 23:26:10',
         '2023-08-24 10:20:50',
         'admin');
-
+-- ----------------------------
+-- 插入部门
+-- ----------------------------
+INSERT INTO sys_dept (id, dept_name, parent_id, order_num, leader, mail, phone, create_time, update_time, update_user)
+VALUES (1, '测试部门1', null, 1, '张三', 'test1@mail.com', '123456', '2023-11-26 08:34:19', null, 'admin');
+INSERT INTO sys_dept (id, dept_name, parent_id, order_num, leader, mail, phone, create_time, update_time, update_user)
+VALUES (2, '测试部门2', null, 2, '', null, '', '2023-11-26 08:35:04', null, 'admin');
+INSERT INTO sys_dept (id, dept_name, parent_id, order_num, leader, mail, phone, create_time, update_time, update_user)
+VALUES (11, '测试科室1-1', 1, 11, '', null, '', '2023-11-26 08:34:53', null, 'admin');
 
