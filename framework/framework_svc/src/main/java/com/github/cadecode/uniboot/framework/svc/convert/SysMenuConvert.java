@@ -2,7 +2,7 @@ package com.github.cadecode.uniboot.framework.svc.convert;
 
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuAddReqVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuPageResVo;
+import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuQueryResVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeResVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuUpdateReqVo;
 import org.mapstruct.Mapper;
@@ -26,6 +26,7 @@ public interface SysMenuConvert {
     @Mapping(target = "children", ignore = true)
     SysMenuTreeResVo poToTreeResVo(SysMenu sysMenu);
 
+    @Mapping(target = "parentId", ignore = true)
     @Mapping(target = "hiddenFlag", ignore = true)
     @Mapping(target = "updateUser", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
@@ -40,5 +41,5 @@ public interface SysMenuConvert {
     @Mapping(target = "createTime", ignore = true)
     SysMenu voToPo(SysMenuAddReqVo reqVo);
 
-    List<SysMenuPageResVo> poToPageVo(List<SysMenu> list);
+    List<SysMenuQueryResVo> poToQueryResVo(List<SysMenu> list);
 }

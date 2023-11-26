@@ -2,6 +2,7 @@ package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 
 import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.cadecode.uniboot.common.core.util.TreeUtil;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesReqVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuRolesResVo;
@@ -14,7 +15,6 @@ import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +42,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                 .filter(m -> ObjUtil.equal(m.getEnableFlag(), true))
                 .map(SysMenuConvert.INSTANCE::poToTreeResVo)
                 .collect(Collectors.toList());
-        return generateMenuTree(menuTreeVoList, null);
+        return TreeUtil.listToTree(menuTreeVoList, null, SysMenuTreeResVo::getId, SysMenuTreeResVo::getParentId, SysMenuTreeResVo::setChildren);
     }
 
     @Override
@@ -60,28 +60,4 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public List<SysMenuRolesResVo> listRolesVoByMenuIds(List<Long> menuIds) {
         return sysMenuMapper.selectRolesVoByMenuIds(menuIds);
     }
-
-    private List<SysMenuTreeResVo> generateMenuTree(List<SysMenuTreeResVo> menus, Long rootId) {
-        List<SysMenuTreeResVo> resultList = new ArrayList<>();
-        menus.forEach(menu -> {
-            // 确定下父亲
-            if (ObjUtil.notEqual(menu.getParentId(), rootId)) {
-                return;
-            }
-            menus.forEach(m -> {
-                // 比一下是不是儿子
-                if (ObjUtil.notEqual(m.getParentId(), menu.getId())) {
-                    return;
-                }
-                // 拿儿子列表
-                List<SysMenuTreeResVo> children = menu.getChildren();
-                // 存儿子
-                m.setChildren(generateMenuTree(menus, m.getId()));
-                children.add(m);
-            });
-            resultList.add(menu);
-        });
-        return resultList;
-    }
-
 }

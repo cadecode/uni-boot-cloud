@@ -18,26 +18,14 @@ import java.util.List;
  */
 public class SysMenuVo {
 
-    @Data
     @EqualsAndHashCode(callSuper = true)
+    @Data
     public static class SysMenuRolesReqVo extends PageParams {
         private String routeName;
         private String menuName;
         private List<Long> roleIdList;
         private Boolean enableFlag;
-        private Long parentId;
         private Boolean hiddenFlag;
-    }
-
-    @Data
-    @EqualsAndHashCode(callSuper = true)
-    public static class SysMenuPageReqVo extends PageParams {
-        private String routeName;
-        private String menuName;
-        private Boolean enableFlag;
-        private Long parentId;
-        private Boolean hiddenFlag;
-        private Boolean leafFlag;
     }
 
     @Data
@@ -89,93 +77,56 @@ public class SysMenuVo {
     @Data
     public static class SysMenuTreeResVo {
         private Long id;
-
         private Long parentId;
-
         private String routeName;
-
         private String routePath;
-
         private String componentPath;
-
         private String menuName;
-
         private Boolean leafFlag;
-
         private Boolean hiddenFlag;
-
         private Boolean cacheFlag;
-
         private String icon;
-
         private List<SysMenuTreeResVo> children = new ArrayList<>();
     }
 
     @Data
     public static class SysMenuRolesResVo {
         private Long id;
-
         private Long parentId;
-
         private String routeName;
-
         private String routePath;
-
         private String componentPath;
-
         private String menuName;
-
         private Boolean leafFlag;
-
         private String icon;
-
         private Integer orderNum;
-
         private Boolean enableFlag;
-
         private Boolean hiddenFlag;
-
         private Boolean cacheFlag;
+        private Date createTime;
+        private Date updateTime;
+        private String updateUser;
 
         private List<String> roles;
-
-        private Date createTime;
-
-        private Date updateTime;
-
-        private String updateUser;
+        private List<SysMenuRolesResVo> children = new ArrayList<>();
     }
 
     @Data
-    public static class SysMenuPageResVo {
+    public static class SysMenuQueryResVo {
         private Long id;
-
         private Long parentId;
-
         private String routeName;
-
         private String routePath;
-
         private String componentPath;
-
         private String menuName;
-
         private Boolean leafFlag;
-
         private String icon;
-
         private Integer orderNum;
-
         private Boolean enableFlag;
-
         private Boolean hiddenFlag;
-
         private Boolean cacheFlag;
-
         private Date createTime;
-
         private Date updateTime;
-
         private String updateUser;
     }
 }
