@@ -2,6 +2,7 @@ package com.github.cadecode.uniboot.framework.svc.serviceimpl;
 
 import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.cadecode.uniboot.common.core.util.TreeUtil;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysDept;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDeptVo.SysDeptTreeReqVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysDeptVo.SysDeptTreeResVo;
@@ -31,18 +32,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
                 .sorted(Comparator.comparing(SysDept::getOrderNum))
                 .collect(Collectors.toList());
         List<SysDeptTreeResVo> treeResVoList = SysDeptConvert.INSTANCE.poToTreeResVo(poList);
-        return geneTreeVo(treeResVoList, null);
-    }
-
-    private List<SysDeptTreeResVo> geneTreeVo(List<SysDeptTreeResVo> deptList, Long rootId) {
-        List<SysDeptTreeResVo> parentList = deptList.stream().filter(o -> ObjUtil.equals(rootId, o.getParentId())).collect(Collectors.toList());
-        parentList.forEach(p -> {
-            List<SysDeptTreeResVo> children = deptList.stream()
-                    .filter(c -> ObjUtil.equals(c.getParentId(), p.getId()))
-                    .peek(c -> c.setChildren(geneTreeVo(deptList, c.getId())))
-                    .collect(Collectors.toList());
-            p.setChildren(children);
-        });
-        return parentList;
+        return TreeUtil.listToTree(treeResVoList, null, SysDeptTreeResVo::getId, SysDeptTreeResVo::getParentId, SysDeptTreeResVo::setChildren);
     }
 }
