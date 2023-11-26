@@ -34,14 +34,6 @@
         LEFT JOIN sys_role sr ON srm.role_id = sr.id
         <if test="req != null">
             <where>
-                <choose>
-                    <when test="req.parentId == null">
-                        sm.parent_id is null
-                    </when>
-                    <otherwise>
-                        sm.parent_id = #{req.parentId}
-                    </otherwise>
-                </choose>
                 <if test="req.routeName != null and req.routeName.length > 0">
                     <bind name="bindRouteName" value="'%' + req.routeName + '%'"/>
                     AND sm.route_name like #{bindRouteName}
