@@ -252,6 +252,7 @@ export default {
       deleteDict([row.id]).then(res => {
         if (res.data) {
           this.dictListTable.data.splice(index, 1);
+          this.addDictForm.urlSuggestList = null;
         }
       });
     },
@@ -279,8 +280,9 @@ export default {
         if (valid) {
           updateDict(this.updateDictForm.data).then(res => {
             if (res.data) {
-              this.updateDictForm.showDialog = false;
               this.refreshDict(this.updateDictForm.row);
+              this.addDictForm.urlSuggestList = null;
+              this.updateDictForm.showDialog = false;
             }
           });
         }
