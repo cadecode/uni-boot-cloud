@@ -16,6 +16,11 @@ import java.util.List;
 public class SysDeptVo {
 
     @Data
+    public static class SysDeptTreeReqVo {
+        private String deptName;
+    }
+
+    @Data
     public static class SysDeptTreeResVo {
         private Long id;
         private String deptName;
