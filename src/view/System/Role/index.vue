@@ -60,12 +60,12 @@
             <el-tree
               v-if="roleListTable.currClick"
               ref="menuTree"
-              :load="loadMenuTree"
+              :data="menuTree.data"
               :props="menuTree.props"
               node-key="id"
               show-checkbox
-              lazy
               check-strictly
+              default-expand-all
               @check="menuCheck"
             />
             <el-empty v-else description="请先点击表格选择一行数据" />
@@ -219,6 +219,7 @@ export default {
   },
   created() {
     this.pageRoles(1);
+    this.loadMenuTree();
     this.loadApiTree();
   },
   methods: {
@@ -298,24 +299,9 @@ export default {
         });
       }
     },
-    loadMenuTree(node, resolve) {
-      // 顶级目录
-      if (node.level === 0) {
-        pageMenuRolesVo({pageNumber: 0, pageSize: 0}).then(res => {
-          this.menuTree.data = res.data.records;
-          resolve(this.menuTree.data);
-        });
-        return;
-      }
-      // 页面直接返回空数组
-      if (node.data.isLeaf) {
-        resolve([]);
-        return;
-      }
-      // 查询子级
-      pageMenuRolesVo({pageNumber: 0, pageSize: 0, parentId: node.data.id}).then(res => {
+    loadMenuTree() {
+      pageMenuRolesVo({pageNumber: 0, pageSize: 0, hiddenFlag: false}).then(res => {
         this.menuTree.data = res.data.records;
-        resolve(this.menuTree.data);
       });
     },
     loadApiTree() {

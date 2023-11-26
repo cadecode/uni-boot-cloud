@@ -97,9 +97,9 @@ export function pageMenuRolesVo(data) {
   });
 }
 
-export function pageMenu(data) {
+export function listMenuParentSuggest(data) {
   return request({
-    url: '/framework/system/menu/page',
+    url: '/framework/system/menu/list_parent_suggest',
     method: 'post',
     data
   });

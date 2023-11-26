@@ -53,8 +53,7 @@
               :data="menuListTable.data"
               highlight-current-row
               row-key="id"
-              lazy
-              :load="loadMenuChildren"
+              default-expand-all
               :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
               @row-click="listTableClick"
             >
@@ -98,13 +97,6 @@
               <el-table-column property="cacheFlag" label="是否缓存" :formatter="(row, col, cell) => cell?'是':'否'" />
               <el-table-column property="icon" label="图标" width="150px" />
             </el-table>
-            <el-pagination
-              layout="prev, pager, next"
-              :page-size="menuListTable.page.pageSize"
-              :total="menuListTable.page.total"
-              :current-page.sync="menuListTable.page.pageNumber"
-              @current-change="pageMenus"
-            />
           </el-tab-pane>
           <el-tab-pane name="hiddenRouteListTab" label="内部路由列表">
             <el-table
@@ -145,9 +137,9 @@
             </el-table>
             <el-pagination
               layout="prev, pager, next"
-              :page-size="menuListTable.page.pageSize"
-              :total="menuListTable.page.total"
-              :current-page.sync="menuListTable.page.pageNumber"
+              :page-size="hiddenRouteListTable.page.pageSize"
+              :total="hiddenRouteListTable.page.total"
+              :current-page.sync="hiddenRouteListTable.page.pageNumber"
               @current-change="pageMenus"
             />
           </el-tab-pane>
@@ -283,7 +275,7 @@ import {
   deleteMenu,
   listMenuRolesVoByMenuIds,
   listRole,
-  pageMenu,
+  listMenuParentSuggest,
   pageMenuRolesVo,
   removeRoleMenu,
   updateMenu,
@@ -310,12 +302,7 @@ export default {
       listTableCurrClick: null,
       // 侧边栏列表
       menuListTable: {
-        data: [],
-        page: {
-          total: 0,
-          pageNumber: 1,
-          pageSize: 12
-        }
+        data: []
       },
       // 内部路由列表
       hiddenRouteListTable: {
@@ -381,8 +368,6 @@ export default {
       addMenuForm: {
         // 元数据引用
         row: null,
-        // 映射 id 和 children tree
-        treeMap: {},
         data: {
           parentId: null,
           routeName: null,
@@ -440,11 +425,12 @@ export default {
     pageMenus(currPage) {
       const hiddenFlag = this.isHiddenRouteClicked();
       // 分页插件回调传递当前页号
+      // hiddenFlag false 时，侧边栏菜单数据不需要分页，pageSize 传 0
       const data = {
         ...this.menusFilterForm.data,
         hiddenFlag,
         pageNumber: currPage,
-        pageSize: hiddenFlag ? this.hiddenRouteListTable.page.pageSize : this.menuListTable.page.pageSize
+        pageSize: hiddenFlag ? this.hiddenRouteListTable.page.pageSize : 0
       };
       // 查询用户列表
       pageMenuRolesVo(data).then(res => {
@@ -460,18 +446,8 @@ export default {
 
         // 侧边栏菜单数据
         this.menuListTable.data = res.data.records;
-        this.menuListTable.page.total = res.data.total;
-        // 设置 hasChildren 辅助表格树形展示
-        this.menuListTable.data.forEach(o => { o.hasChildren = !o.leafFlag; });
-        if (currPage === 1) {
-          this.menuListTable.page.pageNumber = 1;
-          // 重置时清空展开内容
-          this.$refs.menuListTable.layout.store.states.lazyTreeNodeMap = {};
-          this.$refs.menuListTable.layout.store.states.treeData = {};
-        }
       });
     },
-    // 修改用户后刷新列表该行内容
     refreshMenu(row) {
       return listMenuRolesVoByMenuIds([row.id]).then(res => {
         Object.keys(res.data[0]).forEach(k => {
@@ -511,8 +487,9 @@ export default {
         }
         updateMenu(this.updateMenuForm.data).then(res => {
           if (res.data) {
-            this.updateMenuForm.showDialog = false;
             this.refreshMenu(this.updateMenuForm.row);
+            this.addMenuForm.parentMenuSuggestList = null;
+            this.updateMenuForm.showDialog = false;
           }
         });
       });
@@ -537,19 +514,9 @@ export default {
         }
         addMenu({...this.addMenuForm.data, hiddenFlag: this.isHiddenRouteClicked()}).then(res => {
           if (res.data) {
-            // 若添加的是根菜单
-            if (!this.addMenuForm.row) {
-              this.pageMenus(1);
-              this.addMenuForm.showDialog = false;
-              return;
-            }
-            const treeInfo = this.addMenuForm.treeMap[this.addMenuForm.row.id];
-            if (treeInfo) {
-              const {tree, treeNode, resolve} = treeInfo;
-              // 重新 load 子菜单
-              this.loadMenuChildren(tree, treeNode, resolve);
-            }
+            this.pageMenus(1);
             this.addMenuForm.showDialog = false;
+            this.addMenuForm.parentMenuSuggestList = null;
           }
         });
       });
@@ -570,17 +537,9 @@ export default {
             }
 
             // 侧边菜单数据
-            let findIndex = this.menuListTable.data.findIndex(o => o.id === row.id);
-            if (findIndex !== -1) {
-              this.menuListTable.data.splice(findIndex, 1);
-            } else {
-              // 不在顶级目录中，需要清理 ElementUI table lazyTreeNodeMap 来删除展开内容
-              // 根据父级 id 找到子节点列表
-              const treeNode = this.$refs.menuListTable.layout.store.states.lazyTreeNodeMap[row.parentId];
-              findIndex = treeNode.findIndex(o => o.id === row.id);
-              treeNode.splice(findIndex, 1);
-            }
+            this.pageMenus(1);
             this.listTableCurrClick = null;
+            this.addMenuForm.parentMenuSuggestList = null;
           }
         });
       };
@@ -596,24 +555,6 @@ export default {
         return;
       }
       del();
-    },
-    loadMenuChildren(tree, treeNode, resolve) {
-      // 存储树形关系备用
-      this.addMenuForm.treeMap[tree.id] = {tree, treeNode, resolve};
-      // pageSize 给大值，复用分页接口
-      const data = {
-        ...this.menusFilterForm.data,
-        pageNumber: 0,
-        pageSize: 0,
-        parentId: tree.id
-      };
-      pageMenuRolesVo(data).then(res => {
-        const records = res.data.records;
-        records.forEach(o => {
-          o.hasChildren = !o.leafFlag;
-        });
-        resolve(records);
-      });
     },
     loadRoleTree() {
       // 查询role列表
@@ -665,9 +606,9 @@ export default {
         cb(this.addMenuForm.parentMenuSuggestList.filter(o => !queryString || o.value.includes(queryString)));
         return;
       }
-      pageMenu({pageNumber: 0, pageSize: 0, leafFlag: false}).then(res => {
-        res.data.records.forEach(o => { o.value = `${o.id} | ${o.menuName} | ${o.routeName}`; });
-        this.addMenuForm.parentMenuSuggestList = res.data.records;
+      listMenuParentSuggest().then(res => {
+        res.data.forEach(o => { o.value = `${o.id} | ${o.menuName} | ${o.routeName}`; });
+        this.addMenuForm.parentMenuSuggestList = res.data;
         cb(this.addMenuForm.parentMenuSuggestList);
       });
     },
