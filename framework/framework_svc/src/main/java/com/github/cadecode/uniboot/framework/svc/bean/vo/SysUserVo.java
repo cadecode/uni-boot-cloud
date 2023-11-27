@@ -44,6 +44,7 @@ public class SysUserVo {
     public static class SysUserRolesReqVo extends PageParams {
         private String username;
         private String nickName;
+        private Long deptId;
         private List<Long> roleIdList;
         private Boolean enableFlag;
     }
@@ -64,6 +65,7 @@ public class SysUserVo {
         private String username;
         @NotEmpty
         private String nickName;
+        private Long deptId;
         private String password;
         private String phone;
         @Email
@@ -78,6 +80,8 @@ public class SysUserVo {
         private String username;
         @NotEmpty
         private String nickName;
+        @NotNull
+        private Long deptId;
         @NotEmpty
         private String password;
         private String phone;
@@ -93,32 +97,21 @@ public class SysUserVo {
     public static class SysUserRolesResVo {
 
         private Long id;
-
         private String username;
-
         @JsonIgnore
         private String password;
-
         private String nickName;
-
+        private Long deptId;
+        private String deptName;
         private Boolean enableFlag;
-
         private String sex;
-
         private String mail;
-
         private String phone;
-
         private String loginIp;
-
         private Date loginDate;
-
         private Date createTime;
-
         private Date updateTime;
-
         private String updateUser;
-
         private List<String> roles;
     }
 

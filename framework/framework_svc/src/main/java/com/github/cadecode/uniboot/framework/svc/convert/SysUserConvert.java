@@ -31,6 +31,7 @@ public interface SysUserConvert {
     @Mapping(target = "createTime", ignore = true)
     SysUser voToPo(SysUserAddReqVo reqVo);
 
+    @Mapping(target = "deptId", ignore = true)
     @Mapping(target = "username", ignore = true)
     @Mapping(target = "updateUser", ignore = true)
     @Mapping(target = "updateTime", ignore = true)

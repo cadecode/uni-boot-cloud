@@ -29,6 +29,10 @@ public class SysUserDetails implements UserDetails {
 
     private String nickName;
 
+    private Long deptId;
+
+    private String deptName;
+
     private Boolean enableFlag;
 
     private String sex;

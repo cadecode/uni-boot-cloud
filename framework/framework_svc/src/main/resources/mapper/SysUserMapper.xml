@@ -5,6 +5,8 @@
         <result column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="nick_name" property="nickName"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="nick_name" property="nickName"/>
         <result column="password" property="password"/>
         <result column="enable_flag" property="enableFlag" typeHandler="BoolToIntTypeHandler"/>
         <result column="sex" property="sex"/>
@@ -15,13 +17,15 @@
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="update_user" property="updateUser"/>
+        <result column="d_dept_name" property="deptName"/>
         <result column="r_code" property="roles" typeHandler="ObjToStrTypeHandler"/>
     </resultMap>
     <select id="selectRolesVoByUserIds" resultMap="SysUserRolesVoMap">
-        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code
+        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code, sd.dept_name d_dept_name
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id
+        LEFT JOIN sys_dept sd ON sd.id = su.dept_id
         <if test="userIds != null and userIds.size > 0">
             WHERE su.id IN (
             <foreach collection="userIds" item="id" separator=",">
@@ -33,18 +37,20 @@
         ORDER BY su.create_time DESC
     </select>
     <select id="selectRolesVoByUsername" resultMap="SysUserRolesVoMap">
-        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code
+        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code, sd.dept_name d_dept_name
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id
+        LEFT JOIN sys_dept sd ON sd.id = su.dept_id
         WHERE su.username = #{username}
         GROUP BY su.id
     </select>
     <select id="selectRolesVo" resultMap="SysUserRolesVoMap">
-        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code
+        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code, sd.dept_name d_dept_name
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id
+        LEFT JOIN sys_dept sd ON sd.id = su.dept_id
         <if test="req != null">
             <where>
                 <if test="req.username != null and req.username.length > 0">
@@ -54,6 +60,9 @@
                 <if test="req.nickName != null and req.nickName.length > 0">
                     <bind name="binNickName" value="'%' + req.nickName + '%'"/>
                     AND su.nick_name like #{binNickName}
+                </if>
+                <if test="req.deptId != null">
+                    AND su.dept_id = #{req.deptId}
                 </if>
                 <if test="req.enableFlag != null">
                     AND su.enable_flag = #{req.enableFlag, typeHandler=BoolToIntTypeHandler}
