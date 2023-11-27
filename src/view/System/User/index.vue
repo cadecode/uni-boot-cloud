@@ -8,6 +8,13 @@
         <el-form-item label="昵称" prop="nickName">
           <el-input v-model="usersFilterForm.data.nickName" />
         </el-form-item>
+        <el-form-item label="部门" prop="deptId">
+          <el-cascader
+            v-model="usersFilterForm.data.deptId"
+            :options="deptTree.data"
+            :props="deptTree.props"
+          />
+        </el-form-item>
         <el-form-item label="角色" prop="roleIdList">
           <el-select v-model="usersFilterForm.data.roleIdList" collapse-tags multiple filterable placeholder="请选择">
             <el-option
@@ -48,7 +55,10 @@
               <el-table-column property="sex" label="性别" width="60px" />
               <el-table-column property="enableFlag" label="启用" width="60px">
                 <template v-slot="scope">
-                  <el-switch v-model="scope.row.enableFlag" @change="flag => updateEnable(flag, scope.$index, scope.row)" />
+                  <el-switch
+                    v-model="scope.row.enableFlag"
+                    @change="flag => updateEnable(flag, scope.$index, scope.row)"
+                  />
                 </template>
               </el-table-column>
               <el-table-column property="updateTime" label="更新时间" width="150px" />
@@ -56,10 +66,16 @@
               <el-table-column property="createTime" label="创建时间" width="150px" />
               <el-table-column label="操作" width="180px">
                 <template v-slot="scope">
-                  <el-button size="mini" @click="updateUser(scope.$index, scope.row)"><el-icon class="el-icon-edit" /></el-button>
-                  <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)"><el-icon class="el-icon-delete" /></el-button>
+                  <el-button size="mini" @click="updateUser(scope.$index, scope.row)">
+                    <el-icon class="el-icon-edit" />
+                  </el-button>
+                  <el-button size="mini" type="danger" @click="deleteUser(scope.$index, scope.row)">
+                    <el-icon class="el-icon-delete" />
+                  </el-button>
                 </template>
               </el-table-column>
+              <el-table-column property="deptId" label="部门ID" width="170px" />
+              <el-table-column property="deptName" label="部门名" width="170px" />
               <el-table-column property="phone" label="电话" width="150px" show-overflow-tooltip />
               <el-table-column property="mail" label="邮箱" width="150px" show-overflow-tooltip />
               <el-table-column property="loginIp" label="登录IP" width="150px" />
@@ -109,6 +125,13 @@
         <el-form-item label="昵称" prop="nickName">
           <el-input v-model="updateUserForm.data.nickName" />
         </el-form-item>
+        <el-form-item label="部门" prop="deptId">
+          <el-cascader
+            v-model="updateUserForm.data.deptId"
+            :options="deptTree.data"
+            :props="deptTree.props"
+          />
+        </el-form-item>
         <el-form-item label="电话" prop="phone">
           <el-input v-model="updateUserForm.data.phone" />
         </el-form-item>
@@ -145,6 +168,13 @@
         <el-form-item label="昵称" prop="nickName">
           <el-input v-model="addUserForm.data.nickName" />
         </el-form-item>
+        <el-form-item label="部门" prop="deptId">
+          <el-cascader
+            v-model="addUserForm.data.deptId"
+            :options="deptTree.data"
+            :props="deptTree.props"
+          />
+        </el-form-item>
         <el-form-item label="启用" prop="enableFlag">
           <el-switch v-model="addUserForm.data.enableFlag" />
         </el-form-item>
@@ -174,6 +204,7 @@ import {
   addRoleUser,
   addUser,
   deleteUser,
+  listDeptTreeVo,
   listRole,
   listUserRolesVoByUserIds,
   pageUserRolesVo,
@@ -190,6 +221,7 @@ export default {
         data: {
           username: null,
           nickName: null,
+          deptId: null,
           roleIdList: [],
           enableFlag: null
         },
@@ -211,6 +243,17 @@ export default {
           children: 'children'
         }
       },
+      deptTree: {
+        data: [],
+        props: {
+          // 父级可选择
+          checkStrictly: true,
+          label: 'deptName',
+          value: 'id',
+          children: 'children',
+          emitPath: false
+        }
+      },
       updateUserForm: {
         // 元数据引用
         row: null,
@@ -222,12 +265,15 @@ export default {
           nickName: null,
           phone: null,
           mail: null,
-          sex: null
+          sex: null,
+          deptId: null
         },
         showDialog: false,
         rule: {
           username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
-          nickName: [{required: true, message: '请输入昵称', trigger: 'blur'}]
+          nickName: [{required: true, message: '请输入昵称', trigger: 'blur'}],
+          sex: [{required: true, message: '请选择性别', trigger: 'blur'}],
+          deptId: [{required: true, message: '请选择部门', trigger: 'blur'}]
         }
       },
       addUserForm: {
@@ -238,14 +284,16 @@ export default {
           phone: null,
           mail: null,
           sex: null,
-          enableFlag: true
+          enableFlag: true,
+          deptId: null
         },
         showDialog: false,
         rule: {
           username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
           nickName: [{required: true, message: '请输入昵称', trigger: 'blur'}],
           password: [{required: true, message: '请输入密码', trigger: 'blur'}],
-          sex: [{required: true, message: '请选择性别', trigger: 'blur'}]
+          sex: [{required: true, message: '请选择性别', trigger: 'blur'}],
+          deptId: [{required: true, message: '请选择部门', trigger: 'blur'}]
         }
       }
     };
@@ -253,6 +301,7 @@ export default {
   created() {
     this.pageUsers(1);
     this.loadRoleTree();
+    this.loadDeptTree();
   },
   methods: {
     pageUsers(currPage) {
@@ -289,7 +338,9 @@ export default {
           // 没修改成功则刷回原值
           row.enableFlag = !flag;
         })
-        .catch(() => { row.enableFlag = !flag; });
+        .catch(() => {
+          row.enableFlag = !flag;
+        });
     },
     updateUser(index, row) {
       this.updateUserForm.showDialog = true;
@@ -338,6 +389,11 @@ export default {
       // 查询role列表
       listRole().then(res => {
         this.roleTree.data = res.data;
+      });
+    },
+    loadDeptTree() {
+      listDeptTreeVo({}).then(res => {
+        this.deptTree.data = res.data;
       });
     },
     userListTableClick(curr, old) {

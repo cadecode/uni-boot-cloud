@@ -6,41 +6,49 @@
           <el-tab-pane label="个人资料">
             <el-descriptions :column="1" border>
               <el-descriptions-item>
-                <span slot="label"><i class="el-icon-key" />用户ID</span>
+                <span slot="label">用户ID</span>
                 {{ userInfo.id }}
               </el-descriptions-item>
               <el-descriptions-item>
-                <span slot="label"><i class="el-icon-user-solid" />用户名</span>
+                <span slot="label">用户名</span>
                 {{ userInfo.username }}
               </el-descriptions-item>
               <el-descriptions-item>
-                <span slot="label"><i class="el-icon-s-flag" />昵称</span>
+                <span slot="label">昵称</span>
                 {{ userInfo.nickName }}
               </el-descriptions-item>
               <el-descriptions-item>
-                <span slot="label"><i class="el-icon-s-custom" />角色</span>
+                <span slot="label">部门ID</span>
+                {{ userInfo.deptId }}
+              </el-descriptions-item>
+              <el-descriptions-item>
+                <span slot="label">部门名</span>
+                {{ userInfo.deptName }}
+              </el-descriptions-item>
+              <el-descriptions-item>
+                <span slot="label">角色</span>
                 <el-tag v-for="o in userInfo.roles" :key="o" type="small" style="margin-right: 2px">
                   {{ o }}
                 </el-tag>
               </el-descriptions-item>
               <el-descriptions-item>
-                <span slot="label"><i class="el-icon-female" />性别</span>
+                <span slot="label">性别</span>
                 {{ userInfo.sex }}
               </el-descriptions-item>
               <el-descriptions-item>
-                <span slot="label"><i class="el-icon-phone" />电话</span>
+                <span slot="label">电话</span>
                 {{ userInfo.phone }}
               </el-descriptions-item>
               <el-descriptions-item>
-                <span slot="label"><i class="el-icon-message" />邮箱</span>
+                <span slot="label">邮箱</span>
                 {{ userInfo.mail }}
               </el-descriptions-item>
               <el-descriptions-item>
-                <span slot="label"><i class="el-icon-position" />登录IP</span>
+                <span slot="label">登录IP</span>
                 {{ userInfo.loginIp }}
               </el-descriptions-item>
               <el-descriptions-item>
-                <span slot="label"><i class="el-icon-time" />登录时间</span>
+                <span slot="label">登录时间</span>
                 {{ userInfo.loginDate }}
               </el-descriptions-item>
             </el-descriptions>
