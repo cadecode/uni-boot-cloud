@@ -4,12 +4,12 @@
 -- 插入用户
 -- 密码使用 BCryptPasswordEncoder 生成，此处123456
 -- ----------------------------
-INSERT INTO sys_user (id, username, password, nick_name, enable_flag)
-    VALUE (1, 'admin', '$2a$10$mQJ9z.l0FW.pUSJ0BnrkjeMHrGJs96oGY3mzB1HZGSAvFgHoo2k1O', '管理员', '1');
-INSERT INTO sys_user (id, username, password, nick_name, enable_flag)
-    VALUE (2, 'manager01', '$2a$10$mQJ9z.l0FW.pUSJ0BnrkjeMHrGJs96oGY3mzB1HZGSAvFgHoo2k1O', '高级用户01', '1');
-INSERT INTO sys_user (id, username, password, nick_name, enable_flag)
-    VALUE (3, 'user01', '$2a$10$mQJ9z.l0FW.pUSJ0BnrkjeMHrGJs96oGY3mzB1HZGSAvFgHoo2k1O', '普通用户01', '1');
+INSERT INTO sys_user (id, username, password, nick_name, dept_id, enable_flag)
+    VALUE (1, 'admin', '$2a$10$mQJ9z.l0FW.pUSJ0BnrkjeMHrGJs96oGY3mzB1HZGSAvFgHoo2k1O', '管理员', 1, '1');
+INSERT INTO sys_user (id, username, password, nick_name, dept_id, enable_flag)
+    VALUE (2, 'manager01', '$2a$10$mQJ9z.l0FW.pUSJ0BnrkjeMHrGJs96oGY3mzB1HZGSAvFgHoo2k1O', '高级用户01', 1, '1');
+INSERT INTO sys_user (id, username, password, nick_name, dept_id, enable_flag)
+    VALUE (3, 'user01', '$2a$10$mQJ9z.l0FW.pUSJ0BnrkjeMHrGJs96oGY3mzB1HZGSAvFgHoo2k1O', '普通用户01', 1, '1');
 -- ----------------------------
 -- 插入角色
 -- ----------------------------

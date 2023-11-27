@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS sys_user
     username    VARCHAR(50)  NOT NULL COMMENT '用户名',
     password    VARCHAR(100) NOT NULL COMMENT '密码',
     nick_name   VARCHAR(50)  NOT NULL COMMENT '昵称',
+    dept_id BIGINT UNSIGNED COMMENT '部门ID',
     enable_flag TINYINT      NOT NULL COMMENT '是否启用',
     sex         CHAR(1)      null comment '性别',
     mail        VARCHAR(50)  null comment '邮箱',
@@ -20,7 +21,9 @@ CREATE TABLE IF NOT EXISTS sys_user
     update_time DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     update_user VARCHAR(100) NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uk_username (username)
+    UNIQUE KEY uk_username (username),
+    INDEX idx_nick_name (nick_name),
+    INDEX idx_dept_id (dept_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
     COMMENT '系统用户表';
