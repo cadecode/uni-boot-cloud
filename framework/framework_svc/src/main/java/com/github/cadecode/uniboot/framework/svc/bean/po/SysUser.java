@@ -44,6 +44,11 @@ public class SysUser {
     private String nickName;
 
     /**
+     * 部门 ID
+     */
+    private Long deptId;
+
+    /**
      * 是否启用
      */
     @TableField(typeHandler = BoolToIntTypeHandler.class)
