@@ -8,6 +8,7 @@ import com.github.cadecode.uniboot.framework.base.plugin.service.PlgFileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.core.FileInfo;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @RequiredArgsConstructor
+@Primary
 @Component
 public class StorageRecordHandler extends AbstractStorageHandler {
 
