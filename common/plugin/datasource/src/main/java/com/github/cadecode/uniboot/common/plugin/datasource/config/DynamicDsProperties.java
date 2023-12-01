@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @Data
 @ConfigurationProperties("uni-boot.dynamic-ds")
-public class DynamicDSProperties {
+public class DynamicDsProperties {
 
     private boolean enable;
 

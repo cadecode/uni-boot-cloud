@@ -1,8 +1,8 @@
 package com.github.cadecode.uniboot.common.plugin.datasource.config;
 
-import com.github.cadecode.uniboot.common.plugin.datasource.dynamic.DynamicDS;
-import com.github.cadecode.uniboot.common.plugin.datasource.dynamic.DynamicDSHolder;
-import com.github.cadecode.uniboot.common.plugin.datasource.exception.DynamicDSException;
+import com.github.cadecode.uniboot.common.plugin.datasource.dynamic.DynamicDs;
+import com.github.cadecode.uniboot.common.plugin.datasource.dynamic.DynamicDsHolder;
+import com.github.cadecode.uniboot.common.plugin.datasource.exception.DynamicDsException;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,16 +25,16 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-@EnableConfigurationProperties(DynamicDSProperties.class)
+@EnableConfigurationProperties(DynamicDsProperties.class)
 @ConditionalOnProperty(name = "uni-boot.dynamic-ds.enable", havingValue = "true")
-public class DynamicDSAutoConfig {
+public class DynamicDsAutoConfig {
 
-    private final DynamicDSProperties properties;
+    private final DynamicDsProperties properties;
 
     @Bean
-    public DynamicDS dynamicDS() {
+    public DynamicDs dynamicDs() {
         log.info("Checking dynamic datasource config");
-        checkDynamicDSConfig();
+        checkDynamicDsConfig();
         log.info("Starting to create dynamic datasource");
         // 创建数据源
         Map<Object, Object> dataSourceMap;
@@ -42,29 +42,29 @@ public class DynamicDSAutoConfig {
             dataSourceMap = properties.getDatasource().entrySet().stream()
                     .collect(Collectors.toMap(Entry::getKey, e -> new HikariDataSource(e.getValue())));
         } catch (Exception e) {
-            throw new DynamicDSException("Create dynamic datasource fail", e);
+            throw new DynamicDsException("Create dynamic datasource fail", e);
         }
-        DynamicDS dynamicDS = new DynamicDS();
+        DynamicDs dynamicDs = new DynamicDs();
         // 添加数据源
-        dynamicDS.setTargetDataSources(dataSourceMap);
+        dynamicDs.setTargetDataSources(dataSourceMap);
         // 设置默认数据源
-        dynamicDS.setDefaultTargetDataSource(dataSourceMap.get(properties.getMaster()));
-        DynamicDSHolder.setDataSourceKey(properties.getMaster());
+        dynamicDs.setDefaultTargetDataSource(dataSourceMap.get(properties.getMaster()));
+        DynamicDsHolder.setDataSourceKey(properties.getMaster());
         log.info("Create dynamic datasource over，set default to {}", properties.getMaster());
-        return dynamicDS;
+        return dynamicDs;
     }
 
     /**
      * 检查是否配置了数据源和 master
      */
-    private void checkDynamicDSConfig() {
+    private void checkDynamicDsConfig() {
         // 检查是否配置了数据源
         if (Objects.isNull(properties.getDatasource()) || properties.getDatasource().isEmpty()) {
-            throw new DynamicDSException("Dynamic datasource config not found");
+            throw new DynamicDsException("Dynamic datasource config not found");
         }
         // 检查是否指定主数据源
         if (Objects.isNull(properties.getMaster()) || !properties.getDatasource().containsKey(properties.getMaster())) {
-            throw new DynamicDSException("Not found default datasource config");
+            throw new DynamicDsException("Not found default datasource config");
         }
     }
 }
