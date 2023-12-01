@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @ApiFormat
 @Slf4j
 @RequiredArgsConstructor
-@Api(tags = "dynamic-tp 测试")
+@Api(tags = "动态线程池测试")
 @RestController
 @RequestMapping("demo/tp")
 public class DynamicTpController {
