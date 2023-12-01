@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 @ApiFormat
 @Slf4j
 @RequiredArgsConstructor
-@Api(tags = "TransmittableThreadLocal 测试")
+@Api(tags = "TTL ThreadLocal 测试")
 @RestController
 @RequestMapping("demo/ttl")
 public class TtlExecutorController {
