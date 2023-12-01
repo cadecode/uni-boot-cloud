@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.common.plugin.datasource.aspect;
 
-import com.github.cadecode.uniboot.common.plugin.datasource.annotation.DynamicDS;
-import com.github.cadecode.uniboot.common.plugin.datasource.dynamic.DynamicDSHolder;
+import com.github.cadecode.uniboot.common.plugin.datasource.annotation.DynamicDs;
+import com.github.cadecode.uniboot.common.plugin.datasource.dynamic.DynamicDsHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -22,10 +22,10 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Order(-1)
-public class DynamicDSAspect {
+public class DynamicDsAspect {
 
-    @Pointcut("@within(com.github.cadecode.uniboot.common.plugin.datasource.annotation.DynamicDS) " +
-            "|| @annotation(com.github.cadecode.uniboot.common.plugin.datasource.annotation.DynamicDS)")
+    @Pointcut("@within(com.github.cadecode.uniboot.common.plugin.datasource.annotation.DynamicDs) " +
+            "|| @annotation(com.github.cadecode.uniboot.common.plugin.datasource.annotation.DynamicDs)")
     public void pointCut() {
 
     }
@@ -38,11 +38,11 @@ public class DynamicDSAspect {
         // 获取方法上的注解
         String dataSourceKey = getDataSourceKey(point);
         // 设置数据源
-        if (!DynamicDSHolder.containDataSourceKey(dataSourceKey)) {
+        if (!DynamicDsHolder.containDataSourceKey(dataSourceKey)) {
             log.info("Switch datasource fail，{} not found", dataSourceKey);
             return;
         }
-        DynamicDSHolder.setDataSourceKey(dataSourceKey);
+        DynamicDsHolder.setDataSourceKey(dataSourceKey);
         String methodName = point.getSignature().getDeclaringTypeName() + '.' + point.getSignature().getName();
         log.info("Switch datasource to {}，execute method [{}]", dataSourceKey, methodName);
     }
@@ -53,16 +53,16 @@ public class DynamicDSAspect {
     @After("pointCut()")
     public void resetDataSource(JoinPoint point) {
         // 将数据源恢复为之前的数据源
-        DynamicDSHolder.clearDataSourceKey();
-        log.info("Reset datasource to {}", DynamicDSHolder.getDataSourceKey());
+        DynamicDsHolder.clearDataSourceKey();
+        log.info("Reset datasource to {}", DynamicDsHolder.getDataSourceKey());
     }
 
     /**
-     * 获取 DynamicDS 注解内容，以方法为主
+     * 获取 DynamicDs 注解内容，以方法为主
      */
     private String getDataSourceKey(JoinPoint point) {
         MethodSignature methodSignature = (MethodSignature) point.getSignature();
-        DynamicDS dsM = methodSignature.getMethod().getAnnotation(DynamicDS.class);
+        DynamicDs dsM = methodSignature.getMethod().getAnnotation(DynamicDs.class);
         // 获取数据源 key
         String dataSourceKey;
         if (dsM != null) {
@@ -71,7 +71,7 @@ public class DynamicDSAspect {
         // 获取取类上的注解内容
         dataSourceKey = methodSignature.getMethod()
                 .getDeclaringClass()
-                .getAnnotation(DynamicDS.class)
+                .getAnnotation(DynamicDs.class)
                 .value();
         return dataSourceKey;
     }

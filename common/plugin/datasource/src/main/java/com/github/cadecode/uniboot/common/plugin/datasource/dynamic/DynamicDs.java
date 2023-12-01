@@ -11,14 +11,14 @@ import java.util.Map;
  * @author Cade Li
  * @date 2021/12/3
  */
-public class DynamicDS extends AbstractRoutingDataSource {
+public class DynamicDs extends AbstractRoutingDataSource {
 
     /**
      * 设置数据源 key
      */
     @Override
     protected Object determineCurrentLookupKey() {
-        return DynamicDSHolder.getDataSourceKey();
+        return DynamicDsHolder.getDataSourceKey();
     }
 
     /**
@@ -28,7 +28,7 @@ public class DynamicDS extends AbstractRoutingDataSource {
     public void setTargetDataSources(Map<Object, Object> targetDataSources) {
         super.setTargetDataSources(targetDataSources);
         // 存储数据源 key
-        DynamicDSHolder.addDataSourceKeys(targetDataSources.keySet());
+        DynamicDsHolder.addDataSourceKeys(targetDataSources.keySet());
     }
 
     /**
