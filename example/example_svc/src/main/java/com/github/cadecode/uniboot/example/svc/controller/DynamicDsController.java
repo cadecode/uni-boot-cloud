@@ -1,7 +1,7 @@
 package com.github.cadecode.uniboot.example.svc.controller;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.github.cadecode.uniboot.common.plugin.datasource.config.ShardingJdbcConfig;
+import com.github.cadecode.uniboot.common.plugin.datasource.consts.DsConst;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
 import com.github.cadecode.uniboot.framework.base.plugin.bean.po.PlgLog;
 import com.github.cadecode.uniboot.framework.base.plugin.service.PlgLogService;
@@ -55,7 +55,7 @@ public class DynamicDsController {
         return dataSource.getConnection().getMetaData().getURL();
     }
 
-    @DS(ShardingJdbcConfig.SHARDING_DATA_SOURCE_NAME)
+    @DS(DsConst.DS_NAME_SHARDING)
     @ApiOperation("测试 sharding 数据源读取")
     @PostMapping("test_sharding_read")
     public List<PlgLog> testShardingRead() throws SQLException {
@@ -63,7 +63,7 @@ public class DynamicDsController {
                 .<PlgLog>doSelectPageInfo(plgLogService::list).getList();
     }
 
-    @DS(ShardingJdbcConfig.SHARDING_DATA_SOURCE_NAME)
+    @DS(DsConst.DS_NAME_SHARDING)
     @ApiOperation("测试 sharding 数据源写入")
     @PostMapping("test_sharding_write")
     public boolean testShardingWrite() throws SQLException {

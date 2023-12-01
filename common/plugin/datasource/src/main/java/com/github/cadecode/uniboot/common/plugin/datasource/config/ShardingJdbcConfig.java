@@ -5,6 +5,7 @@ import com.baomidou.dynamic.datasource.provider.AbstractDataSourceProvider;
 import com.baomidou.dynamic.datasource.provider.DynamicDataSourceProvider;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration;
 import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
+import com.github.cadecode.uniboot.common.plugin.datasource.consts.DsConst;
 import lombok.RequiredArgsConstructor;
 import org.apache.shardingsphere.driver.jdbc.adapter.AbstractDataSourceAdapter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -31,8 +32,6 @@ import java.util.Map;
 @Configuration
 public class ShardingJdbcConfig {
 
-    public static final String SHARDING_DATA_SOURCE_NAME = "sharding";
-
     private final DynamicDataSourceProperties properties;
 
     @Lazy
@@ -45,7 +44,7 @@ public class ShardingJdbcConfig {
             @Override
             public Map<String, DataSource> loadDataSources() {
                 HashMap<String, DataSource> dataSourceMap = new HashMap<>();
-                dataSourceMap.put(SHARDING_DATA_SOURCE_NAME, shardingSphereDataSource);
+                dataSourceMap.put(DsConst.DS_NAME_SHARDING, shardingSphereDataSource);
                 return dataSourceMap;
             }
         };
