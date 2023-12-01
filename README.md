@@ -62,6 +62,8 @@
 
    集成 xxl-job，提供分布式定时任务调度支持
 
+   集成 sharding jdbc，提供分库分表、读写分离支持
+
    ...
 
 ## 功能模块
@@ -107,7 +109,7 @@
    common/plugin/actuator      # 系统资源监控模块，集成 SpringBoot Admin
    common/plugin/cache         # 缓存模块，集成 caffeine、Redis、二级缓存
    common/plugin/concurrent    # 并发模块，集成 DynamicTP 线程池、阿里 Ttl
-   common/plugin/datasource    # 数据源模块，集成 Druid、多数据源
+   common/plugin/datasource    # 数据源模块，集成 Druid、多数据源、ShardingJdbc
    common/plugin/log           # 日志模块，集成 API 访问日志
    common/plugin/mybatis       # mybatis 模块，集成 MybatisPlus、PageHelper
    common/plugin/swagger       # swagger 模块，集成 knife4j，动态配置 swagger 的 module
@@ -130,4 +132,3 @@
 参见配套前端项目
 
 [uni-boot-admin-vue](https://github.com/cadecode/uni-boot-admin-vue)
-
