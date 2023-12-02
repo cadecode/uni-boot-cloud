@@ -25,10 +25,23 @@ public class TxMsgKit {
 
     private final AbstractTxMsgHandler txMsgTaskHandler;
 
+    /**
+     * 发送事务消息
+     * 需要事务
+     *
+     * @param txMsg 事务消息
+     */
     public void sendTx(BaseTxMsg txMsg) {
         sendTx(txMsg, null);
     }
 
+    /**
+     * 发送事务消息
+     * 需要事务
+     *
+     * @param txMsg 事务消息
+     * @param msgOption 消息配置
+     */
     public void sendTx(BaseTxMsg txMsg, MsgOption msgOption) {
         MsgOption currOption = txMsgProperties.createMsgOption(msgOption);
         txMsgTaskHandler.checkBeforeSend(txMsg, currOption);
@@ -53,5 +66,19 @@ public class TxMsgKit {
                 txMsgTaskHandler.sendCommitted(txMsg, currOption);
             }
         });
+    }
+
+    /**
+     * 发送事务消息
+     * 不检查是否存在事务
+     *
+     * @param txMsg 事务消息
+     * @param msgOption 消息配置
+     */
+    public void sendWithoutTx(BaseTxMsg txMsg, MsgOption msgOption) {
+        MsgOption currOption = txMsgProperties.createMsgOption(msgOption);
+        txMsgTaskHandler.checkBeforeSend(txMsg, currOption);
+        txMsgTaskHandler.saveBeforeRegister(txMsg, currOption);
+        txMsgTaskHandler.sendCommitted(txMsg, currOption);
     }
 }
