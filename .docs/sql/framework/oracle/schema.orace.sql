@@ -11,7 +11,7 @@ CREATE TABLE sys_user
     nick_name   VARCHAR2(50)  NOT NULL,
     dept_id     NUMBER(19),
     enable_flag NUMBER(3)     NOT NULL,
-    sex         CHAR(1)       null,
+    sex CHAR(1 char) null,
     mail        VARCHAR2(50)  null,
     phone       VARCHAR2(50)  null,
     login_ip    VARCHAR2(50)  null,
