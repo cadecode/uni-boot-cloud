@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.cadecode.uniboot.framework.svc.mapper.SysUserMapper">
+    <resultMap id="SysUserRolesVoMap"
+               type="com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo$SysUserRolesResVo">
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="password" property="password"/>
+        <result column="enable_flag" property="enableFlag" typeHandler="BoolToIntTypeHandler"/>
+        <result column="sex" property="sex"/>
+        <result column="phone" property="phone"/>
+        <result column="mail" property="mail"/>
+        <result column="login_ip" property="loginIp"/>
+        <result column="login_date" property="loginDate"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="d_dept_name" property="deptName"/>
+        <result column="r_code" property="roles" typeHandler="ObjToStrTypeHandler"/>
+    </resultMap>
+    <select id="selectRolesVoByUserIds" resultMap="SysUserRolesVoMap">
+        SELECT su.id, su.username, su.password, su.nick_name, su.dept_id, su.enable_flag, su.sex, su.mail, su.phone,
+        su.login_ip, su.login_date, su.create_time, su.update_time, su.update_user, JSON_ARRAYAGG(sr.code) r_code,
+        sd.dept_name d_dept_name
+        FROM sys_user su
+        LEFT JOIN sys_role_user sru ON sru.user_id = su.id
+        LEFT JOIN sys_role sr ON sru.role_id = sr.id
+        LEFT JOIN sys_dept sd ON sd.id = su.dept_id
+        <if test="userIds != null and userIds.size > 0">
+            WHERE su.id IN (
+            <foreach collection="userIds" item="id" separator=",">
+                #{id}
+            </foreach>
+            )
+        </if>
+        GROUP BY su.id, su.username, su.password, su.nick_name, su.dept_id, su.enable_flag, su.sex, su.mail, su.phone,
+        su.login_ip, su.login_date, su.create_time, su.update_time, su.update_user, sd.dept_name
+        ORDER BY su.create_time DESC
+    </select>
+    <select id="selectRolesVoByUsername" resultMap="SysUserRolesVoMap">
+        SELECT su.id,
+               su.username,
+               su.password,
+               su.nick_name,
+               su.dept_id,
+               su.enable_flag,
+               su.sex,
+               su.mail,
+               su.phone,
+               su.login_ip,
+               su.login_date,
+               su.create_time,
+               su.update_time,
+               su.update_user,
+               JSON_ARRAYAGG(sr.code) r_code,
+               sd.dept_name           d_dept_name
+        FROM sys_user su
+                 LEFT JOIN sys_role_user sru ON sru.user_id = su.id
+                 LEFT JOIN sys_role sr ON sru.role_id = sr.id
+                 LEFT JOIN sys_dept sd ON sd.id = su.dept_id
+        WHERE su.username = #{username}
+        GROUP BY su.id, su.username, su.password, su.nick_name, su.dept_id, su.enable_flag, su.sex, su.mail, su.phone,
+                 su.login_ip, su.login_date, su.create_time, su.update_time, su.update_user, sd.dept_name
+    </select>
+    <select id="selectRolesVo" resultMap="SysUserRolesVoMap">
+        SELECT su.id, su.username, su.password, su.nick_name, su.dept_id, su.enable_flag, su.sex, su.mail, su.phone,
+        su.login_ip, su.login_date, su.create_time, su.update_time, su.update_user, JSON_ARRAYAGG(sr.code) r_code,
+        sd.dept_name d_dept_name
+        FROM sys_user su
+        LEFT JOIN sys_role_user sru ON sru.user_id = su.id
+        LEFT JOIN sys_role sr ON sru.role_id = sr.id
+        LEFT JOIN sys_dept sd ON sd.id = su.dept_id
+        <if test="req != null">
+            <where>
+                <if test="req.username != null and req.username.length > 0">
+                    <bind name="bindUsername" value="'%' + req.username + '%'"/>
+                    su.username like #{bindUsername}
+                </if>
+                <if test="req.nickName != null and req.nickName.length > 0">
+                    <bind name="binNickName" value="'%' + req.nickName + '%'"/>
+                    AND su.nick_name like #{binNickName}
+                </if>
+                <if test="req.deptId != null">
+                    AND su.dept_id = #{req.deptId}
+                </if>
+                <if test="req.enableFlag != null">
+                    AND su.enable_flag = #{req.enableFlag, typeHandler=BoolToIntTypeHandler}
+                </if>
+                <if test="req.roleIdList != null and req.roleIdList.size > 0 ">
+                    AND sr.id in (
+                    <foreach collection="req.roleIdList" item="id" separator=",">
+                        #{id}
+                    </foreach>
+                    )
+                </if>
+            </where>
+        </if>
+        GROUP BY su.id, su.username, su.password, su.nick_name, su.dept_id, su.enable_flag, su.sex, su.mail, su.phone,
+        su.login_ip, su.login_date, su.create_time, su.update_time, su.update_user, sd.dept_name
+        ORDER BY su.username
+    </select>
+</mapper>
