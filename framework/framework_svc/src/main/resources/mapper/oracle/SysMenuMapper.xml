@@ -19,13 +19,20 @@
         <result column="r_code" property="roles" typeHandler="ObjToStrTypeHandler"/>
     </resultMap>
     <select id="selectByRoles" resultType="com.github.cadecode.uniboot.framework.svc.bean.po.SysMenu">
-        SELECT DISTINCT sm.*
+        SELECT sm.id, sm.parent_id, sm.route_name, TO_CHAR(sm.route_path) as route_path, TO_CHAR(sm.component_path) as
+        component_path, sm.menu_name,
+        sm.leaf_flag, TO_CHAR(sm.icon) as icon, sm.order_num, sm.enable_flag, sm.hidden_flag, sm.cache_flag,
+        sm.create_time, sm.update_time,
+        sm.update_user
         FROM sys_menu sm LEFT JOIN sys_role_menu srm ON sm.id = srm.menu_id
         LEFT JOIN sys_role sr ON srm.role_id = sr.id
         where sm.enable_flag = 1
         <foreach collection="roleCodes" item="roleCode" separator="," open="and sr.code IN (" close=")">
             #{roleCode}
         </foreach>
+        GROUP BY sm.id, sm.parent_id, sm.route_name, TO_CHAR(sm.route_path), TO_CHAR(sm.component_path), sm.menu_name,
+        sm.leaf_flag, TO_CHAR(sm.icon),
+        sm.order_num, sm.enable_flag, sm.hidden_flag, sm.cache_flag, sm.create_time, sm.update_time, sm.update_user
         ORDER BY sm.order_num
     </select>
     <select id="selectRolesVo" resultMap="SysMenuRolesVoMap">
