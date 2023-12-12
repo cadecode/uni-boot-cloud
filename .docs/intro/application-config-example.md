@@ -90,7 +90,8 @@ pagehelper:
 
 # mybatis plus 配置
 mybatis-plus:
-  mapper-locations: classpath*:mapper/**/*.xml
+  # 配置使用 mysql mapper文件 路径
+  mapper-locations: classpath*:mapper/mysql/**/*.xml
   type-aliases-package: com.github.cadecode.**.bean,com.github.cadecode.**.mybatis.converter
   type-enums-package: com.github.cadecode.**.enums
   configuration:
