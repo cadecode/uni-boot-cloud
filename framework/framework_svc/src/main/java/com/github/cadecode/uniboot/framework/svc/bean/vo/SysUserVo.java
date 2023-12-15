@@ -21,6 +21,7 @@ public class SysUserVo {
 
     @Data
     public static class SysUserModifyInfoReqVo {
+        @NotNull
         @NotEmpty
         private String nickName;
         private String phone;
@@ -31,10 +32,13 @@ public class SysUserVo {
 
     @Data
     public static class SysUserModifyPassReqVo {
+        @NotNull
         @NotEmpty
         private String oldPass;
+        @NotNull
         @NotEmpty
         private String newPass;
+        @NotNull
         @NotEmpty
         private String confirmedPass;
     }
@@ -61,8 +65,10 @@ public class SysUserVo {
     public static class SysUserUpdateReqVo {
         @NotNull
         private Long id;
+        @NotNull
         @NotEmpty
         private String username;
+        @NotNull
         @NotEmpty
         private String nickName;
         private Long deptId;
@@ -70,23 +76,28 @@ public class SysUserVo {
         private String phone;
         @Email
         private String mail;
+        @NotNull
         @NotEmpty
         private String sex;
     }
 
     @Data
     public static class SysUserAddReqVo {
+        @NotNull
         @NotEmpty
         private String username;
+        @NotNull
         @NotEmpty
         private String nickName;
         @NotNull
         private Long deptId;
+        @NotNull
         @NotEmpty
         private String password;
         private String phone;
         @Email
         private String mail;
+        @NotNull
         @NotEmpty
         private String sex;
         @NotNull

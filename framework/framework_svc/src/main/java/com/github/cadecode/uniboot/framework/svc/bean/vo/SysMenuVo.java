@@ -40,11 +40,14 @@ public class SysMenuVo {
     public static class SysMenuUpdateReqVo {
         @NotNull
         private Long id;
+        @NotNull
         @NotEmpty
         private String routeName;
+        @NotNull
         @NotEmpty
         private String routePath;
         private String componentPath;
+        @NotNull
         @NotEmpty
         private String menuName;
         private String icon;
@@ -55,11 +58,14 @@ public class SysMenuVo {
     @Data
     public static class SysMenuAddReqVo {
         private Long parentId;
+        @NotNull
         @NotEmpty
         private String routeName;
+        @NotNull
         @NotEmpty
         private String routePath;
         private String componentPath;
+        @NotNull
         @NotEmpty
         private String menuName;
         @NotNull
