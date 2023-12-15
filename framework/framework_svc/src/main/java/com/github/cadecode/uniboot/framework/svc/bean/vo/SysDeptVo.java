@@ -63,6 +63,7 @@ public class SysDeptVo {
     @Data
     public static class SysDeptAddReqVo {
         private Long parentId;
+        @NotNull
         @NotEmpty
         private String deptName;
         @NotNull

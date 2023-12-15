@@ -25,11 +25,14 @@ public class SysDictVo {
 
     @Data
     public static class SysDictAddReqVo {
+        @NotNull
         @NotEmpty
         private String name;
+        @NotNull
         @NotEmpty
         private String type;
         private String label;
+        @NotNull
         @NotEmpty
         private String value;
         @NotNull
@@ -43,11 +46,14 @@ public class SysDictVo {
     public static class SysDictUpdateReqVo {
         @NotNull
         private Long id;
+        @NotNull
         @NotEmpty
         private String name;
+        @NotNull
         @NotEmpty
         private String type;
         private String label;
+        @NotNull
         @NotEmpty
         private String value;
         @NotNull

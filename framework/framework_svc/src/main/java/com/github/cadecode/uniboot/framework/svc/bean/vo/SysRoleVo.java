@@ -43,10 +43,13 @@ public class SysRoleVo {
 
     @Data
     public static class SysRoleAddReqVo {
+        @NotNull
         @NotEmpty
         private String code;
+        @NotNull
         @NotEmpty
         private String name;
+        @NotNull
         @NotEmpty
         private String description;
     }

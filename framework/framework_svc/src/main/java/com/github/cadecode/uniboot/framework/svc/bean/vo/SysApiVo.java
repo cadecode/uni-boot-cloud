@@ -34,8 +34,10 @@ public class SysApiVo {
 
     @Data
     public static class SysApiAddReqVo {
+        @NotNull
         @NotEmpty
         private String url;
+        @NotNull
         @NotEmpty
         private String description;
     }
