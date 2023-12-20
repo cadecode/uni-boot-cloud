@@ -16,6 +16,16 @@
 import settings from '@/settings';
 
 const {title, sidebarLogoSrc} = settings;
+// 加载 log src
+let logSrc;
+if (sidebarLogoSrc) {
+  if (sidebarLogoSrc.match(/http(s?):\/\//)) {
+    // http 网络链接
+    logSrc = sidebarLogoSrc;
+  } else {
+    logSrc = require(`@/asset/${sidebarLogoSrc}`);
+  }
+}
 
 export default {
   name: 'AppSidebarLogo',
@@ -28,7 +38,7 @@ export default {
   data() {
     return {
       title: title,
-      logo: sidebarLogoSrc
+      logo: logSrc
     };
   }
 };

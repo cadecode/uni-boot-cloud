@@ -14,6 +14,7 @@ module.exports = {
 
   /**
    * 侧边栏logo src
+   * 支持 http(s) 资源链接或 asset 目录下资源路径（从 asset下级目录开始）
    */
   sidebarLogoSrc: '',
 
