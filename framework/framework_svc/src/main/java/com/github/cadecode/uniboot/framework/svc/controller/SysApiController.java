@@ -3,7 +3,6 @@ package com.github.cadecode.uniboot.framework.svc.controller;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
-import com.github.cadecode.uniboot.framework.base.annotation.ApiInner;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysApi;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesReqVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysApiVo.SysApiRolesResVo;
@@ -86,12 +85,5 @@ public class SysApiController {
     @PostMapping("list_roles_vo_by_api_ids")
     public List<SysApiRolesResVo> listRolesVoByApiIds(@RequestBody @NotEmpty List<Long> apiIdList) {
         return sysApiService.listRolesVoByApiIds(apiIdList);
-    }
-
-    @ApiInner(onlyClient = true)
-    @ApiOperation("查询API列表-全部")
-    @PostMapping("client_list_roles_vo")
-    public List<SysApiRolesResVo> clientListRolesVo() {
-        return sysApiService.listRolesVo();
     }
 }

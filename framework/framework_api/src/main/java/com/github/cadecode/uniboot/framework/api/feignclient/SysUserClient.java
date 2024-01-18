@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(contextId = "SysUserClient", name = SvcNameConst.FRAMEWORK)
 public interface SysUserClient {
 
-    @PostMapping("system/user/client/get_by_username")
+    @PostMapping("system/user/r/get_by_username")
     SysUserGetByUsernameResDto getByUsername(@RequestParam("username") String username);
 
 }

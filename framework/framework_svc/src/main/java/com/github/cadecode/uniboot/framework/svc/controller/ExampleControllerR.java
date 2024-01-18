@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 @ApiFormat
 @Slf4j
 @RequiredArgsConstructor
-@Api(tags = "测试接口")
+@Api(tags = "测试接口-RPC")
 @RestController
-@RequestMapping("example")
-public class ExampleController {
+@RequestMapping("example/r")
+public class ExampleControllerR {
 
     @ApiOperation("传递字符串")
     @PostMapping("test_str")

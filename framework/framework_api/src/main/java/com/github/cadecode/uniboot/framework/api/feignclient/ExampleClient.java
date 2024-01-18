@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(contextId = "ExampleClient", name = SvcNameConst.FRAMEWORK)
 public interface ExampleClient {
 
-    @PostMapping("example/test_str")
+    @PostMapping("example/r/test_str")
     String testStr(@RequestParam("str") String str);
 
-    @PostMapping("example/test_result")
+    @PostMapping("example/r/test_result")
     Object testApiResult();
 
-    @PostMapping("example/test_exception")
+    @PostMapping("example/r/test_exception")
     Object testException();
 }
