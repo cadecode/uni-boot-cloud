@@ -2,10 +2,8 @@ package com.github.cadecode.uniboot.framework.svc.controller;
 
 import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.exception.ApiException;
-import com.github.cadecode.uniboot.common.core.util.AssertUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
-import com.github.cadecode.uniboot.framework.base.annotation.ApiInner;
 import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysUser;
@@ -24,7 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -144,19 +145,5 @@ public class SysUserController {
     @PostMapping("list_roles_vo_by_user_ids")
     public List<SysUserRolesResVo> listRolesVoByUserIds(@RequestBody @NotEmpty List<Long> userIdList) {
         return sysUserService.listRolesVoByUserIds(userIdList);
-    }
-
-    // RPC
-
-    @ApiInner(onlyClient = true)
-    @ApiOperation("RPC-查询用户信息")
-    @PostMapping("client/get_by_username")
-    public SysUserRolesResVo clientGetByUsername(@RequestParam String username) {
-        // 根据用户名查询
-        SysUserRolesReqVo reqVo = new SysUserRolesReqVo();
-        reqVo.setUsername(username);
-        List<SysUserRolesResVo> voList = sysUserService.listRolesVo(reqVo);
-        AssertUtil.isEmpty(voList, "此用户名不存在");
-        return voList.get(0);
     }
 }

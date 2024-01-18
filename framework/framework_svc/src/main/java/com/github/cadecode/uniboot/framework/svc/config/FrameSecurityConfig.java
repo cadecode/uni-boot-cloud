@@ -116,7 +116,7 @@ public class FrameSecurityConfig extends SecurityConfig {
                 // 放行登录接口
                 "/auth/login",
                 // 放行接口权限表查询接口
-                "/system/api/client_list_roles_vo"
+                "/system/api/r/list_roles_vo"
         ));
     }
 }
