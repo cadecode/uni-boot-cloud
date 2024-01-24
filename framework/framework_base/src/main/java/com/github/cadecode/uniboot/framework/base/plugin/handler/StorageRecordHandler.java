@@ -8,8 +8,11 @@ import com.github.cadecode.uniboot.framework.base.plugin.service.PlgFileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.core.FileInfo;
+import org.dromara.x.file.storage.core.upload.FilePartInfo;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 /**
  * 文件存储记录处理器
@@ -37,6 +40,15 @@ public class StorageRecordHandler extends AbstractStorageHandler {
     }
 
     @Override
+    public void update(FileInfo fileInfo) {
+        PlgFile plgFile = PlgFileConvert.INSTANCE.fileInfoToPo(fileInfo);
+        plgFileService.update(plgFile, Wrappers.<PlgFile>lambdaQuery()
+                .eq(Objects.nonNull(plgFile.getId()), PlgFile::getId, plgFile.getId())
+                .eq(Objects.nonNull(plgFile.getUrl()), PlgFile::getUrl, plgFile.getUrl())
+        );
+    }
+
+    @Override
     public FileInfo getByUrl(String url) {
         // 按 url 查询
         PlgFile plgFile = plgFileService.lambdaQuery()
@@ -48,5 +60,15 @@ public class StorageRecordHandler extends AbstractStorageHandler {
     @Override
     public boolean delete(String url) {
         return plgFileService.remove(Wrappers.<PlgFile>lambdaQuery().eq(PlgFile::getUrl, url));
+    }
+
+    @Override
+    public void saveFilePart(FilePartInfo filePartInfo) {
+        throw new UnsupportedOperationException("saveFilePart is not implement");
+    }
+
+    @Override
+    public void deleteFilePartByUploadId(String s) {
+        throw new UnsupportedOperationException("deleteFilePartByUploadId is not implement");
     }
 }
