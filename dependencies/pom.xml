@@ -44,7 +44,7 @@
         <easyexcel.version>3.1.1</easyexcel.version>
         <spring-plugin.version>2.0.0.RELEASE</spring-plugin.version>
         <multirabbit.version>2.5.0</multirabbit.version>
-        <x-file-storage.version>2.0.0</x-file-storage.version>
+        <x-file-storage.version>2.1.0</x-file-storage.version>
         <xxl-job.version>2.4.0</xxl-job.version>
         <sharding-jdbc.version>5.1.2</sharding-jdbc.version>
     </properties>
