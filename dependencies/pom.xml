@@ -46,6 +46,7 @@
         <multirabbit.version>2.5.0</multirabbit.version>
         <x-file-storage.version>2.1.0</x-file-storage.version>
         <xxl-job.version>2.4.0</xxl-job.version>
+        <powerjob-worker.version>4.3.6</powerjob-worker.version>
         <sharding-jdbc.version>5.1.2</sharding-jdbc.version>
     </properties>
 
@@ -237,6 +238,11 @@
                 <groupId>com.xuxueli</groupId>
                 <artifactId>xxl-job-core</artifactId>
                 <version>${xxl-job.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.powerjob</groupId>
+                <artifactId>powerjob-worker-spring-boot-starter</artifactId>
+                <version>${powerjob-worker.version}</version>
             </dependency>
             <!--shardingJDBC-->
             <dependency>

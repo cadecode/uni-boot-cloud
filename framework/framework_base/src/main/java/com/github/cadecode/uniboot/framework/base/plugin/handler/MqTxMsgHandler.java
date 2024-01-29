@@ -21,7 +21,6 @@ import com.github.cadecode.uniboot.framework.base.plugin.bean.po.PlgMqMsg;
 import com.github.cadecode.uniboot.framework.base.plugin.convert.PlgMqMsgConvert;
 import com.github.cadecode.uniboot.framework.base.plugin.enums.SendStateEnum;
 import com.github.cadecode.uniboot.framework.base.plugin.service.PlgMqMsgService;
-import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -68,7 +67,6 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
 
     private final PlgMqMsgService mqMsgService;
 
-    @XxlJob("MqTxMsgRetry")
     @Override
     public void doRetry() {
         String lockKey = KeyGeneUtil.lockKey(LOCK_TX_MSG_DO_RETRY);
@@ -91,11 +89,19 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
                         try {
                             TxMsg txMsg = PlgMqMsgConvert.INSTANCE.poToTxMsg(o);
                             doSendCommittedOrRetry(txMsg);
-                            boolean updateFlag = updateRetryTime(o.getId(), newLeftRetryTimes, newNextRetryTime);
+                            boolean updateFlag = mqMsgService.lambdaUpdate()
+                                    .eq(PlgMqMsg::getId, o.getId())
+                                    .set(PlgMqMsg::getLeftRetryTimes, newLeftRetryTimes)
+                                    .set(PlgMqMsg::getNextRetryTime, newNextRetryTime)
+                                    .update(new PlgMqMsg());
                             log.debug("TxMsg sent on retry, updateFlag:{}, txMsg:{}, biz:{}_{}", updateFlag, o.getId(), o.getBizType(), o.getBizKey());
                         } catch (Exception e) {
-                            boolean updateFlag = updateRetryTime(o.getId(), newLeftRetryTimes, newNextRetryTime);
-                            log.debug("TxMsg send fail on retry, updateFlag:{}, txMsg:{}, biz:{}_{}", updateFlag, o.getId(), o.getBizType(), o.getBizKey());
+                            boolean updateFlag = mqMsgService.lambdaUpdate()
+                                    .eq(PlgMqMsg::getId, o.getId())
+                                    .set(PlgMqMsg::getLeftRetryTimes, newLeftRetryTimes)
+                                    .set(PlgMqMsg::getNextRetryTime, newNextRetryTime)
+                                    .update(new PlgMqMsg());
+                            log.debug("TxMsg send fail on retry, updateFlag:{}, txMsg:{}, biz:{}_{}", updateFlag, o.getId(), o.getBizType(), o.getBizKey(), e);
                             return false;
                         }
                         return true;
@@ -107,15 +113,6 @@ public class MqTxMsgHandler extends AbstractTxMsgHandler {
         }
     }
 
-    private boolean updateRetryTime(String txMsgId, int newLeftRetryTimes, Date newNextRetryTime) {
-        return mqMsgService.lambdaUpdate()
-                .eq(PlgMqMsg::getId, txMsgId)
-                .set(PlgMqMsg::getLeftRetryTimes, newLeftRetryTimes)
-                .set(PlgMqMsg::getNextRetryTime, newNextRetryTime)
-                .update(new PlgMqMsg());
-    }
-
-    @XxlJob("MqTxMsgAutoClear")
     @Override
     public void doClear() {
         String lockKey = KeyGeneUtil.lockKey(LOCK_TX_MSG_DO_CLEAR);

@@ -2,11 +2,9 @@ package com.github.cadecode.uniboot.common.plugin.job.config;
 
 import com.github.cadecode.uniboot.common.plugin.job.config.XxlJobProperties.XxlJobAdminProperties;
 import com.github.cadecode.uniboot.common.plugin.job.config.XxlJobProperties.XxlJobExecutorProperties;
-import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -15,13 +13,14 @@ import org.springframework.context.annotation.Configuration;
  * @author Cade Li
  * @since 2023/11/10
  */
+@Deprecated
 @Slf4j
 @ConditionalOnProperty(name = "xxl.job.enabled", havingValue = "true")
 @EnableConfigurationProperties({XxlJobProperties.class, XxlJobAdminProperties.class, XxlJobExecutorProperties.class})
 @Configuration
 public class XxlJobAutoConfig {
 
-    @Bean
+    /* @Bean
     public XxlJobSpringExecutor xxlJobExecutor(XxlJobProperties xxlJobProperties,
                                                XxlJobAdminProperties adminProperties,
                                                XxlJobExecutorProperties executorProperties) {
@@ -37,5 +36,5 @@ public class XxlJobAutoConfig {
         xxlJobSpringExecutor.setLogPath(executorProperties.getLogpath());
         xxlJobSpringExecutor.setLogRetentionDays(executorProperties.getLogRetentionDays());
         return xxlJobSpringExecutor;
-    }
+    } */
 }

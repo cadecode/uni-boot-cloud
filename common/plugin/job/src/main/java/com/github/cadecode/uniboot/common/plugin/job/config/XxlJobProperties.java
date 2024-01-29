@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Cade Li
  * @since 2023/11/10
  */
+@Deprecated
 @ConfigurationProperties(prefix = "xxl.job")
 @Data
 public class XxlJobProperties {
@@ -18,6 +19,7 @@ public class XxlJobProperties {
     private String accessToken;
 
 
+    @Deprecated
     @ConfigurationProperties(prefix = "xxl.job.admin")
     @Data
     public static class XxlJobAdminProperties {
@@ -26,6 +28,7 @@ public class XxlJobProperties {
 
     }
 
+    @Deprecated
     @ConfigurationProperties(prefix = "xxl.job.executor")
     @Data
     public static class XxlJobExecutorProperties {

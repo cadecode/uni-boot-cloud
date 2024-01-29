@@ -12,9 +12,14 @@
     <artifactId>uni-boot-common-plugin-job</artifactId>
 
     <dependencies>
+        <!--<dependency>-->
+        <!--    <groupId>com.xuxueli</groupId>-->
+        <!--    <artifactId>xxl-job-core</artifactId>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>com.xuxueli</groupId>
-            <artifactId>xxl-job-core</artifactId>
+            <groupId>tech.powerjob</groupId>
+            <artifactId>powerjob-worker-spring-boot-starter</artifactId>
         </dependency>
 
         <dependency>
