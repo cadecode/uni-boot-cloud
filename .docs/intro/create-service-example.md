@@ -99,6 +99,8 @@ svc 模块基本依赖：
     </dependencies>
     <!--打包-->
     <build>
+        <!--服务启动 jar 指定打包名称，取消默认携带版本号-->
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
