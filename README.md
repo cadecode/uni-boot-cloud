@@ -60,7 +60,7 @@
 
    集成 x-file-storage，提供多平台文件存储、下载的支持
 
-   集成 xxl-job，提供分布式定时任务调度支持
+   集成 xxl-job、PowerJob，提供分布式定时任务调度支持
 
    集成 sharding jdbc，提供分库分表、读写分离支持
 
