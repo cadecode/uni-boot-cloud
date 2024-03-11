@@ -8,7 +8,6 @@ import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;
 import com.github.cadecode.uniboot.framework.svc.bean.po.SysUser;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeResVo;
-import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysUserVo.*;
 import com.github.cadecode.uniboot.framework.svc.convert.SysUserConvert;
 import com.github.cadecode.uniboot.framework.svc.service.SysMenuService;
@@ -112,7 +111,7 @@ public class SysUserController {
 
     @ApiOperation("更新用户")
     @PostMapping("update")
-    public boolean update(@RequestBody @Valid SysUserVo.SysUserUpdateReqVo reqVo) {
+    public boolean update(@RequestBody @Valid SysUserUpdateReqVo reqVo) {
         String encodePass = null;
         if (ObjUtil.isNotEmpty(reqVo.getPassword())) {
             encodePass = passwordEncoder.encode(reqVo.getPassword());

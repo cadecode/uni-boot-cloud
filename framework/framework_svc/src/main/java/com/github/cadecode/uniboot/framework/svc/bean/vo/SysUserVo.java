@@ -76,8 +76,6 @@ public class SysUserVo {
         private String phone;
         @Email
         private String mail;
-        @NotNull
-        @NotEmpty
         private String sex;
     }
 
@@ -97,8 +95,6 @@ public class SysUserVo {
         private String phone;
         @Email
         private String mail;
-        @NotNull
-        @NotEmpty
         private String sex;
         @NotNull
         private Boolean enableFlag;
