@@ -272,7 +272,6 @@ export default {
         rule: {
           username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
           nickName: [{required: true, message: '请输入昵称', trigger: 'blur'}],
-          sex: [{required: true, message: '请选择性别', trigger: 'blur'}],
           deptId: [{required: true, message: '请选择部门', trigger: 'blur'}]
         }
       },
@@ -292,7 +291,6 @@ export default {
           username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
           nickName: [{required: true, message: '请输入昵称', trigger: 'blur'}],
           password: [{required: true, message: '请输入密码', trigger: 'blur'}],
-          sex: [{required: true, message: '请选择性别', trigger: 'blur'}],
           deptId: [{required: true, message: '请选择部门', trigger: 'blur'}]
         }
       }
