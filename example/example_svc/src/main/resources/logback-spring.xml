@@ -83,6 +83,25 @@
         </filter>
     </appender>
 
+    <!--warn 文件日志-->
+    <appender name="warnAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${filePath}/warn.now.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${filePath}/warn/warn.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>${history}</maxHistory>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${filePattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
     <!--error 文件日志-->
     <appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${filePath}/error.now.log</file>
@@ -130,6 +149,7 @@
         <appender-ref ref="consoleAppender"/>
         <appender-ref ref="debugAppender"/>
         <appender-ref ref="infoAppender"/>
+        <appender-ref ref="warnAppender"/>
         <appender-ref ref="errorAppender"/>
     </root>
 </configuration>
