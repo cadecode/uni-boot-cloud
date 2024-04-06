@@ -7,8 +7,8 @@
     <version>2023.1.4</version>
 
     <packaging>pom</packaging>
-    <name>uni-boot-admin</name>
-    <description>基于 SpringBoot 多模块开发的通用后台管理系统骨架</description>
+    <name>uni-boot-cloud</name>
+    <description>基于 SpringCloud 的通用后台管理系统骨架</description>
 
     <modules>
         <module>dependencies</module>

@@ -84,7 +84,7 @@ VALUES (308, 3, 'Swagger', 'http://localhost:8000/doc.html', null, 'Swagger', 1,
         '2023-08-18 15:03:30', '2023-11-09 15:57:55', null);
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
                       enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)
-VALUES (1000, null, 'GithubUrl', 'https://github.com/cadecode/uni-boot-admin', null, '源码仓库', 1, 'el-icon-star-on',
+VALUES (1000, null, 'GithubUrl', 'https://github.com/cadecode/uni-boot-cloud', null, '源码仓库', 1, 'el-icon-star-on',
         1000, 0, 0, 0, '2023-08-18 15:03:31', '2023-11-09 15:57:55', 'admin');
 INSERT INTO sys_menu (id, parent_id, route_name, route_path, component_path, menu_name, leaf_flag, icon, order_num,
                       enable_flag, hidden_flag, cache_flag, create_time, update_time, update_user)

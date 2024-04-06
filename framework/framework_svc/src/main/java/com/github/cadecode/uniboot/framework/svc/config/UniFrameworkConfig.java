@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 /**
- * uni-boot-admin framework 服务配置
+ * uni-boot-cloud framework 服务配置
  *
  * @author Cade Li
  * @since 2023/7/28

@@ -1,4 +1,4 @@
-# uni-boot-admin
+# uni-boot-cloud
 
 > 基于 SpringCloud 的通用后台管理系统骨架，引入 Nacos、OpenFeign、Gateway 等微服务核心组件
 >
@@ -10,7 +10,7 @@
 
 2. 本项目采用前后端分离结构，以下是配套前端项目
 
-   [uni-boot-admin-vue](https://github.com/cadecode/uni-boot-admin-vue) 基于 Vue + ElementUI
+   [uni-boot-cloud-vue](https://github.com/cadecode/uni-boot-cloud-vue) 基于 Vue + ElementUI
 
 3. 版本与环境
 
@@ -131,4 +131,4 @@
 
 参见配套前端项目
 
-[uni-boot-admin-vue](https://github.com/cadecode/uni-boot-admin-vue)
+[uni-boot-cloud-vue](https://github.com/cadecode/uni-boot-cloud-vue)
