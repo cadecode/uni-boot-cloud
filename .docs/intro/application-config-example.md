@@ -118,7 +118,7 @@ uni-boot:
     enable: true
     version: ${uni-boot.config.version}
     name: Cade Li
-    url: https://github.com/cadecode/uni-boot-admin
+    url: https://github.com/cadecode/uni-boot-cloud
     email: cadecode@foxmail.com
     module:
       default: com.github.cadecode.uniboot
