@@ -1,7 +1,7 @@
 {
-  "name": "uni-boot-admin-vue",
+  "name": "uni-boot-cloud-vue",
   "version": "2023.1.4",
-  "description": "The frontend by vue of uni-boot-admin, based on vue-admin-template@4.4.0",
+  "description": "The frontend by vue of uni-boot-cloud, based on vue-admin-template@4.4.0",
   "author": "Cade <cadecode@foxmail.com>",
   "scripts": {
     "dev": "vue-cli-service serve",

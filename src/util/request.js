@@ -37,7 +37,7 @@ service.interceptors.request.use(
 
 /**
  * 响应拦截器
- * uni-boot-admin 响应格式：
+ * 后端响应格式：
  *  {status, data, error:{code, message, path, moreInfo}}
  */
 service.interceptors.response.use(
