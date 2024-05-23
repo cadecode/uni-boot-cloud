@@ -51,6 +51,16 @@ import java.util.List;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean {
 
+    /**
+     * 登录路径
+     */
+    public static final String LOGIN_URL = "/login";
+
+    /**
+     * 注销路径
+     */
+    public static final String LOGOUT_URL = "/logout";
+
     private final StrategyExecutor strategyExecutor;
 
     /**

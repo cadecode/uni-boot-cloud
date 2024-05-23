@@ -8,6 +8,7 @@ import com.github.cadecode.uniboot.common.core.enums.ApiErrorCode;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyService;
 import com.github.cadecode.uniboot.common.core.util.JacksonUtil;
 import com.github.cadecode.uniboot.common.core.web.response.ApiResult;
+import com.github.cadecode.uniboot.framework.base.config.SecurityConfig;
 import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.base.util.RequestUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Token 校验过滤服务
@@ -62,6 +64,7 @@ public abstract class TokenAuthStrategy implements StrategyService {
      * 由 handler 方法提供处理
      */
     public void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // 处理内部请求
         if (RequestUtil.isInnerRequest(request)) {
             SysUserDetails userDetailsDto = RequestUtil.getInnerUserDetails(request);
             if (ObjUtil.isNotNull(userDetailsDto)) {
@@ -69,6 +72,11 @@ public abstract class TokenAuthStrategy implements StrategyService {
                 filterChain.doFilter(request, response);
                 return;
             }
+        }
+        // 特殊处理 security login url，防止未清理的无效 token 拦截登录
+        if (Objects.equals(request.getRequestURI(), SecurityConfig.LOGIN_URL)) {
+            filterChain.doFilter(request, response);
+            return;
         }
         handler(request, response, filterChain);
     }
