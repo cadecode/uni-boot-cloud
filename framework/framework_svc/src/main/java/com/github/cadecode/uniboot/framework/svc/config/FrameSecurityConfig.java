@@ -36,16 +36,6 @@ public class FrameSecurityConfig extends SecurityConfig {
     public static final String PASSWORD_PARAMETER = "password";
 
     /**
-     * 登录路径
-     */
-    public static final String LOGIN_URL = "/login";
-
-    /**
-     * 注销路径
-     */
-    public static final String LOGOUT_URL = "/logout";
-
-    /**
      * 注入各种处理器
      */
     private final LoginSuccessHandler loginSuccessHandler;
