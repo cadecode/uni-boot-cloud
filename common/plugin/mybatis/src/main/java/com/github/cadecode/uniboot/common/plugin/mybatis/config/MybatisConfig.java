@@ -1,6 +1,8 @@
 package com.github.cadecode.uniboot.common.plugin.mybatis.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.DataPermissionInterceptor;
+import com.github.cadecode.uniboot.common.plugin.mybatis.handler.DataScopePermissionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +21,10 @@ public class MybatisConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        // 数据权限插件
+        DataPermissionInterceptor dataPermissionInterceptor = new DataPermissionInterceptor(new DataScopePermissionHandler());
+        interceptor.addInnerInterceptor(dataPermissionInterceptor);
+
         // 添加分页插件，动态获取数据库类型
         // interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
         return interceptor;
