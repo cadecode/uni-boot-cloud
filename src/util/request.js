@@ -78,6 +78,7 @@ service.interceptors.response.use(
  * 从响应中检查后端 error 信息
  * @param {AxiosResponse<ApiResult>>} response 响应对象
  */
+const confirmReLogin = getReLoginConfirm();
 function checkResError(response) {
   const res = response.data;
   // 判断有没有返回 error
@@ -103,18 +104,26 @@ function checkResError(response) {
  * 确认是否重新登录
  * await 返回结果结果将抛出错误
  */
-function confirmReLogin(res) {
-  return MessageBox.confirm(`${res.error.message}, 是否重新登录`, '登录状态失效', {
-    type: 'warning',
-    confirmButtonText: '返回登录页',
-    cancelButtonText: '取消'
-  }).then(async() => {
-    // 使用 async 包裹，可等待完成 resetToken
-    // 清理 token 并返回登录页
-    await store.dispatch('user/resetToken');
-    router.push(`/login?redirect=${router.currentRoute.fullPath}`);
-    throw new Error(JSON.stringify(res.error));
-  });
+function getReLoginConfirm() {
+  let confirming = false;
+  return (res) => {
+    if (confirming) {
+      return;
+    }
+    confirming = true;
+    return MessageBox.confirm(`${res.error.message}, 是否重新登录`, '登录状态失效', {
+      type: 'warning',
+      confirmButtonText: '返回登录页',
+      cancelButtonText: '取消'
+    }).then(async() => {
+      confirming = false;
+      // 使用 async 包裹，可等待完成 resetToken
+      // 清理 token 并返回登录页
+      await store.dispatch('user/resetToken');
+      router.push(`/login?redirect=${router.currentRoute.fullPath}`);
+      throw new Error(JSON.stringify(res.error));
+    });
+  };
 }
 
 /**
