@@ -13,10 +13,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 基于数据库内容的角色投票器
@@ -46,7 +43,7 @@ public class DataBaseRoleVoter extends RoleVoter {
         List<SysApiRolesResDto> apiRolesResponseList = sysApiClient.listRolesResVo();
         // 获取用户角色
         SysUserDetails sysUserDetails = SecurityUtil.getUserDetails(authentication);
-        List<String> roles = sysUserDetails.getRoles();
+        List<String> roles = new ArrayList<>(sysUserDetails.getRoles());
         // 获取与 url 相同的配置，不存在与 url 相同配置则使用 spring mvc ant 风格匹配
         SysApiRolesResDto apiRolesResponse = apiRolesResponseList.stream()
                 .filter(api -> requestUrl.equals(api.getUrl()))
@@ -70,6 +67,6 @@ public class DataBaseRoleVoter extends RoleVoter {
         }
         // 取用户 token 内角色和数据库查询出角色的交集
         roles.retainAll(apiRolesResponse.getRoles());
-        return roles.size() > 0 ? ACCESS_GRANTED : ACCESS_DENIED;
+        return !roles.isEmpty() ? ACCESS_GRANTED : ACCESS_DENIED;
     }
 }
