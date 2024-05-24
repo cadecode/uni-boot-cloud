@@ -37,7 +37,7 @@ public class UserRoleDataScopeResolver implements DataScopeResolver {
         return userDetails.getRoles()
                 .stream()
                 .filter(o -> Objects.nonNull(o) && o.startsWith(SCOPE_ROLE_PREFIX))
-                .map(o -> (Object) o.substring(SCOPE_ROLE_PREFIX.length() - 1))
+                .map(o -> (Object) o.substring(SCOPE_ROLE_PREFIX.length()))
                 .collect(Collectors.toList());
     }
 }
