@@ -1,0 +1,15 @@
+#!/bin/bash
+# 获取提交信息
+commit_msg_file=$(git rev-parse --git-dir)/COMMIT_EDITMSG
+commit_msg=$(cat ${commit_msg_file})
+# 使用正则匹配 Angular 提交日志格式
+regex="^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?: .{1,72}$"
+
+if [[ ! ${commit_msg} =~ ${regex} ]]; then
+  echo "Error: Commit message format does not comply with Angular commit message convention"
+  echo "The correct format is: type(scope): short description (not exceeding 72 characters)"
+  echo "For example: feat(core): Add new feature"
+  exit 1
+fi
+
+exit 0
