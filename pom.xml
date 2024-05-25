@@ -8,7 +8,7 @@
 
     <packaging>pom</packaging>
     <name>uni-boot-cloud</name>
-    <description>基于 SpringCloud 的通用后台管理系统骨架</description>
+    <description>基于 SpringCloud 的通用后台管理系统1骨架</description>
 
     <modules>
         <module>dependencies</module>
@@ -148,6 +148,23 @@
                 <configuration>
                     <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.rudikershaw.gitbuildhook</groupId>
+                <artifactId>git-build-hook-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <gitConfig>
+                        <core.hooksPath>ci/git-hooks</core.hooksPath>
+                    </gitConfig>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>configure</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
