@@ -11,7 +11,7 @@
         <result column="r_code" property="roles" typeHandler="ObjToStrTypeHandler"/>
     </resultMap>
     <select id="selectRolesVoByApiIds" resultMap="SysApiRolesVoMap">
-        SELECT sa.*, JSON_ARRAYAGG(sr.code) r_code
+        SELECT sa.*, JSON_ARRAYAGG(CONCAT(sr.type, ':', sr.code)) r_code
         FROM sys_api sa
         LEFT JOIN sys_role_api sra ON sra.api_id = sa.id
         LEFT JOIN sys_role sr ON sra.role_id = sr.id
@@ -26,7 +26,7 @@
         ORDER BY sa.url
     </select>
     <select id="selectRolesVo" resultMap="SysApiRolesVoMap">
-        SELECT sa.*, JSON_ARRAYAGG(sr.code) r_code
+        SELECT sa.*, JSON_ARRAYAGG(CONCAT(sr.type, ':', sr.code)) r_code
         FROM sys_api sa
         LEFT JOIN sys_role_api sra ON sra.api_id = sa.id
         LEFT JOIN sys_role sr ON sra.role_id = sr.id

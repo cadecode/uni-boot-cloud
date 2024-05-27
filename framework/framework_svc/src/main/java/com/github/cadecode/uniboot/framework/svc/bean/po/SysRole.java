@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.github.cadecode.uniboot.framework.base.enums.RoleTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,6 +39,11 @@ public class SysRole {
      * 名称
      */
     private String name;
+
+    /**
+     * 角色类型
+     */
+    private RoleTypeEnum type;
 
     /**
      * 描述

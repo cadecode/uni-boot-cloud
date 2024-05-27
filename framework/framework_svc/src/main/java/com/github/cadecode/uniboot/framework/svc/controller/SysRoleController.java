@@ -1,5 +1,6 @@
 package com.github.cadecode.uniboot.framework.svc.controller;
 
+import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.core.web.response.PageResult;
 import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.base.annotation.ApiFormat;
@@ -45,8 +46,12 @@ public class SysRoleController {
 
     @ApiOperation("查询角色列表")
     @PostMapping("list")
-    public List<SysRoleListResVo> roleList() {
-        List<SysRole> roleList = sysRoleService.list();
+    public List<SysRoleListResVo> roleList(@RequestBody @Valid SysRoleListReqVo reqVo) {
+        List<SysRole> roleList = sysRoleService.lambdaQuery()
+                .eq(ObjUtil.isNotEmpty(reqVo.getCode()), SysRole::getCode, reqVo.getCode())
+                .eq(ObjUtil.isNotEmpty(reqVo.getName()), SysRole::getName, reqVo.getName())
+                .eq(SysRole::getType, reqVo.getType())
+                .list();
         return SysRoleConvert.INSTANCE.poToListResVo(roleList);
     }
 

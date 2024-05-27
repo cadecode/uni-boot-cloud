@@ -22,13 +22,14 @@
         FROM sys_menu sm LEFT JOIN sys_role_menu srm ON sm.id = srm.menu_id
         LEFT JOIN sys_role sr ON srm.role_id = sr.id
         where sm.enable_flag = 1
-        <foreach collection="roleCodes" item="roleCode" separator="," open="and sr.code IN (" close=")">
+        <foreach collection="roleCodes" item="roleCode" separator="," open="and CONCAT(sr.type, ':', sr.code) IN ("
+                 close=")">
             #{roleCode}
         </foreach>
         ORDER BY sm.order_num
     </select>
     <select id="selectRolesVo" resultMap="SysMenuRolesVoMap">
-        SELECT sm.*, JSON_ARRAYAGG(sr.code) r_code
+        SELECT sm.*, JSON_ARRAYAGG(CONCAT(sr.type, ':', sr.code)) r_code
         FROM sys_menu sm
         LEFT JOIN sys_role_menu srm ON srm.menu_id = sm.id
         LEFT JOIN sys_role sr ON srm.role_id = sr.id
@@ -68,7 +69,7 @@
         </choose>
     </select>
     <select id="selectRolesVoByMenuIds" resultMap="SysMenuRolesVoMap">
-        SELECT sm.*, JSON_ARRAYAGG(sr.code) r_code
+        SELECT sm.*, JSON_ARRAYAGG(CONCAT(sr.type, ':', sr.code)) r_code
         FROM sys_menu sm
         LEFT JOIN sys_role_menu srm ON srm.menu_id = sm.id
         LEFT JOIN sys_role sr ON srm.role_id = sr.id

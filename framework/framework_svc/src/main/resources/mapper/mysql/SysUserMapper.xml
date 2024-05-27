@@ -21,7 +21,7 @@
         <result column="r_code" property="roles" typeHandler="ObjToStrTypeHandler"/>
     </resultMap>
     <select id="selectRolesVoByUserIds" resultMap="SysUserRolesVoMap">
-        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code, sd.dept_name d_dept_name
+        SELECT su.*, JSON_ARRAYAGG(CONCAT(sr.type, ':', sr.code)) r_code, sd.dept_name d_dept_name
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id
@@ -37,7 +37,7 @@
         ORDER BY su.create_time DESC
     </select>
     <select id="selectRolesVoByUsername" resultMap="SysUserRolesVoMap">
-        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code, sd.dept_name d_dept_name
+        SELECT su.*, JSON_ARRAYAGG(CONCAT(sr.type, ':', sr.code)) r_code, sd.dept_name d_dept_name
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id
@@ -46,7 +46,7 @@
         GROUP BY su.id
     </select>
     <select id="selectRolesVo" resultMap="SysUserRolesVoMap">
-        SELECT su.*, JSON_ARRAYAGG(sr.code) r_code, sd.dept_name d_dept_name
+        SELECT su.*, JSON_ARRAYAGG(CONCAT(sr.type, ':', sr.code)) r_code, sd.dept_name d_dept_name
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
         LEFT JOIN sys_role sr ON sru.role_id = sr.id

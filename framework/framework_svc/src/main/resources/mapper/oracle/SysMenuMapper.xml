@@ -27,7 +27,8 @@
         FROM sys_menu sm LEFT JOIN sys_role_menu srm ON sm.id = srm.menu_id
         LEFT JOIN sys_role sr ON srm.role_id = sr.id
         where sm.enable_flag = 1
-        <foreach collection="roleCodes" item="roleCode" separator="," open="and sr.code IN (" close=")">
+        <foreach collection="roleCodes" item="roleCode" separator="," open="and sr.type || ':' || sr.code IN ("
+                 close=")">
             #{roleCode}
         </foreach>
         GROUP BY sm.id, sm.parent_id, sm.route_name, TO_CHAR(sm.route_path), TO_CHAR(sm.component_path), sm.menu_name,
@@ -40,7 +41,7 @@
         component_path, sm.menu_name,
         sm.leaf_flag, TO_CHAR(sm.icon) as icon, sm.order_num, sm.enable_flag, sm.hidden_flag, sm.cache_flag,
         sm.create_time, sm.update_time,
-        sm.update_user, JSON_ARRAYAGG(sr.code) r_code
+        sm.update_user, JSON_ARRAYAGG(sr.type || ':' || sr.code) r_code
         FROM sys_menu sm
         LEFT JOIN sys_role_menu srm ON srm.menu_id = sm.id
         LEFT JOIN sys_role sr ON srm.role_id = sr.id
@@ -86,7 +87,7 @@
         component_path, sm.menu_name,
         sm.leaf_flag, TO_CHAR(sm.icon) as icon, sm.order_num, sm.enable_flag, sm.hidden_flag, sm.cache_flag,
         sm.create_time, sm.update_time,
-        sm.update_user, JSON_ARRAYAGG(sr.code) r_code
+        sm.update_user, JSON_ARRAYAGG(sr.type || ':' || sr.code) r_code
         FROM sys_menu sm
         LEFT JOIN sys_role_menu srm ON srm.menu_id = sm.id
         LEFT JOIN sys_role sr ON srm.role_id = sr.id
