@@ -14,7 +14,7 @@
         <el-form-item label="菜单名" prop="menuName">
           <el-input v-model="menusFilterForm.data.menuName" />
         </el-form-item>
-        <el-form-item label="角色" prop="roleIdList">
+        <el-form-item label="访问角色" prop="roleIdList">
           <el-select
             v-model="menusFilterForm.data.roleIdList"
             collapse-tags
@@ -147,13 +147,13 @@
       </el-col>
       <el-col :xs="24" :sm="24" :md="24" :lg="3" :xl="3">
         <el-tabs type="border-card" class="menu-management-role">
-          <el-tab-pane label="角色绑定">
+          <el-tab-pane label="访问角色绑定">
             <el-tree
               v-if="listTableCurrClick"
               ref="roleTree"
               :data="roleTree.data"
               :props="roleTree.props"
-              node-key="code"
+              node-key="_typeCode"
               show-checkbox
               @check="roleCheck"
             />
@@ -227,6 +227,7 @@
             v-model="addMenuForm.data.parentId"
             :fetch-suggestions="listParentMenuSuggest"
             placeholder="不填写时为顶级菜单"
+            :disabled="isHiddenRouteClicked()"
             @select="handleParentMenuSelect"
           />
         </el-form-item>
@@ -282,6 +283,7 @@ import {
   updateMenuEnable
 } from '@/api/system';
 import {isExternalUrl} from '@/util/common';
+import {getRoleTypeCode, roleTypes} from '@/util/permission';
 
 export default {
   name: 'MenuManagement',
@@ -558,8 +560,13 @@ export default {
     },
     loadRoleTree() {
       // 查询role列表
-      listRole().then(res => {
+      listRole({type: roleTypes.ROLE_TYPE_ACCESS}).then(res => {
         this.roleTree.data = res.data;
+        if (this.roleTree.data && this.roleTree.data.length) {
+          this.roleTree.data.forEach(o => {
+            o._typeCode = getRoleTypeCode(o);
+          });
+        }
       });
     },
     listTableClick(curr, old) {
@@ -577,7 +584,7 @@ export default {
         addRoleMenu([{id: this.listTableCurrClick.id, roleId: obj.id}]).then(res => {
           if (res.data) {
             // 添加到对象中
-            this.listTableCurrClick.roles.push(obj.code);
+            this.listTableCurrClick.roles.push(obj._typeCode);
           }
         });
         return;
@@ -585,7 +592,7 @@ export default {
       removeRoleMenu([{id: this.listTableCurrClick.id, roleId: obj.id}]).then(res => {
         if (res.data) {
           // 删除该角色
-          const index = this.listTableCurrClick.roles.indexOf(obj.code);
+          const index = this.listTableCurrClick.roles.indexOf(obj._typeCode);
           this.listTableCurrClick.roles.splice(index, 1);
         }
       });

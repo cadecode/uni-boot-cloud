@@ -18,9 +18,9 @@
         <el-form-item label="角色" prop="roleIdList">
           <el-select v-model="usersFilterForm.data.roleIdList" collapse-tags multiple filterable placeholder="请选择">
             <el-option
-              v-for="item in roleTree.data"
+              v-for="item in usersFilterForm.option.roleList"
               :key="item.id"
-              :label="item.code"
+              :label="item._typeCode"
               :value="item.id"
             />
           </el-select>
@@ -39,7 +39,7 @@
       </el-form>
     </div>
     <el-row :gutter="15">
-      <el-col :xs="24" :sm="24" :md="24" :lg="21" :xl="21">
+      <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
         <el-tabs type="border-card" class="user-management-user">
           <el-tab-pane label="用户列表">
             <el-table
@@ -51,8 +51,7 @@
             >
               <el-table-column property="id" label="ID" width="170px" fixed />
               <el-table-column property="username" label="用户名" width="160px" fixed />
-              <el-table-column property="nickName" label="昵称" width="300px" fixed />
-              <el-table-column property="sex" label="性别" width="60px" />
+              <el-table-column property="nickName" label="昵称" width="230px" fixed />
               <el-table-column property="enableFlag" label="启用" width="60px">
                 <template v-slot="scope">
                   <el-switch
@@ -78,6 +77,7 @@
               <el-table-column property="deptName" label="部门名" width="170px" />
               <el-table-column property="phone" label="电话" width="150px" show-overflow-tooltip />
               <el-table-column property="mail" label="邮箱" width="150px" show-overflow-tooltip />
+              <el-table-column property="sex" label="性别" width="60px" />
               <el-table-column property="loginIp" label="登录IP" width="150px" />
               <el-table-column property="loginDate" label="登录时间" width="150px" />
             </el-table>
@@ -91,15 +91,27 @@
           </el-tab-pane>
         </el-tabs>
       </el-col>
-      <el-col :xs="24" :sm="24" :md="24" :lg="3" :xl="3">
+      <el-col :xs="24" :sm="24" :md="24" :lg="6" :xl="6">
         <el-tabs type="border-card" class="user-management-role">
-          <el-tab-pane label="角色绑定">
+          <el-tab-pane label="访问角色绑定">
             <el-tree
               v-if="userListTable.currClick"
-              ref="roleTree"
-              :data="roleTree.data"
-              :props="roleTree.props"
-              node-key="code"
+              ref="accessRoleTree"
+              :data="accessRoleTree.data"
+              :props="accessRoleTree.props"
+              node-key="_typeCode"
+              show-checkbox
+              @check="roleCheck"
+            />
+            <el-empty v-else description="请先点击表格选择一行数据" />
+          </el-tab-pane>
+          <el-tab-pane label="数据角色绑定">
+            <el-tree
+              v-if="userListTable.currClick"
+              ref="dataRoleTree"
+              :data="dataRoleTree.data"
+              :props="dataRoleTree.props"
+              node-key="_typeCode"
               show-checkbox
               @check="roleCheck"
             />
@@ -212,6 +224,7 @@ import {
   updateUser,
   updateUserEnable
 } from '@/api/system';
+import {getRoleTypeCode, roleTypes} from '@/util/permission';
 
 export default {
   name: 'UserManagement',
@@ -225,6 +238,9 @@ export default {
           roleIdList: [],
           enableFlag: null
         },
+        option: {
+          roleList: []
+        },
         rules: {}
       },
       userListTable: {
@@ -236,7 +252,14 @@ export default {
           pageSize: 12
         }
       },
-      roleTree: {
+      accessRoleTree: {
+        data: [],
+        props: {
+          label: 'code',
+          children: 'children'
+        }
+      },
+      dataRoleTree: {
         data: [],
         props: {
           label: 'code',
@@ -385,8 +408,23 @@ export default {
     },
     loadRoleTree() {
       // 查询role列表
-      listRole().then(res => {
-        this.roleTree.data = res.data;
+      listRole({type: roleTypes.ROLE_TYPE_ACCESS}).then(res => {
+        this.accessRoleTree.data = res.data;
+        if (this.accessRoleTree.data && this.accessRoleTree.data.length) {
+          this.usersFilterForm.option.roleList.push(...this.accessRoleTree.data);
+          this.accessRoleTree.data.forEach(o => {
+            o._typeCode = getRoleTypeCode(o);
+          });
+        }
+      });
+      listRole({type: roleTypes.ROLE_TYPE_DATA}).then(res => {
+        this.dataRoleTree.data = res.data;
+        if (this.dataRoleTree.data && this.dataRoleTree.data.length) {
+          this.usersFilterForm.option.roleList.push(...this.dataRoleTree.data);
+          this.dataRoleTree.data.forEach(o => {
+            o._typeCode = getRoleTypeCode(o);
+          });
+        }
       });
     },
     loadDeptTree() {
@@ -398,7 +436,8 @@ export default {
       this.userListTable.currClick = curr;
       if (curr) {
         this.$nextTick(() => {
-          this.$refs.roleTree.setCheckedKeys(curr.roles);
+          this.$refs.accessRoleTree.setCheckedKeys(curr.roles);
+          this.$refs.dataRoleTree.setCheckedKeys(curr.roles);
         });
       }
     },
@@ -409,7 +448,7 @@ export default {
         addRoleUser([{id: this.userListTable.currClick.id, roleId: obj.id}]).then(res => {
           if (res.data) {
             // 添加到对象中
-            this.userListTable.currClick.roles.push(obj.code);
+            this.userListTable.currClick.roles.push(obj._typeCode);
           }
         });
         return;
@@ -417,7 +456,7 @@ export default {
       removeRoleUser([{id: this.userListTable.currClick.id, roleId: obj.id}]).then(res => {
         if (res.data) {
           // 删除该角色
-          const index = this.userListTable.currClick.roles.indexOf(obj.code);
+          const index = this.userListTable.currClick.roles.indexOf(obj._typeCode);
           this.userListTable.currClick.roles.splice(index, 1);
         }
       });

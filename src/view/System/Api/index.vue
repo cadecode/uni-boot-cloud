@@ -5,7 +5,7 @@
         <el-form-item label="接口路径" prop="url">
           <el-input v-model="apisFilterForm.data.url" />
         </el-form-item>
-        <el-form-item label="角色" prop="roleIdList">
+        <el-form-item label="访问角色" prop="roleIdList">
           <el-select v-model="apisFilterForm.data.roleIdList" collapse-tags multiple filterable placeholder="请选择">
             <el-option
               v-for="item in roleTree.data"
@@ -62,13 +62,13 @@
       </el-col>
       <el-col :xs="24" :sm="24" :md="24" :lg="3" :xl="3">
         <el-tabs type="border-card" class="api-management-role">
-          <el-tab-pane label="角色绑定">
+          <el-tab-pane label="访问角色绑定">
             <el-tree
               v-if="apiListTable.currClick"
               ref="roleTree"
               :data="roleTree.data"
               :props="roleTree.props"
-              node-key="code"
+              node-key="_typeCode"
               show-checkbox
               @check="roleCheck"
             />
@@ -148,6 +148,7 @@ import {
   updateApi
 } from '@/api/system';
 import BaseDictLoader from '@/component/BaseDictLoader';
+import {getRoleTypeCode, roleTypes} from '@/util/permission';
 
 export default {
   name: 'ApiManagement',
@@ -285,8 +286,13 @@ export default {
     },
     loadRoleTree() {
       // 查询role列表
-      listRole().then(res => {
+      listRole({type: roleTypes.ROLE_TYPE_ACCESS}).then(res => {
         this.roleTree.data = res.data;
+        if (this.roleTree.data && this.roleTree.data.length) {
+          this.roleTree.data.forEach(o => {
+            o._typeCode = getRoleTypeCode(o);
+          });
+        }
       });
     },
     apiListTableClick(curr, old) {
@@ -304,7 +310,7 @@ export default {
         addRoleApi([{id: this.apiListTable.currClick.id, roleId: obj.id}]).then(res => {
           if (res.data) {
             // 添加到对象中
-            this.apiListTable.currClick.roles.push(obj.code);
+            this.apiListTable.currClick.roles.push(obj._typeCode);
           }
         });
         return;
@@ -312,7 +318,7 @@ export default {
       removeRoleApi([{id: this.apiListTable.currClick.id, roleId: obj.id}]).then(res => {
         if (res.data) {
           // 删除该角色
-          const index = this.apiListTable.currClick.roles.indexOf(obj.code);
+          const index = this.apiListTable.currClick.roles.indexOf(obj._typeCode);
           this.apiListTable.currClick.roles.splice(index, 1);
         }
       });

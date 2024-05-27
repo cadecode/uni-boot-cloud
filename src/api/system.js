@@ -60,10 +60,11 @@ export function listUserRolesVoByUserIds(data) {
   });
 }
 
-export function listRole() {
+export function listRole(data) {
   return request({
     url: '/framework/system/role/list',
-    method: 'post'
+    method: 'post',
+    data
   });
 }
 

@@ -2,6 +2,19 @@
   <div class="app-container  role-management-container">
     <div class="role-management-filter">
       <el-form ref="rolesFilterForm" size="small" inline :model="rolesFilterForm.data" :rules="rolesFilterForm.rules">
+        <el-form-item label="角色类型" prop="type">
+          <el-select
+            v-model="rolesFilterForm.data.type"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in roleTypes.ROLE_TYPES"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="角色代码" prop="code">
           <el-input v-model="rolesFilterForm.data.code" />
         </el-form-item>
@@ -29,6 +42,7 @@
               <el-table-column property="id" label="ID" width="170px" fixed />
               <el-table-column property="code" label="角色代码" width="140px" fixed />
               <el-table-column property="name" label="角色名" width="180px" fixed />
+              <el-table-column property="type" label="角色类型" width="100px" />
               <el-table-column property="updateTime" label="更新时间" width="150px" />
               <el-table-column property="updateUser" label="更新人" width="160px" />
               <el-table-column property="createTime" label="创建时间" width="150px" />
@@ -58,7 +72,7 @@
         <el-tabs type="border-card" class="role-management-bind">
           <el-tab-pane label="菜单绑定" class="role-management-bind-menu">
             <el-tree
-              v-if="roleListTable.currClick"
+              v-if="isAccessRoleCurrClick"
               ref="menuTree"
               :data="menuTree.data"
               :props="menuTree.props"
@@ -72,7 +86,7 @@
           </el-tab-pane>
           <el-tab-pane label="API绑定" class="role-management-bind-api">
             <el-tree
-              v-if="roleListTable.currClick"
+              v-if="isAccessRoleCurrClick"
               ref="apiTree"
               :data="apiTree.data"
               :props="apiTree.props"
@@ -123,6 +137,19 @@
         <el-form-item label="角色名" prop="name">
           <el-input v-model="addRoleForm.data.name" />
         </el-form-item>
+        <el-form-item label="角色类型" prop="type">
+          <el-select
+            v-model="addRoleForm.data.type"
+            placeholder="请选择"
+          >
+            <el-option
+              v-for="item in roleTypes.ROLE_TYPES"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input v-model="addRoleForm.data.description" />
         </el-form-item>
@@ -149,17 +176,22 @@ import {
   removeRoleMenu,
   updateRole
 } from '@/api/system';
+import {roleTypes} from '@/util/permission';
 
 export default {
   name: 'RoleManagement',
   data() {
     return {
+      roleTypes,
       rolesFilterForm: {
         data: {
           code: null,
-          name: null
+          name: null,
+          type: roleTypes.ROLE_TYPE_ACCESS
         },
-        rules: {}
+        rules: {
+          type: [{required: true, message: '请选择角色类型', trigger: 'blur'}]
+        }
       },
       roleListTable: {
         currClick: null,
@@ -206,16 +238,23 @@ export default {
         data: {
           code: null,
           name: null,
+          type: null,
           description: null
         },
         showDialog: false,
         rule: {
           code: [{required: true, message: '请输入角色代码', trigger: 'blur'}],
           name: [{required: true, message: '请输入角色名', trigger: 'blur'}],
+          type: [{required: true, message: '请选择角色类型', trigger: 'blur'}],
           description: [{required: true, message: '请输入描述', trigger: 'blur'}]
         }
       }
     };
+  },
+  computed: {
+    isAccessRoleCurrClick() {
+      return this.roleListTable.currClick && this.roleListTable.currClick.type === roleTypes.ROLE_TYPE_ACCESS;
+    }
   },
   created() {
     this.pageRoles(1);
