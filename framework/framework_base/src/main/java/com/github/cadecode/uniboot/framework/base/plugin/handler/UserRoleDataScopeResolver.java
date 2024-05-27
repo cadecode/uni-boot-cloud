@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjUtil;
 import com.github.cadecode.uniboot.common.plugin.mybatis.annotation.UseDataScope;
 import com.github.cadecode.uniboot.common.plugin.mybatis.config.MybatisConfig;
 import com.github.cadecode.uniboot.common.plugin.mybatis.handler.DataScopeResolver;
+import com.github.cadecode.uniboot.framework.base.enums.RoleTypeEnum;
 import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.base.util.SecurityUtil;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 @Component(UseDataScope.DEFAULT_RESOLVER_NAME)
 public class UserRoleDataScopeResolver implements DataScopeResolver {
 
-    public static final String SCOPE_ROLE_PREFIX = "DATA:";
+    public static final String SCOPE_ROLE_PREFIX = RoleTypeEnum.DATA.getPrefix() + ":";
 
     @Override
     public List<Object> getScopes() {
