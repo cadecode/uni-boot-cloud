@@ -23,7 +23,8 @@
     </resultMap>
     <select id="selectRolesVoByUserIds" resultMap="SysUserRolesVoMap">
         SELECT su.id, su.username, su.password, su.nick_name, su.dept_id, su.enable_flag, su.sex, su.mail, su.phone,
-        su.login_ip, su.login_date, su.create_time, su.update_time, su.update_user, JSON_ARRAYAGG(sr.code) r_code,
+        su.login_ip, su.login_date, su.create_time, su.update_time, su.update_user, JSON_ARRAYAGG(sr.type || ':' ||
+        sr.code) r_code,
         sd.dept_name d_dept_name
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id
@@ -55,7 +56,7 @@
                su.create_time,
                su.update_time,
                su.update_user,
-               JSON_ARRAYAGG(sr.code) r_code,
+               JSON_ARRAYAGG(sr.type || ':' || sr.code) r_code,
                sd.dept_name           d_dept_name
         FROM sys_user su
                  LEFT JOIN sys_role_user sru ON sru.user_id = su.id
@@ -67,7 +68,8 @@
     </select>
     <select id="selectRolesVo" resultMap="SysUserRolesVoMap">
         SELECT su.id, su.username, su.password, su.nick_name, su.dept_id, su.enable_flag, su.sex, su.mail, su.phone,
-        su.login_ip, su.login_date, su.create_time, su.update_time, su.update_user, JSON_ARRAYAGG(sr.code) r_code,
+        su.login_ip, su.login_date, su.create_time, su.update_time, su.update_user, JSON_ARRAYAGG(sr.type || ':' ||
+        sr.code) r_code,
         sd.dept_name d_dept_name
         FROM sys_user su
         LEFT JOIN sys_role_user sru ON sru.user_id = su.id

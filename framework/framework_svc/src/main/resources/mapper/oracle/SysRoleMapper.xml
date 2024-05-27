@@ -67,6 +67,7 @@
                     <bind name="bindName" value="'%' + req.name + '%'"/>
                     AND sr.name like #{bindName}
                 </if>
+                AND sr.type = #{req.type.prefix}
             </where>
         </if>
         GROUP BY sr.id, sr.code, sr.name, sr.description, sr.create_time, sr.update_time, sr.update_user

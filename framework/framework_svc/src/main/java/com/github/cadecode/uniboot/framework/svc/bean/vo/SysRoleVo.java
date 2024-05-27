@@ -1,6 +1,7 @@
 package com.github.cadecode.uniboot.framework.svc.bean.vo;
 
 import com.github.cadecode.uniboot.common.core.web.response.PageParams;
+import com.github.cadecode.uniboot.framework.base.enums.RoleTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,6 +31,8 @@ public class SysRoleVo {
     public static class SysRoleUnionReqVo extends PageParams {
         private String code;
         private String name;
+        @NotNull
+        private RoleTypeEnum type;
     }
 
     @Data
@@ -50,47 +53,43 @@ public class SysRoleVo {
         @NotEmpty
         private String name;
         @NotNull
+        private RoleTypeEnum type;
+        @NotNull
         @NotEmpty
         private String description;
     }
 
     @Data
-    public static class SysRoleListResVo {
-
-        private Long id;
-
+    public static class SysRoleListReqVo {
         private String code;
-
         private String name;
+        @NotNull
+        private RoleTypeEnum type;
+    }
 
+    @Data
+    public static class SysRoleListResVo {
+        private Long id;
+        private String code;
+        private String name;
+        private RoleTypeEnum type;
         private String description;
-
         private Date createTime;
-
         private Date updateTime;
-
         private String updateUser;
     }
 
     @Data
     public static class SysRoleUnionResVo {
-
         private Long id;
-
         private String code;
-
         private String name;
-
+        private RoleTypeEnum type;
         private String description;
-
         private Date createTime;
-
         private Date updateTime;
-
         private String updateUser;
-
         private List<Long> menus;
-
         private List<Long> apis;
     }
 }
