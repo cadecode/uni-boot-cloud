@@ -13,12 +13,12 @@ INSERT INTO sys_user (id, username, password, nick_name, dept_id, enable_flag)
 -- ----------------------------
 -- 插入角色
 -- ----------------------------
-INSERT INTO sys_role (id, code, name, description)
-    VALUE (1, 'admin', '管理员用户', '管理员权限');
-INSERT INTO sys_role (id, code, name, description)
-    VALUE (2, 'manager', '高级用户', '高级用户权限');
-INSERT INTO sys_role (id, code, name, description)
-    VALUE (3, 'normal', '普通用户', '普通用户权限');
+INSERT INTO sys_role (id, code, name, type, description)
+    VALUE (1, 'admin', '管理员用户', 'ACCESS', '管理员权限');
+INSERT INTO sys_role (id, code, name, type, description)
+    VALUE (2, 'manager', '高级用户', 'ACCESS', '高级用户权限');
+INSERT INTO sys_role (id, code, name, type, description)
+    VALUE (3, 'normal', '普通用户', 'ACCESS', '普通用户权限');
 -- ----------------------------
 -- 插入菜单
 -- ----------------------------

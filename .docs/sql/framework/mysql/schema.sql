@@ -35,12 +35,14 @@ CREATE TABLE IF NOT EXISTS sys_role
     id          BIGINT UNSIGNED,
     code        VARCHAR(50)  NOT NULL COMMENT '角色代码',
     name        VARCHAR(50)  NOT NULL COMMENT '角色名称',
+    type VARCHAR(50) NOT NULL COMMENT '角色类型',
     description VARCHAR(100) COMMENT '角色描述',
+
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     update_time DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     update_user VARCHAR(100) NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uk_code (code)
+    UNIQUE KEY uk_code_type (code, type)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
     COMMENT '系统角色表';

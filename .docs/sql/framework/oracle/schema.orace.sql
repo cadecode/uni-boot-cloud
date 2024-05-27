@@ -48,12 +48,13 @@ CREATE TABLE sys_role
     id          NUMBER(19),
     code        VARCHAR2(50)  NOT NULL,
     name        VARCHAR2(50)  NOT NULL,
+    type VARCHAR2(50) NOT NULL,
     description VARCHAR2(100),
     create_time TIMESTAMP(0) DEFAULT SYSTIMESTAMP,
     update_time TIMESTAMP(0) DEFAULT NULL,
     update_user VARCHAR2(100) NULL,
     PRIMARY KEY (id),
-    CONSTRAINT uk_sys_role_code UNIQUE (code)
+    CONSTRAINT uk_sys_role_code_type UNIQUE (code, type)
 )
 ;
 
@@ -61,6 +62,7 @@ COMMENT ON TABLE sys_role IS '系统角色表';
 
 COMMENT ON COLUMN sys_role.code IS '角色代码';
 COMMENT ON COLUMN sys_role.name IS '角色名称';
+COMMENT ON COLUMN sys_role.type IS '角色类型';
 COMMENT ON COLUMN sys_role.description IS '角色描述';
 -- -----------
 -- 系统菜单表
