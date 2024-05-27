@@ -1,3 +1,20 @@
+## [2024.1.0](https://github.com/cadecode/uni-boot-cloud-vue/compare/2023.1.4...2024.1.0) (2024-05-27)
+
+
+### Bug Fixes
+
+* 修复 token 过期时重复弹窗 ([a79e259](https://github.com/cadecode/uni-boot-cloud-vue/commit/a79e2594ea7708c8d6c7087e2308b187383cacfe))
+
+
+### Features
+
+* 角色增加 type，适配各页面角色绑定逻辑 ([e1371e6](https://github.com/cadecode/uni-boot-cloud-vue/commit/e1371e69bc5779de06bfcca02f6142d44dab4cd4))
+* 添加权限相关工具方法，获取角色 tpyeCode ([981edb9](https://github.com/cadecode/uni-boot-cloud-vue/commit/981edb94385f4ce748574122014fc66ebf25fb00))
+* 项目更名为 uni-boot-cloud-vue ([bc2db4e](https://github.com/cadecode/uni-boot-cloud-vue/commit/bc2db4e90702cd6a04d35f1f4929305c9ba4e190))
+* settings 支持 asset 路径资源 ([0ab1142](https://github.com/cadecode/uni-boot-cloud-vue/commit/0ab11429cf246ca13cd7951acc31ced1148d0274))
+
+
+
 ## [2023.1.4](https://github.com/cadecode/uni-boot-cloud-vue/compare/2023.1.3...2023.1.4) (2023-12-01)
 
 
