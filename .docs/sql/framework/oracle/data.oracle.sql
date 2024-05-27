@@ -13,12 +13,12 @@ VALUES (3, 'user01', '$2a$10$mQJ9z.l0FW.pUSJ0BnrkjeMHrGJs96oGY3mzB1HZGSAvFgHoo2k
 -- ----------------------------
 -- 插入角色
 -- ----------------------------
-INSERT INTO sys_role (id, code, name, description)
-VALUES (1, 'admin', '管理员用户', '管理员权限');
-INSERT INTO sys_role (id, code, name, description)
-VALUES (2, 'manager', '高级用户', '高级用户权限');
-INSERT INTO sys_role (id, code, name, description)
-VALUES (3, 'normal', '普通用户', '普通用户权限');
+INSERT INTO sys_role (id, code, name, type, description)
+VALUES (1, 'admin', '管理员用户', 'ACCESS', '管理员权限');
+INSERT INTO sys_role (id, code, name, type, description)
+VALUES (2, 'manager', '高级用户', 'ACCESS', '高级用户权限');
+INSERT INTO sys_role (id, code, name, type, description)
+VALUES (3, 'normal', '普通用户', 'ACCESS', '普通用户权限');
 -- ----------------------------
 -- 插入菜单
 -- ----------------------------
