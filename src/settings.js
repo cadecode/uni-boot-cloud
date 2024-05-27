@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Uni Boot Admin 管理系统',
+  title: 'Uni Boot Cloud Vue',
 
   /**
    * 是否固定头部
