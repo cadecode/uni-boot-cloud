@@ -1,16 +1,12 @@
 # uni-boot-cloud
 
-> 基于 SpringCloud 的通用后台管理系统骨架，引入 Nacos、OpenFeign、Gateway 等微服务核心组件
->
-> 基于 SpringBoot 生态，集成 SpringSecurity、Druid、MyBatisPlus、多数据源、二级缓存、DynamicTP 等常用组件
-
 ## 项目简介
 
 1. 本项目是一套通用后台管理系统骨架，后端基于 SpringCloud 生态，集成常用组件，方便扩展使用
 
 2. 本项目采用前后端分离结构，以下是配套前端项目
 
-   [uni-boot-cloud-vue](https://github.com/cadecode/uni-boot-cloud-vue) 基于 Vue + ElementUI
+   [uni-boot-cloud-vue](https://github.com/cadecode/uni-boot-cloud-vue)
 
 3. 版本与环境
 
@@ -60,11 +56,9 @@
 
    集成 x-file-storage，提供多平台文件存储、下载的支持
 
-   集成 xxl-job、PowerJob，提供分布式定时任务调度支持
+   集成 xxl-job，提供分布式定时任务调度支持
 
-   集成 sharding jdbc，提供分库分表、读写分离支持
-
-   ...
+   支持基于角色的数据库字段权限隔离
 
 ## 功能模块
 
@@ -129,6 +123,22 @@
 
 ## 演示截图
 
-参见配套前端项目
+<table>
+    <tr>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_home.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_user_center.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_user_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_menu_management.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_role_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_api_management.png"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_log_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_dict_management.png"/></td>
+    </tr>
+</table>
 
-[uni-boot-cloud-vue](https://github.com/cadecode/uni-boot-cloud-vue)
