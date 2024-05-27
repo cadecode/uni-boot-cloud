@@ -1,3 +1,50 @@
+# [2024.1.0](https://github.com/cadecode/uni-boot-cloud/compare/2023.1.3...2024.1.0) (2024-05-27)
+
+### Bug Fixes
+
+* 对 DATA
+  类角色去除前缀 ([ae183d8](https://github.com/cadecode/uni-boot-cloud/commit/ae183d8c33c6b4812ae4bc455b5889a02052dc24))
+* 特殊处理 login url，防止未清理的无效 token
+  拦截登录 ([d331e03](https://github.com/cadecode/uni-boot-cloud/commit/d331e0364db80a70e742fac9f6d089b73d673e1f))
+* 在没有使用注解时，跳过
+  DataPermissionInterceptor ([9fbd235](https://github.com/cadecode/uni-boot-cloud/commit/9fbd235087b6d117dba336b237ce7aa7bd752428))
+* DATA
+  类角色字符串截取错误 ([6065472](https://github.com/cadecode/uni-boot-cloud/commit/60654722eb1424f335a430bdb2812cd7d60767f9))
+* roles 副本解决 retainAll
+  影响 ([2c3c3ca](https://github.com/cadecode/uni-boot-cloud/commit/2c3c3ca163107875e935c9cdc8192871e02cfde8))
+* SysMenuMapper oracle DISTINCT
+  错误 ([2f82bbd](https://github.com/cadecode/uni-boot-cloud/commit/2f82bbd35d2630edfa2014504c3490e775a36a43))
+
+### Features
+
+* 服务启动 jar
+  指定打包名称，取消默认携带版本号 ([f140ebb](https://github.com/cadecode/uni-boot-cloud/commit/f140ebb32a62bc4dc2aacc9d32efb2e3858eedc9))
+* 角色管理按 type:code
+  进行区分管理 ([30e3411](https://github.com/cadecode/uni-boot-cloud/commit/30e34112d7a24bfac759f7d5e2a71e2f4aff216d))
+*
+实现基于角色的数据范围解析器 ([db99697](https://github.com/cadecode/uni-boot-cloud/commit/db99697ce06affe736670ee37c147d8c9c1c84c5))
+* 添加
+  DataPermissionInterceptor ([8b88816](https://github.com/cadecode/uni-boot-cloud/commit/8b88816f3d6c5a45216af3929e351141496eaafb))
+* 添加 ShardingJdbc
+  强制路由主库的工具类 ([15a81e6](https://github.com/cadecode/uni-boot-cloud/commit/15a81e6622776e2178fcd30335274ea213100e3e))
+* 项目更名为
+  uni-boot-cloud ([de9fd0f](https://github.com/cadecode/uni-boot-cloud/commit/de9fd0f157ab5afe2f263d78e35367c9611ddf2a))
+* DataScopeResoler 按 RoleTypeEnum
+  处理前缀 ([1b4d66e](https://github.com/cadecode/uni-boot-cloud/commit/1b4d66e50dbb03f1e1a6fa54fcdeb1223f9332ac))
+* framework 模块添加 oracle
+  数据库支持 ([0e11013](https://github.com/cadecode/uni-boot-cloud/commit/0e11013c7b9cfed54e3ba4daf63e48f647ddd9e5))
+* logback 增加 warn 级别 log
+  文件 ([c5d1af2](https://github.com/cadecode/uni-boot-cloud/commit/c5d1af26de9656d4c882ff444779b661cb435dab))
+* TxMsgKit
+  添加没有事务的消息发送方法 ([9bf2af3](https://github.com/cadecode/uni-boot-cloud/commit/9bf2af33d054190e838e4b525fc6c9ce91c6526e))
+* x-file-storage 更新到
+  2.1.0 ([70eda50](https://github.com/cadecode/uni-boot-cloud/commit/70eda50cd9dff87d5af2d47d4826ef08d639f315))
+
+### Reverts
+
+* 移除 shardingjdbc
+  相关依赖及设施 ([049c203](https://github.com/cadecode/uni-boot-cloud/commit/049c203a8e579da87d639023751a556695341f45))
+
 ## [2023.1.4](https://github.com/cadecode/uni-boot-cloud/compare/2023.1.3...2023.1.4) (2023-12-01)
 
 ### Bug Fixes
