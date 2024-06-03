@@ -25,7 +25,7 @@ function getToken() {
 }
 
 function setToken(token) {
-  return token && Cookies.set(tokenKey, token);
+  return Cookies.get(tokenKey) || token && Cookies.set(tokenKey, token);
 }
 
 function removeToken() {

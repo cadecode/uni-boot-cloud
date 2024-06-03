@@ -86,9 +86,14 @@ const actions = {
     });
   },
   // 获取用户信息
-  getInfo() {
+  getInfo({commit}) {
     return getInfo().then(async(res) => {
-      const {menuList} = res.data;
+      const {menuList, userDetails} = res.data;
+      const {nickName, roles, avatar} = userDetails;
+      commit('SET_USER_INFO', userDetails);
+      commit('SET_NAME', nickName);
+      commit('SET_AVATAR', avatar);
+      commit('SET_ROLES', roles);
       return menuList;
     });
   },
