@@ -1,7 +1,7 @@
 #!/bin/bash
 # 获取提交信息
 commit_msg_file=$(git rev-parse --git-dir)/COMMIT_EDITMSG
-commit_msg=$(cat ${commit_msg_file})
+commit_msg=$(head -n 1 ${commit_msg_file})
 # 使用正则匹配 Angular 提交日志格式
 regex="^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert|wip|workflow|release)(\(.+\))?: .{1,72}$"
 
