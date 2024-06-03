@@ -2,6 +2,7 @@ package com.github.cadecode.uniboot.framework.svc.bean.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.cadecode.uniboot.common.core.web.response.PageParams;
+import com.github.cadecode.uniboot.framework.base.security.model.SysUserDetails;
 import com.github.cadecode.uniboot.framework.svc.bean.vo.SysMenuVo.SysMenuTreeResVo;
 import lombok.*;
 
@@ -128,6 +129,7 @@ public class SysUserVo {
     @NoArgsConstructor
     @Builder
     public static class SysUserInfoResVo {
+        private SysUserDetails userDetails;
         private List<SysMenuTreeResVo> menuList;
     }
 }

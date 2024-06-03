@@ -1,6 +1,7 @@
 package com.github.cadecode.uniboot.framework.base.security.strategy;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.json.JSONObject;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
 import com.github.cadecode.uniboot.common.core.util.TokenUtil;
@@ -64,6 +65,7 @@ public class JwtTokenAuthStrategyImpl extends TokenAuthStrategy {
                     SecurityUtil.getExpiration(), SecurityUtil.getSecret());
             // token 放在请求头
             response.addHeader(HttpConst.HEAD_TOKEN, newJwtToken);
+            ServletUtil.addCookie(response, HttpConst.HEAD_TOKEN, newJwtToken, SecurityUtil.getExpiration().intValue());
         }
         filterChain.doFilter(request, response);
     }

@@ -43,6 +43,7 @@ public class SignOutSuccessHandler implements LogoutSuccessHandler {
             String loginUserKey = KeyGeneUtil.key(KeyPrefixConst.LOGIN_USER, uuidToken);
             RedisUtil.del(loginUserKey);
         }
+        ServletUtil.addCookie(response, HttpConst.HEAD_TOKEN, "", 0);
         // 写入响应
         ApiResult<Object> result = ApiResult.error(AuthErrorEnum.TOKEN_LOGOUT).path(FrameSecurityConfig.LOGOUT_URL);
         response.setStatus(AuthErrorEnum.TOKEN_LOGOUT.getStatus());
