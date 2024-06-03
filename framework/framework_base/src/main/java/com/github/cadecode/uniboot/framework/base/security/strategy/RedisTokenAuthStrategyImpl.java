@@ -1,9 +1,11 @@
 package com.github.cadecode.uniboot.framework.base.security.strategy;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 import com.github.cadecode.uniboot.common.core.extension.strategy.StrategyContext;
 import com.github.cadecode.uniboot.common.plugin.cache.util.KeyGeneUtil;
 import com.github.cadecode.uniboot.common.plugin.cache.util.RedisUtil;
+import com.github.cadecode.uniboot.framework.api.consts.HttpConst;
 import com.github.cadecode.uniboot.framework.api.consts.KeyPrefixConst;
 import com.github.cadecode.uniboot.framework.api.enums.AuthErrorEnum;
 import com.github.cadecode.uniboot.framework.api.enums.AuthModelEnum;
@@ -49,6 +51,7 @@ public class RedisTokenAuthStrategyImpl extends TokenAuthStrategy {
         }
         // 用户存在，刷新过期时间
         RedisUtil.expire(loginUserKey, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
+        ServletUtil.addCookie(response, HttpConst.HEAD_TOKEN, uuidToken, SecurityUtil.getExpiration().intValue());
         // 设置 AuthenticationToken
         setAuthentication(request, sysUserDetails);
         filterChain.doFilter(request, response);

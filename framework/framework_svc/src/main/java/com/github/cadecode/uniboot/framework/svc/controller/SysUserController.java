@@ -59,7 +59,7 @@ public class SysUserController {
     public SysUserInfoResVo getInfo() {
         SysUserDetails userDetails = SecurityUtil.getUserDetails(null);
         List<SysMenuTreeResVo> sysMenuTreeResVos = sysMenuService.listTreeVoByRoles(userDetails.getRoles());
-        return SysUserInfoResVo.builder().menuList(sysMenuTreeResVos).build();
+        return SysUserInfoResVo.builder().userDetails(userDetails).menuList(sysMenuTreeResVos).build();
     }
 
     @ApiOperation("修改用户信息（用户中心）")
