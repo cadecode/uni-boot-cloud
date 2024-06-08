@@ -115,14 +115,15 @@ function getReLoginConfirm() {
       type: 'warning',
       confirmButtonText: '返回登录页',
       cancelButtonText: '取消'
-    }).then(async() => {
-      confirming = false;
-      // 使用 async 包裹，可等待完成 resetToken
-      // 清理 token 并返回登录页
-      await store.dispatch('user/resetToken');
-      router.push(`/login?redirect=${router.currentRoute.fullPath}`);
-      throw new Error(JSON.stringify(res.error));
-    });
+    })
+      .then(async() => {
+        // 使用 async 包裹，可等待完成 resetToken
+        // 清理 token 并返回登录页
+        await store.dispatch('user/resetToken');
+        router.push(`/login?redirect=${router.currentRoute.fullPath}`);
+        throw new Error(JSON.stringify(res.error));
+      })
+      .finally(() => { confirming = false; });
   };
 }
 
