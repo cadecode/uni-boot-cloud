@@ -5,7 +5,7 @@ about: 功能需求
 
 ---
 
-### Describe the reuqest 需求描述
+### Describe the request 需求描述
 
 A clear and concise description of what the request is. 简洁有效的说明需求。
 
