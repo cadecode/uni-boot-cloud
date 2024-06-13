@@ -13,9 +13,17 @@ const constRoutes = [
     hidden: true
   },
   {
-    path: '/404',
-    component: () => import('@/view/Page404.vue'),
-    hidden: true
+    path: '/error',
+    component: Layout,
+    redirect: '/error/404',
+    hidden: true,
+    children: [
+      {
+        path: '/error/404',
+        component: () => import('@/view/Page404.vue')
+      }
+    ]
+
   }
 ];
 
@@ -27,7 +35,7 @@ const homeRoute = {path: '/', hidden: true};
 /**
  * 404兜底路由
  */
-const notFoundRoute = {path: '*', redirect: '/404', hidden: true};
+const notFoundRoute = {path: '*', redirect: '/error/404', hidden: true};
 
 /**
  * @typedef {Object} Menu
