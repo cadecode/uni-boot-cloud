@@ -6,6 +6,7 @@
         <result column="id" property="id"/>
         <result column="code" property="code"/>
         <result column="name" property="name"/>
+        <result column="type" property="type"/>
         <result column="description" property="description"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -50,7 +51,7 @@
         </if>
     </select>
     <select id="selectUnionVo" resultMap="SysRoleUnionVoMap">
-        SELECT sr.id, sr.code, sr.name, sr.description, sr.create_time, sr.update_time, sr.update_user,
+        SELECT sr.id, sr.code, sr.name, sr.type, sr.description, sr.create_time, sr.update_time, sr.update_user,
         JSON_ARRAYAGG(sm.id) m_id, JSON_ARRAYAGG(sa.id) a_id
         FROM sys_role sr
         LEFT JOIN sys_role_menu srm ON srm.role_id = sr.id
@@ -70,11 +71,11 @@
                 AND sr.type = #{req.type.prefix}
             </where>
         </if>
-        GROUP BY sr.id, sr.code, sr.name, sr.description, sr.create_time, sr.update_time, sr.update_user
+        GROUP BY sr.id, sr.code, sr.name, sr.type, sr.description, sr.create_time, sr.update_time, sr.update_user
         ORDER BY sr.code
     </select>
     <select id="selectUnionVoByRoleIds" resultMap="SysRoleUnionVoMap">
-        SELECT sr.id, sr.code, sr.name, sr.description, sr.create_time, sr.update_time, sr.update_user,
+        SELECT sr.id, sr.code, sr.name, sr.type, sr.description, sr.create_time, sr.update_time, sr.update_user,
         JSON_ARRAYAGG(sm.id) m_id, JSON_ARRAYAGG(sa.id) a_id
         FROM sys_role sr
         LEFT JOIN sys_role_menu srm ON srm.role_id = sr.id
@@ -88,7 +89,7 @@
             </foreach>
             )
         </if>
-        GROUP BY sr.id, sr.code, sr.name, sr.description, sr.create_time, sr.update_time, sr.update_user
+        GROUP BY sr.id, sr.code, sr.name, sr.type, sr.description, sr.create_time, sr.update_time, sr.update_user
         ORDER BY sr.code
     </select>
     <delete id="deleteRoleUserByUserIds">
