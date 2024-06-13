@@ -22,7 +22,10 @@
               :key="item.id"
               :label="item._typeCode"
               :value="item.id"
-            />
+            >
+              <span style="float: left">{{ item.code }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.type }}</span>
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="启用" prop="enableFlag">
