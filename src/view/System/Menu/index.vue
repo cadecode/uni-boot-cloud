@@ -98,13 +98,14 @@
               <el-table-column property="icon" label="图标" width="150px" />
             </el-table>
           </el-tab-pane>
-          <el-tab-pane name="hiddenRouteListTab" label="内部路由列表">
+          <el-tab-pane name="hiddenRouteListTab" label="路由列表">
             <el-table
               ref="hiddenRouteListTable"
               height="calc(100vh - 221px)"
               :data="hiddenRouteListTable.data"
               highlight-current-row
               row-key="id"
+              :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
               @row-click="listTableClick"
             >
               <el-table-column property="id" label="ID" width="170px" fixed />
@@ -123,11 +124,19 @@
               <el-table-column property="createTime" label="创建时间" width="150px" />
               <el-table-column label="操作" width="180px">
                 <template v-slot="scope">
-                  <el-button size="mini" @click="updateMenu(scope.$index, scope.row)">
+                  <el-button v-if="scope.row.hiddenFlag" size="mini" @click="updateMenu(scope.$index, scope.row)">
                     <el-icon class="el-icon-edit" />
                   </el-button>
-                  <el-button size="mini" type="danger" @click="deleteMenu(scope.$index, scope.row)">
+                  <el-button v-if="scope.row.hiddenFlag" size="mini" type="danger" @click="deleteMenu(scope.$index, scope.row)">
                     <el-icon class="el-icon-delete" />
+                  </el-button>
+                  <el-button
+                    v-if="!scope.row.leafFlag"
+                    size="mini"
+                    type="info"
+                    @click="addMenu(scope.$index, scope.row)"
+                  >
+                    <el-icon class="el-icon-plus" />
                   </el-button>
                 </template>
               </el-table-column>
@@ -135,13 +144,13 @@
               <el-table-column property="componentPath" label="组件路径" width="300px" show-overflow-tooltip />
               <el-table-column property="cacheFlag" label="是否缓存" :formatter="(row, col, cell) => cell?'是':'否'" />
             </el-table>
-            <el-pagination
+            <!--<el-pagination
               layout="prev, pager, next"
               :page-size="hiddenRouteListTable.page.pageSize"
               :total="hiddenRouteListTable.page.total"
               :current-page.sync="hiddenRouteListTable.page.pageNumber"
               @current-change="pageMenus"
-            />
+            />-->
           </el-tab-pane>
         </el-tabs>
       </el-col>
@@ -226,8 +235,7 @@
           <el-autocomplete
             v-model="addMenuForm.data.parentId"
             :fetch-suggestions="listParentMenuSuggest"
-            placeholder="不填写时为顶级菜单"
-            :disabled="isHiddenRouteClicked()"
+            placeholder="不填写时为顶级菜单/路由"
             @select="handleParentMenuSelect"
           />
         </el-form-item>
@@ -243,7 +251,7 @@
         <el-form-item label="是否页面" prop="leafFlag">
           <el-radio-group v-model="addMenuForm.data.leafFlag">
             <el-radio :label="true">是</el-radio>
-            <el-radio :label="false" :disabled="isHiddenRouteClicked()">否</el-radio>
+            <el-radio :label="false">否</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="是否缓存" prop="cacheFlag">
@@ -427,12 +435,13 @@ export default {
     pageMenus(currPage) {
       const hiddenFlag = this.isHiddenRouteClicked();
       // 分页插件回调传递当前页号
-      // hiddenFlag false 时，侧边栏菜单数据不需要分页，pageSize 传 0
       const data = {
         ...this.menusFilterForm.data,
-        hiddenFlag,
+        // 路由页表页不再限制 hiddenFlag，查询包括侧边菜单在内的数据
+        hiddenFlag: hiddenFlag ? null : false,
         pageNumber: currPage,
-        pageSize: hiddenFlag ? this.hiddenRouteListTable.page.pageSize : 0
+        // 取消分页
+        pageSize: 0
       };
       // 查询用户列表
       pageMenuRolesVo(data).then(res => {
