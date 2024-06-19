@@ -18,6 +18,6 @@ public interface StrategyExecutor {
 
     <R, S extends StrategyService> R submit(Class<S> clazz, StrategyContext context, Function<S, R> function);
 
-    <S extends StrategyService> List<Object> submitAll(Class<S> clazz, StrategyContext context, Function<S, Object> function);
+    <R, S extends StrategyService> List<R> submitAll(Class<S> clazz, StrategyContext context, Function<S, R> function);
 
 }
