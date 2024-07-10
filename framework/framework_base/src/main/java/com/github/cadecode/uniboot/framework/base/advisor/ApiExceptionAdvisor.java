@@ -23,11 +23,11 @@ public class ApiExceptionAdvisor {
      */
     @ExceptionHandler(ApiException.class)
     public ApiResult<Object> handleApiException(ApiException e) {
-        log.error("Api Exception =>", e);
         // 特殊处理接口返回 null 的情况
         if (FrameErrorEnum.RES_BODY_NULL.getCode().equals(e.getErrorCode().getCode())) {
             return ApiResult.ok(null);
         }
+        log.error("Api Exception =>", e);
         return ApiResult.error(e.getErrorCode()).moreInfo(e.getMoreInfo());
     }
 
