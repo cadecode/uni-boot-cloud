@@ -193,5 +193,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
          * 密钥
          */
         private String secret;
+
+        /**
+         * 单个账号最多允许几个 token（大于 0）
+         * 为 1 时即不允许多次登录同时在线
+         */
+        private Integer maxCount = 1;
+
     }
 }

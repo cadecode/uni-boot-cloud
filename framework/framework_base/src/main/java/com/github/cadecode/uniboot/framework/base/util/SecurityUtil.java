@@ -32,12 +32,20 @@ public class SecurityUtil implements InitializingBean {
 
     // 从 SecurityConfig 获取 token 配置
 
+    public static SecurityProperties properties() {
+        return PROPERTIES;
+    }
+
     public static Long getExpiration() {
         return PROPERTIES.getTokenConfig().getExpiration();
     }
 
     public static String getSecret() {
         return PROPERTIES.getTokenConfig().getSecret();
+    }
+
+    public static Integer getMaxCount() {
+        return PROPERTIES.getTokenConfig().getMaxCount();
     }
 
     /**
