@@ -42,15 +42,18 @@ public class RedisTokenAuthStrategyImpl extends TokenAuthStrategy {
             return;
         }
         // 查询 redis 中 token
-        String loginUserKey = KeyGeneUtil.key(KeyPrefixConst.LOGIN_USER, uuidToken);
-        SysUserDetails sysUserDetails = RedisUtil.get(loginUserKey, SysUserDetails.class);
+        String loginUserTokenKey = KeyGeneUtil.key(KeyPrefixConst.LOGIN_USER, uuidToken);
+        SysUserDetails sysUserDetails = RedisUtil.get(loginUserTokenKey, SysUserDetails.class);
         // redis 中用户不存在
         if (Objects.isNull(sysUserDetails)) {
             writeResponse(response, AuthErrorEnum.TOKEN_EXPIRED, requestURI);
             return;
         }
         // 用户存在，刷新过期时间
-        RedisUtil.expire(loginUserKey, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
+        RedisUtil.expire(loginUserTokenKey, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
+        String loginUsernameKey = KeyGeneUtil.key(KeyPrefixConst.LOGIN_USER, sysUserDetails.getUsername());
+        RedisUtil.expire(loginUsernameKey, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
+
         ServletUtil.addCookie(response, HttpConst.HEAD_TOKEN, uuidToken, SecurityUtil.getExpiration().intValue());
         // 设置 AuthenticationToken
         setAuthentication(request, sysUserDetails);
