@@ -32,7 +32,7 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
     /**
      * 交换机名称映射
      */
-    private Map<String, Exchange> exchangeNameMap;
+    private Map<String, List<Exchange>> exchangeNameMap;
 
     private final List<Exchange> exchanges;
 
@@ -75,11 +75,12 @@ public class RabbitCallback implements ConfirmCallback, ReturnsCallback, Initial
      */
     private boolean isExchangeDelayed(String exchangeName) {
         if (ObjUtil.isEmpty(exchangeNameMap)) {
-            exchangeNameMap = exchanges.stream().collect(Collectors.toMap(Exchange::getName, o -> o));
+            exchangeNameMap = exchanges.stream().collect(Collectors.groupingBy(Exchange::getName, Collectors.toList()));
         }
         // 若是 delay 交换机
-        Exchange exchange = exchangeNameMap.get(exchangeName);
-        return ObjUtil.isNotNull(exchange) && (exchange.isDelayed() || RabbitConst.EXC_TYPE_DELAYED.equals(exchange.getType()));
+        List<Exchange> exchangeList = exchangeNameMap.get(exchangeName);
+        return exchangeList.stream()
+                .allMatch(exchange -> ObjUtil.isNotNull(exchange) && (exchange.isDelayed() || RabbitConst.EXC_TYPE_DELAYED.equals(exchange.getType())));
     }
 
     @Override
