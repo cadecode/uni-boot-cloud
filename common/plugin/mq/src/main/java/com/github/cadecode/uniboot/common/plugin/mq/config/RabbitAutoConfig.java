@@ -168,7 +168,8 @@ public class RabbitAutoConfig {
                         }
                         Binding binding = new Binding(bindName, o.getBindType(), o.getExchangeName(), o.getRoutingKey(), o.getArguments());
                         binding.setAdminsThatShouldDeclare(getAdminBeanName(connectionName));
-                        String beanName = geneDeclareBeanName(connectionName, o.getBindName() + "-" + o.getExchangeName());
+                        String declareName = o.getBindName() + "-" + o.getBindType() + "-" + o.getExchangeName() + "-" + o.getRoutingKey();
+                        String beanName = geneDeclareBeanName(connectionName, declareName);
                         beanFactory.registerSingleton(beanName, binding);
                         log.info("Rabbit auto register binding, connection:{}, bind {} to {}, bindType:{}, {}", connectionName, o.getBindName(),
                                 o.getExchangeName(), o.getBindType(), o);
