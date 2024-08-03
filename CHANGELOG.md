@@ -1,3 +1,21 @@
+# [2024.2.0](https://github.com/cadecode/uni-boot-cloud-vue/compare/2024.1.0...2024.2.0) (2024-08-03)
+
+
+### Bug Fixes
+
+* 重新登录确认框 flag 重置在 finally ([3060f5a](https://github.com/cadecode/uni-boot-cloud-vue/commit/3060f5a18b601acce60bb3631e4ae8c76abd21e8))
+
+
+### Features
+
+* 404 页面展示在默认 Layout 中 ([56f86ba](https://github.com/cadecode/uni-boot-cloud-vue/commit/56f86bac35db0fd35c9b42d7af0459594fd052e3))
+* 返回 cookie 和当前不一致时修改 token ([2356047](https://github.com/cadecode/uni-boot-cloud-vue/commit/2356047884aa26cef61ffdb724a092ab27c6b115))
+* 路由列表页面逻辑优化 ([51da0d7](https://github.com/cadecode/uni-boot-cloud-vue/commit/51da0d733d5a7707c0306afc6e0dfae4930bb68b))
+* role 选择框显示优化 ([907565b](https://github.com/cadecode/uni-boot-cloud-vue/commit/907565b3eee3c0aca99780fee49b7cc2b1974b8d))
+* token cookie 写入由后端控制，getInfo 返回用户信息 ([33b3c42](https://github.com/cadecode/uni-boot-cloud-vue/commit/33b3c42d2a66856333ee1a1cd799fd60a90326ab))
+
+
+
 ## [2024.1.0](https://github.com/cadecode/uni-boot-cloud-vue/compare/2023.1.4...2024.1.0) (2024-05-27)
 
 

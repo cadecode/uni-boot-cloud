@@ -1,6 +1,6 @@
 {
   "name": "uni-boot-cloud-vue",
-  "version": "2024.1.0",
+  "version": "2024.2.0",
   "description": "The frontend by vue of uni-boot-cloud, based on vue-admin-template@4.4.0",
   "author": "Cade <cadecode@foxmail.com>",
   "scripts": {
