@@ -36,15 +36,15 @@ public class SecurityUtil implements InitializingBean {
         return PROPERTIES;
     }
 
-    public static Long getExpiration() {
+    public static Long getTokenExpiration() {
         return PROPERTIES.getTokenConfig().getExpiration();
     }
 
-    public static String getSecret() {
+    public static String getTokenSecret() {
         return PROPERTIES.getTokenConfig().getSecret();
     }
 
-    public static Integer getMaxCount() {
+    public static Integer getTokenMaxCount() {
         return PROPERTIES.getTokenConfig().getMaxCount();
     }
 

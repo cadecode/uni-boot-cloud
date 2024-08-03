@@ -29,7 +29,7 @@ public class JwtLoginSuccessHandleService extends LoginSuccessHandleService {
         SysUserDetails sysUserDetails = (SysUserDetails) authentication.getPrincipal();
         // 生成 jwt token
         String jwtToken = TokenUtil.generateToken(sysUserDetails.getId(), sysUserDetails.getUsername(), sysUserDetails.getRoles(),
-                SecurityUtil.getExpiration(), SecurityUtil.getSecret());
+                SecurityUtil.getTokenExpiration(), SecurityUtil.getTokenSecret());
         // token 放在请求头
         response.addHeader(HttpConst.HEAD_TOKEN, jwtToken);
         return ApiResult.ok(sysUserDetails).path(FrameSecurityConfig.LOGOUT_URL);

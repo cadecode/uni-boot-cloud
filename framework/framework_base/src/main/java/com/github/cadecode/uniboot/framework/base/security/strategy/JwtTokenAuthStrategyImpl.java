@@ -39,12 +39,12 @@ public class JwtTokenAuthStrategyImpl extends TokenAuthStrategy {
             return;
         }
         // token 不合法
-        if (!TokenUtil.verifyToken(jwtToken, SecurityUtil.getSecret())) {
+        if (!TokenUtil.verifyToken(jwtToken, SecurityUtil.getTokenSecret())) {
             writeResponse(response, AuthErrorEnum.TOKEN_ERROR, requestURI);
             return;
         }
         // token 已过期
-        if (TokenUtil.isExpired(jwtToken, SecurityUtil.getSecret())) {
+        if (TokenUtil.isExpired(jwtToken, SecurityUtil.getTokenSecret())) {
             writeResponse(response, AuthErrorEnum.TOKEN_EXPIRED, requestURI);
             return;
         }
@@ -57,15 +57,15 @@ public class JwtTokenAuthStrategyImpl extends TokenAuthStrategy {
         // 获取过期时间，单位秒
         long expiresAt = Long.parseLong(String.valueOf(payload.get("exp")));
         // 过期时间的一半，秒转为毫秒
-        long halfExpiration = SecurityUtil.getExpiration() / 2;
+        long halfExpiration = SecurityUtil.getTokenExpiration() / 2;
         // 如果当时时间距离过期时间不到配置的 expiration 一半，就下发新的 token
         if (expiresAt - System.currentTimeMillis() / 1000 < halfExpiration) {
             // 生成 jwt token
             String newJwtToken = TokenUtil.generateToken(sysUserDetails.getId(), sysUserDetails.getUsername(), sysUserDetails.getRoles(),
-                    SecurityUtil.getExpiration(), SecurityUtil.getSecret());
+                    SecurityUtil.getTokenExpiration(), SecurityUtil.getTokenSecret());
             // token 放在请求头
             response.addHeader(HttpConst.HEAD_TOKEN, newJwtToken);
-            ServletUtil.addCookie(response, HttpConst.HEAD_TOKEN, newJwtToken, SecurityUtil.getExpiration().intValue());
+            ServletUtil.addCookie(response, HttpConst.HEAD_TOKEN, newJwtToken, SecurityUtil.getTokenExpiration().intValue());
         }
         filterChain.doFilter(request, response);
     }
