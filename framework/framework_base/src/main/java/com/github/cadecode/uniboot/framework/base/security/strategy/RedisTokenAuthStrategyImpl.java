@@ -50,11 +50,11 @@ public class RedisTokenAuthStrategyImpl extends TokenAuthStrategy {
             return;
         }
         // 用户存在，刷新过期时间
-        RedisUtil.expire(loginUserTokenKey, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
+        RedisUtil.expire(loginUserTokenKey, SecurityUtil.getTokenExpiration(), TimeUnit.SECONDS);
         String loginUsernameKey = KeyGeneUtil.key(KeyPrefixConst.LOGIN_USER, sysUserDetails.getUsername());
-        RedisUtil.expire(loginUsernameKey, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
+        RedisUtil.expire(loginUsernameKey, SecurityUtil.getTokenExpiration(), TimeUnit.SECONDS);
 
-        ServletUtil.addCookie(response, HttpConst.HEAD_TOKEN, uuidToken, SecurityUtil.getExpiration().intValue());
+        ServletUtil.addCookie(response, HttpConst.HEAD_TOKEN, uuidToken, SecurityUtil.getTokenExpiration().intValue());
         // 设置 AuthenticationToken
         setAuthentication(request, sysUserDetails);
         filterChain.doFilter(request, response);

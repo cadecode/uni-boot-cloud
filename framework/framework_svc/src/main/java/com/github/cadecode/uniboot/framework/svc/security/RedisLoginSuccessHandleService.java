@@ -46,8 +46,8 @@ public class RedisLoginSuccessHandleService extends LoginSuccessHandleService {
         String loginUsernameKey = KeyGeneUtil.key(KeyPrefixConst.LOGIN_USER, sysUserDetails.getUsername());
         // 获取当前账号 token 列表
         List<String> tokenList = getTokenList(loginUsernameKey, loginUserTokenKey);
-        RedisUtil.set(loginUserTokenKey, sysUserDetails, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
-        RedisUtil.set(loginUsernameKey, tokenList, SecurityUtil.getExpiration(), TimeUnit.SECONDS);
+        RedisUtil.set(loginUserTokenKey, sysUserDetails, SecurityUtil.getTokenExpiration(), TimeUnit.SECONDS);
+        RedisUtil.set(loginUsernameKey, tokenList, SecurityUtil.getTokenExpiration(), TimeUnit.SECONDS);
         return ApiResult.ok(sysUserDetails).path(FrameSecurityConfig.LOGOUT_URL);
     }
 
@@ -57,7 +57,7 @@ public class RedisLoginSuccessHandleService extends LoginSuccessHandleService {
             return new ArrayList<>(Collections.singletonList(loginUserTokenKey));
         }
         // 当配置了最大 token 数
-        Integer maxTokenCount = SecurityUtil.getMaxCount();
+        Integer maxTokenCount = SecurityUtil.getTokenMaxCount();
         if (Objects.nonNull(maxTokenCount) && maxTokenCount > 0) {
             tokenList.add(loginUserTokenKey);
             if (tokenList.size() > maxTokenCount) {
