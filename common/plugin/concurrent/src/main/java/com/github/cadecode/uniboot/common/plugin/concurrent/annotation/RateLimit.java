@@ -27,17 +27,21 @@ public @interface RateLimit {
     double limitPerSecond() default 1;
 
     /**
-     * 是否阻塞等待
+     * 等待超时时间
+     * <0 表示时间不限
+     * =0 表示不等待，直接返回结果
+     * >0 表示超时时间
      */
-    boolean blockWait() default false;
-
-    /**
-     * 等待时间
-     */
-    long time() default 0;
+    long waitTimeout() default -1;
 
     /**
      * 等待时间单位
      */
-    TimeUnit timeUnit() default TimeUnit.SECONDS;
+    TimeUnit waitTimeUnit() default TimeUnit.SECONDS;
+
+    /**
+     * 预热时间，单位毫秒
+     * < 0 表示不需要预热
+     */
+    long warmupMillis() default -1;
 }

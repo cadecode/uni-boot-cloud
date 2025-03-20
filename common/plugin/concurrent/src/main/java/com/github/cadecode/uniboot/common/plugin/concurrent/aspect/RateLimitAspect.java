@@ -12,6 +12,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 限流器切面
@@ -39,20 +40,26 @@ public class RateLimitAspect {
         // 获取注解
         RateLimit rateLimit = methodSignature.getMethod().getAnnotation(RateLimit.class);
         // 获取 RateLimiter
-        RateLimiter rateLimiter = LIMITER_MAP.computeIfAbsent(methodSignature.toLongString(), m -> RateLimiter.create(rateLimit.limitPerSecond()));
+        RateLimiter rateLimiter = LIMITER_MAP.computeIfAbsent(methodSignature.toLongString(), m -> {
+            // 判断是否需要预热
+            if (rateLimit.warmupMillis() < 0) {
+                return RateLimiter.create(rateLimit.limitPerSecond());
+            }
+            return RateLimiter.create(rateLimit.limitPerSecond(), rateLimit.warmupMillis(), TimeUnit.MILLISECONDS);
+        });
         // 判断是否需要阻塞等待
-        if (!rateLimit.blockWait()) {
-            boolean acquireOk = false;
-            if (rateLimit.time() != 0) {
-                acquireOk = rateLimiter.tryAcquire(rateLimit.time(), rateLimit.timeUnit());
-            } else {
-                acquireOk = rateLimiter.tryAcquire();
-            }
-            if (acquireOk) {
-                return;
-            }
+        if (rateLimit.waitTimeout() < 0) {
+            rateLimiter.acquire();
+            return;
+        }
+        boolean acquireOk;
+        if (rateLimit.waitTimeout() > 0) {
+            acquireOk = rateLimiter.tryAcquire(rateLimit.waitTimeout(), rateLimit.waitTimeUnit());
+        } else {
+            acquireOk = rateLimiter.tryAcquire();
+        }
+        if (!acquireOk) {
             throw new RateLimitException();
         }
-        rateLimiter.acquire();
     }
 }
