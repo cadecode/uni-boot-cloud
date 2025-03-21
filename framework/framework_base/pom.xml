@@ -13,6 +13,62 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-core</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-cache</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-mybatis</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-datasource</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-concurrent</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-swagger</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-log</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-mq</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-storage</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-job</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-framework-api</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>net.dreamlu</groupId>
             <artifactId>mica-auto</artifactId>
             <scope>provided</scope>
@@ -22,51 +78,5 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-cache</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-mybatis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-datasource</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-concurrent</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-swagger</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-log</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-mq</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-storage</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-job</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-framework-api</artifactId>
-        </dependency>
     </dependencies>
-
 </project>

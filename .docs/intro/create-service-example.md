@@ -8,15 +8,14 @@ sql/framework 目录下的 sql 是 framework 服务所需的
 
 ### 创建模块
 
-创建一个模块 uni-boot-xxx，继承自 uni-boot-dependencies
+创建一个模块 uni-boot-xxx，继承自 uni-boot-parent
 
 ```xml
 
 <parent>
-    <artifactId>uni-boot-dependencies</artifactId>
+    <artifactId>uni-boot-parent</artifactId>
     <groupId>com.github.cadecode</groupId>
     <version>2023.1.0</version>
-    <relativePath>../dependencies/pom.xml</relativePath>
 </parent>
 ```
 
@@ -26,7 +25,7 @@ api 模块供外部调用、DTO 共享，svc 模块提供基础服务
 
 ## 添加依赖
 
-本项目子模块版本维护在根 pom，第三方模块版本维护在 uni-boot-dependencies
+依赖版本维护在 uni-boot-dependencies 统一管理
 
 api 模块基本依赖：
 
@@ -55,6 +54,18 @@ svc 模块基本依赖：
 ```xml
 
 <project>
+    <dependency>
+        <groupId>com.github.cadecode</groupId>
+        <artifactId>uni-boot-common-plugin-actuator</artifactId>
+        <version>${uni.version}</version>
+    </dependency>
+    <!--基础框架包-->
+    <dependency>
+        <groupId>com.github.cadecode</groupId>
+        <artifactId>uni-boot-framework-base</artifactId>
+        <version>${uni.version}</version>
+    </dependency>
+    
     <!--cloud-->
     <dependencies>
         <dependency>
@@ -85,16 +96,6 @@ svc 模块基本依赖：
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-actuator</artifactId>
-        </dependency>
-        <!--基础框架包-->
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-framework-base</artifactId>
         </dependency>
     </dependencies>
     <!--打包-->

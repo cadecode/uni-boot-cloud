@@ -2,23 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>com.github.cadecode</groupId>
-        <artifactId>uni-boot-parent</artifactId>
-        <version>2024.2.0</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.cadecode</groupId>
+    <artifactId>uni-boot-dependencies</artifactId>
+    <version>2024.2.0</version>
 
     <packaging>pom</packaging>
-    <artifactId>uni-boot-dependencies</artifactId>
+    <name>uni-boot-dependencies</name>
     <description>全局依赖版本管理</description>
-
-    <modules>
-        <module>../common</module>
-        <module>../framework</module>
-        <module>../example</module>
-        <module>../gateway</module>
-    </modules>
 
     <properties>
         <spring-boot.version>2.5.4</spring-boot.version>
@@ -47,49 +38,13 @@
         <x-file-storage.version>2.1.0</x-file-storage.version>
         <xxl-job.version>2.4.0</xxl-job.version>
         <sharding-jdbc.version>5.1.2</sharding-jdbc.version>
-    </properties>
 
-    <dependencies>
-        <!--lombok-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <optional>true</optional>
-        </dependency>
-        <!--mapstruct-->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${mapstruct.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>${mapstruct.version}</version>
-        </dependency>
-        <!--guava-->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.vsersion}</version>
-        </dependency>
-        <!--vavr-->
-        <dependency>
-            <groupId>io.vavr</groupId>
-            <artifactId>vavr</artifactId>
-            <version>${vavr.vsersion}</version>
-        </dependency>
-        <!--hutool-->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-extra</artifactId>
-        </dependency>
-    </dependencies>
+        <!--plugin-->
+        <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
+        <versions-maven-plugin.version>2.8.1</versions-maven-plugin.version>
+        <git-build-hook-maven-plugin.version>3.5.0</git-build-hook-maven-plugin.version>
+        <spring-boot-maven-plugin.version>2.5.2</spring-boot-maven-plugin.version>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -124,6 +79,35 @@
                 <version>${hutool.vsersion}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <!--lombok-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <!--mapstruct-->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <!--guava-->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.vsersion}</version>
+            </dependency>
+            <!--vavr-->
+            <dependency>
+                <groupId>io.vavr</groupId>
+                <artifactId>vavr</artifactId>
+                <version>${vavr.vsersion}</version>
             </dependency>
             <!--mica-auto，自动化 spring.factories-->
             <dependency>
@@ -246,4 +230,31 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${versions-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.rudikershaw.gitbuildhook</groupId>
+                    <artifactId>git-build-hook-maven-plugin</artifactId>
+                    <version>${git-build-hook-maven-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
