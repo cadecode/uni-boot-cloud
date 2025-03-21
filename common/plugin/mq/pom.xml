@@ -12,6 +12,12 @@
     <artifactId>uni-boot-common-plugin-mq</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-core</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+
         <!--rabbit 多数据源-->
         <dependency>
             <groupId>com.free-now.multirabbit</groupId>
@@ -21,11 +27,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-core</artifactId>
         </dependency>
     </dependencies>
 </project>

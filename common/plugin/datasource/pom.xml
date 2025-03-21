@@ -15,7 +15,9 @@
         <dependency>
             <groupId>com.github.cadecode</groupId>
             <artifactId>uni-boot-common-core</artifactId>
+            <version>${uni.version}</version>
         </dependency>
+
         <!--mysql-->
         <dependency>
             <groupId>mysql</groupId>

@@ -15,13 +15,15 @@
         <dependency>
             <groupId>com.github.cadecode</groupId>
             <artifactId>uni-boot-common-core</artifactId>
+            <version>${uni.version}</version>
         </dependency>
+
         <!--mybatis-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
         </dependency>
-         <!--mybatis plus-->
+        <!--mybatis plus-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>

@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.github.cadecode</groupId>
+        <artifactId>uni-boot-dependencies</artifactId>
+        <version>2024.2.0</version>
+        <relativePath>dependencies</relativePath>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.github.cadecode</groupId>
-    <artifactId>uni-boot-parent</artifactId>
-    <version>2024.2.0</version>
 
     <packaging>pom</packaging>
+    <artifactId>uni-boot-parent</artifactId>
     <name>uni-boot-cloud</name>
     <description>基于 SpringCloud 的通用后台管理系统1骨架</description>
 
     <modules>
-        <module>dependencies</module>
+        <module>common</module>
+        <module>example</module>
+        <module>framework</module>
+        <module>gateway</module>
     </modules>
 
     <properties>
@@ -24,81 +31,37 @@
         <uni.version>${project.version}</uni.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <!--维护子模块-->
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-common-core</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-common-plugin-cache</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-common-plugin-actuator</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-common-plugin-datasource</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-common-plugin-log</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-common-plugin-mybatis</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-common-plugin-swagger</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-common-plugin-concurrent</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-common-plugin-mq</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-common-plugin-storage</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-common-plugin-job</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-framework-api</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-framework-base</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cadecode</groupId>
-                <artifactId>uni-boot-example-api</artifactId>
-                <version>${uni.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <dependencies>
+        <!--lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!--mapstruct-->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+        </dependency>
+        <!--guava-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <!--vavr-->
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+        </dependency>
+        <!--hutool-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+        </dependency>
+    </dependencies>
 
     <repositories>
         <repository>
@@ -139,12 +102,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.2.0</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.8.1</version>
                 <configuration>
                     <generateBackupPoms>false</generateBackupPoms>
                 </configuration>
@@ -152,7 +113,6 @@
             <plugin>
                 <groupId>com.rudikershaw.gitbuildhook</groupId>
                 <artifactId>git-build-hook-maven-plugin</artifactId>
-                <version>3.5.0</version>
                 <configuration>
                     <gitConfig>
                         <core.hooksPath>ci/git-hooks</core.hooksPath>
@@ -167,6 +127,32 @@
                 </executions>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot-maven-plugin.version}</version>
+                    <configuration>
+                        <fork>true</fork>
+                        <includeSystemScope>true</includeSystemScope>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <profiles>

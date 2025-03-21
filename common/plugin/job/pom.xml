@@ -13,13 +13,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.xuxueli</groupId>
-            <artifactId>xxl-job-core</artifactId>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-core</artifactId>
+            <version>${uni.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-core</artifactId>
+            <groupId>com.xuxueli</groupId>
+            <artifactId>xxl-job-core</artifactId>
         </dependency>
     </dependencies>
 

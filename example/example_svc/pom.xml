@@ -9,11 +9,31 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <packaging>jar</packaging>
     <artifactId>uni-boot-example-svc</artifactId>
     <description>微服务样例模块-SERVICE</description>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-framework-base</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-actuator</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-common-plugin-job</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cadecode</groupId>
+            <artifactId>uni-boot-example-api</artifactId>
+            <version>${uni.version}</version>
+        </dependency>
+
         <!--cloud-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -44,23 +64,6 @@
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-framework-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-common-plugin-job</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cadecode</groupId>
-            <artifactId>uni-boot-example-api</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
@@ -69,24 +72,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.5.2</version>
-                <configuration>
-                    <fork>true</fork>
-                    <includeSystemScope>true</includeSystemScope>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
