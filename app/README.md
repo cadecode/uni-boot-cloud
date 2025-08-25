@@ -1,18 +1,13 @@
-# uni-boot-cloud-vue
+# uni-boot-cloud app
 
 ## 项目简介
 
-1. 本项目是一套通用后台管理系统骨架，前端基于 Vue + ElementUI + VueRouter + Vuex
+1. 本项目是 uni-boot-cloud 配套的前端模板，基于 Vue + ElementUI + VueRouter + Vuex 构建
 
-   基于 [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template) 核心重构（V4.4.0）
+   基于 [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template) 核心重构（V4.4.0），vue-admin-template
+   是一款管理系统前端模板，基于 MIT 协议开源
 
-   vue-admin-template 是一款管理系统前端模板，基于 MIT 协议开源
-
-2. 本项目采用前后端分离结构，以下是配套后端项目
-
-   [uni-boot-cloud](https://github.com/cadecode/uni-boot-admin)
-
-3. 版本与环境
+2. 版本与环境
 
    @vue/cli: 4.4.4
 
@@ -37,7 +32,7 @@
    > npm config set registry https://registry.npm.taobao.org
    > npm config set SASS_BINARY_SITE https://npm.taobao.org/mirrors/node-sass
 
-4. 功能与优势
+3. 功能与优势
 
    基于 [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)，有丰富的生态（站在巨人的肩膀上）
 
@@ -62,7 +57,6 @@
    集成 Echarts，提供图表组件支持
 
    集成 Clipboard，提供剪贴板支持
-
 
 ## 功能模块
 

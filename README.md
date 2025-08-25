@@ -2,11 +2,11 @@
 
 ## 项目简介
 
-1. 本项目是一套通用后台管理系统骨架，后端基于 SpringCloud 生态，集成常用组件，方便扩展使用
+1. 本项目是一套通用的微服务后台管理系统模板，基于 SpringCloud 生态构建，集成常用组件，方便扩展使用
 
-2. 本项目采用前后端分离结构，以下是配套前端项目
+2. 本项目采用前后端分离结构，以下是配套的前端模板
 
-   [uni-boot-cloud-vue](https://github.com/cadecode/uni-boot-cloud-vue)
+   [基于 Vue 的 web 端](https://github.com/cadecode/uni-boot-cloud/refs/heads/main/app)
 
 3. 版本与环境
 
@@ -125,20 +125,20 @@
 
 <table>
     <tr>
-        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_home.png"/></td>
-        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_user_center.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-cloud/refs/heads/main/app/.docs/readme_image/sample_home.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-cloud/refs/heads/main/app/.docs/readme_image/sample_user_center.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_user_management.png"/></td>
-        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_menu_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-cloud/refs/heads/main/app/.docs/readme_image/sample_user_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-cloud/refs/heads/main/app/.docs/readme_image/sample_menu_management.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_role_management.png"/></td>
-        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_api_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-cloud/refs/heads/main/app/.docs/readme_image/sample_role_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-cloud/refs/heads/main/app/.docs/readme_image/sample_api_management.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_log_management.png"/></td>
-        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-admin-vue/main/.docs/readme_image/sample_dict_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-cloud/refs/heads/main/app/.docs/readme_image/sample_log_management.png"/></td>
+        <td><img src="https://raw.githubusercontent.com/cadecode/uni-boot-cloud/refs/heads/main/app/.docs/readme_image/sample_dict_management.png"/></td>
     </tr>
 </table>
 
