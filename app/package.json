@@ -13,7 +13,7 @@
     "lint:fix": "eslint --cache --ext .js,.vue src --fix",
     "test:unit": "jest --clearCache && vue-cli-service test:unit",
     "test:ci": "npm run lint && npm run test:unit",
-    "prepare": "husky"
+    "prepare": "cd .. && husky install app/.husky"
   },
   "dependencies": {
     "axios": "0.18.1",
